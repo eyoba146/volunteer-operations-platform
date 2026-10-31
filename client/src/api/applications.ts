@@ -20,6 +20,8 @@ export async function getAllApplications(filters?: {
   status?: ApplicationStatus | 'all';
   search?: string;
   area?: string;
+  skill?: string;
+  sortBy?: 'newest' | 'oldest' | 'name';
 }): Promise<Application[]> {
   await delay(350, 750);
   const state = store.getState();
@@ -29,9 +31,15 @@ export async function getAllApplications(filters?: {
     list = list.filter((a) => a.status === filters.status);
   }
 
-  if (filters?.area) {
+  if (filters?.area && filters.area !== 'all') {
     list = list.filter((a) =>
       a.formData?.area.toLowerCase().includes(filters.area!.toLowerCase())
+    );
+  }
+
+  if (filters?.skill && filters.skill !== 'all') {
+    list = list.filter((a) =>
+      a.formData?.skills?.some((s) => s.toLowerCase() === filters.skill!.toLowerCase())
     );
   }
 
@@ -41,16 +49,20 @@ export async function getAllApplications(filters?: {
       (a) =>
         a.formData?.fullName.toLowerCase().includes(q) ||
         a.formData?.phone.toLowerCase().includes(q) ||
-        a.formData?.area.toLowerCase().includes(q)
+        a.formData?.area.toLowerCase().includes(q) ||
+        a.formData?.skills?.some((s) => s.toLowerCase().includes(q))
     );
   }
 
-  // Sort: pending/submitted first, then by date
-  list.sort((a, b) => {
-    const timeA = new Date(a.submittedAt || 0).getTime();
-    const timeB = new Date(b.submittedAt || 0).getTime();
-    return timeB - timeA;
-  });
+  // Sorting
+  if (filters?.sortBy === 'oldest') {
+    list.sort((a, b) => new Date(a.submittedAt || 0).getTime() - new Date(b.submittedAt || 0).getTime());
+  } else if (filters?.sortBy === 'name') {
+    list.sort((a, b) => (a.formData?.fullName || '').localeCompare(b.formData?.fullName || ''));
+  } else {
+    // Default newest first
+    list.sort((a, b) => new Date(b.submittedAt || 0).getTime() - new Date(a.submittedAt || 0).getTime());
+  }
 
   return list;
 }
@@ -132,6 +144,8 @@ export async function submitApplication(
     availability: formData.availability,
     languages: formData.languages,
     emergencyContact: formData.emergencyContact,
+    photoUrl: formData.photoUrl,
+    idPhotoUrl: formData.idPhotoUrl,
     volunteerNumber: existingProfile?.volunteerNumber || `VTS-APP-${Math.floor(1000 + Math.random() * 9000)}`,
   };
 
@@ -327,4 +341,82 @@ export async function addApplicationNote(
 
   return updated;
 }
+
+export async function reopenApplication(
+  appId: string,
+  managerId: string = 'usr-marta',
+  managerName: string = 'Marta Girma'
+): Promise<Application> {
+  await delay(350, 700);
+  const state = store.getState();
+  const app = state.applications.find((a) => a.id === appId);
+  if (!app) throw new Error('Application could not be found.');
+
+  const now = new Date().toISOString();
+  const deadline = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+
+  const notes: ApplicationNote[] = [
+    ...app.notes,
+    {
+      id: `note-${Date.now()}`,
+      authorId: managerId,
+      authorName: managerName,
+      createdAt: now,
+      content: 'Reopened application window with a fresh 7-day payment deadline.',
+    },
+  ];
+
+  const updated: Application = {
+    ...app,
+    status: 'accepted',
+    reviewedBy: managerId,
+    reviewedAt: now,
+    paymentDeadline: deadline,
+    decisionReason: 'Reopened by manager for payment completion.',
+    notes,
+  };
+
+  // Ensure payment record exists and is waiting
+  const existingPayment = state.payments.find((p) => p.applicationId === appId);
+  let updatedPayments = [...state.payments];
+  if (existingPayment) {
+    updatedPayments = updatedPayments.map((p) =>
+      p.id === existingPayment.id ? { ...p, status: 'waiting' as const } : p
+    );
+  } else {
+    updatedPayments.unshift({
+      id: `pay-${Date.now()}`,
+      userId: app.userId,
+      applicationId: app.id,
+      amount: 200,
+      currency: 'ETB',
+      telebirrReference: `TB-REOPEN-${Math.floor(1000 + Math.random() * 9000)}`,
+      status: 'waiting',
+      createdAt: now,
+      payerName: app.formData?.fullName,
+      payerPhone: app.formData?.phone,
+    });
+  }
+
+  store.setState((prev) => ({
+    ...prev,
+    applications: prev.applications.map((a) => (a.id === appId ? updated : a)),
+    payments: updatedPayments,
+    activityLog: [
+      {
+        id: `log-${Date.now()}`,
+        actorId: managerId,
+        actorName: managerName,
+        actorRole: 'Manager',
+        action: 'Reopened expired application for registration fee payment',
+        subject: `Application #${appId}`,
+        createdAt: now,
+      },
+      ...prev.activityLog,
+    ],
+  }));
+
+  return updated;
+}
+
 

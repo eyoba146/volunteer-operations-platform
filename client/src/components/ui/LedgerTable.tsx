@@ -1,7 +1,7 @@
 import React from 'react';
 
 export interface LedgerColumn<T> {
-  header: string;
+  header: React.ReactNode;
   accessorKey?: keyof T;
   cell?: (item: T, index: number) => React.ReactNode;
   align?: 'left' | 'center' | 'right';

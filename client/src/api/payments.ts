@@ -374,3 +374,48 @@ export async function refundPayment(
   );
 }
 
+export async function simulateDuplicatePayment(
+  userId: string,
+  applicationId: string
+): Promise<Payment> {
+  await delay(350, 700);
+  const state = store.getState();
+  const now = new Date().toISOString();
+  const user = state.users.find((u) => u.id === userId);
+  const profile = state.profiles.find((p) => p.userId === userId);
+
+  const dupPayment: Payment = {
+    id: `pay-dup-${Date.now()}`,
+    userId,
+    applicationId,
+    amount: 200,
+    currency: 'ETB',
+    telebirrReference: `TB-DUP-${Math.floor(1000 + Math.random() * 9000)}`,
+    status: 'needs_review',
+    createdAt: now,
+    refundReason: 'Duplicate payment detected via Telebirr. Overpayment of ETB 200.00 queued for Finance refund.',
+    payerPhone: profile?.phone || '+251 91 123 4567',
+    payerName: profile?.fullName || user?.username || 'Applicant',
+  };
+
+  store.setState((prev) => ({
+    ...prev,
+    payments: [dupPayment, ...prev.payments],
+    activityLog: [
+      {
+        id: `log-${Date.now()}`,
+        actorId: userId,
+        actorName: dupPayment.payerName || 'Applicant',
+        actorRole: 'Applicant',
+        action: 'Duplicate Telebirr transaction received; flagged for Finance refund review',
+        subject: `Payment #${dupPayment.id}`,
+        createdAt: now,
+      },
+      ...prev.activityLog,
+    ],
+  }));
+
+  return dupPayment;
+}
+
+

@@ -18,6 +18,10 @@ async function runTests() {
   page.on('pageerror', err => console.log('PAGE ERROR:', err.toString()));
 
   try {
+    // Reset test storage for clean repeatable run
+    await page.goto('http://127.0.0.1:4173/', { waitUntil: 'networkidle0' });
+    await page.evaluate(() => localStorage.clear());
+
     // Test 1: Verify Certificate
     console.log('Test 1: Checking Certificate Verification...');
     await page.goto('http://127.0.0.1:4173/check-certificate', { waitUntil: 'networkidle0' });

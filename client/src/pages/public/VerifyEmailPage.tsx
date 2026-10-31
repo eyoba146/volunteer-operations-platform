@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import * as api from '../../api';
+import { useAuth } from '../../context/AuthContext';
 import { Button } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
 import { Envelope, ArrowClockwise, Check, ArrowRight } from '@phosphor-icons/react';
 import { DemoEmailInbox } from '../../components/demo/DemoEmailInbox';
 
 export const VerifyEmailPage: React.FC = () => {
+  const { refreshUser } = useAuth();
   const [searchParams] = useSearchParams();
   const [email, setEmail] = useState(searchParams.get('email') || '');
   const [code, setCode] = useState(searchParams.get('code') || '');
@@ -41,6 +43,7 @@ export const VerifyEmailPage: React.FC = () => {
     setIsLoading(true);
     try {
       await api.verifyEmail(email, code.trim());
+      await refreshUser();
       toast.success('Your email is confirmed. Welcome to the trail!');
       navigate('/applicant/apply');
     } catch (err: any) {

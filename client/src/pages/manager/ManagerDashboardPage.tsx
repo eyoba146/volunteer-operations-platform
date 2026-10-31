@@ -52,9 +52,9 @@ export const ManagerDashboardPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="space-y-6">
-        <Skeleton variant="text" className="h-8 w-1/3" />
-        <Skeleton variant="rect" className="h-32" />
+      <div className="space-y-6 max-w-5xl mx-auto">
+        <Skeleton variant="text" className="h-10 w-1/3" />
+        <Skeleton variant="rect" className="h-40" />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Skeleton variant="rect" className="h-64" />
           <Skeleton variant="rect" className="h-64" />
@@ -64,25 +64,25 @@ export const ManagerDashboardPage: React.FC = () => {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 max-w-5xl mx-auto">
       {/* Editorial Header */}
-      <div className="border border-border bg-canvas-raised p-6 md:p-8 space-y-4 shadow-subtle">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-5">
+      <div className="border-4 border-ink-primary bg-white p-6 md:p-8 space-y-5 shadow-ticket">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b-2 border-ink-primary pb-5">
           <div className="space-y-1">
-            <span className="font-mono text-xs uppercase tracking-wider text-ink-tertiary block">
-              PROGRAM OPERATIONS DESK
+            <span className="font-sans text-xs font-bold text-role-manager block">
+              Program Operations Desk
             </span>
-            <h1 className="font-serif text-2xl md:text-3xl font-bold text-ink-primary">
-              Manager Operations Overview
+            <h1 className="font-display font-black text-4xl sm:text-5xl uppercase tracking-tight text-ink-primary leading-none">
+              Admissions & Operations Overview
             </h1>
-            <p className="font-sans text-xs sm:text-sm text-ink-secondary">
-              Reviewing applicant intake, deciding promotion boards, and overseeing field operations across 5 cities.
+            <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
+              Review applicant intake, evaluate promotion boards, and supervise fieldwork across 5 regions.
             </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
             <Button
-              variant="primary"
+              variant="teal"
               size="sm"
               leftIcon={<ClipboardText className="w-4 h-4" />}
               onClick={() => navigate('/manager/applications')}
@@ -95,59 +95,59 @@ export const ManagerDashboardPage: React.FC = () => {
               leftIcon={<ChartLineUp className="w-4 h-4" />}
               onClick={() => navigate('/manager/promotions')}
             >
-              Promotions Board ({stats?.promotionsWaiting})
+              Promotions ({stats?.promotionsWaiting})
             </Button>
           </div>
         </div>
 
-        {/* Operational Dispatch Numbers (Section 6.11 FR-RPT-01) */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 pt-2 font-mono text-xs">
-          <div className="border border-border bg-canvas-subdued p-4 space-y-1">
-            <span className="text-ink-tertiary uppercase text-[10px]">Awaiting Review</span>
-            <div className="text-2xl font-bold text-[#784E0B]">
+        {/* Operational Dispatch Numbers */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 pt-2 font-sans text-xs">
+          <div className="border-2 border-border bg-canvas-subdued p-4 space-y-1">
+            <span className="text-ink-tertiary font-bold text-[11px] block">Awaiting Review</span>
+            <div className="font-display text-4xl font-black text-role-applicant leading-none">
               {stats?.waitingApplications || 0}
             </div>
-            <span className="text-[11px] font-sans text-ink-secondary block">
-              New applicants
+            <span className="text-[11px] text-ink-secondary block">
+              New candidates
             </span>
           </div>
 
-          <div className="border border-border bg-canvas-subdued p-4 space-y-1">
-            <span className="text-ink-tertiary uppercase text-[10px]">Promotions Waiting</span>
-            <div className="text-2xl font-bold text-civic-gold">
+          <div className="border-2 border-border bg-canvas-subdued p-4 space-y-1">
+            <span className="text-ink-tertiary font-bold text-[11px] block">Promotions Waiting</span>
+            <div className="font-display text-4xl font-black text-role-teamlead leading-none">
               {stats?.promotionsWaiting || 0}
             </div>
-            <span className="text-[11px] font-sans text-ink-secondary block">
+            <span className="text-[11px] text-ink-secondary block">
               Eligible candidates
             </span>
           </div>
 
-          <div className="border border-border bg-canvas-subdued p-4 space-y-1">
-            <span className="text-ink-tertiary uppercase text-[10px]">Activated Members</span>
-            <div className="text-2xl font-bold text-civic-green">
+          <div className="border-2 border-border bg-canvas-subdued p-4 space-y-1">
+            <span className="text-ink-tertiary font-bold text-[11px] block">Activated Members</span>
+            <div className="font-display text-4xl font-black text-role-volunteer leading-none">
               +{stats?.newVolunteersThisMonth || 0}
             </div>
-            <span className="text-[11px] font-sans text-ink-secondary block">
+            <span className="text-[11px] text-ink-secondary block">
               This month
             </span>
           </div>
 
-          <div className="border border-border bg-canvas-subdued p-4 space-y-1">
-            <span className="text-ink-tertiary uppercase text-[10px]">Approved Hours</span>
-            <div className="text-2xl font-bold text-ink-primary">
-              {stats?.approvedHoursThisMonth || 0} hrs
+          <div className="border-2 border-border bg-canvas-subdued p-4 space-y-1">
+            <span className="text-ink-tertiary font-bold text-[11px] block">Approved Hours</span>
+            <div className="font-display text-4xl font-black text-ink-primary leading-none">
+              {stats?.approvedHoursThisMonth || 0}
             </div>
-            <span className="text-[11px] font-sans text-ink-secondary block">
-              Verified service
+            <span className="text-[11px] text-ink-secondary block">
+              Verified service hrs
             </span>
           </div>
 
-          <div className="border border-border bg-canvas-subdued p-4 space-y-1 col-span-2 sm:col-span-1">
-            <span className="text-ink-tertiary uppercase text-[10px]">Open Activities</span>
-            <div className="text-2xl font-bold text-ink-primary">
+          <div className="border-2 border-border bg-canvas-subdued p-4 space-y-1 col-span-2 sm:col-span-1">
+            <span className="text-ink-tertiary font-bold text-[11px] block">Open Activities</span>
+            <div className="font-display text-4xl font-black text-ink-primary leading-none">
               {stats?.upcomingActivities || 0}
             </div>
-            <span className="text-[11px] font-sans text-ink-secondary block">
+            <span className="text-[11px] text-ink-secondary block">
               Across regions
             </span>
           </div>
@@ -157,16 +157,16 @@ export const ManagerDashboardPage: React.FC = () => {
       {/* Two Column Layout: Urgent Applications & Pending Promotions */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Applications Waiting */}
-        <div className="border border-border bg-canvas-raised p-6 space-y-5 flex flex-col justify-between">
+        <div className="border-2 border-ink-primary bg-white p-6 space-y-5 flex flex-col justify-between shadow-ticket">
           <div className="space-y-4">
             <div className="flex items-center justify-between border-b border-border pb-3">
               <div className="flex items-center gap-2">
-                <ClipboardText className="w-4 h-4 text-ink-secondary" weight="bold" />
-                <h3 className="font-serif text-lg font-bold text-ink-primary">
+                <ClipboardText className="w-5 h-5 text-ink-primary" weight="bold" />
+                <h3 className="font-display text-xl font-black uppercase text-ink-primary">
                   Applications Requiring Evaluation
                 </h3>
               </div>
-              <span className="font-mono text-xs text-ink-tertiary">
+              <span className="font-mono text-xs text-ink-tertiary font-bold">
                 {pendingApplications.length} unreviewed
               </span>
             </div>
@@ -180,10 +180,10 @@ export const ManagerDashboardPage: React.FC = () => {
                 {pendingApplications.map((app) => (
                   <div key={app.id} className="py-3 flex items-center justify-between gap-3 text-xs">
                     <div>
-                      <h4 className="font-bold text-ink-primary">
+                      <h4 className="font-bold text-ink-primary text-sm">
                         {app.formData?.fullName || 'Applicant'}
                       </h4>
-                      <span className="font-mono text-ink-tertiary text-[11px]">
+                      <span className="text-ink-tertiary text-xs block">
                         {app.formData?.area || 'Addis Ababa'} • Submitted{' '}
                         {app.submittedAt ? new Date(app.submittedAt).toLocaleDateString() : 'recently'}
                       </span>
@@ -204,7 +204,7 @@ export const ManagerDashboardPage: React.FC = () => {
 
           <div className="pt-4 border-t border-border">
             <Button
-              variant="primary"
+              variant="teal"
               size="sm"
               className="w-full"
               onClick={() => navigate('/manager/applications')}
@@ -216,16 +216,16 @@ export const ManagerDashboardPage: React.FC = () => {
         </div>
 
         {/* Promotions Waiting Board */}
-        <div className="border border-border bg-canvas-raised p-6 space-y-5 flex flex-col justify-between">
+        <div className="border-2 border-ink-primary bg-white p-6 space-y-5 flex flex-col justify-between shadow-ticket">
           <div className="space-y-4">
             <div className="flex items-center justify-between border-b border-border pb-3">
               <div className="flex items-center gap-2">
-                <Sparkle className="w-4 h-4 text-civic-gold" weight="fill" />
-                <h3 className="font-serif text-lg font-bold text-ink-primary">
+                <Sparkle className="w-5 h-5 text-role-teamlead" weight="fill" />
+                <h3 className="font-display text-xl font-black uppercase text-ink-primary">
                   Promotions Awaiting Approval
                 </h3>
               </div>
-              <span className="font-mono text-xs text-ink-tertiary">
+              <span className="font-mono text-xs text-ink-tertiary font-bold">
                 Board Queue
               </span>
             </div>
@@ -244,11 +244,11 @@ export const ManagerDashboardPage: React.FC = () => {
                       </span>
                       <StatusMark status={promo.status} size="sm" />
                     </div>
-                    <p className="text-ink-secondary text-[11px]">
+                    <p className="text-ink-secondary text-xs">
                       Nominated for promotion from <strong className="font-mono uppercase">{promo.fromRank.replace('_', ' ')}</strong> to{' '}
-                      <strong className="font-mono uppercase text-civic-green">{promo.toRank.replace('_', ' ')}</strong>.
+                      <strong className="font-mono uppercase text-role-volunteer font-bold">{promo.toRank.replace('_', ' ')}</strong>.
                     </p>
-                    <p className="text-[11px] text-ink-tertiary italic">
+                    <p className="text-xs text-ink-tertiary italic">
                       "{promo.note}"
                     </p>
                   </div>
@@ -273,4 +273,3 @@ export const ManagerDashboardPage: React.FC = () => {
     </div>
   );
 };
-
