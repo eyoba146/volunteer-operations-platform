@@ -28,6 +28,7 @@ import {
   X,
   MagnifyingGlass,
   ArrowClockwise,
+  ChatCircleText,
 } from '@phosphor-icons/react';
 import { Avatar, StatusMark, Button } from '../ui';
 import { DemoEmailInbox } from '../demo/DemoEmailInbox';
@@ -107,6 +108,7 @@ export const AppShellLayout: React.FC = () => {
           { to: '/manager/activities', label: 'Activities', icon: <Calendar className="w-5 h-5" weight="bold" /> },
           { to: '/manager/promotions', label: 'Promotions', icon: <ChartLineUp className="w-5 h-5" weight="bold" /> },
           { to: '/manager/announcements', label: 'Post Notice', icon: <Megaphone className="w-5 h-5" weight="bold" /> },
+          { to: '/manager/feedback', label: 'Feedback', icon: <ChatCircleText className="w-5 h-5" weight="bold" /> },
           { to: '/manager/reports', label: 'Reports', icon: <Scroll className="w-5 h-5" weight="bold" /> },
         ];
 

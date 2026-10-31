@@ -2,7 +2,17 @@ import React, { useState, useEffect } from 'react';
 import * as api from '../../api';
 import { Payment, PaymentStatus } from '../../types';
 import { LedgerTable, LedgerColumn, Input, Select, Button, StatusMark, SheetModal, Skeleton } from '../../components/ui';
-import { MagnifyingGlass, Money, Eye, DownloadSimple } from '@phosphor-icons/react';
+import { 
+  MagnifyingGlass, 
+  Money, 
+  Eye, 
+  DownloadSimple, 
+  CheckCircle, 
+  Clock, 
+  Receipt, 
+  ArrowCounterClockwise,
+  Warning
+} from '@phosphor-icons/react';
 
 export const FinancePaymentsPage: React.FC = () => {
   const [payments, setPayments] = useState<Payment[]>([]);
@@ -83,36 +93,43 @@ export const FinancePaymentsPage: React.FC = () => {
           onClick={() => setInspecting(p)}
           leftIcon={<Eye className="w-3.5 h-3.5" />}
         >
-          Details
+          View Timeline
         </Button>
       ),
     },
   ];
 
   return (
-    <div className="space-y-6">
-      {/* Editorial Header */}
-      <div className="border-b border-border pb-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="space-y-1">
-          <span className="font-mono text-xs uppercase tracking-wider text-ink-tertiary block">
-            FINANCIAL AUDIT TRAIL
-          </span>
-          <h1 className="font-serif text-2xl md:text-3xl font-bold text-ink-primary">
-            Telebirr Transactions Ledger
-          </h1>
-          <p className="font-sans text-xs sm:text-sm text-ink-secondary">
-            Immutable settlement log of registration fees, timestamps, and payment statuses.
-          </p>
+    <div className="space-y-6 text-left">
+      {/* Top Header */}
+      <div
+        className="border-4 border-ink-primary bg-white p-6 sm:p-8 space-y-4 shadow-ticket"
+        style={{
+          clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)',
+        }}
+      >
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b-2 border-ink-primary pb-5">
+          <div className="space-y-1">
+            <span className="font-sans text-xs font-bold text-ink-primary uppercase tracking-tight block">
+              Ethio Telecom Settlement Records
+            </span>
+            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-ink-primary leading-none">
+              Telebirr Payments Ledger
+            </h1>
+            <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
+              Complete settlement log of registration fees, timestamps, receipts, and resolution audit trails.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="font-mono text-xs font-bold text-white bg-ink-primary px-3 py-1.5 shadow-sm uppercase">
+              Total Records: {payments.length}
+            </span>
+          </div>
         </div>
 
-        <span className="font-mono text-xs text-ink-tertiary bg-canvas-raised border border-border px-3 py-1.5 self-start sm:self-auto">
-          Total Transactions: <strong className="text-ink-primary font-bold">{payments.length}</strong>
-        </span>
-      </div>
-
-      {/* Filter and Search Bar */}
-      <div className="border border-border bg-canvas-raised p-4 space-y-3">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {/* Filter and Search Bar */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
           <Input
             placeholder="Search by Telebirr ref, receipt number, phone, or name..."
             value={search}
@@ -128,6 +145,7 @@ export const FinancePaymentsPage: React.FC = () => {
               { value: 'confirmed', label: 'Confirmed (Active)' },
               { value: 'waiting', label: 'Waiting for Handshake' },
               { value: 'needs_review', label: 'Needs Review' },
+              { value: 'refund_requested', label: 'Refund Requested' },
               { value: 'refunded', label: 'Refunded' },
               { value: 'failed', label: 'Failed' },
             ]}
@@ -142,64 +160,125 @@ export const FinancePaymentsPage: React.FC = () => {
         isLoading={isLoading}
       />
 
-      {/* Detail Drawer */}
+      {/* Payment Detail Drawer with Visual Timeline */}
       <SheetModal
         isOpen={inspecting !== null}
         onClose={() => setInspecting(null)}
-        title="Transaction Record"
+        title="Transaction & Settlement Record"
         subtitle={`Reference: ${inspecting?.telebirrReference || ''}`}
         mode="sheet"
       >
         {inspecting && (
           <div className="space-y-6 text-left font-sans text-xs">
-            <div className="p-4 border border-border bg-canvas-subdued space-y-2">
-              <span className="font-mono text-[10px] uppercase text-ink-tertiary block">Status</span>
-              <StatusMark status={inspecting.status} size="md" />
+            {/* Amount & Status Card */}
+            <div className="p-4 border-2 border-ink-primary bg-white shadow-ticket flex items-center justify-between">
+              <div>
+                <span className="text-[10px] uppercase text-ink-tertiary block font-mono">Current Status</span>
+                <StatusMark status={inspecting.status} size="md" />
+              </div>
+              <div className="text-right">
+                <span className="text-[10px] uppercase text-ink-tertiary block font-mono">Settlement Amount</span>
+                <span className="font-display text-3xl font-black text-ink-primary block leading-none">
+                  ETB {inspecting.amount}.00
+                </span>
+              </div>
             </div>
 
-            <div className="p-4 border border-border bg-canvas-raised space-y-3 font-mono">
-              <div className="flex justify-between border-b border-border/60 pb-2">
-                <span className="text-ink-tertiary">Amount:</span>
-                <span className="font-bold text-ink-primary text-sm">ETB {inspecting.amount}.00</span>
+            {/* Visual Settlement Timeline (Trail route step style) */}
+            <div className="p-4 border-2 border-ink-primary bg-white shadow-ticket space-y-4">
+              <span className="font-display text-lg font-black uppercase text-ink-primary block border-b-2 border-border pb-2">
+                Settlement Lifecycle Timeline
+              </span>
+
+              <div className="relative pl-6 space-y-5 before:content-[''] before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-ink-primary">
+                {/* Step 1: Session Dispatched */}
+                <div className="relative space-y-0.5">
+                  <div className="absolute -left-6 top-1 w-3 h-3 rounded-full bg-ink-primary border-2 border-white ring-2 ring-ink-primary" />
+                  <div className="flex items-baseline justify-between">
+                    <span className="font-bold text-xs uppercase text-ink-primary">1. Payment Session Initiated</span>
+                    <span className="font-mono text-[10px] text-ink-tertiary">{new Date(inspecting.createdAt).toLocaleTimeString()}</span>
+                  </div>
+                  <p className="text-ink-secondary text-xs">
+                    Applicant {inspecting.payerName || 'Candidate'} requested Telebirr prompt for ETB {inspecting.amount}.00 via phone {inspecting.payerPhone || 'recorded'}.
+                  </p>
+                </div>
+
+                {/* Step 2: Telebirr Gateway Request */}
+                <div className="relative space-y-0.5">
+                  <div className="absolute -left-6 top-1 w-3 h-3 rounded-full bg-ink-primary border-2 border-white ring-2 ring-ink-primary" />
+                  <div className="flex items-baseline justify-between">
+                    <span className="font-bold text-xs uppercase text-ink-primary">2. USSD & Handset Prompt Dispatched</span>
+                    <span className="font-mono text-[10px] text-ink-tertiary">Merchant #884120</span>
+                  </div>
+                  <p className="text-ink-secondary text-xs">
+                    Ethio Telecom payment rail dispatched interactive PIN confirmation to subscriber wallet.
+                  </p>
+                </div>
+
+                {/* Step 3: Transaction Outcome */}
+                <div className="relative space-y-0.5">
+                  <div className={`absolute -left-6 top-1 w-3 h-3 rounded-full border-2 border-white ring-2 ${
+                    inspecting.status === 'confirmed' ? 'bg-civic-green ring-civic-green' : inspecting.status === 'needs_review' ? 'bg-amber-500 ring-amber-500' : 'bg-red-500 ring-red-500'
+                  }`} />
+                  <div className="flex items-baseline justify-between">
+                    <span className="font-bold text-xs uppercase text-ink-primary">
+                      {inspecting.status === 'confirmed' ? '3. Telebirr Reference Confirmed' : inspecting.status === 'needs_review' ? '3. Exception Flagged for Review' : '3. Transaction State'}
+                    </span>
+                    <span className="font-mono text-[10px] text-ink-tertiary">
+                      {inspecting.confirmedAt ? new Date(inspecting.confirmedAt).toLocaleTimeString() : 'Pending'}
+                    </span>
+                  </div>
+                  <p className="text-ink-secondary text-xs font-mono">
+                    Ref: <strong className="text-ink-primary">{inspecting.telebirrReference}</strong>
+                  </p>
+                </div>
+
+                {/* Step 4: Final Settlement / Receipt */}
+                <div className="relative space-y-0.5">
+                  <div className={`absolute -left-6 top-1 w-3 h-3 rounded-full border-2 border-white ring-2 ${
+                    inspecting.receiptNumber ? 'bg-civic-green ring-civic-green' : inspecting.refundedAt ? 'bg-red-500 ring-red-500' : 'bg-gray-400 ring-gray-400'
+                  }`} />
+                  <div className="flex items-baseline justify-between">
+                    <span className="font-bold text-xs uppercase text-ink-primary">
+                      {inspecting.receiptNumber ? '4. Official Tax Receipt Issued' : inspecting.refundedAt ? '4. Refund Processed' : '4. Awaiting Resolution'}
+                    </span>
+                    {inspecting.receiptNumber && (
+                      <span className="font-mono text-[10px] font-bold text-civic-green">{inspecting.receiptNumber}</span>
+                    )}
+                  </div>
+                  <p className="text-ink-secondary text-xs">
+                    {inspecting.receiptNumber
+                      ? 'Member rank credential generated and welcome orientation materials issued.'
+                      : inspecting.refundReason
+                      ? `Audit note: "${inspecting.refundReason}"`
+                      : 'Transaction is undergoing manual reconciliation.'}
+                  </p>
+                </div>
               </div>
-              <div className="flex justify-between border-b border-border/60 pb-2">
-                <span className="text-ink-tertiary">Telebirr Ref:</span>
-                <span className="text-ink-primary font-bold">{inspecting.telebirrReference}</span>
-              </div>
-              <div className="flex justify-between border-b border-border/60 pb-2">
-                <span className="text-ink-tertiary">Receipt Number:</span>
-                <span className="text-ink-primary">{inspecting.receiptNumber || '—'}</span>
-              </div>
-              <div className="flex justify-between border-b border-border/60 pb-2">
+            </div>
+
+            {/* Payer Meta Information */}
+            <div className="p-4 border-2 border-border bg-canvas-subdued space-y-2.5 font-mono text-xs">
+              <div className="flex justify-between border-b border-border pb-1.5">
                 <span className="text-ink-tertiary">Payer Name:</span>
-                <span className="text-ink-primary font-sans">{inspecting.payerName || 'Applicant'}</span>
+                <span className="font-bold text-ink-primary font-sans">{inspecting.payerName || 'Applicant'}</span>
               </div>
-              <div className="flex justify-between border-b border-border/60 pb-2">
+              <div className="flex justify-between border-b border-border pb-1.5">
                 <span className="text-ink-tertiary">Payer Phone:</span>
-                <span className="text-ink-primary">{inspecting.payerPhone || '—'}</span>
+                <span className="font-bold text-ink-primary">{inspecting.payerPhone || '—'}</span>
+              </div>
+              <div className="flex justify-between border-b border-border pb-1.5">
+                <span className="text-ink-tertiary">Telebirr Reference:</span>
+                <span className="font-bold text-ink-primary">{inspecting.telebirrReference}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-ink-tertiary">Created At:</span>
+                <span className="text-ink-tertiary">Created Timestamp:</span>
                 <span className="text-ink-primary">{new Date(inspecting.createdAt).toLocaleString()}</span>
               </div>
-              {inspecting.confirmedAt && (
-                <div className="flex justify-between">
-                  <span className="text-ink-tertiary">Confirmed At:</span>
-                  <span className="text-civic-green font-bold">{new Date(inspecting.confirmedAt).toLocaleString()}</span>
-                </div>
-              )}
             </div>
-
-            {inspecting.refundReason && (
-              <div className="p-4 border border-border bg-canvas-subdued space-y-1">
-                <span className="font-mono text-[10px] uppercase text-ink-tertiary block">Audit Note</span>
-                <p className="text-ink-secondary">{inspecting.refundReason}</p>
-              </div>
-            )}
           </div>
         )}
       </SheetModal>
     </div>
   );
 };
-

@@ -12,7 +12,9 @@ import {
   Star, 
   Clock, 
   Certificate as CertIcon, 
-  CheckCircle 
+  CheckCircle,
+  ThumbsUp,
+  ShieldCheck
 } from '@phosphor-icons/react';
 
 export const ManagerPromotionsPage: React.FC = () => {
@@ -58,7 +60,7 @@ export const ManagerPromotionsPage: React.FC = () => {
 
       toast.success(
         modalMode === 'approve'
-          ? `Promotion approved! ${targetPromotion.userName} is now elevated to ${targetPromotion.toRank.replace('_', ' ').toUpperCase()}. Certificate generated.`
+          ? `Promotion approved! ${targetPromotion.userName} is elevated to ${targetPromotion.toRank.replace('_', ' ').toUpperCase()}. Certificate generated.`
           : `Promotion nomination declined for ${targetPromotion.userName}.`
       );
 
@@ -84,51 +86,69 @@ export const ManagerPromotionsPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Editorial Header */}
-      <div className="border-b border-border pb-5 space-y-1">
-        <span className="font-mono text-xs uppercase tracking-wider text-ink-tertiary block">
-          ADVANCEMENT & MERIT BOARD
-        </span>
-        <h1 className="font-serif text-2xl md:text-3xl font-bold text-ink-primary">
-          Volunteer Promotion Board
-        </h1>
-        <p className="font-sans text-xs sm:text-sm text-ink-secondary">
-          Review candidates nominated for Senior Member and Team Lead. Confirm verified service evidence before awarding credentials.
-        </p>
+      <div
+        className="border-4 border-ink-primary bg-white p-6 sm:p-8 space-y-4 shadow-ticket"
+        style={{
+          clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)',
+        }}
+      >
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b-2 border-ink-primary pb-5">
+          <div className="space-y-1">
+            <span className="font-sans text-xs font-bold text-role-manager uppercase tracking-tight block">
+              Merit Advancement Board
+            </span>
+            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-ink-primary leading-none">
+              Volunteer Promotion Board
+            </h1>
+            <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
+              Review candidates nominated for Senior Member and Team Lead. Confirm verified service evidence before awarding credentials.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="font-mono text-xs font-bold text-white bg-role-manager px-3 py-1.5 shadow-sm uppercase">
+              Pending Decisions: {promotions.length}
+            </span>
+          </div>
+        </div>
       </div>
 
       {promotions.length === 0 ? (
         <EmptyState
-          icon={<CheckCircle className="w-6 h-6 text-civic-green" />}
+          icon={<ShieldCheck className="w-8 h-8 text-civic-green" weight="fill" />}
           title="No promotions pending decision"
-          description="All volunteer nominations have been reviewed and decided by the governance board."
+          description="All volunteer nominations have been reviewed and decided by the operations desk."
         />
       ) : (
         <div className="space-y-6">
           {promotions.map((promo) => (
             <div
               key={promo.id}
-              className="border-2 border-border-strong bg-canvas-raised p-6 md:p-8 space-y-6 shadow-subtle"
+              className="border-2 border-ink-primary bg-white p-6 sm:p-8 space-y-6 shadow-ticket"
+              style={{
+                clipPath: 'polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)',
+              }}
             >
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-4">
+              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b-2 border-border pb-5">
                 <div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono text-xs uppercase tracking-wider text-ink-tertiary">
-                      NOMINATION RECORD
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="font-sans text-xs font-bold text-role-teamlead uppercase tracking-tight">
+                      Nominated Candidate
                     </span>
                     <StatusMark status={promo.status} size="sm" />
                   </div>
-                  <h3 className="font-serif text-2xl font-bold text-ink-primary">
+                  <h3 className="font-display text-3xl sm:text-4xl font-black uppercase tracking-tight text-ink-primary leading-none">
                     {promo.userName}
                   </h3>
-                  <p className="font-sans text-xs text-ink-secondary">
-                    Recommended by <strong className="text-ink-primary">{promo.recommendedByName || 'Team Lead'}</strong> for advancement to{' '}
-                    <strong className="font-mono uppercase text-civic-green">{promo.toRank.replace('_', ' ')}</strong>.
+                  <p className="font-sans text-xs text-ink-secondary mt-1">
+                    Recommended by <strong className="text-ink-primary font-bold">{promo.recommendedByName || 'Team Lead'}</strong> for elevation to{' '}
+                    <strong className="font-mono uppercase font-bold text-role-teamlead">{promo.toRank.replace('_', ' ')}</strong>.
                   </p>
                 </div>
 
                 <div className="flex items-center gap-2">
                   <Button
-                    variant="primary"
+                    variant="teal"
                     onClick={() => {
                       setTargetPromotion(promo);
                       setModalMode('approve');
@@ -154,37 +174,45 @@ export const ManagerPromotionsPage: React.FC = () => {
 
               {/* Justification note */}
               {promo.note && (
-                <div className="p-3.5 bg-canvas-subdued border border-border text-xs font-sans text-ink-secondary italic">
+                <div className="p-4 bg-canvas-subdued border-2 border-border text-xs font-sans text-ink-primary italic">
                   "{promo.note}"
                 </div>
               )}
 
-              {/* Verified Evidence Summary (FR-PRM-02) */}
+              {/* Verified Evidence Summary */}
               {promo.evidence && (
-                <div className="space-y-2">
-                  <span className="font-mono text-xs uppercase tracking-wider text-ink-tertiary block">
-                    Verified Evidence Summary (Live Registry Audit)
+                <div className="space-y-3">
+                  <span className="font-sans text-xs font-bold uppercase tracking-tight text-ink-primary block">
+                    Verified Service Evidence Summary
                   </span>
 
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono text-xs">
-                    <div className="p-3 border border-border bg-canvas-subdued/50 space-y-0.5">
+                    <div className="p-3 border-2 border-border bg-canvas-subdued space-y-0.5">
                       <span className="text-[10px] uppercase text-ink-tertiary block">Approved Hours</span>
-                      <span className="text-lg font-bold text-civic-green">{promo.evidence.approvedHours} hrs</span>
+                      <span className="font-display text-2xl font-black text-civic-green block leading-none">
+                        {promo.evidence.approvedHours} <span className="text-xs font-mono font-normal text-ink-tertiary">hrs</span>
+                      </span>
                     </div>
 
-                    <div className="p-3 border border-border bg-canvas-subdued/50 space-y-0.5">
-                      <span className="text-[10px] uppercase text-ink-tertiary block">Activities Led/Done</span>
-                      <span className="text-lg font-bold text-ink-primary">{promo.evidence.completedActivities}</span>
+                    <div className="p-3 border-2 border-border bg-canvas-subdued space-y-0.5">
+                      <span className="text-[10px] uppercase text-ink-tertiary block">Activities Done</span>
+                      <span className="font-display text-2xl font-black text-ink-primary block leading-none">
+                        {promo.evidence.completedActivities}
+                      </span>
                     </div>
 
-                    <div className="p-3 border border-border bg-canvas-subdued/50 space-y-0.5">
+                    <div className="p-3 border-2 border-border bg-canvas-subdued space-y-0.5">
                       <span className="text-[10px] uppercase text-ink-tertiary block">Average Rating</span>
-                      <span className="text-lg font-bold text-[#784E0B]">{promo.evidence.averageRating} / 5.0</span>
+                      <span className="font-display text-2xl font-black text-[#784E0B] block leading-none">
+                        {promo.evidence.averageRating} <span className="text-xs font-mono font-normal text-ink-tertiary">/ 5.0</span>
+                      </span>
                     </div>
 
-                    <div className="p-3 border border-border bg-canvas-subdued/50 space-y-0.5">
+                    <div className="p-3 border-2 border-border bg-canvas-subdued space-y-0.5">
                       <span className="text-[10px] uppercase text-ink-tertiary block">Active Tenure</span>
-                      <span className="text-lg font-bold text-ink-primary">{promo.evidence.monthsActive} months</span>
+                      <span className="font-display text-2xl font-black text-ink-primary block leading-none">
+                        {promo.evidence.monthsActive} <span className="text-xs font-mono font-normal text-ink-tertiary">mos</span>
+                      </span>
                     </div>
                   </div>
 
@@ -192,7 +220,7 @@ export const ManagerPromotionsPage: React.FC = () => {
                     <div className="pt-2 text-xs font-sans text-ink-secondary flex items-center gap-2">
                       <CertIcon className="w-4 h-4 text-civic-green" weight="fill" />
                       <span>
-                        Verified Qualifications: <strong>{promo.evidence.completedTraining.join(', ')}</strong>
+                        Verified Qualifications: <strong className="text-ink-primary font-bold">{promo.evidence.completedTraining.join(', ')}</strong>
                       </span>
                     </div>
                   )}
@@ -208,32 +236,32 @@ export const ManagerPromotionsPage: React.FC = () => {
         isOpen={targetPromotion !== null}
         onClose={() => setTargetPromotion(null)}
         title={modalMode === 'approve' ? 'Approve Promotion' : 'Decline Promotion'}
-        subtitle={`Candidate: ${targetPromotion?.userName || ''} $\rightarrow$ ${targetPromotion?.toRank.replace('_', ' ').toUpperCase() || ''}`}
+        subtitle={`Candidate: ${targetPromotion?.userName || ''} elevation to ${targetPromotion?.toRank.replace('_', ' ').toUpperCase() || ''}`}
         mode="modal"
         maxWidth="md"
       >
         <form onSubmit={handleDecisionSubmit} className="space-y-4 text-left">
           <p className="font-sans text-xs text-ink-secondary leading-relaxed">
             {modalMode === 'approve'
-              ? 'Approving this nomination will upgrade the volunteer’s account role at next sign in, issue their official rank certificate with verification code, and permanently record this promotion in the activity history.'
+              ? 'Approving this nomination elevates the volunteer’s account role at next sign in, generates their official rank certificate with verification code, and permanently records this milestone.'
               : 'Please provide a clear written explanation. The volunteer will be notified and given guidance on how to satisfy remaining requirements.'}
           </p>
 
           <div className="space-y-1.5">
-            <label className="block text-xs font-semibold uppercase tracking-wider text-ink-secondary">
-              Board Minute / Written Note
+            <label className="block text-xs font-bold uppercase tracking-tight text-ink-primary">
+              Written Board Minute / Reason
             </label>
             <textarea
               rows={3}
               value={decisionNote}
               onChange={(e) => setDecisionNote(e.target.value)}
-              placeholder="e.g. Promotion approved based on outstanding service records..."
-              className="w-full bg-canvas-raised text-ink-primary font-sans text-sm rounded border border-border p-2.5 focus:border-ink-primary focus:ring-1 focus:ring-ink-primary outline-none"
+              placeholder="e.g. Promotion approved based on outstanding field leadership and verified hours..."
+              className="w-full bg-white text-ink-primary font-sans text-xs border-2 border-ink-primary p-2.5 focus:ring-1 focus:ring-ink-primary outline-none"
               required
             />
           </div>
 
-          <div className="pt-3 border-t border-border flex items-center justify-end gap-3">
+          <div className="pt-3 border-t-2 border-border flex items-center justify-end gap-3">
             <Button
               type="button"
               variant="secondary"
@@ -243,10 +271,10 @@ export const ManagerPromotionsPage: React.FC = () => {
             </Button>
             <Button
               type="submit"
-              variant={modalMode === 'approve' ? 'primary' : 'danger'}
+              variant={modalMode === 'approve' ? 'teal' : 'danger'}
               isLoading={isProcessing}
             >
-              {modalMode === 'approve' ? 'Confirm and Issue Credential' : 'Confirm Decline'}
+              {modalMode === 'approve' ? 'Confirm and Elevate Rank' : 'Confirm Decline'}
             </Button>
           </div>
         </form>
@@ -254,4 +282,3 @@ export const ManagerPromotionsPage: React.FC = () => {
     </div>
   );
 };
-

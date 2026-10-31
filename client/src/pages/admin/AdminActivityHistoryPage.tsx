@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import * as api from '../../api';
 import { ActivityLogEntry } from '../../types';
-import { LedgerTable, LedgerColumn, Input, Skeleton } from '../../components/ui';
-import { MagnifyingGlass, Scroll, ArrowLeft } from '@phosphor-icons/react';
-import { useNavigate } from 'react-router-dom';
+import { LedgerTable, LedgerColumn, Input, Select, Button, Skeleton } from '../../components/ui';
+import { MagnifyingGlass, Scroll, ArrowLeft, Clock, User, ShieldCheck } from '@phosphor-icons/react';
 
 export const AdminActivityHistoryPage: React.FC = () => {
   const [logs, setLogs] = useState<ActivityLogEntry[]>([]);
   const [search, setSearch] = useState('');
+  const [roleFilter, setRoleFilter] = useState('all');
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -24,6 +25,13 @@ export const AdminActivityHistoryPage: React.FC = () => {
     load();
   }, [search]);
 
+  const filteredLogs = logs.filter((entry) => {
+    if (roleFilter !== 'all' && !entry.actorRole.toLowerCase().includes(roleFilter.toLowerCase())) {
+      return false;
+    }
+    return true;
+  });
+
   const columns: LedgerColumn<ActivityLogEntry>[] = [
     {
       header: 'Timestamp',
@@ -37,10 +45,10 @@ export const AdminActivityHistoryPage: React.FC = () => {
       header: 'Actor & Role',
       cell: (entry) => (
         <div className="space-y-0.5">
-          <span className="font-sans font-bold text-ink-primary block">
+          <span className="font-sans font-bold text-ink-primary block text-xs">
             {entry.actorName}
           </span>
-          <span className="font-mono text-[10px] uppercase text-ink-tertiary block">
+          <span className="font-mono text-[10px] font-bold px-1.5 py-0.5 bg-canvas-subdued border border-border text-ink-tertiary uppercase inline-block">
             {entry.actorRole}
           </span>
         </div>
@@ -57,7 +65,7 @@ export const AdminActivityHistoryPage: React.FC = () => {
     {
       header: 'Subject / Entity',
       cell: (entry) => (
-        <span className="font-mono text-xs text-ink-secondary">
+        <span className="font-mono text-xs text-ink-secondary bg-canvas-subdued px-2 py-0.5 border border-border inline-block">
           {entry.subject}
         </span>
       ),
@@ -65,49 +73,74 @@ export const AdminActivityHistoryPage: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 text-left">
       <button
-        onClick={() => navigate(-1)}
+        onClick={() => navigate('/admin/overview')}
         className="inline-flex items-center gap-1.5 text-xs font-mono font-medium text-ink-tertiary hover:text-ink-primary transition-colors cursor-pointer"
       >
         <ArrowLeft className="w-4 h-4" />
         <span>Return to administration overview</span>
       </button>
 
-      <div className="border-b border-border pb-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="space-y-1">
-          <span className="font-mono text-xs uppercase tracking-wider text-ink-tertiary block">
-            PERMANENT SYSTEM TRAIL
-          </span>
-          <h1 className="font-serif text-2xl md:text-3xl font-bold text-ink-primary">
-            Activity History
-          </h1>
-          <p className="font-sans text-xs sm:text-sm text-ink-secondary">
-            Permanent, searchable record of all administrative changes, reviews, promotions, and refunds.
-          </p>
+      {/* Header */}
+      <div
+        className="border-4 border-ink-primary bg-white p-6 sm:p-8 space-y-4 shadow-ticket"
+        style={{
+          clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)',
+        }}
+      >
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b-2 border-ink-primary pb-5">
+          <div className="space-y-1">
+            <span className="font-sans text-xs font-bold text-amber-600 uppercase tracking-tight block">
+              Permanent Audit Trail
+            </span>
+            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-ink-primary leading-none">
+              System Activity History
+            </h1>
+            <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
+              Searchable chronological record of administrative actions, promotion decisions, fee changes, and Telebirr reconciliations.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="font-mono text-xs font-bold text-white bg-ink-primary px-3 py-1.5 shadow-sm uppercase">
+              Total Entries: {filteredLogs.length}
+            </span>
+          </div>
         </div>
 
-        <span className="font-mono text-xs text-ink-tertiary bg-canvas-raised border border-border px-3 py-1.5 self-start sm:self-auto">
-          Logged Entries: <strong className="text-ink-primary font-bold">{logs.length}</strong>
-        </span>
-      </div>
+        {/* Search & Filter Strip */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+          <div className="sm:col-span-2">
+            <Input
+              placeholder="Search by action, actor name, or subject..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              leftAddon={<MagnifyingGlass className="w-4 h-4" />}
+            />
+          </div>
 
-      <div className="border border-border bg-canvas-raised p-4">
-        <Input
-          placeholder="Search by action, actor, or subject..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          leftAddon={<MagnifyingGlass className="w-4 h-4" />}
-        />
+          <Select
+            value={roleFilter}
+            onChange={(e) => setRoleFilter(e.target.value)}
+            options={[
+              { value: 'all', label: 'All Roles' },
+              { value: 'Admin', label: 'Super Admin' },
+              { value: 'Manager', label: 'Program Manager' },
+              { value: 'Team Lead', label: 'Team Lead' },
+              { value: 'Finance', label: 'Finance Officer' },
+              { value: 'System', label: 'System Automated' },
+            ]}
+          />
+        </div>
       </div>
 
       <LedgerTable
-        data={logs}
+        data={filteredLogs}
         columns={columns}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(entry) => entry.id}
         isLoading={isLoading}
       />
     </div>
   );
 };
-

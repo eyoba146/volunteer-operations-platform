@@ -97,6 +97,22 @@ export const ManagerDashboardPage: React.FC = () => {
             >
               Promotions ({stats?.promotionsWaiting})
             </Button>
+            <Button
+              variant="secondary"
+              size="sm"
+              leftIcon={<Calendar className="w-4 h-4" />}
+              onClick={() => navigate('/manager/activities')}
+            >
+              All Activities
+            </Button>
+            <Button
+              variant="secondary"
+              size="sm"
+              leftIcon={<Sparkle className="w-4 h-4" />}
+              onClick={() => navigate('/manager/feedback')}
+            >
+              Feedback Inbox
+            </Button>
           </div>
         </div>
 

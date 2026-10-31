@@ -35,6 +35,7 @@ export type PaymentStatus =
   | 'confirmed' 
   | 'failed' 
   | 'needs_review' 
+  | 'refund_requested'
   | 'refunded';
 
 export type HoursStatus = 
@@ -115,6 +116,7 @@ export interface VolunteerProfile {
   rank?: Rank;
   memberSince?: string;
   volunteerNumber?: string; // e.g. "VTS-AA-2026-084"
+  rankHistory?: RankHistoryMilestone[];
 }
 
 export interface ApplicationNote {
@@ -331,4 +333,38 @@ export interface DemoEmail {
   actionLabel?: string;
   code?: string;
 }
+
+export interface RankHistoryMilestone {
+  rank: Rank;
+  rankTitle: string;
+  achievedAt: string;
+  hoursRecorded?: number;
+  approvedBy?: string;
+  certificateCode?: string;
+  note?: string;
+}
+
+export interface VolunteerFeedback {
+  id: string;
+  activityId: string;
+  activityTitle: string;
+  userId: string;
+  userName: string;
+  userArea?: string;
+  rating: number; // 1 to 5
+  comment: string;
+  submittedAt: string;
+  status: 'new' | 'reviewed';
+}
+
+export interface EmailTemplate {
+  id: string;
+  key: string;
+  name: string;
+  subject: string;
+  body: string;
+  category: string;
+  variables: string[];
+}
+
 

@@ -15,7 +15,9 @@ import {
   ActivityLogEntry, 
   Setting,
   DemoEmail,
-  Rank
+  Rank,
+  VolunteerFeedback,
+  EmailTemplate
 } from '../types';
 
 export const INITIAL_RANK_RULES: RankRule[] = [
@@ -46,15 +48,18 @@ export const INITIAL_RANK_RULES: RankRule[] = [
 ];
 
 export const INITIAL_SETTINGS: Setting[] = [
-  { key: 'program_name', value: 'VTS Civic Volunteer Program', label: 'Program Name', category: 'program' },
+  { key: 'program_name', value: 'VTS Volunteer Corps', label: 'Program Name', category: 'program' },
   { key: 'registration_fee', value: 200, label: 'Registration Fee (ETB)', category: 'payment' },
   { key: 'payment_deadline_days', value: 7, label: 'Payment Window (Days)', category: 'payment' },
+  { key: 'operating_areas', value: 'Addis Ababa, Adama, Bishoftu, Hawassa, Bahir Dar', label: 'Authorized Regional Areas', category: 'program' },
+  { key: 'volunteer_skills', value: 'First Aid & CPR, Environmental Protection, Crowd Management, Youth Mentorship, Event Logistics, Translation (Amharic/Oromo), Data Collection, Community Outreach', label: 'Recognized Volunteer Skills', category: 'program' },
   { key: 'telebirr_merchant_name', value: 'VTS Program - Ethio Telecom', label: 'Telebirr Merchant Name', category: 'payment' },
   { key: 'telebirr_shortcode', value: '884120', label: 'Telebirr Shortcode', category: 'payment' },
   { key: 'senior_member_min_hours', value: 60, label: 'Senior Member Min Hours', category: 'ranks' },
   { key: 'team_lead_min_hours', value: 150, label: 'Team Lead Min Hours', category: 'ranks' },
   { key: 'manager_min_hours', value: 300, label: 'Manager Min Hours', category: 'ranks' },
   { key: 'certificate_signatory', value: 'Ruth Mengistu, Program Director', label: 'Certificate Signatory', category: 'certificates' },
+  { key: 'certificate_template_text', value: 'This verifies that the named volunteer has successfully satisfied all verified service hours, merit milestones, and field leadership standards established by the VTS Volunteer Corps.', label: 'Certificate Endorsement Statement', category: 'certificates' },
 ];
 
 // 7 Primary Demo Accounts
@@ -1743,7 +1748,7 @@ export const SEED_RATINGS: Rating[] = [
   },
 ];
 
-// 60 Payments (including 2 needing review, 1 refund, confirmed payments with Telebirr references)
+// 60 Payments (including 2 needing review, 1 double payment, 1 refund request, and confirmed Telebirr payments)
 export const SEED_PAYMENTS: Payment[] = [
   // 1. Hana Tesfaye - Payment pending/waiting
   {
@@ -1758,7 +1763,7 @@ export const SEED_PAYMENTS: Payment[] = [
     payerPhone: '+251 91 123 4567',
     payerName: 'Hana Tesfaye',
   },
-  // 2. Finance Needs Review #1: Reference mismatch
+  // 2. Finance Needs Review #1: Reference phone mismatch
   {
     id: 'pay-rev-01',
     userId: 'usr-vol-1',
@@ -1772,9 +1777,38 @@ export const SEED_PAYMENTS: Payment[] = [
     payerName: 'Biruk Tadesse',
     refundReason: 'Payer account phone did not match application record; automatic matching delayed.',
   },
-  // 3. Finance Needs Review #2: Second duplicate payment attempt
+  // 3. Finance Needs Review #2: Telebirr network timeout exception
   {
     id: 'pay-rev-02',
+    userId: 'usr-vol-3',
+    applicationId: 'app-seed-14',
+    amount: 200,
+    currency: 'ETB',
+    telebirrReference: 'TB-2026-10312-TIM',
+    status: 'needs_review',
+    createdAt: '2026-10-30T16:15:00Z',
+    payerPhone: '+251 93 456 7890',
+    payerName: 'Tariku Mengesha',
+    refundReason: 'Telebirr network handshake timeout. Unattached reference requires Finance matching.',
+  },
+  // 4. Double Payment #1: First confirmed payment for Almaz Fikre
+  {
+    id: 'pay-almaz-01',
+    userId: 'usr-vol-2',
+    applicationId: 'app-seed-09',
+    amount: 200,
+    currency: 'ETB',
+    telebirrReference: 'TB-2026-10300-OK',
+    status: 'confirmed',
+    createdAt: '2026-10-30T11:05:00Z',
+    confirmedAt: '2026-10-30T11:06:20Z',
+    receiptNumber: 'REC-2026-00388',
+    payerPhone: '+251 92 111 2233',
+    payerName: 'Almaz Fikre',
+  },
+  // 5. Double Payment #2: Duplicate payment attempt within 15 minutes flagged for refund
+  {
+    id: 'pay-almaz-dup',
     userId: 'usr-vol-2',
     applicationId: 'app-seed-09',
     amount: 200,
@@ -1784,9 +1818,25 @@ export const SEED_PAYMENTS: Payment[] = [
     createdAt: '2026-10-30T11:20:00Z',
     payerPhone: '+251 92 111 2233',
     payerName: 'Almaz Fikre',
-    refundReason: 'Duplicate fee transfer detected for same applicant within 15 minutes.',
+    refundReason: 'Double payment detected: applicant paid twice within 15 minutes. Excess ETB 200.00 queued for refund.',
   },
-  // 4. Refunded payment
+  // 6. Refund Request: Confirmed payment with pending refund request
+  {
+    id: 'pay-ref-req-01',
+    userId: 'usr-vol-5',
+    applicationId: 'app-seed-07',
+    amount: 200,
+    currency: 'ETB',
+    telebirrReference: 'TB-2026-10250-REQ',
+    status: 'refund_requested',
+    createdAt: '2026-10-25T14:10:00Z',
+    confirmedAt: '2026-10-25T14:12:00Z',
+    receiptNumber: 'REC-2026-00340',
+    refundReason: 'Applicant relocated to Dire Dawa prior to orientation; formal refund request submitted by volunteer.',
+    payerPhone: '+251 91 555 6677',
+    payerName: 'Kidus Haile',
+  },
+  // 7. Processed Refund: Past completed refund
   {
     id: 'pay-ref-01',
     userId: 'usr-vol-4',
@@ -2196,3 +2246,159 @@ export const SEED_EMAILS: DemoEmail[] = [
     actionUrl: '/volunteer/activities/act-01',
   },
 ];
+
+export const SEED_FEEDBACK: VolunteerFeedback[] = [
+  {
+    id: 'fb-01',
+    activityId: 'act-02',
+    activityTitle: 'Entoto Forest Ridge Trail Cleanup',
+    userId: 'usr-dawit',
+    userName: 'Dawit Bekele',
+    userArea: 'Bole, Addis Ababa',
+    rating: 5,
+    comment: 'Clear safety briefing by Yonas at basecamp. Refreshment water points were well-placed along Trail 3. Suggest having additional heavy-duty work gloves on site next time.',
+    submittedAt: '2026-10-24T17:30:00Z',
+    status: 'new',
+  },
+  {
+    id: 'fb-02',
+    activityId: 'act-01',
+    activityTitle: 'Meskel Square Civic Clean-up',
+    userId: 'usr-selam',
+    userName: 'Selam Alemu',
+    userArea: 'Bishoftu, Oromia',
+    rating: 5,
+    comment: 'Check-in was seamless with the shortcode 7294. Team coordination was efficient and community turnout was high.',
+    submittedAt: '2026-10-20T16:45:00Z',
+    status: 'reviewed',
+  },
+  {
+    id: 'fb-03',
+    activityId: 'act-03',
+    activityTitle: 'Bishoftu Lake Eco Trail Restoration',
+    userId: 'usr-vol-3',
+    userName: 'Tariku Mengesha',
+    userArea: 'Bishoftu, Oromia',
+    rating: 4,
+    comment: 'High enthusiasm from all volunteers! Rain made the lower lake track slippery, so adding a safety line or gravel would help for future shifts.',
+    submittedAt: '2026-10-18T15:20:00Z',
+    status: 'new',
+  },
+  {
+    id: 'fb-04',
+    activityId: 'act-04',
+    activityTitle: 'Hawassa Youth Health Outreach',
+    userId: 'usr-vol-4',
+    userName: 'Ephrem Assefa',
+    userArea: 'Hawassa, Sidama',
+    rating: 5,
+    comment: 'Community leadership was welcoming and well-organized. Medical supplies distribution started right on time.',
+    submittedAt: '2026-10-15T18:00:00Z',
+    status: 'reviewed',
+  },
+  {
+    id: 'fb-05',
+    activityId: 'act-05',
+    activityTitle: 'Adama Youth Mentorship Session',
+    userId: 'usr-vol-1',
+    userName: 'Biruk Tadesse',
+    userArea: 'Adama, Oromia',
+    rating: 4,
+    comment: 'Materials arrived 15 minutes late, but students were engaged and activities went smoothly overall.',
+    submittedAt: '2026-10-12T14:10:00Z',
+    status: 'new',
+  },
+];
+
+export const INITIAL_EMAIL_TEMPLATES: EmailTemplate[] = [
+  {
+    id: 'tpl-verify',
+    key: 'email_verification',
+    name: 'Account Email Verification',
+    category: 'auth',
+    subject: 'Confirm Your Email Address — VTS Volunteer Corps',
+    body: `Hello {{volunteer_name}},
+
+Thank you for registering with the VTS Volunteer Corps. Please confirm your email address by clicking the link below:
+
+{{verification_link}}
+
+Or enter your 6-digit confirmation code: {{verification_code}}
+
+Warm regards,
+VTS Operations Desk`,
+    variables: ['volunteer_name', 'verification_link', 'verification_code'],
+  },
+  {
+    id: 'tpl-payment-invite',
+    key: 'payment_invitation',
+    name: 'Application Accepted & Telebirr Fee Invitation',
+    category: 'application',
+    subject: 'Application Accepted — Complete Your Registration Fee with Telebirr',
+    body: `Dear {{volunteer_name}},
+
+We are pleased to inform you that your application to join the VTS Volunteer Corps has been accepted.
+
+To activate your membership and receive your official volunteer credential and activity access, please complete your one-time registration fee of ETB {{amount}} within {{payment_deadline_days}} days.
+
+You can pay securely via Telebirr directly inside the platform:
+{{payment_url}}
+
+Warm regards,
+VTS Admissions Board`,
+    variables: ['volunteer_name', 'amount', 'payment_deadline_days', 'payment_url'],
+  },
+  {
+    id: 'tpl-welcome',
+    key: 'payment_confirmed_welcome',
+    name: 'Payment Confirmed & Welcome to Corps',
+    category: 'payment',
+    subject: 'Payment Confirmed — Welcome to the VTS Volunteer Corps!',
+    body: `Dear {{volunteer_name}},
+
+We have received your registration fee of ETB {{amount}} via Telebirr (Reference: {{telebirr_reference}}).
+
+Your receipt number is {{receipt_number}}. Your Volunteer ID is {{volunteer_number}}.
+
+Your account is now activated with Member rank. You can view your volunteer ID pass, sign up for field activities, and begin logging verified service hours.
+
+Warm regards,
+VTS Operations`,
+    variables: ['volunteer_name', 'amount', 'telebirr_reference', 'receipt_number', 'volunteer_number'],
+  },
+  {
+    id: 'tpl-promotion',
+    key: 'promotion_approved',
+    name: 'Promotion Board Elevation & Rank Credential',
+    category: 'promotion',
+    subject: 'Promotion Approved — Congratulations on Reaching {{new_rank}}!',
+    body: `Dear {{volunteer_name}},
+
+We are proud to share that your promotion to {{new_rank}} has been approved by {{decided_by}} in recognition of your exemplary service and leadership.
+
+Your new rank badge, system permissions, and official certificate are now active on your profile.
+
+Certificate verification code: {{certificate_code}}
+
+Warm regards,
+VTS Leadership Board`,
+    variables: ['volunteer_name', 'new_rank', 'decided_by', 'certificate_code'],
+  },
+  {
+    id: 'tpl-activity-reminder',
+    key: 'activity_reminder',
+    name: 'Activity Assignment & Check-In Code',
+    category: 'activity',
+    subject: 'Activity Reminder: {{activity_title}}',
+    body: `Hello {{volunteer_name}},
+
+This is a reminder that {{activity_title}} begins on {{activity_date}} at {{activity_place}}.
+
+Your team lead is {{lead_name}}. You can check in at the muster point using 4-digit code: {{check_in_code}} or by scanning the leader QR pass.
+
+Warm regards,
+VTS Field Operations`,
+    variables: ['volunteer_name', 'activity_title', 'activity_date', 'activity_place', 'lead_name', 'check_in_code'],
+  },
+];
+

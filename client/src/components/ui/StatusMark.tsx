@@ -27,6 +27,7 @@ export type AnyStatus =
   | 'confirmed'
   | 'failed'
   | 'needs_review'
+  | 'refund_requested'
   | 'refunded'
   | 'logged'
   | 'approved'
@@ -39,6 +40,10 @@ export type AnyStatus =
   | 'in_progress'
   | 'completed'
   | 'cancelled'
+  | 'joined'
+  | 'left'
+  | 'attended'
+  | 'no-show'
   | 'member'
   | 'senior_member'
   | 'team_lead'
@@ -102,6 +107,31 @@ export const StatusMark: React.FC<StatusMarkProps> = ({
           text: label || 'Needs Review',
           icon: <Warning className="w-3 h-3 text-civic-rust" weight="bold" />,
           classes: 'border-civic-rust/50 bg-civic-rustLight text-civic-rust',
+        };
+      case 'refund_requested':
+        return {
+          text: label || 'Refund Requested',
+          icon: <Warning className="w-3 h-3 text-[#784E0B]" weight="bold" />,
+          classes: 'border-amber-400 bg-amber-50 text-amber-900',
+        };
+      case 'attended':
+        return {
+          text: label || 'Attended',
+          icon: <Check className="w-3 h-3 text-civic-green" weight="bold" />,
+          classes: 'border-civic-green/40 bg-civic-greenLight text-civic-green',
+        };
+      case 'joined':
+        return {
+          text: label || 'Enrolled',
+          icon: <span className="w-1.5 h-1.5 bg-civic-navy" />,
+          classes: 'border-civic-navy/40 bg-civic-navyLight text-civic-navy',
+        };
+      case 'left':
+      case 'no-show':
+        return {
+          text: label || (status === 'left' ? 'Withdrawn' : 'No-Show'),
+          icon: <X className="w-3 h-3 text-civic-rust" weight="bold" />,
+          classes: 'border-civic-rust/40 bg-civic-rustLight text-civic-rust',
         };
       case 'more_info_needed':
         return {

@@ -15,6 +15,8 @@ import {
   ActivityLogEntry,
   Setting,
   DemoEmail,
+  VolunteerFeedback,
+  EmailTemplate,
 } from '../types';
 
 import {
@@ -34,6 +36,8 @@ import {
   SEED_ACTIVITY_LOG,
   INITIAL_SETTINGS,
   SEED_EMAILS,
+  SEED_FEEDBACK,
+  INITIAL_EMAIL_TEMPLATES,
 } from './seedData';
 
 const STORAGE_KEY = 'vts_civic_ledger_storage_v1';
@@ -56,6 +60,8 @@ export interface VtsDatabaseState {
   activityLog: ActivityLogEntry[];
   settings: Setting[];
   emails: DemoEmail[];
+  feedback: VolunteerFeedback[];
+  emailTemplates: EmailTemplate[];
 }
 
 function getInitialState(): VtsDatabaseState {
@@ -76,6 +82,8 @@ function getInitialState(): VtsDatabaseState {
     activityLog: SEED_ACTIVITY_LOG,
     settings: INITIAL_SETTINGS,
     emails: SEED_EMAILS,
+    feedback: SEED_FEEDBACK,
+    emailTemplates: INITIAL_EMAIL_TEMPLATES,
   };
 }
 
@@ -92,7 +100,15 @@ class Store {
     try {
       const serialized = localStorage.getItem(STORAGE_KEY);
       if (serialized) {
-        return JSON.parse(serialized);
+        const parsed = JSON.parse(serialized);
+        const fresh = getInitialState();
+        return {
+          ...fresh,
+          ...parsed,
+          settings: parsed.settings && parsed.settings.length >= fresh.settings.length ? parsed.settings : fresh.settings,
+          feedback: parsed.feedback && parsed.feedback.length ? parsed.feedback : fresh.feedback,
+          emailTemplates: parsed.emailTemplates && parsed.emailTemplates.length ? parsed.emailTemplates : fresh.emailTemplates,
+        };
       }
     } catch {
       // Fallback on storage errors

@@ -209,11 +209,35 @@ export async function decidePromotion(
   let updatedEmails = state.emails;
 
   if (decision === 'approved') {
-    // Update profile rank
+    // Update profile rank and rank history
     const profile = state.profiles.find((p) => p.userId === promo.userId);
+    const certCode = `VTS-CERT-${Math.floor(1000 + Math.random() * 9000)}-ET`;
+    const rankTitle =
+      promo.toRank === 'senior_member'
+        ? 'Senior Member of the Volunteer Corps'
+        : promo.toRank === 'team_lead'
+        ? 'Team Lead Credential of the Volunteer Corps'
+        : 'Manager Credential of the Volunteer Corps';
+
+    const newMilestone = {
+      rank: promo.toRank,
+      rankTitle,
+      achievedAt: now,
+      hoursRecorded: promo.evidence?.approvedHours || 150,
+      approvedBy: decidedByName,
+      certificateCode: certCode,
+      note: note || promo.note,
+    };
+
     if (profile) {
       updatedProfiles = updatedProfiles.map((p) =>
-        p.userId === promo.userId ? { ...p, rank: promo.toRank } : p
+        p.userId === promo.userId
+          ? {
+              ...p,
+              rank: promo.toRank,
+              rankHistory: p.rankHistory ? [newMilestone, ...p.rankHistory] : [newMilestone],
+            }
+          : p
       );
     }
 
@@ -229,14 +253,6 @@ export async function decidePromotion(
       }
 
       // Generate rank certificate
-      const certCode = `VTS-CERT-${Math.floor(1000 + Math.random() * 9000)}-ET`;
-      const rankTitle =
-        promo.toRank === 'senior_member'
-          ? 'Senior Member of the Volunteer Corps'
-          : promo.toRank === 'team_lead'
-          ? 'Team Lead Credential of the Volunteer Corps'
-          : 'Manager Credential of the Volunteer Corps';
-
       const newCert: Certificate = {
         id: `cert-${Date.now()}`,
         userId: user.id,
@@ -274,6 +290,22 @@ export async function decidePromotion(
     }
   }
 
+  const user = state.users.find((u) => u.id === promo.userId);
+  let updatedNotifications = state.notifications;
+  if (decision === 'approved' && user) {
+    updatedNotifications = [
+      {
+        id: `notif-${Date.now()}`,
+        userId: user.id,
+        title: `Promotion to ${promo.toRank.replace('_', ' ').toUpperCase()} Approved`,
+        body: `Your promotion nomination has been approved by ${decidedByName}. Your Team Lead dispatch desk is now active.`,
+        createdAt: now,
+        link: '/team-lead/home',
+      },
+      ...updatedNotifications,
+    ];
+  }
+
   store.setState((prev) => ({
     ...prev,
     promotions: prev.promotions.map((p) => (p.id === promotionId ? updatedPromo : p)),
@@ -281,6 +313,7 @@ export async function decidePromotion(
     profiles: updatedProfiles,
     certificates: updatedCertificates,
     emails: updatedEmails,
+    notifications: updatedNotifications,
     activityLog: [
       {
         id: `log-${Date.now()}`,

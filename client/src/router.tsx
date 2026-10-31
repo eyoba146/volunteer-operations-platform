@@ -46,7 +46,10 @@ import { TeamLeadAnnouncementsPage } from './pages/team-lead/TeamLeadAnnouncemen
 import { ManagerDashboardPage } from './pages/manager/ManagerDashboardPage';
 import { ManagerApplicationsPage } from './pages/manager/ManagerApplicationsPage';
 import { ManagerVolunteersPage } from './pages/manager/ManagerVolunteersPage';
+import { ManagerActivitiesPage } from './pages/manager/ManagerActivitiesPage';
 import { ManagerPromotionsPage } from './pages/manager/ManagerPromotionsPage';
+import { ManagerAnnouncementsPage } from './pages/manager/ManagerAnnouncementsPage';
+import { ManagerFeedbackPage } from './pages/manager/ManagerFeedbackPage';
 import { ManagerReportsPage } from './pages/manager/ManagerReportsPage';
 
 // Finance Pages
@@ -153,9 +156,10 @@ export const router = createBrowserRouter([
       { path: 'dashboard', element: <PageTransition><ManagerDashboardPage /></PageTransition> },
       { path: 'applications', element: <PageTransition><ManagerApplicationsPage /></PageTransition> },
       { path: 'volunteers', element: <PageTransition><ManagerVolunteersPage /></PageTransition> },
-      { path: 'activities', element: <PageTransition><VolunteerActivitiesPage /></PageTransition> },
+      { path: 'activities', element: <PageTransition><ManagerActivitiesPage /></PageTransition> },
       { path: 'promotions', element: <PageTransition><ManagerPromotionsPage /></PageTransition> },
-      { path: 'announcements', element: <PageTransition><TeamLeadAnnouncementsPage /></PageTransition> },
+      { path: 'announcements', element: <PageTransition><ManagerAnnouncementsPage /></PageTransition> },
+      { path: 'feedback', element: <PageTransition><ManagerFeedbackPage /></PageTransition> },
       { path: 'reports', element: <PageTransition><ManagerReportsPage /></PageTransition> },
     ],
   },
