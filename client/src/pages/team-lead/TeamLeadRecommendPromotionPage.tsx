@@ -5,7 +5,7 @@ import * as api from '../../api';
 import { VolunteerProfile, Rank } from '../../types';
 import { Input, Select, Button, Skeleton } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
-import { ChartLineUp, ArrowRight, Star, ShieldCheck } from '@phosphor-icons/react';
+import { ChartLineUp, ArrowRight, Star, ShieldCheck, Warning } from '@phosphor-icons/react';
 
 export const TeamLeadRecommendPromotionPage: React.FC = () => {
   const { user, profile } = useAuth();
@@ -28,12 +28,13 @@ export const TeamLeadRecommendPromotionPage: React.FC = () => {
         const profiles = list.map((l) => l.profile);
         setVolunteers(profiles);
         if (profiles.length > 0) {
-          // default to Selam Alemu or first
-          const selam = profiles.find((p) => p.fullName.includes('Selam'));
-          setSelectedUserId(selam?.userId || profiles[0].userId);
-          setTargetRank('team_lead');
+          // Default to Dawit or Selam if available
+          const preferred = profiles.find((p) => p.fullName.includes('Dawit') || p.fullName.includes('Selam'));
+          const chosen = preferred || profiles[0];
+          setSelectedUserId(chosen.userId);
+          setTargetRank(chosen.rank === 'senior_member' ? 'team_lead' : 'senior_member');
           setRecommendationNote(
-            'Demonstrated remarkable field coordination and safety leadership during multiple regional missions. Exceeds all required hours and maintains stellar ratings.'
+            'Demonstrated remarkable reliability, initiative, and team safety awareness during multiple community field missions.'
           );
         }
       } finally {
@@ -83,22 +84,30 @@ export const TeamLeadRecommendPromotionPage: React.FC = () => {
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
-      <div className="border-b border-border pb-5 space-y-1">
-        <span className="font-mono text-xs uppercase tracking-wider text-ink-tertiary block">
-          MERIT NOMINATIONS
+      {/* Header */}
+      <div className="border-b-2 border-border pb-5">
+        <span className="font-sans text-xs font-bold text-role-teamlead uppercase tracking-tight block">
+          Advancement Nominations
         </span>
-        <h1 className="font-serif text-2xl md:text-3xl font-bold text-ink-primary">
+        <h1 className="font-display text-4xl sm:text-5xl font-black uppercase tracking-tight text-ink-primary leading-none mt-1">
           Recommend Volunteer for Promotion
         </h1>
-        <p className="font-sans text-xs sm:text-sm text-ink-secondary">
-          Team Leads may nominate dedicated volunteers who exhibit exemplary civic reliability and initiative.
+        <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
+          Team Leads may nominate dedicated volunteers who exhibit exemplary civic reliability and initiative before normal thresholds.
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="border border-border bg-canvas-raised p-6 md:p-8 space-y-6 shadow-subtle text-left">
+      <form
+        onSubmit={handleSubmit}
+        className="border-2 border-ink-primary bg-white p-6 sm:p-8 space-y-6 shadow-ticket text-left"
+        style={{
+          clipPath: 'polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)',
+        }}
+      >
         {errorMsg && (
-          <div className="p-3 border border-civic-rust bg-civic-rustLight text-civic-rust text-xs leading-normal font-sans">
-            {errorMsg}
+          <div className="p-3 border-2 border-role-teamlead bg-role-teamleadLight text-role-teamlead text-xs font-sans font-bold flex items-center gap-2">
+            <Warning className="w-4 h-4 shrink-0" weight="bold" />
+            <span>{errorMsg}</span>
           </div>
         )}
 
@@ -114,13 +123,13 @@ export const TeamLeadRecommendPromotionPage: React.FC = () => {
             }}
             options={volunteers.map((v) => ({
               value: v.userId,
-              label: `${v.fullName} (Current: ${v.rank?.replace('_', ' ') || 'member'})`,
+              label: `${v.fullName} (Current: ${v.rank?.replace('_', ' ').toUpperCase() || 'MEMBER'})`,
             }))}
             required
           />
 
           {selectedVol && (
-            <div className="p-3 bg-canvas-subdued border border-border text-xs font-mono text-ink-secondary space-y-1">
+            <div className="p-3 bg-canvas border-2 border-ink-primary text-xs font-mono text-ink-secondary space-y-1">
               <div>Region: <strong className="text-ink-primary font-sans">{selectedVol.area}</strong></div>
               <div>Volunteer Number: <strong className="text-ink-primary">{selectedVol.volunteerNumber}</strong></div>
             </div>
@@ -138,39 +147,32 @@ export const TeamLeadRecommendPromotionPage: React.FC = () => {
           />
 
           <div className="space-y-1.5 text-left">
-            <label className="block text-xs font-semibold uppercase tracking-wider text-ink-secondary">
-              Written Recommendation & Justification (Required)
+            <label className="block text-xs font-bold uppercase text-ink-primary">
+              Justification & Performance Evidence
             </label>
             <textarea
-              rows={5}
+              rows={4}
               value={recommendationNote}
               onChange={(e) => setRecommendationNote(e.target.value)}
-              placeholder="Cite specific assignments, demonstrated leadership qualities, and reasons why this candidate is ready for elevated responsibilities..."
-              className="w-full bg-canvas-raised text-ink-primary font-sans text-sm rounded border border-border p-3 focus:border-ink-primary focus:ring-1 focus:ring-ink-primary outline-none"
+              placeholder="State specific community activities, leadership reliability, and evidence of exemplary performance..."
+              className="w-full bg-canvas text-ink-primary font-sans text-xs border-2 border-ink-primary p-2.5 focus:outline-none focus:ring-2 focus:ring-role-teamlead"
               required
             />
           </div>
         </div>
 
-        <div className="pt-4 border-t border-border flex justify-end gap-3">
-          <Button
-            type="button"
-            variant="secondary"
-            onClick={() => navigate('/team-lead/home')}
-          >
-            Cancel
-          </Button>
+        <div className="pt-4 border-t-2 border-border flex justify-end">
           <Button
             type="submit"
             variant="primary"
+            size="lg"
             isLoading={isSubmitting}
-            rightIcon={<ArrowRight className="w-4 h-4" />}
+            leftIcon={<ChartLineUp className="w-4 h-4" weight="bold" />}
           >
-            Submit Recommendation to Manager
+            Submit Promotion Recommendation
           </Button>
         </div>
       </form>
     </div>
   );
 };
-

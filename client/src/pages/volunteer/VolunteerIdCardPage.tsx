@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { VolunteerCard, Button, Skeleton } from '../../components/ui';
-import { Printer, DownloadSimple, ShieldCheck } from '@phosphor-icons/react';
+import { Printer, DownloadSimple } from '@phosphor-icons/react';
 
 export const VolunteerIdCardPage: React.FC = () => {
   const { profile, user, isLoading } = useAuth();
@@ -20,25 +20,25 @@ export const VolunteerIdCardPage: React.FC = () => {
   }
 
   if (!profile) {
-    return <div>Profile could not be loaded.</div>;
+    return <div className="text-sm font-sans text-ink-secondary">Profile could not be loaded.</div>;
   }
 
   return (
     <div className="max-w-xl mx-auto space-y-8">
-      {/* Editorial Header */}
-      <div className="border-b border-border pb-5 text-center space-y-1">
-        <span className="font-mono text-xs uppercase tracking-wider text-ink-tertiary block">
-          OFFICIAL CREDENTIAL
+      {/* Header */}
+      <div className="border-b-2 border-border pb-5 text-center">
+        <span className="font-sans text-xs font-bold text-role-volunteer uppercase tracking-tight block">
+          Digital Credential
         </span>
-        <h1 className="font-serif text-2xl md:text-3xl font-bold text-ink-primary">
-          Volunteer ID Card
+        <h1 className="font-display text-4xl sm:text-5xl font-black uppercase tracking-tight text-ink-primary leading-none mt-1">
+          Volunteer ID Pass
         </h1>
-        <p className="font-sans text-xs sm:text-sm text-ink-secondary">
-          Carry this digital or printed credential during all in-person assignments and check-in desks.
+        <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
+          Present this verified pass during check-in desks and field assignments.
         </p>
       </div>
 
-      {/* Centered ID Card */}
+      {/* Centered ID Card (Chamfered Ticket Pass with QR) */}
       <div className="flex justify-center">
         <VolunteerCard profile={profile} />
       </div>
@@ -47,14 +47,14 @@ export const VolunteerIdCardPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
         <Button
           variant="primary"
-          leftIcon={<Printer className="w-4 h-4" />}
+          leftIcon={<Printer className="w-4 h-4" weight="bold" />}
           onClick={handlePrint}
         >
-          Print Physical Credential
+          Print Physical Pass
         </Button>
         <Button
           variant="secondary"
-          leftIcon={<DownloadSimple className="w-4 h-4" />}
+          leftIcon={<DownloadSimple className="w-4 h-4" weight="bold" />}
           onClick={handlePrint}
         >
           Save as PDF
@@ -63,4 +63,3 @@ export const VolunteerIdCardPage: React.FC = () => {
     </div>
   );
 };
-

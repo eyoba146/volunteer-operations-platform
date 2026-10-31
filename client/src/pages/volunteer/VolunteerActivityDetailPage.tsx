@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
 import { Activity, Enrollment } from '../../types';
-import { Button, StatusMark, Skeleton } from '../../components/ui';
+import { Button, StatusMark, Skeleton, EmptyState } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
 import { 
-  Calendar, 
+  Calendar as CalendarIcon, 
   MapPin, 
   Clock, 
   UsersThree, 
@@ -14,7 +14,10 @@ import {
   UserCircle, 
   ArrowLeft,
   CheckCircle,
-  Warning
+  Warning,
+  ShieldCheck,
+  Tag,
+  Hourglass
 } from '@phosphor-icons/react';
 
 export const VolunteerActivityDetailPage: React.FC = () => {
@@ -55,6 +58,7 @@ export const VolunteerActivityDetailPage: React.FC = () => {
     (e) => e.status === 'joined' || e.status === 'attended'
   );
   const spotsLeft = activity ? Math.max(0, activity.capacity - activeParticipants.length) : 0;
+  const isFull = spotsLeft === 0;
 
   const handleJoin = async () => {
     if (!user || !activity) return;
@@ -62,9 +66,9 @@ export const VolunteerActivityDetailPage: React.FC = () => {
     try {
       const enr = await api.joinActivity(user.id, activity.id);
       if (enr.status === 'waiting') {
-        toast.info('The roster is currently full. You have been added to the priority waiting list.');
+        toast.info('This activity roster is currently full. You are on the priority waiting list.');
       } else {
-        toast.success(`You are officially enrolled in "${activity.title}".`);
+        toast.success(`You have joined "${activity.title}".`);
       }
       await loadData();
     } catch (err: any) {
@@ -76,11 +80,16 @@ export const VolunteerActivityDetailPage: React.FC = () => {
 
   const handleLeave = async () => {
     if (!user || !activity) return;
-    if (!window.confirm('Are you sure you want to withdraw from this activity roster?')) return;
+    const confirmMessage = isWaiting
+      ? 'Do you want to leave the waiting list for this activity?'
+      : 'Are you sure you want to withdraw from this activity? Leaving close to start time may notify the team lead.';
+
+    if (!window.confirm(confirmMessage)) return;
+
     setIsUpdating(true);
     try {
       await api.leaveActivity(user.id, activity.id);
-      toast.info('You have withdrawn from this activity.');
+      toast.info(isWaiting ? 'Removed from waiting list.' : 'You have withdrawn from this activity.');
       await loadData();
     } finally {
       setIsUpdating(false);
@@ -89,7 +98,7 @@ export const VolunteerActivityDetailPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-6 max-w-4xl mx-auto">
         <Skeleton variant="text" className="h-8 w-1/3" />
         <Skeleton variant="rect" className="h-96" />
       </div>
@@ -98,54 +107,78 @@ export const VolunteerActivityDetailPage: React.FC = () => {
 
   if (!activity) {
     return (
-      <div className="border border-border bg-canvas-raised p-8 text-center text-sm font-sans text-ink-tertiary">
-        Activity not found.
-      </div>
+      <EmptyState
+        icon={<Warning className="w-8 h-8 text-role-teamlead" weight="bold" />}
+        title="Activity could not be found"
+        description="The activity you are looking for may have been rescheduled or removed."
+        actionLabel="Return to Activities"
+        onAction={() => navigate('/volunteer/activities')}
+      />
     );
   }
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
+      {/* Back button */}
       <button
-        onClick={() => navigate(-1)}
-        className="inline-flex items-center gap-1.5 text-xs font-mono font-medium text-ink-tertiary hover:text-ink-primary transition-colors cursor-pointer"
+        onClick={() => navigate('/volunteer/activities')}
+        className="inline-flex items-center gap-1.5 font-sans text-xs font-bold uppercase text-ink-secondary hover:text-ink-primary cursor-pointer transition-colors"
       >
-        <ArrowLeft className="w-4 h-4" />
-        <span>Return to activities roster</span>
+        <ArrowLeft className="w-4 h-4" weight="bold" />
+        <span>Back to all activities</span>
       </button>
 
-      <div className="border border-border bg-canvas-raised p-6 md:p-8 space-y-6 shadow-subtle">
-        {/* Header */}
-        <div className="space-y-3 border-b border-border pb-6">
+      {/* Main Ticket Silhouette Card */}
+      <div
+        className="border-2 border-ink-primary bg-white p-6 sm:p-8 shadow-ticket space-y-6"
+        style={{
+          clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)',
+        }}
+      >
+        {/* Header Section */}
+        <div className="space-y-4 border-b-2 border-border pb-6">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="font-mono text-xs uppercase font-bold tracking-wider px-2.5 py-0.5 bg-canvas-subdued border border-border text-ink-secondary">
+            <span className="font-mono text-xs font-bold uppercase px-2.5 py-0.5 bg-canvas border border-ink-primary text-ink-primary">
               {activity.type.replace('_', ' ')}
             </span>
             <StatusMark status={activity.status} size="sm" />
             {activity.minRank && (
-              <span className="font-mono text-xs text-ink-tertiary">
-                Requires: <strong className="text-ink-primary uppercase">{activity.minRank.replace('_', ' ')}</strong>
+              <span className="font-mono text-xs font-bold text-ink-tertiary flex items-center gap-1">
+                <ShieldCheck className="w-4 h-4 text-role-volunteer" weight="bold" />
+                <span>{activity.minRank.replace('_', ' ').toUpperCase()} required</span>
+              </span>
+            )}
+            {isJoined && (
+              <span className="font-mono text-xs font-bold uppercase px-2.5 py-0.5 bg-role-volunteer text-white flex items-center gap-1">
+                <CheckCircle className="w-3.5 h-3.5" weight="fill" />
+                <span>Enrolled</span>
+              </span>
+            )}
+            {isWaiting && (
+              <span className="font-mono text-xs font-bold uppercase px-2.5 py-0.5 bg-role-applicant text-ink-primary flex items-center gap-1">
+                <Hourglass className="w-3.5 h-3.5" weight="fill" />
+                <span>On Waiting List</span>
               </span>
             )}
           </div>
 
-          <h1 className="font-serif text-2xl md:text-3xl font-bold text-ink-primary">
+          <h1 className="font-display text-4xl sm:text-5xl font-black uppercase tracking-tight text-ink-primary leading-tight">
             {activity.title}
           </h1>
 
-          <p className="font-sans text-sm text-ink-secondary leading-relaxed max-w-2xl">
+          <p className="font-sans text-sm sm:text-base text-ink-secondary leading-relaxed">
             {activity.description}
           </p>
         </div>
 
         {/* Operational Attributes Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 p-4 border border-border bg-canvas-subdued/50 font-sans text-xs">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 p-4 border-2 border-ink-primary bg-canvas font-sans text-xs">
           <div className="space-y-1">
-            <span className="font-mono text-[10px] uppercase text-ink-tertiary block">
-              Date & Schedule
+            <span className="font-sans text-[11px] font-bold text-ink-tertiary uppercase block">
+              Schedule & Timing
             </span>
-            <div className="flex items-center gap-1.5 font-semibold text-ink-primary">
-              <Calendar className="w-4 h-4 text-ink-tertiary" />
+            <div className="flex items-center gap-1.5 font-bold text-ink-primary">
+              <CalendarIcon className="w-4 h-4 text-role-volunteer" weight="bold" />
               <span>
                 {new Date(activity.startsAt).toLocaleDateString('en-US', {
                   weekday: 'short',
@@ -154,132 +187,128 @@ export const VolunteerActivityDetailPage: React.FC = () => {
                 })}
               </span>
             </div>
-            <span className="font-mono text-ink-tertiary text-[11px] block">
+            <span className="font-mono text-ink-secondary text-[11px] block">
               {new Date(activity.startsAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} –{' '}
               {new Date(activity.endsAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </span>
           </div>
 
           <div className="space-y-1">
-            <span className="font-mono text-[10px] uppercase text-ink-tertiary block">
-              Location & Area
+            <span className="font-sans text-[11px] font-bold text-ink-tertiary uppercase block">
+              Venue Location
             </span>
-            <div className="flex items-center gap-1.5 font-semibold text-ink-primary">
-              <MapPin className="w-4 h-4 text-ink-tertiary" />
-              <span>{activity.area}</span>
+            <div className="flex items-center gap-1.5 font-bold text-ink-primary">
+              <MapPin className="w-4 h-4 text-role-volunteer" weight="bold" />
+              <span>{activity.place}</span>
             </div>
-            <span className="text-ink-secondary text-[11px] block truncate">
-              {activity.place}
-            </span>
+            <span className="font-mono text-ink-secondary text-[11px] block">{activity.area}</span>
           </div>
 
           <div className="space-y-1">
-            <span className="font-mono text-[10px] uppercase text-ink-tertiary block">
+            <span className="font-sans text-[11px] font-bold text-ink-tertiary uppercase block">
               Roster Capacity
             </span>
-            <div className="flex items-center gap-1.5 font-semibold text-ink-primary">
-              <UsersThree className="w-4 h-4 text-ink-tertiary" />
-              <span>
-                {activeParticipants.length} / {activity.capacity} Enrolled
-              </span>
+            <div className="flex items-center gap-1.5 font-bold text-ink-primary">
+              <UsersThree className="w-4 h-4 text-role-volunteer" weight="bold" />
+              <span>{activeParticipants.length} / {activity.capacity} spots</span>
             </div>
-            <span className="font-mono text-ink-tertiary text-[11px] block">
-              {spotsLeft} spots available
+            <span className="font-mono text-ink-secondary text-[11px] block">
+              {spotsLeft > 0 ? `${spotsLeft} spots available` : 'Roster is full'}
             </span>
           </div>
 
           <div className="space-y-1">
-            <span className="font-mono text-[10px] uppercase text-ink-tertiary block">
-              Assigned Team Lead
+            <span className="font-sans text-[11px] font-bold text-ink-tertiary uppercase block">
+              Lead Coordinator
             </span>
-            <div className="flex items-center gap-1.5 font-semibold text-ink-primary">
-              <UserCircle className="w-4 h-4 text-ink-tertiary" />
-              <span>{activity.leadName || 'Team Lead'}</span>
+            <div className="flex items-center gap-1.5 font-bold text-ink-primary">
+              <UserCircle className="w-4 h-4 text-role-teamlead" weight="bold" />
+              <span>{activity.leadName || 'Assigned Lead'}</span>
             </div>
-            <span className="text-ink-tertiary text-[11px] block">
-              Field Coordinator
-            </span>
+            <span className="font-mono text-ink-secondary text-[11px] block">Field Team Lead</span>
           </div>
         </div>
 
-        {/* Skills Needed */}
+        {/* Required Skills & Equipment */}
         {activity.skills && activity.skills.length > 0 && (
           <div className="space-y-2">
-            <span className="font-mono text-xs uppercase tracking-wider text-ink-tertiary block">
-              Skills Alignment
+            <span className="font-sans text-xs font-bold text-ink-tertiary uppercase block">
+              Recommended Skills & Capabilities
             </span>
-            <div className="flex flex-wrap gap-1.5">
-              {activity.skills.map((s) => (
+            <div className="flex flex-wrap gap-2">
+              {activity.skills.map((skill, i) => (
                 <span
-                  key={s}
-                  className="px-2.5 py-1 bg-canvas-subdued border border-border font-mono text-xs text-ink-secondary"
+                  key={i}
+                  className="px-3 py-1 bg-canvas border border-border font-sans text-xs font-semibold text-ink-primary flex items-center gap-1.5"
                 >
-                  {s}
+                  <Tag className="w-3.5 h-3.5 text-role-volunteer" weight="bold" />
+                  <span>{skill}</span>
                 </span>
               ))}
             </div>
           </div>
         )}
 
-        {/* Join/Leave Action Bar */}
-        <div className="pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="text-xs font-sans text-ink-secondary">
+        {/* Action Panel */}
+        <div className="pt-6 border-t-2 border-border flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="text-xs text-ink-secondary">
             {isJoined ? (
-              <span className="flex items-center gap-2 text-civic-green font-semibold">
-                <CheckCircle className="w-4 h-4" weight="fill" />
-                <span>You are enrolled in this activity roster.</span>
-              </span>
+              <p className="text-role-volunteer font-bold">
+                You are confirmed for this assignment. Please check in with the team lead upon arrival.
+              </p>
             ) : isWaiting ? (
-              <span className="flex items-center gap-2 text-[#784E0B] font-semibold">
-                <Clock className="w-4 h-4" weight="bold" />
-                <span>You are on the waiting list. We will notify you if a spot opens.</span>
-              </span>
-            ) : spotsLeft === 0 ? (
-              <span className="text-civic-rust font-semibold">
-                This activity roster is currently full. Joining adds you to the waiting list.
-              </span>
+              <p className="text-role-applicant font-bold">
+                You are on the waiting list. You will be notified if a spot becomes available.
+              </p>
+            ) : isFull ? (
+              <p className="text-ink-secondary font-medium">
+                This activity has reached full capacity. You can join the priority waiting list.
+              </p>
             ) : (
-              <span>Registration is open to active volunteers.</span>
+              <p className="text-ink-secondary font-medium">
+                Spots are open. Join this roster to confirm your place on the duty team.
+              </p>
             )}
           </div>
 
-          <div className="flex items-center gap-3">
-            {isJoined && (
+          <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto justify-end">
+            {isJoined ? (
               <>
                 <Button
-                  variant="primary"
-                  leftIcon={<QrCode className="w-4 h-4" />}
-                  onClick={() => navigate('/volunteer/check-in')}
+                  variant="secondary"
+                  size="md"
+                  onClick={handleLeave}
+                  isLoading={isUpdating}
                 >
-                  Enter Check-In Code
+                  Withdraw from Activity
                 </Button>
                 <Button
-                  variant="danger"
-                  isLoading={isUpdating}
-                  onClick={handleLeave}
+                  variant="primary"
+                  size="md"
+                  leftIcon={<QrCode className="w-4 h-4" weight="bold" />}
+                  onClick={() => navigate('/volunteer/check-in')}
                 >
-                  Leave Activity
+                  Check In Now
                 </Button>
               </>
-            )}
-
-            {!isJoined && !isWaiting && (
-              <Button
-                variant="primary"
-                isLoading={isUpdating}
-                onClick={handleJoin}
-              >
-                {spotsLeft === 0 ? 'Join Waiting List' : 'Join Activity Roster'}
-              </Button>
-            )}
-
-            {isWaiting && (
+            ) : isWaiting ? (
               <Button
                 variant="secondary"
-                isLoading={isUpdating}
+                size="md"
                 onClick={handleLeave}
+                isLoading={isUpdating}
               >
-                Cancel Waiting List Spot
+                Leave Waiting List
+              </Button>
+            ) : (
+              <Button
+                variant="primary"
+                size="lg"
+                onClick={handleJoin}
+                isLoading={isUpdating}
+                disabled={activity.status === 'completed' || activity.status === 'cancelled'}
+              >
+                {isFull ? 'Join Waiting List' : 'Join Activity Roster'}
               </Button>
             )}
           </div>
@@ -288,4 +317,3 @@ export const VolunteerActivityDetailPage: React.FC = () => {
     </div>
   );
 };
-

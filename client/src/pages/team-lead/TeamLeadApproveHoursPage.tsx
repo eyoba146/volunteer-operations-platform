@@ -92,7 +92,7 @@ export const TeamLeadApproveHoursPage: React.FC = () => {
     setIsProcessing(true);
     try {
       await api.declineHours(declineTarget.id, declineReason.trim(), user.id);
-      toast.info('Hours entry marked as declined.');
+      toast.info('Hours record marked as declined.');
       setDeclineTarget(null);
       setDeclineReason('');
       await loadData();
@@ -105,7 +105,15 @@ export const TeamLeadApproveHoursPage: React.FC = () => {
 
   const columns: LedgerColumn<HoursEntry>[] = [
     {
-      header: 'Select',
+      header: (
+        <input
+          type="checkbox"
+          checked={pendingHours.length > 0 && selectedIds.length === pendingHours.length}
+          onChange={selectAll}
+          className="w-4 h-4 cursor-pointer accent-ink-primary"
+          title="Select all"
+        />
+      ),
       cell: (entry) => (
         <input
           type="checkbox"
@@ -116,30 +124,31 @@ export const TeamLeadApproveHoursPage: React.FC = () => {
       ),
     },
     {
-      header: 'Volunteer',
+      header: 'Volunteer Name & Date',
       cell: (entry) => (
         <div className="space-y-0.5">
           <span className="font-sans font-bold text-ink-primary block">
             {entry.userName || 'Volunteer'}
           </span>
-          <span className="font-mono text-[11px] text-ink-tertiary block">
-            Date: {new Date(entry.checkIn).toLocaleDateString()}
+          <span className="font-mono text-xs text-ink-secondary block">
+            Date: {new Date(entry.checkIn).toLocaleDateString()} (
+            {new Date(entry.checkIn).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })})
           </span>
         </div>
       ),
     },
     {
-      header: 'Activity & Source',
+      header: 'Activity Assignment & Claim Notes',
       cell: (entry) => (
-        <div className="space-y-0.5">
-          <span className="font-sans text-xs font-semibold text-ink-primary block">
+        <div className="space-y-1">
+          <span className="font-sans text-xs font-bold text-ink-primary block">
             {entry.activityTitle}
           </span>
-          <span className="font-mono text-[10px] uppercase text-ink-tertiary block">
-            Source: {entry.source === 'manual' ? 'Manual claim' : 'Check-in code verified'}
+          <span className="font-mono text-[10px] uppercase font-bold text-ink-tertiary block">
+            Source: {entry.source === 'manual' ? 'Manual claim' : 'On-site code scan'}
           </span>
           {entry.manualNote && (
-            <p className="text-[11px] text-ink-secondary italic pt-0.5 max-w-sm">
+            <p className="text-xs text-ink-secondary italic max-w-md bg-canvas p-2 border border-border">
               "{entry.manualNote}"
             </p>
           )}
@@ -148,39 +157,36 @@ export const TeamLeadApproveHoursPage: React.FC = () => {
     },
     {
       header: 'Duration',
-      align: 'right',
       cell: (entry) => (
-        <div className="font-mono text-xs">
-          <span className="font-bold text-ink-primary">
-            {Math.round((entry.minutes / 60) * 10) / 10} hrs
-          </span>
-          <span className="block text-[10px] text-ink-tertiary">
-            {entry.minutes} mins
-          </span>
-        </div>
+        <span className="font-mono text-xs font-bold text-ink-primary">
+          {Math.round((entry.minutes / 60) * 10) / 10} hrs{' '}
+          <span className="text-[11px] text-ink-tertiary font-normal">({entry.minutes}m)</span>
+        </span>
       ),
     },
     {
-      header: 'Decide Action',
-      align: 'right',
+      header: 'Review Actions',
       cell: (entry) => (
-        <div className="flex items-center justify-end gap-2">
+        <div className="flex items-center gap-2">
           <Button
             variant="primary"
             size="sm"
-            onClick={() => handleApproveSingle(entry.id)}
             leftIcon={<Check className="w-3.5 h-3.5" weight="bold" />}
+            onClick={() => handleApproveSingle(entry.id)}
+            disabled={isProcessing}
           >
             Approve
           </Button>
           <Button
-            variant="danger"
+            variant="secondary"
             size="sm"
+            leftIcon={<X className="w-3.5 h-3.5" weight="bold" />}
             onClick={() => {
               setDeclineTarget(entry);
               setDeclineReason('');
               setDeclineError('');
             }}
+            disabled={isProcessing}
           >
             Decline
           </Button>
@@ -189,111 +195,119 @@ export const TeamLeadApproveHoursPage: React.FC = () => {
     },
   ];
 
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <Skeleton variant="text" className="h-8 w-1/3" />
+        <Skeleton variant="rect" className="h-20" />
+        <Skeleton variant="rect" className="h-64" />
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
-      {/* Editorial Header */}
-      <div className="border-b border-border pb-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="space-y-1">
-          <span className="font-mono text-xs uppercase tracking-wider text-ink-tertiary block">
-            FIELD AUDIT QUEUE
+      {/* Top Header */}
+      <div className="border-b-2 border-border pb-5 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div>
+          <span className="font-sans text-xs font-bold text-role-teamlead uppercase tracking-tight block">
+            Attendance Verification Desk
           </span>
-          <h1 className="font-serif text-2xl md:text-3xl font-bold text-ink-primary">
+          <h1 className="font-display text-4xl sm:text-5xl font-black uppercase tracking-tight text-ink-primary leading-none mt-1">
             Approve Volunteer Hours
           </h1>
-          <p className="font-sans text-xs sm:text-sm text-ink-secondary">
-            Verify attendance records for participants in your volunteer activities. Approved credit counts toward promotions.
+          <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
+            Verify volunteer session claims. Approved hours count toward rank altitude; declining requires a written explanation.
           </p>
         </div>
 
-        {pendingHours.length > 0 && (
-          <div className="flex items-center gap-2">
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={selectAll}
-            >
-              {selectedIds.length === pendingHours.length ? 'Deselect All' : 'Select All'}
-            </Button>
-            <Button
-              variant="primary"
-              size="sm"
-              disabled={selectedIds.length === 0}
-              isLoading={isProcessing}
-              onClick={handleBulkApprove}
-            >
-              Approve Selected ({selectedIds.length})
-            </Button>
-          </div>
+        {selectedIds.length > 0 && (
+          <Button
+            variant="primary"
+            size="md"
+            leftIcon={<CheckCircle className="w-4 h-4" weight="bold" />}
+            onClick={handleBulkApprove}
+            isLoading={isProcessing}
+          >
+            Approve Selected ({selectedIds.length})
+          </Button>
         )}
       </div>
 
       {/* Ledger Table */}
-      {pendingHours.length === 0 && !isLoading ? (
+      {pendingHours.length === 0 ? (
         <EmptyState
-          icon={<CheckCircle className="w-6 h-6 text-civic-green" />}
-          title="All hours approved"
-          description="There are currently no attendance entries waiting for your decision."
+          icon={<Clock className="w-8 h-8 text-ink-secondary" weight="bold" />}
+          title="All hours verified"
+          description="There are currently no volunteer hours awaiting your review."
         />
       ) : (
-        <LedgerTable
-          data={pendingHours}
-          columns={columns}
-          keyExtractor={(item) => item.id}
-          isLoading={isLoading}
-        />
+        <div className="border-2 border-ink-primary bg-white shadow-ticket">
+          <LedgerTable
+            columns={columns}
+            data={pendingHours}
+            keyExtractor={(h) => h.id}
+          />
+        </div>
       )}
 
-      {/* Decline Reason Modal */}
+      {/* Decline Reason Modal Sheet */}
       <SheetModal
-        isOpen={declineTarget !== null}
+        isOpen={Boolean(declineTarget)}
         onClose={() => setDeclineTarget(null)}
-        title="Decline Hours Entry"
-        subtitle={`Volunteer: ${declineTarget?.userName || ''}`}
-        mode="modal"
-        maxWidth="md"
+        title="Decline Volunteer Hours"
       >
-        <form onSubmit={handleDeclineSubmit} className="space-y-4 text-left">
-          {declineError && (
-            <div className="p-3 border border-civic-rust bg-civic-rustLight text-civic-rust text-xs leading-normal font-sans">
-              {declineError}
+        {declineTarget && (
+          <form onSubmit={handleDeclineSubmit} className="space-y-5">
+            <p className="font-sans text-xs text-ink-secondary leading-relaxed">
+              To decline hours for <strong className="text-ink-primary">{declineTarget.userName}</strong> on <em>{declineTarget.activityTitle}</em>, you must provide a constructive written explanation. The volunteer will read this feedback directly.
+            </p>
+
+            {declineError && (
+              <div className="p-3 border-2 border-role-teamlead bg-role-teamleadLight text-role-teamlead text-xs font-sans font-bold flex items-center gap-2">
+                <Warning className="w-4 h-4 shrink-0" weight="bold" />
+                <span>{declineError}</span>
+              </div>
+            )}
+
+            <div className="border-2 border-ink-primary bg-canvas p-3 font-mono text-xs space-y-1">
+              <div>Claim Duration: <strong>{Math.round((declineTarget.minutes / 60) * 10) / 10} hours</strong></div>
+              <div>Date: {new Date(declineTarget.checkIn).toLocaleDateString()}</div>
+              <div>Source: {declineTarget.source === 'manual' ? 'Manual submission' : 'Session check-in'}</div>
             </div>
-          )}
 
-          <p className="font-sans text-xs text-ink-secondary leading-relaxed">
-            Please provide a clear and respectful explanation so the volunteer understands why their attendance was declined.
-          </p>
+            <div className="space-y-1.5 text-left">
+              <label className="block text-xs font-bold uppercase text-ink-primary">
+                Mandatory Reason for Decline
+              </label>
+              <textarea
+                rows={4}
+                value={declineReason}
+                onChange={(e) => setDeclineReason(e.target.value)}
+                placeholder="e.g. Attendance was not verified at duty station A. Please contact team lead to verify logbook records."
+                className="w-full bg-canvas text-ink-primary font-sans text-xs border-2 border-ink-primary p-2.5 focus:outline-none focus:ring-2 focus:ring-role-teamlead"
+                required
+              />
+            </div>
 
-          <div className="space-y-1.5">
-            <label className="block text-xs font-semibold uppercase tracking-wider text-ink-secondary">
-              Reason for Declining (Required)
-            </label>
-            <textarea
-              rows={3}
-              value={declineReason}
-              onChange={(e) => setDeclineReason(e.target.value)}
-              placeholder="e.g. Attendance was not recorded at check-in station or roster sheet..."
-              className="w-full bg-canvas-raised text-ink-primary font-sans text-sm rounded border border-border p-2.5 focus:border-ink-primary focus:ring-1 focus:ring-ink-primary outline-none"
-              required
-            />
-          </div>
-
-          <div className="pt-3 border-t border-border flex items-center justify-end gap-3">
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={() => setDeclineTarget(null)}
-            >
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              variant="danger"
-              isLoading={isProcessing}
-            >
-              Confirm Decline
-            </Button>
-          </div>
-        </form>
+            <div className="flex justify-end gap-2 pt-2 border-t border-border">
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={() => setDeclineTarget(null)}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                variant="primary"
+                isLoading={isProcessing}
+              >
+                Confirm Decline & Notify Volunteer
+              </Button>
+            </div>
+          </form>
+        )}
       </SheetModal>
     </div>
   );

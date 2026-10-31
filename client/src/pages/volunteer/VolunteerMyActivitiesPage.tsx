@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
 import { Activity, Enrollment } from '../../types';
 import { Tabs, StatusMark, Button, Skeleton, EmptyState } from '../../components/ui';
-import { Calendar, Clock, MapPin, QrCode, ArrowRight } from '@phosphor-icons/react';
+import { Calendar as CalendarIcon, Clock, MapPin, QrCode, ArrowRight } from '@phosphor-icons/react';
 
 export const VolunteerMyActivitiesPage: React.FC = () => {
   const { user } = useAuth();
@@ -36,8 +36,8 @@ export const VolunteerMyActivitiesPage: React.FC = () => {
     return (
       <div className="space-y-6">
         <Skeleton variant="text" className="h-8 w-1/3" />
-        <Skeleton variant="row" className="h-24" />
-        <Skeleton variant="row" className="h-24" />
+        <Skeleton variant="rect" className="h-28" />
+        <Skeleton variant="rect" className="h-28" />
       </div>
     );
   }
@@ -50,9 +50,11 @@ export const VolunteerMyActivitiesPage: React.FC = () => {
     .filter(Boolean) as Array<{ activity: Activity; enrollment: Enrollment }>;
 
   const upcoming = enrolledActivities.filter(
-    (item) =>
-      item.enrollment.status === 'joined' ||
-      item.enrollment.status === 'waiting'
+    (item) => item.enrollment.status === 'joined'
+  );
+
+  const waiting = enrolledActivities.filter(
+    (item) => item.enrollment.status === 'waiting'
   );
 
   const past = enrolledActivities.filter(
@@ -61,18 +63,20 @@ export const VolunteerMyActivitiesPage: React.FC = () => {
       item.activity.status === 'completed'
   );
 
-  const currentList = activeTab === 'upcoming' ? upcoming : past;
+  const currentList =
+    activeTab === 'upcoming' ? upcoming : activeTab === 'waiting' ? waiting : past;
 
   return (
     <div className="space-y-6">
-      <div className="border-b border-border pb-5 space-y-1">
-        <span className="font-mono text-xs uppercase tracking-wider text-ink-tertiary block">
-          PERSONAL ROSTER
+      {/* Header */}
+      <div className="border-b-2 border-border pb-5">
+        <span className="font-sans text-xs font-bold text-role-volunteer uppercase tracking-tight block">
+          Personal Assignments
         </span>
-        <h1 className="font-serif text-2xl md:text-3xl font-bold text-ink-primary">
-          My Civic Activities
+        <h1 className="font-display text-4xl sm:text-5xl font-black uppercase tracking-tight text-ink-primary leading-none mt-1">
+          My Volunteer Roster
         </h1>
-        <p className="font-sans text-xs sm:text-sm text-ink-secondary">
+        <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
           Track assignments you have registered for, check in to recorded shifts, and inspect past verified attendance.
         </p>
       </div>
@@ -80,6 +84,7 @@ export const VolunteerMyActivitiesPage: React.FC = () => {
       <Tabs
         tabs={[
           { id: 'upcoming', label: 'Upcoming & Active', count: upcoming.length },
+          { id: 'waiting', label: 'Waiting List', count: waiting.length },
           { id: 'past', label: 'Past & Attended', count: past.length },
         ]}
         activeTab={activeTab}
@@ -88,26 +93,37 @@ export const VolunteerMyActivitiesPage: React.FC = () => {
 
       {currentList.length === 0 ? (
         <EmptyState
-          icon={<Calendar className="w-6 h-6" />}
-          title={activeTab === 'upcoming' ? 'No upcoming assignments' : 'No past activity records'}
+          icon={<CalendarIcon className="w-8 h-8 text-ink-secondary" weight="bold" />}
+          title={
+            activeTab === 'upcoming'
+              ? 'No upcoming assignments'
+              : activeTab === 'waiting'
+              ? 'No waiting list enrollments'
+              : 'No past activity records'
+          }
           description={
             activeTab === 'upcoming'
-              ? 'You have not joined any upcoming field rosters yet. Explore open assignments in your area.'
-              : 'Activities you attend and check into will be permanently cataloged here.'
+              ? 'You have not joined any upcoming activities yet. Browse open opportunities in your area.'
+              : activeTab === 'waiting'
+              ? 'You are not currently waiting for spots in any full activities.'
+              : 'Activities you attend and check into will be recorded here.'
           }
           actionLabel="Browse Available Activities"
           onAction={() => navigate('/volunteer/activities')}
         />
       ) : (
-        <div className="border border-border bg-canvas-raised divide-y divide-border">
+        <div className="space-y-4">
           {currentList.map(({ activity, enrollment }) => (
             <div
               key={enrollment.id}
-              className="p-5 md:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-canvas-subdued/40 transition-colors"
+              className="border-2 border-ink-primary bg-white p-5 sm:p-6 shadow-ticket flex flex-col md:flex-row md:items-center justify-between gap-6"
+              style={{
+                clipPath: 'polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%)',
+              }}
             >
               <div className="space-y-2 flex-1">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="font-mono text-[10px] uppercase font-bold px-2 py-0.5 bg-canvas-subdued border border-border text-ink-secondary">
+                  <span className="font-mono text-xs font-bold uppercase px-2 py-0.5 bg-canvas border border-ink-primary text-ink-primary">
                     {activity.type.replace('_', ' ')}
                   </span>
                   <StatusMark status={enrollment.status as any} size="sm" />
@@ -115,14 +131,14 @@ export const VolunteerMyActivitiesPage: React.FC = () => {
 
                 <Link
                   to={`/volunteer/activities/${activity.id}`}
-                  className="font-serif text-lg font-bold text-ink-primary hover:underline block"
+                  className="font-display text-2xl sm:text-3xl font-black uppercase text-ink-primary hover:text-role-volunteer transition-colors block leading-tight"
                 >
                   {activity.title}
                 </Link>
 
-                <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-ink-tertiary">
-                  <span className="flex items-center gap-1.5 text-ink-secondary">
-                    <Clock className="w-3.5 h-3.5" />
+                <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-ink-secondary pt-1">
+                  <span className="flex items-center gap-1.5">
+                    <Clock className="w-4 h-4 text-ink-tertiary" />
                     <span>
                       {new Date(activity.startsAt).toLocaleString('en-US', {
                         weekday: 'short',
@@ -133,30 +149,31 @@ export const VolunteerMyActivitiesPage: React.FC = () => {
                       })}
                     </span>
                   </span>
-                  <span className="flex items-center gap-1.5 text-ink-secondary">
-                    <MapPin className="w-3.5 h-3.5" />
+                  <span className="flex items-center gap-1.5">
+                    <MapPin className="w-4 h-4 text-ink-tertiary" />
                     <span>{activity.place}, {activity.area}</span>
                   </span>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2.5 shrink-0">
+              <div className="shrink-0 flex items-center gap-3 self-end md:self-center">
                 {enrollment.status === 'joined' && (
                   <Button
                     variant="primary"
-                    size="sm"
+                    size="md"
+                    leftIcon={<QrCode className="w-4 h-4" weight="bold" />}
                     onClick={() => navigate('/volunteer/check-in')}
-                    leftIcon={<QrCode className="w-4 h-4" />}
                   >
                     Check In
                   </Button>
                 )}
                 <Button
                   variant="secondary"
-                  size="sm"
+                  size="md"
+                  rightIcon={<ArrowRight className="w-4 h-4" weight="bold" />}
                   onClick={() => navigate(`/volunteer/activities/${activity.id}`)}
                 >
-                  Details
+                  View Details
                 </Button>
               </div>
             </div>
@@ -166,4 +183,3 @@ export const VolunteerMyActivitiesPage: React.FC = () => {
     </div>
   );
 };
-

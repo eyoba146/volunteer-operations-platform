@@ -2,14 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
 import { Activity, Enrollment, VolunteerProfile } from '../../types';
-import { Select, Button, Skeleton, StatusMark } from '../../components/ui';
+import { Select, Button, Skeleton, StatusMark, EmptyState } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
-import { Star, CheckCircle, UserCircle } from '@phosphor-icons/react';
+import { Star, CheckCircle, UserCircle, FloppyDisk } from '@phosphor-icons/react';
 
 export const TeamLeadRatingsPage: React.FC = () => {
   const { user } = useAuth();
   const [activities, setActivities] = useState<Activity[]>([]);
   const [selectedActivityId, setSelectedActivityId] = useState('');
+  const [activityEnrollments, setActivityEnrollments] = useState<Enrollment[]>([]);
   const [volunteers, setVolunteers] = useState<VolunteerProfile[]>([]);
   const [ratingsMap, setRatingsMap] = useState<Record<string, { score: number; note: string; saved?: boolean }>>({});
   const [isLoading, setIsLoading] = useState(true);
@@ -18,25 +19,41 @@ export const TeamLeadRatingsPage: React.FC = () => {
   const toast = useToast();
 
   useEffect(() => {
-    const load = async () => {
+    const loadInitial = async () => {
       if (!user) return;
       setIsLoading(true);
       try {
-        const acts = await api.getAllActivities();
+        const [acts, volList] = await Promise.all([
+          api.getAllActivities(),
+          api.getAllVolunteers(),
+        ]);
         const myActs = acts.filter((a) => a.leadId === user.id);
         setActivities(myActs);
+        setVolunteers(volList.map((v) => v.profile));
+
         if (myActs.length > 0) {
           setSelectedActivityId(myActs[0].id);
         }
-
-        const volList = await api.getAllVolunteers();
-        setVolunteers(volList.map((v) => v.profile));
       } finally {
         setIsLoading(false);
       }
     };
-    load();
+    loadInitial();
   }, [user]);
+
+  // Load enrollments for selected activity
+  useEffect(() => {
+    const loadEnrollments = async () => {
+      if (!selectedActivityId) return;
+      try {
+        const enrs = await api.getEnrollmentsForActivity(selectedActivityId);
+        setActivityEnrollments(enrs);
+      } catch (err) {
+        console.error('Error loading enrollments', err);
+      }
+    };
+    loadEnrollments();
+  }, [selectedActivityId]);
 
   const handleScoreChange = (userId: string, score: number) => {
     setRatingsMap((prev) => ({
@@ -71,31 +88,36 @@ export const TeamLeadRatingsPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-6 max-w-4xl mx-auto">
         <Skeleton variant="text" className="h-8 w-1/3" />
         <Skeleton variant="rect" className="h-64" />
       </div>
     );
   }
 
-  // Sample roster for selected activity: 4 volunteers
-  const sampleRoster = volunteers.slice(0, 4);
+  // Find volunteers enrolled in this activity
+  const enrolledUserIds = activityEnrollments.map((e) => e.userId);
+  const enrolledProfiles = volunteers.filter((v) => enrolledUserIds.includes(v.userId));
+
+  // Fallback: If no enrollments exist in mock data for this activity, show available volunteers
+  const displayedVolunteers = enrolledProfiles.length > 0 ? enrolledProfiles : volunteers.slice(0, 3);
 
   return (
-    <div className="space-y-6">
-      {/* Editorial Header */}
-      <div className="border-b border-border pb-5 space-y-1">
-        <span className="font-mono text-xs uppercase tracking-wider text-ink-tertiary block">
-          MERIT EVALUATION
+    <div className="space-y-6 max-w-4xl mx-auto">
+      {/* Top Header */}
+      <div className="border-b-2 border-border pb-5">
+        <span className="font-sans text-xs font-bold text-role-teamlead uppercase tracking-tight block">
+          Volunteer Evaluations
         </span>
-        <h1 className="font-serif text-2xl md:text-3xl font-bold text-ink-primary">
-          Rate Volunteer Attendance & Conduct
+        <h1 className="font-display text-4xl sm:text-5xl font-black uppercase tracking-tight text-ink-primary leading-none mt-1">
+          Rate Volunteer Performance
         </h1>
-        <p className="font-sans text-xs sm:text-sm text-ink-secondary">
-          Evaluate participant work from 1 to 5 stars. High evaluations directly build volunteer rank progression.
+        <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
+          Evaluate participant attendance, discipline, and initiative (1 to 5 stars). High ratings build rank advancement eligibility.
         </p>
       </div>
 
+      {/* Select Activity */}
       <div className="max-w-md">
         <Select
           label="Select Activity Assignment"
@@ -108,72 +130,89 @@ export const TeamLeadRatingsPage: React.FC = () => {
         />
       </div>
 
-      <div className="border border-border bg-canvas-raised divide-y divide-border">
-        {sampleRoster.map((vol) => {
-          const currentRating = ratingsMap[vol.userId] || { score: 5, note: '', saved: false };
-          return (
-            <div key={vol.userId} className="p-5 md:p-6 space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div className="flex items-center gap-3">
-                  <UserCircle className="w-8 h-8 text-ink-secondary" />
-                  <div>
-                    <h4 className="font-sans text-base font-bold text-ink-primary">
-                      {vol.fullName}
-                    </h4>
-                    <span className="font-mono text-xs text-ink-tertiary">
-                      {vol.volunteerNumber} • Rank: {vol.rank?.replace('_', ' ')}
+      {/* Volunteer Ratings List */}
+      {displayedVolunteers.length === 0 ? (
+        <EmptyState
+          icon={<Star className="w-8 h-8 text-ink-secondary" weight="bold" />}
+          title="No volunteers enrolled"
+          description="Volunteers who enroll or check in to this activity will appear here for evaluation."
+        />
+      ) : (
+        <div className="border-2 border-ink-primary bg-white shadow-ticket divide-y-2 divide-border">
+          {displayedVolunteers.map((vol) => {
+            const currentRating = ratingsMap[vol.userId] || { score: 5, note: '', saved: false };
+            return (
+              <div key={vol.userId} className="p-6 space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <UserCircle className="w-10 h-10 text-ink-secondary" />
+                    <div>
+                      <h4 className="font-display text-2xl font-black uppercase text-ink-primary leading-tight">
+                        {vol.fullName}
+                      </h4>
+                      <span className="font-mono text-xs text-ink-secondary">
+                        ID: {vol.volunteerNumber} • Rank: {vol.rank?.replace('_', ' ').toUpperCase()}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* 1-5 Star Picker */}
+                  <div className="flex items-center gap-1.5 bg-canvas px-3 py-1.5 border-2 border-ink-primary self-start sm:self-auto">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        type="button"
+                        onClick={() => handleScoreChange(vol.userId, star)}
+                        className="p-1 cursor-pointer transition-transform hover:scale-125"
+                        title={`${star} stars`}
+                      >
+                        <Star
+                          className={`w-6 h-6 ${
+                            star <= currentRating.score
+                              ? 'text-role-applicant fill-role-applicant'
+                              : 'text-border'
+                          }`}
+                          weight={star <= currentRating.score ? 'fill' : 'regular'}
+                        />
+                      </button>
+                    ))}
+                    <span className="font-mono text-xs font-bold text-ink-primary pl-2">
+                      {currentRating.score}.0
                     </span>
                   </div>
                 </div>
 
-                {/* Star Picker */}
-                <div className="flex items-center gap-1.5">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <button
-                      key={star}
-                      type="button"
-                      onClick={() => handleScoreChange(vol.userId, star)}
-                      className="p-1 cursor-pointer transition-transform hover:scale-110"
-                      title={`${star} stars`}
-                    >
-                      <Star
-                        className={`w-6 h-6 ${
-                          star <= currentRating.score
-                            ? 'text-civic-gold'
-                            : 'text-border'
-                        }`}
-                        weight={star <= currentRating.score ? 'fill' : 'regular'}
-                      />
-                    </button>
-                  ))}
-                  <span className="font-mono text-xs font-bold text-ink-primary ml-2">
-                    {currentRating.score}.0
-                  </span>
+                {/* Optional Note & Submit Row */}
+                <div className="flex flex-col sm:flex-row items-end gap-3 pt-2">
+                  <div className="w-full sm:flex-1 space-y-1">
+                    <label className="block text-[11px] font-bold uppercase text-ink-tertiary">
+                      Performance Feedback (Optional)
+                    </label>
+                    <input
+                      type="text"
+                      value={currentRating.note}
+                      onChange={(e) => handleNoteChange(vol.userId, e.target.value)}
+                      placeholder="e.g. Exhibited strong field initiative; assisted arriving community members promptly."
+                      className="w-full bg-canvas text-ink-primary font-sans text-xs border border-border p-2 focus:border-ink-primary focus:outline-none"
+                    />
+                  </div>
+
+                  <Button
+                    variant={currentRating.saved ? 'secondary' : 'primary'}
+                    size="sm"
+                    className="shrink-0"
+                    leftIcon={currentRating.saved ? <CheckCircle className="w-4 h-4 text-role-volunteer" weight="fill" /> : <FloppyDisk className="w-4 h-4" weight="bold" />}
+                    onClick={() => handleSaveRating(vol.userId)}
+                    isLoading={isSubmitting}
+                  >
+                    {currentRating.saved ? 'Score Saved' : 'Save Rating'}
+                  </Button>
                 </div>
               </div>
-
-              <div className="flex flex-col sm:flex-row items-center gap-3">
-                <input
-                  type="text"
-                  placeholder="Optional note on reliability, leadership, or teamwork..."
-                  value={currentRating.note}
-                  onChange={(e) => handleNoteChange(vol.userId, e.target.value)}
-                  className="w-full bg-canvas-subdued text-ink-primary font-sans text-xs rounded border border-border py-2 px-3 focus:border-ink-primary focus:ring-1 focus:ring-ink-primary outline-none"
-                />
-                <Button
-                  variant={currentRating.saved ? 'secondary' : 'primary'}
-                  size="sm"
-                  isLoading={isSubmitting}
-                  onClick={() => handleSaveRating(vol.userId)}
-                  className="shrink-0"
-                >
-                  {currentRating.saved ? 'Saved ✓' : 'Submit Rating'}
-                </Button>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };

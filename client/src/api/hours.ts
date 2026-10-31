@@ -83,6 +83,31 @@ export async function checkInWithCode(
   return newEntry;
 }
 
+export async function checkOut(hoursId: string): Promise<HoursEntry> {
+  await delay(300, 600);
+  const state = store.getState();
+  const entry = state.hours.find((h) => h.id === hoursId);
+  if (!entry) throw new Error('Hours record not found');
+
+  const now = new Date().toISOString();
+  const start = new Date(entry.checkIn).getTime();
+  const end = new Date(now).getTime();
+  const actualMinutes = Math.max(30, Math.round((end - start) / (1000 * 60)));
+
+  const updated: HoursEntry = {
+    ...entry,
+    checkOut: now,
+    minutes: actualMinutes,
+  };
+
+  store.setState((prev) => ({
+    ...prev,
+    hours: prev.hours.map((h) => (h.id === hoursId ? updated : h)),
+  }));
+
+  return updated;
+}
+
 export async function submitManualHours(
   userId: string,
   data: {
