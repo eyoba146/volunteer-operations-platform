@@ -9,7 +9,6 @@ import {
   ArrowRight, 
   FloppyDisk, 
   Check, 
-  Camera, 
   UploadSimple, 
   Trash, 
   IdentificationCard, 
@@ -31,18 +30,18 @@ const ETHIOPIAN_AREAS = [
 ];
 
 const SKILLS_LIST = [
-  'First Aid',
-  'Community Outreach',
-  'Event Coordination',
+  'First aid',
+  'Community outreach',
+  'Event coordination',
   'Documentation',
   'Logistics',
   'Teaching',
-  'Health Education',
-  'Tree Planting',
+  'Health education',
+  'Tree planting',
   'Carpentry',
-  'IT Support',
+  'IT support',
   'Childcare',
-  'Field Safety',
+  'Field safety',
 ];
 
 const AVAILABILITY_OPTIONS = [
@@ -55,22 +54,22 @@ const AVAILABILITY_OPTIONS = [
 
 const SAMPLE_PROFILE_PHOTOS = [
   {
-    name: 'Sample Portrait A',
+    name: 'Sample portrait A',
     url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
   },
   {
-    name: 'Sample Portrait B',
+    name: 'Sample portrait B',
     url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
   },
   {
-    name: 'Sample Portrait C',
+    name: 'Sample portrait C',
     url: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80',
   },
 ];
 
 const SAMPLE_ID_PHOTOS = [
   {
-    name: 'National ID Card (Addis Ababa)',
+    name: 'National ID card (Addis Ababa)',
     url: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=500&q=80',
   },
 ];
@@ -95,7 +94,7 @@ export const ApplicantApplyPage: React.FC = () => {
   const [idPhotoUrl, setIdPhotoUrl] = useState<string>('');
 
   // Skills & Schedule
-  const [selectedSkills, setSelectedSkills] = useState<string[]>(['Community Outreach', 'First Aid']);
+  const [selectedSkills, setSelectedSkills] = useState<string[]>(['Community outreach', 'First aid']);
   const [selectedAvailability, setSelectedAvailability] = useState<string[]>(['Saturday mornings']);
 
   // Motivation & Emergency
@@ -113,7 +112,6 @@ export const ApplicantApplyPage: React.FC = () => {
       if (!user) return;
       setIsLoading(true);
       try {
-        // First check server store
         const app = await api.getMyApplication(user.id);
         const savedLocal = localStorage.getItem(storageKey);
         const localData = savedLocal ? JSON.parse(savedLocal) : null;
@@ -128,7 +126,7 @@ export const ApplicantApplyPage: React.FC = () => {
           setLanguages(d.languages?.join(', ') || 'Amharic, English');
           setPhotoUrl(d.photoUrl || user.avatarUrl || '');
           setIdPhotoUrl(d.idPhotoUrl || '');
-          setSelectedSkills(d.skills || ['Community Outreach']);
+          setSelectedSkills(d.skills || ['Community outreach']);
           setSelectedAvailability(d.availability || ['Saturday mornings']);
           setMotivation(d.motivation || '');
           if (d.emergencyContact) {
@@ -166,7 +164,6 @@ export const ApplicantApplyPage: React.FC = () => {
     },
   });
 
-  // Save to localStorage and store
   const handleSaveDraft = async () => {
     if (!user) return;
     setIsSaving(true);
@@ -225,7 +222,6 @@ export const ApplicantApplyPage: React.FC = () => {
 
     if (!user) return;
 
-    // Age validation (must be 18 or older as per A7)
     const birthYear = new Date(dateOfBirth).getFullYear();
     const currentYear = 2026;
     if (currentYear - birthYear < 18) {
@@ -272,22 +268,22 @@ export const ApplicantApplyPage: React.FC = () => {
   }
 
   const steps = [
-    { num: 1, title: 'Personal & Region' },
-    { num: 2, title: 'Photos (Optional)' },
-    { num: 3, title: 'Skills & Schedule' },
-    { num: 4, title: 'Motivation & Contact' },
+    { num: 1, title: 'Personal details' },
+    { num: 2, title: 'Photos (optional)' },
+    { num: 3, title: 'Skills and schedule' },
+    { num: 4, title: 'Motivation and contact' },
   ];
 
   return (
     <div className="max-w-3xl mx-auto space-y-8">
       {/* Header */}
-      <div className="border-b-2 border-ink-primary pb-5 space-y-2">
+      <div className="border-b border-[#D5DAE1] pb-5 space-y-2">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
           <div>
-            <h1 className="font-display font-black text-4xl sm:text-5xl tracking-tight text-ink-primary leading-none">
-              Volunteer Application
+            <h1 className="font-display font-bold text-3xl sm:text-4xl tracking-tight text-ink-primary leading-tight">
+              Volunteer application
             </h1>
-            <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
+            <p className="font-sans text-sm text-ink-secondary mt-1">
               Step {currentStep} of 4 • Your progress saves automatically as you complete each section.
             </p>
           </div>
@@ -299,13 +295,13 @@ export const ApplicantApplyPage: React.FC = () => {
             isLoading={isSaving}
             leftIcon={<FloppyDisk className="w-4 h-4" />}
           >
-            Save Draft
+            Save draft
           </Button>
         </div>
       </div>
 
       {/* Step Waypoint Navigation */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 border-b border-border pb-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 border-b border-[#D5DAE1] pb-4">
         {steps.map((s) => {
           const isActive = currentStep === s.num;
           const isDone = currentStep > s.num;
@@ -314,21 +310,21 @@ export const ApplicantApplyPage: React.FC = () => {
               key={s.num}
               type="button"
               onClick={() => setCurrentStep(s.num)}
-              className={`text-left p-3 border transition-colors cursor-pointer ${
+              className={`text-left p-3 border rounded-[8px] transition-colors cursor-pointer min-h-[44px] ${
                 isActive
                   ? 'border-ink-primary bg-white shadow-sm'
                   : isDone
                   ? 'border-role-volunteer bg-role-volunteerLight/50 text-role-volunteer'
-                  : 'border-border bg-canvas-subdued/50 text-ink-tertiary hover:bg-canvas-subdued'
+                  : 'border-[#D5DAE1] bg-canvas-subdued/50 text-ink-secondary hover:bg-canvas-subdued'
               }`}
             >
               <div className="flex items-center justify-between">
-                <span className="font-display text-xl font-black block leading-none">
+                <span className="font-display text-lg font-bold block leading-none">
                   0{s.num}
                 </span>
                 {isDone && <Check className="w-4 h-4 text-role-volunteer" weight="bold" />}
               </div>
-              <span className="font-sans text-xs font-semibold block mt-1 truncate text-ink-primary">
+              <span className="font-sans text-[13px] font-semibold block mt-1 truncate text-ink-primary">
                 {s.title}
               </span>
             </button>
@@ -337,7 +333,7 @@ export const ApplicantApplyPage: React.FC = () => {
       </div>
 
       {formError && (
-        <div className="p-4 border-2 border-role-teamlead bg-role-teamleadLight text-role-teamlead text-xs leading-normal font-sans font-semibold">
+        <div className="p-4 border border-role-teamlead bg-role-teamleadLight rounded-[8px] text-role-teamlead text-sm leading-normal font-sans font-semibold">
           {formError}
         </div>
       )}
@@ -345,23 +341,23 @@ export const ApplicantApplyPage: React.FC = () => {
       {/* Form Card */}
       <form
         onSubmit={handleSubmit}
-        className="border-2 border-ink-primary bg-white p-6 md:p-8 space-y-6 shadow-ticket"
+        className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 md:p-8 space-y-6"
       >
         {/* Step 1: Personal & Regional */}
         {currentStep === 1 && (
           <div className="space-y-5 animate-in fade-in duration-150">
-            <div className="border-b border-border pb-3">
-              <h2 className="font-display text-2xl font-black text-ink-primary">
-                1. Personal Details & Service Area
+            <div className="border-b border-[#D5DAE1] pb-3">
+              <h2 className="font-display text-2xl font-bold text-ink-primary">
+                1. Personal details and community area
               </h2>
-              <p className="font-sans text-xs text-ink-secondary">
+              <p className="font-sans text-sm text-ink-secondary">
                 Basic contact and location information for activity placement.
               </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Input
-                label="Full Legal Name"
+                label="Full legal name"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder="e.g. Hana Tesfaye Wolde"
@@ -370,7 +366,7 @@ export const ApplicantApplyPage: React.FC = () => {
               />
 
               <Input
-                label="Primary Mobile Phone"
+                label="Primary mobile phone"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="+251 91 123 4567"
@@ -381,7 +377,7 @@ export const ApplicantApplyPage: React.FC = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Input
-                label="Date of Birth"
+                label="Date of birth"
                 type="date"
                 value={dateOfBirth}
                 onChange={(e) => setDateOfBirth(e.target.value)}
@@ -390,7 +386,7 @@ export const ApplicantApplyPage: React.FC = () => {
               />
 
               <Select
-                label="Primary Service Region / Subcity"
+                label="Primary community area"
                 value={area}
                 onChange={(e) => setArea(e.target.value)}
                 options={ETHIOPIAN_AREAS}
@@ -400,14 +396,14 @@ export const ApplicantApplyPage: React.FC = () => {
             </div>
 
             <Input
-              label="Languages Spoken"
+              label="Languages spoken"
               value={languages}
               onChange={(e) => setLanguages(e.target.value)}
               placeholder="e.g. Amharic, English, Afaan Oromo"
               hint="List languages separated by commas."
             />
 
-            <div className="pt-4 flex items-center justify-between border-t border-border">
+            <div className="pt-4 flex items-center justify-between border-t border-[#D5DAE1]">
               <Button
                 type="button"
                 variant="secondary"
@@ -416,7 +412,7 @@ export const ApplicantApplyPage: React.FC = () => {
                 isLoading={isSaving}
                 leftIcon={<FloppyDisk className="w-4 h-4" />}
               >
-                Save Draft
+                Save draft
               </Button>
               <Button
                 type="button"
@@ -424,7 +420,7 @@ export const ApplicantApplyPage: React.FC = () => {
                 onClick={() => setCurrentStep(2)}
                 rightIcon={<ArrowRight className="w-4 h-4" />}
               >
-                Next: Photo Uploads
+                Next: Photo uploads
               </Button>
             </div>
           </div>
@@ -433,38 +429,38 @@ export const ApplicantApplyPage: React.FC = () => {
         {/* Step 2: Photo & ID Uploads */}
         {currentStep === 2 && (
           <div className="space-y-6 animate-in fade-in duration-150">
-            <div className="border-b border-border pb-3">
-              <h2 className="font-display text-2xl font-black text-ink-primary">
-                2. Photos & Identification (Optional)
+            <div className="border-b border-[#D5DAE1] pb-3">
+              <h2 className="font-display text-2xl font-bold text-ink-primary">
+                2. Photos and identification (optional)
               </h2>
-              <p className="font-sans text-xs text-ink-secondary">
+              <p className="font-sans text-sm text-ink-secondary">
                 Upload your profile picture for your volunteer ID pass and optional ID document.
               </p>
             </div>
 
             {/* Profile Photo */}
             <div className="space-y-3">
-              <label className="block text-xs font-bold text-ink-primary">
-                Volunteer Profile Headshot
+              <label className="block text-sm font-bold text-ink-primary">
+                Volunteer profile headshot
               </label>
-              <p className="text-xs text-ink-secondary">
+              <p className="text-[13px] text-ink-secondary">
                 This image appears on your volunteer badge and roster check-in pass.
               </p>
 
               <div className="flex flex-col sm:flex-row items-start gap-4">
-                <div className="w-24 h-24 border-2 border-dashed border-border bg-canvas-subdued flex items-center justify-center shrink-0 overflow-hidden">
+                <div className="w-24 h-24 border border-dashed border-[#D5DAE1] rounded-[8px] bg-canvas-subdued flex items-center justify-center shrink-0 overflow-hidden">
                   {photoUrl ? (
                     <img src={photoUrl} alt="Preview" className="w-full h-full object-cover" />
                   ) : (
-                    <User className="w-10 h-10 text-ink-tertiary" />
+                    <User className="w-10 h-10 text-ink-secondary" />
                   )}
                 </div>
 
                 <div className="space-y-2 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
-                    <label className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-ink-primary text-white text-xs font-semibold cursor-pointer hover:bg-black">
+                    <label className="inline-flex items-center gap-1.5 px-3 py-2 bg-ink-primary text-white text-[13px] font-semibold rounded-[8px] cursor-pointer hover:bg-[#202328] min-h-[44px]">
                       <UploadSimple className="w-4 h-4" />
-                      <span>Upload from Device</span>
+                      <span>Upload from device</span>
                       <input
                         type="file"
                         accept="image/*"
@@ -488,7 +484,7 @@ export const ApplicantApplyPage: React.FC = () => {
 
                   {/* Simulator Presets */}
                   <div className="pt-1">
-                    <span className="text-[13px] font-sans text-ink-tertiary block">
+                    <span className="text-[13px] font-sans text-ink-secondary block">
                       Quick demo portraits:
                     </span>
                     <div className="flex flex-wrap gap-2 pt-1">
@@ -497,7 +493,7 @@ export const ApplicantApplyPage: React.FC = () => {
                           key={p.name}
                           type="button"
                           onClick={() => setPhotoUrl(p.url)}
-                          className="px-2 py-1 text-[13px] border border-border bg-canvas-subdued hover:bg-canvas-raised font-sans text-ink-secondary"
+                          className="px-2.5 py-1 text-[13px] border border-[#D5DAE1] rounded-[6px] bg-canvas-subdued hover:bg-white font-sans text-ink-secondary cursor-pointer"
                         >
                           Sample {String.fromCharCode(65 + idx)}
                         </button>
@@ -509,36 +505,36 @@ export const ApplicantApplyPage: React.FC = () => {
             </div>
 
             {/* Kebele / National ID Card */}
-            <div className="space-y-3 pt-4 border-t border-border">
+            <div className="space-y-3 pt-4 border-t border-[#D5DAE1]">
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-ink-primary">
-                    Kebele or National ID Card (Optional)
+                  <label className="block text-sm font-bold text-ink-primary">
+                    Kebele or national ID card (optional)
                   </label>
-                  <p className="text-xs text-ink-secondary">
+                  <p className="text-[13px] text-ink-secondary">
                     Visible strictly to Program Managers for identity verification. Never shared publicly.
                   </p>
                 </div>
-                <div className="flex items-center gap-1 text-[13px] font-bold text-role-volunteer bg-role-volunteerLight px-2 py-0.5 border border-role-volunteer">
+                <div className="flex items-center gap-1 text-[13px] font-bold text-role-volunteer bg-role-volunteerLight px-2 py-0.5 rounded-[4px] border border-role-volunteer">
                   <ShieldCheck className="w-3.5 h-3.5" />
                   <span>Private</span>
                 </div>
               </div>
 
               <div className="flex flex-col sm:flex-row items-start gap-4">
-                <div className="w-32 h-20 border-2 border-dashed border-border bg-canvas-subdued flex items-center justify-center shrink-0 overflow-hidden">
+                <div className="w-32 h-20 border border-dashed border-[#D5DAE1] rounded-[8px] bg-canvas-subdued flex items-center justify-center shrink-0 overflow-hidden">
                   {idPhotoUrl ? (
                     <img src={idPhotoUrl} alt="ID Document Preview" className="w-full h-full object-cover" />
                   ) : (
-                    <IdentificationCard className="w-8 h-8 text-ink-tertiary" />
+                    <IdentificationCard className="w-8 h-8 text-ink-secondary" />
                   )}
                 </div>
 
                 <div className="space-y-2 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
-                    <label className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-ink-primary text-white text-xs font-semibold cursor-pointer hover:bg-black">
+                    <label className="inline-flex items-center gap-1.5 px-3 py-2 bg-ink-primary text-white text-[13px] font-semibold rounded-[8px] cursor-pointer hover:bg-[#202328] min-h-[44px]">
                       <UploadSimple className="w-4 h-4" />
-                      <span>Upload ID Document</span>
+                      <span>Upload ID document</span>
                       <input
                         type="file"
                         accept="image/*"
@@ -564,16 +560,16 @@ export const ApplicantApplyPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setIdPhotoUrl(SAMPLE_ID_PHOTOS[0].url)}
-                      className="px-2 py-1 text-[13px] border border-border bg-canvas-subdued hover:bg-canvas-raised font-sans text-ink-secondary"
+                      className="px-2.5 py-1 text-[13px] border border-[#D5DAE1] rounded-[6px] bg-canvas-subdued hover:bg-white font-sans text-ink-secondary cursor-pointer"
                     >
-                      Use Sample Kebele ID Card
+                      Use sample Kebele ID card
                     </button>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="pt-4 flex items-center justify-between border-t border-border">
+            <div className="pt-4 flex items-center justify-between border-t border-[#D5DAE1]">
               <Button
                 type="button"
                 variant="secondary"
@@ -581,7 +577,7 @@ export const ApplicantApplyPage: React.FC = () => {
                 onClick={() => setCurrentStep(1)}
                 leftIcon={<ArrowLeft className="w-4 h-4" />}
               >
-                Back: Personal Details
+                Back: Personal details
               </Button>
               <Button
                 type="button"
@@ -589,7 +585,7 @@ export const ApplicantApplyPage: React.FC = () => {
                 onClick={() => setCurrentStep(3)}
                 rightIcon={<ArrowRight className="w-4 h-4" />}
               >
-                Next: Skills & Schedule
+                Next: Skills and schedule
               </Button>
             </div>
           </div>
@@ -598,18 +594,18 @@ export const ApplicantApplyPage: React.FC = () => {
         {/* Step 3: Skills & Availability */}
         {currentStep === 3 && (
           <div className="space-y-6 animate-in fade-in duration-150">
-            <div className="border-b border-border pb-3">
-              <h2 className="font-display text-2xl font-black text-ink-primary">
-                3. Skills Offered & Availability
+            <div className="border-b border-[#D5DAE1] pb-3">
+              <h2 className="font-display text-2xl font-bold text-ink-primary">
+                3. Skills offered and availability
               </h2>
-              <p className="font-sans text-xs text-ink-secondary">
+              <p className="font-sans text-sm text-ink-secondary">
                 Select the activities and times that match your volunteering goals.
               </p>
             </div>
 
             <div className="space-y-3">
-              <label className="block text-xs font-bold text-ink-primary">
-                Select Your Skills & Capacities (Select all that apply)
+              <label className="block text-sm font-bold text-ink-primary">
+                Select your skills and capacities (select all that apply)
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 {SKILLS_LIST.map((skill) => {
@@ -619,10 +615,10 @@ export const ApplicantApplyPage: React.FC = () => {
                       key={skill}
                       type="button"
                       onClick={() => toggleSkill(skill)}
-                      className={`text-left p-3 text-xs font-sans border transition-colors cursor-pointer flex items-center justify-between ${
+                      className={`text-left p-3 text-sm font-sans border rounded-[8px] transition-colors cursor-pointer min-h-[44px] flex items-center justify-between ${
                         isChecked
                           ? 'border-ink-primary bg-canvas-inset font-bold text-ink-primary shadow-sm'
-                          : 'border-border bg-canvas-subdued/50 hover:bg-canvas-subdued text-ink-secondary'
+                          : 'border-[#D5DAE1] bg-canvas-subdued/50 hover:bg-canvas-subdued text-ink-secondary'
                       }`}
                     >
                       <span className="truncate">{skill}</span>
@@ -633,9 +629,9 @@ export const ApplicantApplyPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="space-y-3 pt-3 border-t border-border">
-              <label className="block text-xs font-bold text-ink-primary">
-                Typical Availability Windows
+            <div className="space-y-3 pt-3 border-t border-[#D5DAE1]">
+              <label className="block text-sm font-bold text-ink-primary">
+                Typical availability windows
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {AVAILABILITY_OPTIONS.map((item) => {
@@ -645,10 +641,10 @@ export const ApplicantApplyPage: React.FC = () => {
                       key={item}
                       type="button"
                       onClick={() => toggleAvailability(item)}
-                      className={`text-left p-3 text-xs font-sans border transition-colors cursor-pointer flex items-center justify-between ${
+                      className={`text-left p-3 text-sm font-sans border rounded-[8px] transition-colors cursor-pointer min-h-[44px] flex items-center justify-between ${
                         isChecked
                           ? 'border-ink-primary bg-canvas-inset font-bold text-ink-primary shadow-sm'
-                          : 'border-border bg-canvas-subdued/50 hover:bg-canvas-subdued text-ink-secondary'
+                          : 'border-[#D5DAE1] bg-canvas-subdued/50 hover:bg-canvas-subdued text-ink-secondary'
                       }`}
                     >
                       <span>{item}</span>
@@ -659,7 +655,7 @@ export const ApplicantApplyPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="pt-4 flex items-center justify-between border-t border-border">
+            <div className="pt-4 flex items-center justify-between border-t border-[#D5DAE1]">
               <Button
                 type="button"
                 variant="secondary"
@@ -675,7 +671,7 @@ export const ApplicantApplyPage: React.FC = () => {
                 onClick={() => setCurrentStep(4)}
                 rightIcon={<ArrowRight className="w-4 h-4" />}
               >
-                Next: Motivation & Contact
+                Next: Motivation and contact
               </Button>
             </div>
           </div>
@@ -684,17 +680,17 @@ export const ApplicantApplyPage: React.FC = () => {
         {/* Step 4: Motivation & Emergency Contact */}
         {currentStep === 4 && (
           <div className="space-y-6 animate-in fade-in duration-150">
-            <div className="border-b border-border pb-3">
-              <h2 className="font-display text-2xl font-black text-ink-primary">
-                4. Service Motivation & Emergency Contact
+            <div className="border-b border-[#D5DAE1] pb-3">
+              <h2 className="font-display text-2xl font-bold text-ink-primary">
+                4. Service motivation and emergency contact
               </h2>
-              <p className="font-sans text-xs text-ink-secondary">
+              <p className="font-sans text-sm text-ink-secondary">
                 Tell us why you want to volunteer and who to call during field activities.
               </p>
             </div>
 
             <div className="space-y-1.5">
-              <label className="block text-xs font-bold text-ink-primary">
+              <label className="block text-sm font-bold text-ink-primary">
                 Why do you wish to join the volunteer program?
               </label>
               <textarea
@@ -702,24 +698,24 @@ export const ApplicantApplyPage: React.FC = () => {
                 value={motivation}
                 onChange={(e) => setMotivation(e.target.value)}
                 placeholder="Describe your motivation, community background, or causes you care about..."
-                className="w-full bg-white text-ink-primary font-sans text-sm border-2 border-border p-3 focus:border-ink-primary outline-none"
+                className="w-full bg-white text-ink-primary font-sans text-base border-[1.5px] border-[#475569] rounded-[8px] p-3 focus:border-ink-primary outline-none"
                 required
               />
             </div>
 
-            <div className="space-y-4 pt-3 border-t border-border">
+            <div className="space-y-4 pt-3 border-t border-[#D5DAE1]">
               <div>
-                <h3 className="font-display text-xl font-black text-ink-primary">
-                  Emergency Contact Details
+                <h3 className="font-display text-xl font-bold text-ink-primary">
+                  Emergency contact details
                 </h3>
-                <p className="font-sans text-xs text-ink-secondary">
+                <p className="font-sans text-sm text-ink-secondary">
                   Contact person reachable in the event of any field incident.
                 </p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <Input
-                  label="Contact Person Name"
+                  label="Contact person name"
                   value={contactName}
                   onChange={(e) => setContactName(e.target.value)}
                   placeholder="e.g. Tesfaye Wolde"
@@ -733,7 +729,7 @@ export const ApplicantApplyPage: React.FC = () => {
                   required
                 />
                 <Input
-                  label="Emergency Phone"
+                  label="Emergency phone"
                   value={contactPhone}
                   onChange={(e) => setContactPhone(e.target.value)}
                   placeholder="+251 91 765 4321"
@@ -743,16 +739,16 @@ export const ApplicantApplyPage: React.FC = () => {
             </div>
 
             {/* Review Summary */}
-            <div className="p-4 bg-canvas-subdued border border-border space-y-2 text-xs font-sans">
+            <div className="p-4 bg-canvas-subdued border border-[#D5DAE1] rounded-[8px] space-y-2 text-sm font-sans">
               <span className="font-bold text-ink-primary block">
-                Submission Confirmation Summary:
+                Submission confirmation summary:
               </span>
-              <p className="text-ink-secondary">
-                Submitting this application creates your candidate file in the Admissions queue. Once accepted by a Program Manager, you will receive an invitation to activate your membership with a one-time Telebirr registration fee of ETB 200.
+              <p className="text-ink-secondary leading-relaxed">
+                Submitting this application creates your candidate file in the review queue. Once accepted by a Program Manager, you will receive an invitation to activate your membership with a one-time Telebirr registration fee of ETB 200.
               </p>
             </div>
 
-            <div className="pt-4 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="pt-4 border-t border-[#D5DAE1] flex flex-col sm:flex-row items-center justify-between gap-3">
               <Button
                 type="button"
                 variant="secondary"
@@ -771,7 +767,7 @@ export const ApplicantApplyPage: React.FC = () => {
                   isLoading={isSaving}
                   leftIcon={<FloppyDisk className="w-4 h-4" />}
                 >
-                  Save Draft
+                  Save draft
                 </Button>
                 <Button
                   type="submit"
@@ -779,7 +775,7 @@ export const ApplicantApplyPage: React.FC = () => {
                   isLoading={isSaving}
                   rightIcon={<ArrowRight className="w-4 h-4" />}
                 >
-                  Send My Application
+                  Send my application
                 </Button>
               </div>
             </div>

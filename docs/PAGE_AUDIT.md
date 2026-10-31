@@ -26,10 +26,10 @@ This document tracks visual, typographic, contrast, and plain language complianc
 | **Public** | `/reset-password` | `pages/public/ResetPasswordPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Cleaned) | Pass (Cleaned) | Pass (Clean) | Done |
 | **Public** | `/check-certificate` | `pages/public/CertificateCheckPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (Ticket/Pass) | Pass (Sentence) | Pass (Ledger rows) | Pass (Cleaned) | Pass (Clean) | Done |
 | **Public** | `/unauthorized` | `pages/public/UnauthorizedPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Cleaned) | Pass (Cleaned) | Pass (Clean) | Done |
-| **Applicant** | `/applicant/status` | `pages/applicant/ApplicantStatusPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Applicant** | `/applicant/apply` | `pages/applicant/ApplicantApplyPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Applicant** | `/applicant/payment` | `pages/applicant/ApplicantPaymentPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Applicant** | `/applicant/notifications` | `pages/applicant/ApplicantNotificationsPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
+| **Applicant** | `/applicant/status` | `pages/applicant/ApplicantStatusPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Cleaned) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Applicant** | `/applicant/apply` | `pages/applicant/ApplicantApplyPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Cleaned) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Applicant** | `/applicant/payment` | `pages/applicant/ApplicantPaymentPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (Pass/Receipt) | Pass (Sentence) | Pass (Ledger rows) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Applicant** | `/applicant/notifications` | `pages/applicant/ApplicantNotificationsPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Ledger rows) | Pass (Cleaned) | Pass (Clean) | Done |
 | **Volunteer** | `/volunteer/home` | `pages/volunteer/VolunteerHomePage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
 | **Volunteer** | `/volunteer/activities` | `pages/volunteer/VolunteerActivitiesPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
 | **Volunteer** | `/volunteer/activities/:id` | `pages/volunteer/VolunteerActivityDetailPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
