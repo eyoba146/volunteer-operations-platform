@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background-color: #F4F5F7; /* Cool near-white (never cream, never beige) */
+    color: #111315;
+    font-family: 'Schibsted Grotesk', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100%;
+    overflow-x: hidden;
+  }
+
+  /* High contrast focus outline */
+  *:focus-visible {
+    outline: 2px solid #111315;
+    outline-offset: 2px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #EBEDF0;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #C4C9D0;
+    border-radius: 2px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #959DA8;
+  }
+}
+
+@layer utilities {
+  /* Ticket shape with notch cutouts on sides */
+  .ticket-cut-top {
+    clip-path: polygon(
+      0 0,
+      calc(50% - 16px) 0,
+      calc(50% - 16px) 12px,
+      calc(50% + 16px) 12px,
+      calc(50% + 16px) 0,
+      100% 0,
+      100% 100%,
+      0 100%
+    );
+  }
+
+  /* Ticket chamfer cut corner */
+  .ticket-corner-tr {
+    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
+  }
+
+  .ticket-stub {
+    border-style: dashed;
+    border-width: 0 0 2px 0;
+    border-color: #DDE1E5;
+  }
+
+  /* Hide scrollbar for clean horizontal snap rails */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
