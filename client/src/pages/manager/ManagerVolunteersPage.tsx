@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import * as api from '../../api';
 import { User, VolunteerProfile, RankHistoryMilestone } from '../../types';
-import { LedgerTable, LedgerColumn, Input, Select, Button, StatusMark, SheetModal, Avatar, Skeleton } from '../../components/ui';
-import { MagnifyingGlass, Eye, ChartLineUp, Clock, CalendarCheck, Certificate as CertIcon, Phone, EnvelopeSimple, ShieldCheck } from '@phosphor-icons/react';
+import { LedgerTable, LedgerColumn, Input, Select, Button, StatusMark, SheetModal, Avatar } from '../../components/ui';
+import { MagnifyingGlass, Eye, ChartLineUp, Phone, EnvelopeSimple } from '@phosphor-icons/react';
 
 export const ManagerVolunteersPage: React.FC = () => {
   const [volunteers, setVolunteers] = useState<Array<{ user: User; profile: VolunteerProfile }>>([]);
@@ -101,7 +101,7 @@ export const ManagerVolunteersPage: React.FC = () => {
 
   const columns: LedgerColumn<{ user: User; profile: VolunteerProfile }>[] = [
     {
-      header: 'Volunteer ID & Name',
+      header: 'Volunteer ID & name',
       cell: ({ profile }) => (
         <div className="flex items-center gap-3">
           <Avatar
@@ -112,7 +112,7 @@ export const ManagerVolunteersPage: React.FC = () => {
             showRankBadge
           />
           <div>
-            <span className="font-sans font-bold text-ink-primary block">
+            <span className="font-sans font-semibold text-ink-primary block">
               {profile.fullName}
             </span>
             <span className="font-mono text-[13px] text-ink-tertiary block">
@@ -123,23 +123,23 @@ export const ManagerVolunteersPage: React.FC = () => {
       ),
     },
     {
-      header: 'Operating Area',
+      header: 'Operating area',
       cell: ({ profile }) => (
-        <span className="font-sans text-xs text-ink-secondary">
+        <span className="font-sans text-[13px] text-ink-secondary">
           {profile.area}
         </span>
       ),
     },
     {
-      header: 'Current Rank',
+      header: 'Current rank',
       cell: ({ profile }) => (
         <StatusMark status={profile.rank || 'member'} size="sm" />
       ),
     },
     {
-      header: 'Member Since',
+      header: 'Member since',
       cell: ({ profile }) => (
-        <span className="font-mono text-xs text-ink-tertiary">
+        <span className="font-mono text-[13px] text-ink-tertiary">
           {profile.memberSince || '2026-10-31'}
         </span>
       ),
@@ -154,7 +154,7 @@ export const ManagerVolunteersPage: React.FC = () => {
           onClick={() => handleInspect(item)}
           leftIcon={<Eye className="w-3.5 h-3.5" />}
         >
-          View Record
+          View record
         </Button>
       ),
     },
@@ -163,28 +163,23 @@ export const ManagerVolunteersPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Top Header */}
-      <div
-        className="border-4 border-ink-primary bg-white p-6 sm:p-8 space-y-4 shadow-ticket"
-        style={{
-          clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)',
-        }}
-      >
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b-2 border-ink-primary pb-5">
+      <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 space-y-4 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#D5DAE1] pb-5">
           <div className="space-y-1">
-            <span className="font-sans text-xs font-bold text-role-manager tracking-tight block">
-              Volunteer Operations Directory
+            <span className="font-sans text-[13px] font-semibold text-role-manager block">
+              Volunteer operations directory
             </span>
-            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl tracking-tight text-ink-primary leading-none">
-              Volunteer Directory & Records
+            <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight">
+              Volunteer directory & records
             </h1>
-            <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
+            <p className="font-sans text-[13px] sm:text-sm text-ink-secondary mt-1">
               Search active community volunteers, inspect verified field hours, and examine promotion trail histories.
             </p>
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="font-mono text-xs font-bold text-white bg-role-manager px-3 py-1.5 shadow-sm">
-              Total Volunteers: {volunteers.length}
+            <span className="font-mono text-[13px] font-semibold text-role-manager bg-role-managerLight/30 border border-role-manager/30 px-3 py-1.5 rounded-[6px]">
+              Total volunteers: {volunteers.length}
             </span>
           </div>
         </div>
@@ -202,10 +197,10 @@ export const ManagerVolunteersPage: React.FC = () => {
             value={rankFilter}
             onChange={(e) => setRankFilter(e.target.value)}
             options={[
-              { value: 'all', label: 'All Ranks' },
+              { value: 'all', label: 'All ranks' },
               { value: 'member', label: 'Member' },
-              { value: 'senior_member', label: 'Senior Member' },
-              { value: 'team_lead', label: 'Team Lead' },
+              { value: 'senior_member', label: 'Senior member' },
+              { value: 'team_lead', label: 'Team lead' },
               { value: 'manager', label: 'Manager' },
             ]}
           />
@@ -214,7 +209,7 @@ export const ManagerVolunteersPage: React.FC = () => {
             value={areaFilter}
             onChange={(e) => setAreaFilter(e.target.value)}
             options={[
-              { value: 'all', label: 'All Operational Areas' },
+              { value: 'all', label: 'All operational areas' },
               { value: 'Addis Ababa', label: 'Addis Ababa' },
               { value: 'Adama', label: 'Adama' },
               { value: 'Bishoftu', label: 'Bishoftu' },
@@ -226,25 +221,26 @@ export const ManagerVolunteersPage: React.FC = () => {
       </div>
 
       {/* Ledger Table */}
-      <LedgerTable
-        data={volunteers}
-        columns={columns}
-        keyExtractor={(item) => item.profile.userId}
-        isLoading={isLoading}
-      />
+      <div className="border border-[#D5DAE1] rounded-[10px] bg-white shadow-sm overflow-hidden">
+        <LedgerTable
+          data={volunteers}
+          columns={columns}
+          keyExtractor={(item) => item.profile.userId}
+          isLoading={isLoading}
+        />
+      </div>
 
       {/* Volunteer Profile Drawer with Full Rank History */}
       <SheetModal
         isOpen={inspecting !== null}
         onClose={() => setInspecting(null)}
-        title={inspecting?.profile.fullName || 'Volunteer Record'}
+        title={inspecting?.profile.fullName || 'Volunteer record'}
         subtitle={`ID: ${inspecting?.profile.volunteerNumber || ''} • Area: ${inspecting?.profile.area || ''}`}
-        mode="sheet"
       >
         {inspecting && (
-          <div className="space-y-6 text-left font-sans text-xs">
+          <div className="space-y-6 text-left font-sans text-[13px]">
             {/* Header Badge */}
-            <div className="flex items-center gap-4 p-4 border-2 border-ink-primary bg-white shadow-ticket">
+            <div className="flex items-center gap-4 p-4 border border-[#D5DAE1] rounded-[8px] bg-white shadow-sm">
               <Avatar
                 name={inspecting.profile.fullName}
                 photoUrl={inspecting.profile.photoUrl}
@@ -253,12 +249,12 @@ export const ManagerVolunteersPage: React.FC = () => {
                 showRankBadge
               />
               <div className="space-y-1">
-                <h3 className="font-display text-2xl font-black tracking-tight text-ink-primary">
+                <h3 className="font-display text-xl font-bold tracking-tight text-ink-primary">
                   {inspecting.profile.fullName}
                 </h3>
                 <div className="flex items-center gap-2">
                   <StatusMark status={inspecting.profile.rank || 'member'} size="sm" />
-                  <span className="font-mono text-ink-tertiary text-xs">
+                  <span className="font-mono text-ink-tertiary text-[13px]">
                     Since {inspecting.profile.memberSince || '2026-08'}
                   </span>
                 </div>
@@ -266,59 +262,59 @@ export const ManagerVolunteersPage: React.FC = () => {
             </div>
 
             {/* Performance Metric Strip */}
-            <div className="grid grid-cols-3 gap-2">
-              <div className="p-3 border-2 border-border bg-canvas-subdued text-center space-y-0.5">
-                <span className="text-[13px] text-ink-tertiary block">Approved Hours</span>
-                <span className="font-display text-2xl font-black text-ink-primary block leading-none">
+            <div className="border border-[#D5DAE1] rounded-[8px] bg-white divide-x divide-[#D5DAE1] grid grid-cols-3 overflow-hidden">
+              <div className="p-3 text-center space-y-0.5">
+                <span className="text-[12px] font-medium text-ink-tertiary block">Approved hours</span>
+                <span className="font-display text-2xl font-bold text-ink-primary block leading-none">
                   {volunteerStats.hours}
                 </span>
-                <span className="text-[13px] text-ink-secondary">hrs verified</span>
+                <span className="text-[12px] text-ink-secondary">hrs verified</span>
               </div>
-              <div className="p-3 border-2 border-border bg-canvas-subdued text-center space-y-0.5">
-                <span className="text-[13px] text-ink-tertiary block">Activities Done</span>
-                <span className="font-display text-2xl font-black text-ink-primary block leading-none">
+              <div className="p-3 text-center space-y-0.5">
+                <span className="text-[12px] font-medium text-ink-tertiary block">Activities done</span>
+                <span className="font-display text-2xl font-bold text-ink-primary block leading-none">
                   {volunteerStats.activities}
                 </span>
-                <span className="text-[13px] text-ink-secondary">rosters</span>
+                <span className="text-[12px] text-ink-secondary">sessions</span>
               </div>
-              <div className="p-3 border-2 border-border bg-canvas-subdued text-center space-y-0.5">
-                <span className="text-[13px] text-ink-tertiary block">Rating Score</span>
-                <span className="font-display text-2xl font-black text-[#784E0B] block leading-none">
+              <div className="p-3 text-center space-y-0.5">
+                <span className="text-[12px] font-medium text-ink-tertiary block">Rating score</span>
+                <span className="font-display text-2xl font-bold text-role-applicant block leading-none">
                   {volunteerStats.rating}
                 </span>
-                <span className="text-[13px] text-ink-secondary">out of 5.0</span>
+                <span className="text-[12px] text-ink-secondary">out of 5.0</span>
               </div>
             </div>
 
             {/* Permanent Rank History Trail */}
-            <div className="p-4 border-2 border-ink-primary bg-white shadow-ticket space-y-3">
-              <div className="flex items-center gap-2 border-b-2 border-border pb-2">
+            <div className="p-4 border border-[#D5DAE1] rounded-[8px] bg-white space-y-3">
+              <div className="flex items-center gap-2 border-b border-[#D5DAE1] pb-2">
                 <ChartLineUp className="w-4 h-4 text-role-manager" weight="bold" />
-                <h4 className="font-display text-lg font-black tracking-tight text-ink-primary">
-                  Promotion & Rank Altitude Trail
+                <h4 className="font-display text-base font-bold tracking-tight text-ink-primary">
+                  Promotion & rank advancement trail
                 </h4>
               </div>
 
-              <div className="relative pl-6 space-y-4 before:content-[''] before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-ink-primary">
+              <div className="relative pl-6 space-y-4 before:content-[''] before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-[#D5DAE1]">
                 {rankHistory.map((m, idx) => (
                   <div key={idx} className="relative space-y-1">
                     {/* Milestone Node */}
-                    <div className="absolute -left-6 top-1 w-3 h-3 rounded-full bg-role-manager border-2 border-white ring-2 ring-ink-primary" />
+                    <div className="absolute -left-6 top-1 w-3 h-3 rounded-full bg-role-manager border-2 border-white ring-2 ring-role-manager" />
 
                     <div className="flex items-baseline justify-between gap-2">
-                      <span className="font-bold text-ink-primary text-xs tracking-tight font-display text-sm">
+                      <span className="font-bold text-ink-primary text-[13px] font-display">
                         {m.rankTitle || m.rank.replace('_', ' ')}
                       </span>
-                      <span className="font-mono text-[13px] text-ink-tertiary">
+                      <span className="font-mono text-[12px] text-ink-tertiary">
                         {m.achievedAt}
                       </span>
                     </div>
 
-                    <p className="text-xs text-ink-secondary">
+                    <p className="text-[13px] text-ink-secondary">
                       {m.note || 'Milestone verified and recorded.'}
                     </p>
 
-                    <div className="flex flex-wrap items-center gap-2 font-mono text-[13px] text-ink-tertiary pt-0.5">
+                    <div className="flex flex-wrap items-center gap-2 font-mono text-[12px] text-ink-tertiary pt-0.5">
                       {m.hoursRecorded !== undefined && (
                         <span>Hours: <strong>{m.hoursRecorded} hrs</strong></span>
                       )}
@@ -326,7 +322,7 @@ export const ManagerVolunteersPage: React.FC = () => {
                         <span>• Evaluated by: <strong>{m.approvedBy}</strong></span>
                       )}
                       {m.certificateCode && (
-                        <span>• Cert: <strong>{m.certificateCode}</strong></span>
+                        <span>• Certificate: <strong>{m.certificateCode}</strong></span>
                       )}
                     </div>
                   </div>
@@ -335,44 +331,44 @@ export const ManagerVolunteersPage: React.FC = () => {
             </div>
 
             {/* Contact Information */}
-            <div className="p-4 border-2 border-border bg-canvas-subdued space-y-3">
-              <span className="font-bold text-xs tracking-tight text-ink-primary block">
-                Contact Details & Area
+            <div className="p-4 border border-[#D5DAE1] rounded-[8px] bg-canvas-subdued/30 space-y-3">
+              <span className="font-semibold text-[13px] text-ink-primary block">
+                Contact details & area
               </span>
               <div className="grid grid-cols-2 gap-3">
                 <div className="flex items-center gap-2">
                   <Phone className="w-3.5 h-3.5 text-ink-tertiary" />
-                  <span className="font-mono text-xs font-bold text-ink-primary">{inspecting.profile.phone}</span>
+                  <span className="font-mono text-[13px] font-semibold text-ink-primary">{inspecting.profile.phone}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <EnvelopeSimple className="w-3.5 h-3.5 text-ink-tertiary" />
-                  <span className="font-mono text-xs text-ink-primary truncate">{inspecting.user.email}</span>
+                  <span className="font-mono text-[13px] text-ink-primary truncate">{inspecting.user.email}</span>
                 </div>
               </div>
               <div>
-                <span className="text-[13px] text-ink-tertiary block">Registered Hub</span>
-                <span className="text-xs font-medium text-ink-primary">{inspecting.profile.area}</span>
+                <span className="text-[12px] text-ink-tertiary block">Registered area</span>
+                <span className="text-[13px] font-medium text-ink-primary">{inspecting.profile.area}</span>
               </div>
             </div>
 
             {/* Bio & Background */}
-            <div className="p-4 border-2 border-border bg-canvas-subdued space-y-1.5">
-              <span className="font-bold text-xs tracking-tight text-ink-primary block">
-                Bio & Motivation
+            <div className="p-4 border border-[#D5DAE1] rounded-[8px] bg-canvas-subdued/30 space-y-1.5">
+              <span className="font-semibold text-[13px] text-ink-primary block">
+                Bio & motivation
               </span>
-              <p className="text-xs text-ink-secondary leading-relaxed">
+              <p className="text-[13px] text-ink-secondary leading-relaxed">
                 {inspecting.profile.bio}
               </p>
             </div>
 
             {/* Skills Catalog */}
-            <div className="p-4 border-2 border-border bg-canvas-subdued space-y-2">
-              <span className="font-bold text-xs tracking-tight text-ink-primary block">
-                Verified Skills
+            <div className="p-4 border border-[#D5DAE1] rounded-[8px] bg-canvas-subdued/30 space-y-2">
+              <span className="font-semibold text-[13px] text-ink-primary block">
+                Verified skills
               </span>
               <div className="flex flex-wrap gap-1.5">
                 {inspecting.profile.skills.map((s) => (
-                  <span key={s} className="px-2 py-0.5 bg-white border border-border font-mono text-[13px] font-medium text-ink-primary">
+                  <span key={s} className="px-2 py-0.5 bg-white border border-[#D5DAE1] rounded-[4px] font-mono text-[12px] font-medium text-ink-primary">
                     {s}
                   </span>
                 ))}
@@ -381,13 +377,13 @@ export const ManagerVolunteersPage: React.FC = () => {
 
             {/* Emergency Contact */}
             {inspecting.profile.emergencyContact && (
-              <div className="p-4 border-2 border-border bg-canvas-subdued space-y-1">
-                <span className="font-bold text-xs tracking-tight text-ink-primary block">
-                  Emergency Contact
+              <div className="p-4 border border-[#D5DAE1] rounded-[8px] bg-canvas-subdued/30 space-y-1">
+                <span className="font-semibold text-[13px] text-ink-primary block">
+                  Emergency contact
                 </span>
-                <p className="text-ink-secondary text-xs">
+                <p className="text-ink-secondary text-[13px]">
                   {inspecting.profile.emergencyContact.name} ({inspecting.profile.emergencyContact.relationship}) •{' '}
-                  <span className="font-mono font-bold text-ink-primary">{inspecting.profile.emergencyContact.phone}</span>
+                  <span className="font-mono font-semibold text-ink-primary">{inspecting.profile.emergencyContact.phone}</span>
                 </p>
               </div>
             )}

@@ -47,14 +47,14 @@ This document tracks visual, typographic, contrast, and plain language complianc
 | **Team Lead** | `/team-lead/ratings` | `pages/team-lead/TeamLeadRatingsPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Cleaned) | Pass (Cleaned) | Pass (Clean) | Done |
 | **Team Lead** | `/team-lead/recommend-promotion` | `pages/team-lead/TeamLeadRecommendPromotionPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Cleaned) | Pass (Cleaned) | Pass (Clean) | Done |
 | **Team Lead** | `/team-lead/announcements` | `pages/team-lead/TeamLeadAnnouncementsPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Stream feed) | Pass (Cleaned) | Pass (Clean) | Done |
-| **Manager** | `/manager/dashboard` | `pages/manager/ManagerDashboardPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Manager** | `/manager/applications` | `pages/manager/ManagerApplicationsPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Manager** | `/manager/volunteers` | `pages/manager/ManagerVolunteersPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Manager** | `/manager/activities` | `pages/manager/ManagerActivitiesPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Manager** | `/manager/promotions` | `pages/manager/ManagerPromotionsPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Manager** | `/manager/announcements` | `pages/manager/ManagerAnnouncementsPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Manager** | `/manager/feedback` | `pages/manager/ManagerFeedbackPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Manager** | `/manager/reports` | `pages/manager/ManagerReportsPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
+| **Manager** | `/manager/dashboard` | `pages/manager/ManagerDashboardPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Lead stat) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Manager** | `/manager/applications` | `pages/manager/ManagerApplicationsPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Ledger rows) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Manager** | `/manager/volunteers` | `pages/manager/ManagerVolunteersPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Ledger rows) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Manager** | `/manager/activities` | `pages/manager/ManagerActivitiesPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Ledger rows) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Manager** | `/manager/promotions` | `pages/manager/ManagerPromotionsPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Lead stat) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Manager** | `/manager/announcements` | `pages/manager/ManagerAnnouncementsPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Stream feed) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Manager** | `/manager/feedback` | `pages/manager/ManagerFeedbackPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Cleaned) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Manager** | `/manager/reports` | `pages/manager/ManagerReportsPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Ridgeline graph) | Pass (Cleaned) | Pass (Clean) | Done |
 | **Finance** | `/finance/overview` | `pages/finance/FinanceOverviewPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
 | **Finance** | `/finance/payments` | `pages/finance/FinancePaymentsPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
 | **Finance** | `/finance/needs-review` | `pages/finance/FinanceNeedsReviewPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |

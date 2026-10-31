@@ -4,23 +4,17 @@ import { useToast } from '../../components/ui/ToastContext';
 import { 
   DownloadSimple, 
   Printer, 
-  ChartLineUp, 
-  UsersThree, 
-  Clock, 
-  CalendarCheck, 
-  Trophy, 
-  MapPin, 
   Star 
 } from '@phosphor-icons/react';
 
 export const ManagerReportsPage: React.FC = () => {
-  const [selectedPeriod, setSelectedPeriod] = useState('2026-10');
+  const [selectedPeriod] = useState('2026-10');
   const toast = useToast();
 
   const handleExportCSV = () => {
     // Generate real CSV content
     const csvContent = [
-      'VTS CIVIC VOLUNTEER PLATFORM - EXECUTIVE MANAGEMENT REPORT',
+      'VTS VOLUNTEER PLATFORM - EXECUTIVE MANAGEMENT REPORT',
       `Generated Date,${new Date().toISOString()}`,
       `Period,${selectedPeriod}`,
       '',
@@ -33,7 +27,7 @@ export const ManagerReportsPage: React.FC = () => {
       'Bahir Dar,2,5%,Active',
       '',
       'SECTION 2: CORPS DISTRIBUTION BY RANK',
-      'Rank,Count,Altitude Threshold,Status',
+      'Rank,Count,Rank Threshold,Status',
       'Member,28,0 hrs,Active Volunteer',
       'Senior Member,10,60 hrs,Elevated',
       'Team Lead,3,150 hrs,Field Officer',
@@ -47,7 +41,7 @@ export const ManagerReportsPage: React.FC = () => {
       '',
       'SECTION 4: ACTIVITY ATTENDANCE TURNOUT',
       'Activity Title,Area,Capacity,Attended,Turnout Rate',
-      'Meskel Square Civic Clean-up,Addis Ababa,20,19,95%',
+      'Meskel Square Clean-up,Addis Ababa,20,19,95%',
       'Entoto Forest Ridge Cleanup,Addis Ababa,25,24,96%',
       'Bishoftu Lake Eco Trail Restoration,Bishoftu,15,14,93%',
       'Hawassa Youth Health Outreach,Hawassa,12,11,92%',
@@ -81,22 +75,17 @@ export const ManagerReportsPage: React.FC = () => {
   return (
     <div className="space-y-8 text-left">
       {/* Header */}
-      <div
-        className="border-4 border-ink-primary bg-white p-6 sm:p-8 space-y-4 shadow-ticket"
-        style={{
-          clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)',
-        }}
-      >
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b-2 border-ink-primary pb-5">
+      <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 space-y-4 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#D5DAE1] pb-5">
           <div className="space-y-1">
-            <span className="font-sans text-xs font-bold text-role-manager tracking-tight block">
-              Program Intelligence & Analytics
+            <span className="font-sans text-[13px] font-semibold text-role-manager block">
+              Program intelligence & analytics
             </span>
             <h1 className="font-display font-bold text-3xl sm:text-4xl tracking-tight text-ink-primary leading-tight">
               Service operations reports
             </h1>
-            <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
-              Service activity models, applicant funnel conversions, regional footprint, and service hour records.
+            <p className="font-sans text-[13px] sm:text-sm text-ink-secondary mt-1">
+              Service activity models, applicant funnel conversions, territorial footprint, and service hour records.
             </p>
           </div>
 
@@ -122,32 +111,27 @@ export const ManagerReportsPage: React.FC = () => {
       </div>
 
       {/* REPORT 1: Hours by Period */}
-      <div
-        className="border-2 border-ink-primary bg-white p-6 sm:p-8 space-y-5 shadow-ticket"
-        style={{
-          clipPath: 'polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)',
-        }}
-      >
-        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b-2 border-border pb-3">
+      <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 space-y-5 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-[#D5DAE1] pb-3">
           <div>
-            <span className="font-sans text-xs font-bold text-role-manager tracking-tight block">
-              Report 1 • Service Trajectory
+            <span className="font-sans text-[13px] font-semibold text-role-manager block">
+              Report 1 • Service trajectory
             </span>
             <h3 className="font-display text-xl sm:text-2xl font-bold text-ink-primary">
               Verified hours by period
             </h3>
           </div>
-          <span className="font-sans text-xs font-bold text-role-volunteer bg-canvas-subdued border border-[#D5DAE1] px-2.5 py-1 rounded-[4px]">
-            Total Logged: 1,033.0 Verified Hours
+          <span className="font-sans text-[13px] font-semibold text-role-volunteer bg-canvas-subdued/50 border border-[#D5DAE1] px-2.5 py-1 rounded-[4px]">
+            Total logged: 1,033.0 verified hours
           </span>
         </div>
 
-        <p className="text-xs text-ink-secondary font-sans leading-relaxed">
+        <p className="text-[13px] text-ink-secondary font-sans leading-relaxed">
           Cumulative service hours logged across the operating periods.
         </p>
 
         {/* Custom SVG Ridgeline Profile */}
-        <div className="border border-[#D5DAE1] bg-canvas-subdued rounded-[8px] p-4 overflow-hidden relative">
+        <div className="border border-[#D5DAE1] bg-canvas-subdued/30 rounded-[8px] p-4 overflow-hidden relative">
           <svg viewBox="0 0 800 240" className="w-full h-48 sm:h-60" preserveAspectRatio="none">
             <defs>
               <linearGradient id="ridgeGradient" x1="0" y1="0" x2="0" y2="1">
@@ -156,7 +140,7 @@ export const ManagerReportsPage: React.FC = () => {
               </linearGradient>
             </defs>
 
-            {/* Altitude Contour Grid Lines */}
+            {/* Grid Lines */}
             <line x1="40" y1="40" x2="760" y2="40" stroke="#CBD5E1" strokeDasharray="3 3" strokeWidth="1" />
             <text x="765" y="44" fill="#64748B" fontSize="10">500h (Peak)</text>
 
@@ -184,21 +168,17 @@ export const ManagerReportsPage: React.FC = () => {
             />
 
             {/* Waypoint Peak Pins */}
-            {/* July Start */}
             <circle cx="50" cy="195" r="4.5" fill="#FFFFFF" stroke="#0E6266" strokeWidth="3" />
             <text x="35" y="230" fill="#475569" fontSize="11" fontFamily="JetBrains Mono" fontWeight="bold">JUL (Base)</text>
 
-            {/* August */}
             <circle cx="220" cy="170" r="4.5" fill="#FFFFFF" stroke="#0E6266" strokeWidth="3" />
             <text x="200" y="155" fill="#0E6266" fontSize="10" fontFamily="JetBrains Mono" fontWeight="bold">180.5h</text>
             <text x="205" y="230" fill="#475569" fontSize="11" fontFamily="JetBrains Mono" fontWeight="bold">AUG</text>
 
-            {/* September */}
             <circle cx="430" cy="100" r="5" fill="#FFFFFF" stroke="#0E6266" strokeWidth="3.5" />
             <text x="410" y="85" fill="#0E6266" fontSize="10" fontFamily="JetBrains Mono" fontWeight="bold">340.0h</text>
             <text x="415" y="230" fill="#475569" fontSize="11" fontFamily="JetBrains Mono" fontWeight="bold">SEP</text>
 
-            {/* October Peak */}
             <circle cx="650" cy="42" r="6" fill="#0E6266" stroke="#FFFFFF" strokeWidth="2.5" />
             <text x="615" y="26" fill="#0E6266" fontSize="12" fontFamily="JetBrains Mono" fontWeight="900">512.5h (PEAK)</text>
             <text x="635" y="230" fill="#0E6266" fontSize="11" fontFamily="JetBrains Mono" fontWeight="900">OCT (Now)</text>
@@ -208,46 +188,41 @@ export const ManagerReportsPage: React.FC = () => {
 
       {/* REPORT 2 & 3: 2-Column Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* REPORT 2: Application Funnel (Waypoint Route Ascent) */}
-        <div
-          className="border-2 border-ink-primary bg-white p-6 space-y-4 shadow-ticket"
-          style={{
-            clipPath: 'polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)',
-          }}
-        >
-          <div className="border-b-2 border-border pb-2">
-            <span className="font-sans text-xs font-bold text-role-manager tracking-tight block">
-              Report 2 • Admissions Pipeline
+        {/* REPORT 2: Application Funnel */}
+        <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 space-y-4 shadow-sm">
+          <div className="border-b border-[#D5DAE1] pb-2">
+            <span className="font-sans text-[13px] font-semibold text-role-manager block">
+              Report 2 • Admissions pipeline
             </span>
-            <h3 className="font-display text-2xl font-black text-ink-primary">
-              Application Funnel (Waypoint Route)
+            <h3 className="font-display text-xl sm:text-2xl font-bold text-ink-primary">
+              Application funnel (intake to activation)
             </h3>
           </div>
 
-          <p className="text-xs text-ink-secondary leading-relaxed">
-            Ascent from initial platform registration to verified Telebirr fee activation.
+          <p className="text-[13px] text-ink-secondary leading-relaxed">
+            Progress from initial platform registration to verified Telebirr fee activation.
           </p>
 
-          <div className="space-y-3 font-mono text-xs pt-2">
+          <div className="space-y-3 font-mono text-[13px] pt-2">
             {[
               { label: 'Stage 1: Registered accounts', count: 48, pct: 100, note: 'Unique account signups', color: 'bg-ink-primary' },
               { label: 'Stage 2: Completed applications', count: 40, pct: 83, note: 'Submitted background details', color: 'bg-role-applicant' },
               { label: 'Stage 3: Accepted candidates', count: 32, pct: 67, note: 'Reviewed by admissions desk', color: 'bg-role-teamlead' },
               { label: 'Stage 4: Activated members', count: 28, pct: 58, note: 'Confirmed Telebirr & Member badge', color: 'bg-role-volunteer' },
             ].map((wp, idx) => (
-              <div key={idx} className="p-3 border-2 border-border bg-canvas-subdued space-y-1.5">
+              <div key={idx} className="p-3 border border-[#D5DAE1] rounded-[8px] bg-canvas-subdued/30 space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <span className="font-sans font-bold text-xs text-ink-primary">
+                  <span className="font-sans font-semibold text-[13px] text-ink-primary">
                     {wp.label}
                   </span>
-                  <span className="font-mono text-xs font-black text-ink-primary">
+                  <span className="font-mono text-[13px] font-bold text-ink-primary">
                     {wp.count} ({wp.pct}%)
                   </span>
                 </div>
-                <div className="w-full h-3 bg-white border border-border overflow-hidden">
+                <div className="w-full h-2.5 bg-white border border-[#D5DAE1] rounded-[4px] overflow-hidden">
                   <div className={`h-full ${wp.color}`} style={{ width: `${wp.pct}%` }} />
                 </div>
-                <span className="text-[13px] text-ink-tertiary block font-sans">
+                <span className="text-[12px] text-ink-tertiary block font-sans">
                   {wp.note}
                 </span>
               </div>
@@ -256,42 +231,37 @@ export const ManagerReportsPage: React.FC = () => {
         </div>
 
         {/* REPORT 3: Volunteers by Rank & Area */}
-        <div
-          className="border-2 border-ink-primary bg-white p-6 space-y-4 shadow-ticket"
-          style={{
-            clipPath: 'polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)',
-          }}
-        >
-          <div className="border-b-2 border-border pb-2">
-            <span className="font-sans text-xs font-bold text-role-manager tracking-tight block">
-              Report 3 • Territorial Footprint
+        <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 space-y-4 shadow-sm">
+          <div className="border-b border-[#D5DAE1] pb-2">
+            <span className="font-sans text-[13px] font-semibold text-role-manager block">
+              Report 3 • Territorial footprint
             </span>
-            <h3 className="font-display text-2xl font-black text-ink-primary">
-              Volunteers by Area & Rank Tier
+            <h3 className="font-display text-xl sm:text-2xl font-bold text-ink-primary">
+              Volunteers by area & rank tier
             </h3>
           </div>
 
-          <p className="text-xs text-ink-secondary leading-relaxed">
-            Geographic corps concentration across the 5 Ethiopian regional corridors.
+          <p className="text-[13px] text-ink-secondary leading-relaxed">
+            Geographic concentration across the 5 Ethiopian regional corridors.
           </p>
 
-          <div className="space-y-3 font-sans text-xs pt-2">
+          <div className="space-y-3 font-sans text-[13px] pt-2">
             {[
-              { area: 'Addis Ababa (Central Hub)', count: 24, pct: 57, ranks: '16 Members • 6 Seniors • 2 Leads' },
-              { area: 'Adama (East Shewa Hub)', count: 7, pct: 17, ranks: '5 Members • 1 Senior • 1 Lead' },
+              { area: 'Addis Ababa (Central Area)', count: 24, pct: 57, ranks: '16 Members • 6 Seniors • 2 Leads' },
+              { area: 'Adama (East Shewa Area)', count: 7, pct: 17, ranks: '5 Members • 1 Senior • 1 Lead' },
               { area: 'Bishoftu (Lakeside Environmental)', count: 5, pct: 12, ranks: '3 Members • 2 Seniors' },
               { area: 'Hawassa (Sidama Regional Corridor)', count: 4, pct: 9, ranks: '3 Members • 1 Senior' },
               { area: 'Bahir Dar (Tana Conservation)', count: 2, pct: 5, ranks: '2 Members' },
             ].map((reg) => (
-              <div key={reg.area} className="p-3 border-2 border-border bg-canvas-subdued space-y-1">
+              <div key={reg.area} className="p-3 border border-[#D5DAE1] rounded-[8px] bg-canvas-subdued/30 space-y-1">
                 <div className="flex justify-between items-baseline">
-                  <span className="font-bold text-xs text-ink-primary">{reg.area}</span>
-                  <span className="font-mono text-xs font-bold text-role-manager">{reg.count} volunteers ({reg.pct}%)</span>
+                  <span className="font-semibold text-[13px] text-ink-primary">{reg.area}</span>
+                  <span className="font-mono text-[12px] font-semibold text-role-manager">{reg.count} volunteers ({reg.pct}%)</span>
                 </div>
-                <div className="w-full h-2 bg-white border border-border">
+                <div className="w-full h-2 bg-white border border-[#D5DAE1] rounded-[4px] overflow-hidden">
                   <div className="h-full bg-role-manager" style={{ width: `${reg.pct}%` }} />
                 </div>
-                <span className="text-[13px] text-ink-tertiary block font-mono">
+                <span className="text-[12px] text-ink-tertiary block font-mono">
                   {reg.ranks}
                 </span>
               </div>
@@ -302,41 +272,36 @@ export const ManagerReportsPage: React.FC = () => {
 
       {/* REPORT 4 & 5: Activity Attendance & Top Volunteers */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* REPORT 4: Activity Attendance (Route Step Graph) */}
-        <div
-          className="border-2 border-ink-primary bg-white p-6 space-y-4 shadow-ticket"
-          style={{
-            clipPath: 'polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)',
-          }}
-        >
-          <div className="border-b-2 border-border pb-2">
-            <span className="font-sans text-xs font-bold text-role-manager tracking-tight block">
-              Report 4 • Field Turnout
+        {/* REPORT 4: Activity Attendance */}
+        <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 space-y-4 shadow-sm">
+          <div className="border-b border-[#D5DAE1] pb-2">
+            <span className="font-sans text-[13px] font-semibold text-role-manager block">
+              Report 4 • Field turnout
             </span>
-            <h3 className="font-display text-2xl font-black text-ink-primary">
-              Activity Attendance (Route Step Graph)
+            <h3 className="font-display text-xl sm:text-2xl font-bold text-ink-primary">
+              Activity attendance turnout rate
             </h3>
           </div>
 
-          <p className="text-xs text-ink-secondary leading-relaxed">
+          <p className="text-[13px] text-ink-secondary leading-relaxed">
             Attendance verification comparing enrolled capacity against actual check-ins.
           </p>
 
-          <div className="space-y-3 font-sans text-xs pt-2">
+          <div className="space-y-3 font-sans text-[13px] pt-2">
             {[
-              { title: 'Meskel Square Civic Clean-up', cap: 20, turn: 19, pct: 95 },
+              { title: 'Meskel Square Clean-up', cap: 20, turn: 19, pct: 95 },
               { title: 'Entoto Forest Ridge Cleanup', cap: 25, turn: 24, pct: 96 },
               { title: 'Bishoftu Lake Eco Trail Restoration', cap: 15, turn: 14, pct: 93 },
               { title: 'Hawassa Youth Health Outreach', cap: 12, turn: 11, pct: 92 },
               { title: 'Adama Youth Mentorship Session', cap: 18, turn: 16, pct: 89 },
             ].map((item, idx) => (
-              <div key={idx} className="p-3 border-2 border-border bg-canvas-subdued space-y-1">
+              <div key={idx} className="p-3 border border-[#D5DAE1] rounded-[8px] bg-canvas-subdued/30 space-y-1">
                 <div className="flex justify-between items-baseline">
-                  <span className="font-bold text-xs text-ink-primary">{item.title}</span>
-                  <span className="font-mono text-xs font-bold text-civic-green">{item.pct}% ({item.turn}/{item.cap})</span>
+                  <span className="font-semibold text-[13px] text-ink-primary">{item.title}</span>
+                  <span className="font-mono text-[12px] font-semibold text-role-volunteer">{item.pct}% ({item.turn}/{item.cap})</span>
                 </div>
-                <div className="w-full h-2.5 bg-white border border-border">
-                  <div className="h-full bg-civic-green" style={{ width: `${item.pct}%` }} />
+                <div className="w-full h-2 bg-white border border-[#D5DAE1] rounded-[4px] overflow-hidden">
+                  <div className="h-full bg-role-volunteer" style={{ width: `${item.pct}%` }} />
                 </div>
               </div>
             ))}
@@ -344,26 +309,21 @@ export const ManagerReportsPage: React.FC = () => {
         </div>
 
         {/* REPORT 5: Top Volunteers */}
-        <div
-          className="border-2 border-ink-primary bg-white p-6 space-y-4 shadow-ticket"
-          style={{
-            clipPath: 'polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)',
-          }}
-        >
+        <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 space-y-4 shadow-sm">
           <div className="border-b border-[#D5DAE1] pb-2">
-            <span className="font-sans text-xs font-bold text-role-manager block">
+            <span className="font-sans text-[13px] font-semibold text-role-manager block">
               Report 5 • Top contributors
             </span>
-            <h3 className="font-display text-xl font-bold text-ink-primary">
+            <h3 className="font-display text-xl sm:text-2xl font-bold text-ink-primary">
               Top volunteers by service hours
             </h3>
           </div>
 
-          <p className="text-xs text-ink-secondary leading-relaxed">
-            Volunteers who have ascended to highest verified service hours and leadership ratings.
+          <p className="text-[13px] text-ink-secondary leading-relaxed">
+            Volunteers who have achieved highest verified service hours and leadership ratings.
           </p>
 
-          <div className="divide-y divide-border border-2 border-border bg-white pt-1">
+          <div className="divide-y divide-[#D5DAE1] border border-[#D5DAE1] rounded-[8px] bg-white overflow-hidden pt-1">
             {[
               { rankNum: 1, name: 'Yonas Kebede', role: 'Team Lead', hours: 192.5, acts: 24, rating: 4.9, area: 'Adama' },
               { rankNum: 2, name: 'Selam Alemu', role: 'Team Lead Candidate', hours: 168.0, acts: 22, rating: 4.9, area: 'Bishoftu' },
@@ -371,26 +331,26 @@ export const ManagerReportsPage: React.FC = () => {
               { rankNum: 4, name: 'Almaz Fikre', role: 'Senior Member', hours: 74.5, acts: 9, rating: 4.7, area: 'Addis Ababa' },
               { rankNum: 5, name: 'Dawit Bekele', role: 'Member', hours: 36.5, acts: 5, rating: 4.8, area: 'Addis Ababa' },
             ].map((v) => (
-              <div key={v.rankNum} className="p-3 flex items-center justify-between gap-3 text-xs">
+              <div key={v.rankNum} className="p-3 flex items-center justify-between gap-3 text-[13px]">
                 <div className="flex items-center gap-3">
-                  <span className="font-display text-xl font-black text-role-manager w-5 text-center">
+                  <span className="font-display text-lg font-bold text-role-manager w-5 text-center">
                     #{v.rankNum}
                   </span>
                   <div>
-                    <span className="font-bold text-ink-primary text-sm block">
+                    <span className="font-semibold text-ink-primary text-sm block">
                       {v.name}
                     </span>
-                    <span className="text-[13px] text-ink-tertiary font-mono">
+                    <span className="text-[12px] text-ink-tertiary font-mono">
                       {v.role} • {v.area}
                     </span>
                   </div>
                 </div>
 
                 <div className="text-right font-mono">
-                  <span className="text-sm font-bold text-ink-primary block leading-none">
+                  <span className="text-sm font-semibold text-ink-primary block leading-none">
                     {v.hours} hrs
                   </span>
-                  <span className="text-[13px] text-[#784E0B] flex items-center justify-end gap-0.5 pt-0.5">
+                  <span className="text-[12px] text-role-applicant flex items-center justify-end gap-0.5 pt-0.5">
                     <Star className="w-3 h-3 fill-amber-500 text-amber-500" weight="fill" />
                     <span>{v.rating} ({v.acts} shifts)</span>
                   </span>

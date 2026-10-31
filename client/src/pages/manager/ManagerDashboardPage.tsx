@@ -110,28 +110,28 @@ export const ManagerDashboardPage: React.FC = () => {
           {/* Simple Inline List with subtle dividers */}
           <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm pt-2 md:pt-0 border-t md:border-t-0 border-[#D5DAE1]">
             <div className="space-y-0.5">
-              <span className="text-xs text-ink-secondary block">Promotions waiting</span>
+              <span className="text-[13px] text-ink-secondary block">Promotions waiting</span>
               <span className="text-xl font-bold text-role-teamlead">
                 {stats?.promotionsWaiting || 0}
               </span>
             </div>
             <div className="w-px h-8 bg-[#D5DAE1] hidden sm:block" />
             <div className="space-y-0.5">
-              <span className="text-xs text-ink-secondary block">New members</span>
+              <span className="text-[13px] text-ink-secondary block">New members</span>
               <span className="text-xl font-bold text-role-volunteer">
                 +{stats?.newVolunteersThisMonth || 0}
               </span>
             </div>
             <div className="w-px h-8 bg-[#D5DAE1] hidden sm:block" />
             <div className="space-y-0.5">
-              <span className="text-xs text-ink-secondary block">Approved hours</span>
+              <span className="text-[13px] text-ink-secondary block">Approved hours</span>
               <span className="text-xl font-bold text-ink-primary">
                 {stats?.approvedHoursThisMonth || 0} hrs
               </span>
             </div>
             <div className="w-px h-8 bg-[#D5DAE1] hidden sm:block" />
             <div className="space-y-0.5">
-              <span className="text-xs text-ink-secondary block">Open activities</span>
+              <span className="text-[13px] text-ink-secondary block">Open activities</span>
               <span className="text-xl font-bold text-ink-primary">
                 {stats?.upcomingActivities || 0}
               </span>
