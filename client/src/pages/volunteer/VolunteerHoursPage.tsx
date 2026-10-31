@@ -4,7 +4,7 @@ import * as api from '../../api';
 import { HoursEntry, Activity } from '../../types';
 import { LedgerTable, LedgerColumn, Button, StatusMark, SheetModal, Input, Select, Skeleton, EmptyState } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
-import { Clock, Plus, CheckCircle, Warning, FileText, CalendarBlank } from '@phosphor-icons/react';
+import { Clock, Plus, Warning } from '@phosphor-icons/react';
 
 export const VolunteerHoursPage: React.FC = () => {
   const { user } = useAuth();
@@ -105,10 +105,10 @@ export const VolunteerHoursPage: React.FC = () => {
 
   const columns: LedgerColumn<HoursEntry>[] = [
     {
-      header: 'Date & Time',
+      header: 'Date & time',
       cell: (entry) => (
         <div>
-          <span className="font-mono text-xs font-bold text-ink-primary block">
+          <span className="font-mono text-[13px] font-semibold text-ink-primary block">
             {new Date(entry.checkIn).toLocaleDateString('en-US', {
               month: 'short',
               day: 'numeric',
@@ -122,23 +122,23 @@ export const VolunteerHoursPage: React.FC = () => {
       ),
     },
     {
-      header: 'Activity Title & Source',
+      header: 'Activity title & source',
       cell: (entry) => (
         <div className="space-y-0.5">
-          <span className="font-sans font-bold text-ink-primary block">
-            {entry.activityTitle || 'Community Service Activity'}
+          <span className="font-sans font-medium text-ink-primary block">
+            {entry.activityTitle || 'Community service activity'}
           </span>
-          <span className="font-mono text-[13px] font-bold text-ink-tertiary block">
+          <span className="font-mono text-[13px] text-ink-tertiary block">
             Source: {entry.source === 'manual' ? 'Manual claim' : 'Session code verified'}
           </span>
           {entry.manualNote && (
-            <p className="text-xs text-ink-secondary italic pt-0.5 max-w-md">
+            <p className="text-[13px] text-ink-secondary italic pt-0.5 max-w-md">
               "{entry.manualNote}"
             </p>
           )}
           {entry.decisionReason && entry.status === 'declined' && (
-            <div className="p-2 border border-role-teamlead bg-role-teamleadLight text-role-teamlead text-xs font-sans mt-1">
-              <strong>Decline Reason:</strong> {entry.decisionReason}
+            <div className="p-2 border border-role-teamlead/30 rounded-[6px] bg-role-teamleadLight/20 text-role-teamlead text-[13px] font-sans mt-1">
+              <strong>Decline reason:</strong> {entry.decisionReason}
             </div>
           )}
         </div>
@@ -147,14 +147,14 @@ export const VolunteerHoursPage: React.FC = () => {
     {
       header: 'Duration',
       cell: (entry) => (
-        <span className="font-mono text-xs font-bold text-ink-primary">
+        <span className="font-mono text-[13px] font-semibold text-ink-primary">
           {Math.round((entry.minutes / 60) * 10) / 10} hrs{' '}
           <span className="text-[13px] text-ink-tertiary font-normal">({entry.minutes}m)</span>
         </span>
       ),
     },
     {
-      header: 'Decision Status',
+      header: 'Decision status',
       cell: (entry) => <StatusMark status={entry.status} size="sm" />,
     },
   ];
@@ -163,8 +163,8 @@ export const VolunteerHoursPage: React.FC = () => {
     return (
       <div className="space-y-6">
         <Skeleton variant="text" className="h-8 w-1/3" />
-        <Skeleton variant="rect" className="h-24" />
-        <Skeleton variant="rect" className="h-64" />
+        <Skeleton variant="rect" className="h-24 rounded-[10px]" />
+        <Skeleton variant="rect" className="h-64 rounded-[10px]" />
       </div>
     );
   }
@@ -172,15 +172,15 @@ export const VolunteerHoursPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Top Header */}
-      <div className="border-b-2 border-border pb-5 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div className="border-b border-[#D5DAE1] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <span className="font-sans text-xs font-bold text-role-volunteer tracking-tight block">
-            Service Record
+          <span className="font-sans text-[13px] font-semibold text-role-volunteer block">
+            Service record
           </span>
-          <h1 className="font-display text-4xl sm:text-5xl font-black tracking-tight text-ink-primary leading-none mt-1">
-            Logged Hours Ledger
+          <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
+            Logged hours ledger
           </h1>
-          <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
+          <p className="font-sans text-[13px] sm:text-sm text-ink-secondary mt-1">
             Complete record of your volunteer hours, attendance check-ins, and manual claims.
           </p>
         </div>
@@ -191,17 +191,17 @@ export const VolunteerHoursPage: React.FC = () => {
           leftIcon={<Plus className="w-4 h-4" weight="bold" />}
           onClick={() => setIsModalOpen(true)}
         >
-          Add Missed Hours
+          Add missed hours
         </Button>
       </div>
 
-      {/* Connected Metric Strip (Never floating 4-cards) */}
-      <div className="border-2 border-ink-primary bg-white shadow-ticket grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x-2 divide-ink-primary font-mono">
+      {/* Connected Metric Strip */}
+      <div className="border border-[#D5DAE1] rounded-[10px] bg-white shadow-sm grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-[#D5DAE1] font-mono">
         <div className="p-5 space-y-1">
-          <span className="text-xs font-bold text-ink-tertiary block">
-            Approved Service Hours
+          <span className="text-[13px] font-medium text-ink-tertiary block">
+            Approved service hours
           </span>
-          <div className="font-display text-4xl sm:text-5xl font-black text-role-volunteer leading-none">
+          <div className="font-display text-3xl sm:text-4xl font-bold text-role-volunteer leading-none">
             {Math.round((totalApprovedMinutes / 60) * 10) / 10}{' '}
             <span className="font-mono text-sm font-normal text-ink-secondary">hrs</span>
           </div>
@@ -211,10 +211,10 @@ export const VolunteerHoursPage: React.FC = () => {
         </div>
 
         <div className="p-5 space-y-1">
-          <span className="text-xs font-bold text-ink-tertiary block">
-            Hours Awaiting Approval
+          <span className="text-[13px] font-medium text-ink-tertiary block">
+            Hours awaiting approval
           </span>
-          <div className="font-display text-4xl sm:text-5xl font-black text-role-applicant leading-none">
+          <div className="font-display text-3xl sm:text-4xl font-bold text-role-applicant leading-none">
             {Math.round((totalLoggedMinutes / 60) * 10) / 10}{' '}
             <span className="font-mono text-sm font-normal text-ink-secondary">hrs</span>
           </div>
@@ -224,10 +224,10 @@ export const VolunteerHoursPage: React.FC = () => {
         </div>
 
         <div className="p-5 space-y-1">
-          <span className="text-xs font-bold text-ink-tertiary block">
-            Declined Hours
+          <span className="text-[13px] font-medium text-ink-tertiary block">
+            Declined hours
           </span>
-          <div className="font-display text-4xl sm:text-5xl font-black text-ink-primary leading-none">
+          <div className="font-display text-3xl sm:text-4xl font-bold text-ink-primary leading-none">
             {Math.round((totalDeclinedMinutes / 60) * 10) / 10}{' '}
             <span className="font-mono text-sm font-normal text-ink-secondary">hrs</span>
           </div>
@@ -243,11 +243,11 @@ export const VolunteerHoursPage: React.FC = () => {
           icon={<Clock className="w-8 h-8 text-ink-secondary" weight="bold" />}
           title="No hours logged yet"
           description="Check in to upcoming activities or submit manual hours if you participated in an unrecorded session."
-          actionLabel="Add Missed Hours"
+          actionLabel="Add missed hours"
           onAction={() => setIsModalOpen(true)}
         />
       ) : (
-        <div className="border-2 border-ink-primary bg-white shadow-ticket">
+        <div className="border border-[#D5DAE1] rounded-[10px] bg-white shadow-sm overflow-hidden">
           <LedgerTable
             columns={columns}
             data={hours}
@@ -260,22 +260,22 @@ export const VolunteerHoursPage: React.FC = () => {
       <SheetModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title="Add Missed Hours"
+        title="Add missed hours"
       >
         <form onSubmit={handleManualSubmit} className="space-y-5">
-          <p className="font-sans text-xs text-ink-secondary leading-relaxed">
+          <p className="font-sans text-[13px] text-ink-secondary leading-relaxed">
             If you attended an activity but could not check in with the Team Lead on-site, enter your details below. Manual hours require Team Lead verification.
           </p>
 
           {modalError && (
-            <div className="p-3 border-2 border-role-teamlead bg-role-teamleadLight text-role-teamlead text-xs font-sans font-bold flex items-center gap-2">
+            <div className="p-3 border border-role-teamlead/30 rounded-[8px] bg-role-teamleadLight/20 text-role-teamlead text-[13px] font-sans font-medium flex items-center gap-2">
               <Warning className="w-4 h-4 shrink-0" weight="bold" />
               <span>{modalError}</span>
             </div>
           )}
 
           <Select
-            label="Attended Activity"
+            label="Attended activity"
             value={selectedActivityId}
             onChange={(e) => setSelectedActivityId(e.target.value)}
             options={activities.map((a) => ({
@@ -286,7 +286,7 @@ export const VolunteerHoursPage: React.FC = () => {
           />
 
           <Input
-            label="Service Date"
+            label="Service date"
             type="date"
             value={manualDate}
             max="2026-10-31"
@@ -317,20 +317,20 @@ export const VolunteerHoursPage: React.FC = () => {
           </div>
 
           <div className="space-y-1.5 text-left">
-            <label className="block text-xs font-bold text-ink-primary">
-              Explanation for Manual Claim
+            <label className="block text-[13px] font-medium text-ink-primary">
+              Explanation for manual claim
             </label>
             <textarea
               rows={3}
               value={manualNote}
               onChange={(e) => setManualNote(e.target.value)}
               placeholder="e.g. Arrived directly at field site station B; phone battery ran out before check-in code was scanned."
-              className="w-full bg-canvas text-ink-primary font-sans text-xs border-2 border-ink-primary p-2.5 focus:outline-none focus:ring-2 focus:ring-role-volunteer"
+              className="w-full bg-white text-ink-primary font-sans text-[13px] border-[1.5px] border-[#475569] rounded-[8px] p-2.5 focus:outline-none focus:ring-2 focus:ring-role-volunteer"
               required
             />
           </div>
 
-          <div className="flex justify-end gap-2 pt-2 border-t border-border">
+          <div className="flex justify-end gap-2 pt-2 border-t border-[#D5DAE1]">
             <Button
               type="button"
               variant="secondary"
@@ -343,7 +343,7 @@ export const VolunteerHoursPage: React.FC = () => {
               variant="primary"
               isLoading={isSubmitting}
             >
-              Submit for Lead Approval
+              Submit for lead approval
             </Button>
           </div>
         </form>

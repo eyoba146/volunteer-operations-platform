@@ -36,8 +36,8 @@ export const VolunteerMyActivitiesPage: React.FC = () => {
     return (
       <div className="space-y-6">
         <Skeleton variant="text" className="h-8 w-1/3" />
-        <Skeleton variant="rect" className="h-28" />
-        <Skeleton variant="rect" className="h-28" />
+        <Skeleton variant="rect" className="h-28 rounded-[10px]" />
+        <Skeleton variant="rect" className="h-28 rounded-[10px]" />
       </div>
     );
   }
@@ -69,23 +69,23 @@ export const VolunteerMyActivitiesPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="border-b-2 border-border pb-5">
-        <span className="font-sans text-xs font-bold text-role-volunteer tracking-tight block">
-          Personal Assignments
+      <div className="border-b border-[#D5DAE1] pb-4">
+        <span className="font-sans text-[13px] font-semibold text-role-volunteer block">
+          Personal assignments
         </span>
-        <h1 className="font-display text-4xl sm:text-5xl font-black tracking-tight text-ink-primary leading-none mt-1">
-          My Volunteer Roster
+        <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
+          My volunteer roster
         </h1>
-        <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
+        <p className="font-sans text-[13px] sm:text-sm text-ink-secondary mt-1">
           Track assignments you have registered for, check in to recorded shifts, and inspect past verified attendance.
         </p>
       </div>
 
       <Tabs
         tabs={[
-          { id: 'upcoming', label: 'Upcoming & Active', count: upcoming.length },
-          { id: 'waiting', label: 'Waiting List', count: waiting.length },
-          { id: 'past', label: 'Past & Attended', count: past.length },
+          { id: 'upcoming', label: 'Upcoming & active', count: upcoming.length },
+          { id: 'waiting', label: 'Waiting list', count: waiting.length },
+          { id: 'past', label: 'Past & attended', count: past.length },
         ]}
         activeTab={activeTab}
         onChange={setActiveTab}
@@ -108,7 +108,7 @@ export const VolunteerMyActivitiesPage: React.FC = () => {
               ? 'You are not currently waiting for spots in any full activities.'
               : 'Activities you attend and check into will be recorded here.'
           }
-          actionLabel="Browse Available Activities"
+          actionLabel="Browse available activities"
           onAction={() => navigate('/volunteer/activities')}
         />
       ) : (
@@ -116,14 +116,11 @@ export const VolunteerMyActivitiesPage: React.FC = () => {
           {currentList.map(({ activity, enrollment }) => (
             <div
               key={enrollment.id}
-              className="border-2 border-ink-primary bg-white p-5 sm:p-6 shadow-ticket flex flex-col md:flex-row md:items-center justify-between gap-6"
-              style={{
-                clipPath: 'polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%)',
-              }}
+              className="border border-[#D5DAE1] rounded-[10px] bg-white p-5 sm:p-6 shadow-sm hover:border-ink-secondary transition-colors flex flex-col md:flex-row md:items-center justify-between gap-6"
             >
               <div className="space-y-2 flex-1">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="font-mono text-xs font-bold px-2 py-0.5 bg-canvas border border-ink-primary text-ink-primary">
+                  <span className="font-mono text-[13px] font-medium px-2 py-0.5 bg-canvas-subdued/50 border border-[#D5DAE1] rounded-[4px] text-ink-primary">
                     {activity.type.replace('_', ' ')}
                   </span>
                   <StatusMark status={enrollment.status as any} size="sm" />
@@ -131,12 +128,12 @@ export const VolunteerMyActivitiesPage: React.FC = () => {
 
                 <Link
                   to={`/volunteer/activities/${activity.id}`}
-                  className="font-display text-2xl sm:text-3xl font-black text-ink-primary hover:text-role-volunteer transition-colors block leading-tight"
+                  className="font-display text-xl sm:text-2xl font-bold text-ink-primary hover:text-role-volunteer transition-colors block leading-tight"
                 >
                   {activity.title}
                 </Link>
 
-                <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-ink-secondary pt-1">
+                <div className="flex flex-wrap items-center gap-4 text-[13px] font-mono text-ink-secondary pt-1">
                   <span className="flex items-center gap-1.5">
                     <Clock className="w-4 h-4 text-ink-tertiary" />
                     <span>
@@ -164,7 +161,7 @@ export const VolunteerMyActivitiesPage: React.FC = () => {
                     leftIcon={<QrCode className="w-4 h-4" weight="bold" />}
                     onClick={() => navigate('/volunteer/check-in')}
                   >
-                    Check In
+                    Check in
                   </Button>
                 )}
                 <Button
@@ -173,7 +170,7 @@ export const VolunteerMyActivitiesPage: React.FC = () => {
                   rightIcon={<ArrowRight className="w-4 h-4" weight="bold" />}
                   onClick={() => navigate(`/volunteer/activities/${activity.id}`)}
                 >
-                  View Details
+                  View details
                 </Button>
               </div>
             </div>

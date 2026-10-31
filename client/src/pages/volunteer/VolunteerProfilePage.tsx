@@ -2,9 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
 import { VolunteerProfile } from '../../types';
-import { Input, Select, Button, StatusMark, Avatar, Skeleton, Tabs, ProfilePhotoModal } from '../../components/ui';
+import { Input, Select, Button, StatusMark, Tabs, Skeleton, Avatar, ProfilePhotoModal } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
-import { FloppyDisk, UserCircle, Phone, MapPin, Heart, Bell, ShieldCheck, Camera } from '@phosphor-icons/react';
+import { 
+  Camera, 
+  FloppyDisk, 
+  Heart
+} from '@phosphor-icons/react';
 
 const ETHIOPIAN_AREAS = [
   { value: 'Bole, Addis Ababa', label: 'Bole, Addis Ababa' },
@@ -23,39 +27,40 @@ export const VolunteerProfilePage: React.FC = () => {
   const { user, profile, refreshUser } = useAuth();
   const [activeTab, setActiveTab] = useState<'profile' | 'notifications'>('profile');
   const [photoModalOpen, setPhotoModalOpen] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const toast = useToast();
 
-  // Profile Fields
-  const [fullName, setFullName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [area, setArea] = useState('Bole, Addis Ababa');
-  const [bio, setBio] = useState('');
-  const [languages, setLanguages] = useState('');
-  const [skills, setSkills] = useState('');
-  const [contactName, setContactName] = useState('');
-  const [contactRel, setContactRel] = useState('');
-  const [contactPhone, setContactPhone] = useState('');
+  // Profile fields
+  const [fullName, setFullName] = useState(profile?.fullName || '');
+  const [phone, setPhone] = useState(profile?.phone || '');
+  const [area, setArea] = useState(profile?.area || 'Bole, Addis Ababa');
+  const [languages, setLanguages] = useState(profile?.languages?.join(', ') || 'Amharic, English');
+  const [bio, setBio] = useState(profile?.bio || '');
+  const [skills, setSkills] = useState(profile?.skills?.join(', ') || '');
 
-  // Notification Preferences (FR-NTF-04)
+  // Emergency contact
+  const [contactName, setContactName] = useState(profile?.emergencyContact?.name || '');
+  const [contactRel, setContactRel] = useState(profile?.emergencyContact?.relationship || 'Parent');
+  const [contactPhone, setContactPhone] = useState(profile?.emergencyContact?.phone || '');
+
+  // Notifications
   const [notifyActivityReminders, setNotifyActivityReminders] = useState(true);
   const [notifyHoursDecisions, setNotifyHoursDecisions] = useState(true);
   const [notifyPromotionUpdates, setNotifyPromotionUpdates] = useState(true);
   const [notifyCommunityNotices, setNotifyCommunityNotices] = useState(true);
 
-  const [isSaving, setIsSaving] = useState(false);
-  const toast = useToast();
-
   useEffect(() => {
     if (profile) {
-      setFullName(profile.fullName || '');
-      setPhone(profile.phone || '');
-      setArea(profile.area || 'Bole, Addis Ababa');
+      setFullName(profile.fullName);
+      setPhone(profile.phone);
+      setArea(profile.area);
+      setLanguages(profile.languages?.join(', ') || 'Amharic, English');
       setBio(profile.bio || '');
-      setLanguages(profile.languages?.join(', ') || '');
       setSkills(profile.skills?.join(', ') || '');
       if (profile.emergencyContact) {
-        setContactName(profile.emergencyContact.name || '');
-        setContactRel(profile.emergencyContact.relationship || '');
-        setContactPhone(profile.emergencyContact.phone || '');
+        setContactName(profile.emergencyContact.name);
+        setContactRel(profile.emergencyContact.relationship);
+        setContactPhone(profile.emergencyContact.phone);
       }
     }
   }, [profile]);
@@ -63,15 +68,14 @@ export const VolunteerProfilePage: React.FC = () => {
   const handleSaveProfile = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) return;
-
     setIsSaving(true);
     try {
       await api.updateProfile(user.id, {
         fullName,
         phone,
         area,
-        bio,
         languages: languages.split(',').map((l) => l.trim()).filter(Boolean),
+        bio,
         skills: skills.split(',').map((s) => s.trim()).filter(Boolean),
         emergencyContact: {
           name: contactName,
@@ -80,7 +84,7 @@ export const VolunteerProfilePage: React.FC = () => {
         },
       });
       await refreshUser();
-      toast.success('Your profile changes have been saved.');
+      toast.success('Your profile details have been saved.');
     } catch (err: any) {
       toast.error(err.message || 'Could not save profile.');
     } finally {
@@ -94,14 +98,14 @@ export const VolunteerProfilePage: React.FC = () => {
     setTimeout(() => {
       setIsSaving(false);
       toast.success('Notification preferences updated successfully.');
-    }, 400);
+    }, 300);
   };
 
   if (!profile) {
     return (
-      <div className="space-y-6 max-w-3xl mx-auto">
-        <Skeleton variant="text" className="h-8 w-1/3" />
-        <Skeleton variant="rect" className="h-64" />
+      <div className="space-y-4 max-w-3xl mx-auto">
+        <Skeleton variant="text" className="h-10 w-1/3" />
+        <Skeleton variant="rect" className="h-48" />
       </div>
     );
   }
@@ -109,25 +113,20 @@ export const VolunteerProfilePage: React.FC = () => {
   return (
     <div className="max-w-3xl mx-auto space-y-8">
       {/* Top Header */}
-      <div className="border-b-2 border-border pb-5">
-        <span className="font-sans text-xs font-bold text-role-volunteer tracking-tight block">
-          Account & Preferences
+      <div className="border-b border-[#D5DAE1] pb-5">
+        <span className="font-sans text-[13px] font-bold text-role-volunteer tracking-tight block">
+          Account and preferences
         </span>
-        <h1 className="font-display text-4xl sm:text-5xl font-black tracking-tight text-ink-primary leading-none mt-1">
-          Volunteer Profile & Settings
+        <h1 className="font-display font-bold text-3xl sm:text-4xl tracking-tight text-ink-primary leading-tight mt-1">
+          Volunteer profile and settings
         </h1>
-        <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
+        <p className="font-sans text-sm text-ink-secondary mt-1">
           Manage your personal information, duty location, emergency contact, and communication alerts.
         </p>
       </div>
 
-      {/* Profile Overview Card (Ticket Silhouette) */}
-      <div
-        className="border-2 border-ink-primary bg-white p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6 shadow-[6px_6px_0_#111111]"
-        style={{
-          clipPath: 'polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)',
-        }}
-      >
+      {/* Profile Overview Card */}
+      <div className="border border-[#D5DAE1] bg-white rounded-[10px] p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6">
         <div className="flex flex-col items-center gap-3 shrink-0">
           <Avatar
             name={profile.fullName}
@@ -144,21 +143,21 @@ export const VolunteerProfilePage: React.FC = () => {
             onClick={() => setPhotoModalOpen(true)}
             leftIcon={<Camera className="w-4 h-4" weight="bold" />}
           >
-            Change Photo
+            Change photo
           </Button>
         </div>
 
         <div className="space-y-1.5 text-center sm:text-left flex-1">
           <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-            <h2 className="font-display text-3xl font-black text-ink-primary tracking-tight">
+            <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink-primary tracking-tight">
               {profile.fullName}
             </h2>
             <StatusMark status={profile.rank || 'member'} size="sm" />
           </div>
-          <p className="font-sans text-xs font-bold text-ink-secondary">
+          <p className="font-sans text-[13px] font-bold text-ink-secondary">
             Pass ID: {profile.volunteerNumber} • Registered: {profile.memberSince || 'Aug 2026'}
           </p>
-          <p className="font-sans text-xs text-ink-secondary">
+          <p className="font-sans text-[13px] text-ink-secondary">
             Username: <span className="font-bold text-ink-primary">{user?.username}</span> • Email: <span className="font-bold text-ink-primary">{user?.email}</span>
           </p>
         </div>
@@ -167,8 +166,8 @@ export const VolunteerProfilePage: React.FC = () => {
       {/* Tabs */}
       <Tabs
         tabs={[
-          { id: 'profile', label: 'Personal Information' },
-          { id: 'notifications', label: 'Notification Settings' },
+          { id: 'profile', label: 'Personal information' },
+          { id: 'notifications', label: 'Notification settings' },
         ]}
         activeTab={activeTab}
         onChange={(id) => setActiveTab(id as any)}
@@ -176,22 +175,22 @@ export const VolunteerProfilePage: React.FC = () => {
 
       {/* TAB 1: PROFILE DETAILS FORM */}
       {activeTab === 'profile' && (
-        <form onSubmit={handleSaveProfile} className="border-2 border-ink-primary bg-white p-6 sm:p-8 space-y-6 shadow-ticket">
-          <div className="border-b-2 border-border pb-3">
-            <h3 className="font-display text-2xl font-black text-ink-primary">
-              Contact & Regional Details
+        <form onSubmit={handleSaveProfile} className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 space-y-6">
+          <div className="border-b border-[#D5DAE1] pb-3">
+            <h3 className="font-display text-xl font-bold text-ink-primary">
+              Contact and community area details
             </h3>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input
-              label="Full Legal Name"
+              label="Full legal name"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               required
             />
             <Input
-              label="Mobile Phone Number"
+              label="Mobile phone number"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               required
@@ -200,14 +199,14 @@ export const VolunteerProfilePage: React.FC = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Select
-              label="Service Area / Hub"
+              label="Community area"
               value={area}
               onChange={(e) => setArea(e.target.value)}
               options={ETHIOPIAN_AREAS}
               required
             />
             <Input
-              label="Languages Spoken"
+              label="Languages spoken"
               value={languages}
               onChange={(e) => setLanguages(e.target.value)}
               placeholder="e.g. Amharic, English, Afaan Oromo"
@@ -215,33 +214,33 @@ export const VolunteerProfilePage: React.FC = () => {
           </div>
 
           <div className="space-y-1.5 text-left">
-            <label className="block text-xs font-bold text-ink-primary">
-              Volunteer Bio & Experience
+            <label className="block text-sm font-bold text-ink-primary">
+              Volunteer bio and experience
             </label>
             <textarea
               rows={3}
               value={bio}
               onChange={(e) => setBio(e.target.value)}
-              className="w-full bg-canvas text-ink-primary font-sans text-xs border-2 border-ink-primary p-2.5 focus:outline-none focus:ring-2 focus:ring-role-volunteer"
+              className="w-full bg-white text-ink-primary font-sans text-base border-[1.5px] border-[#475569] rounded-[8px] p-2.5 focus:border-ink-primary outline-none"
             />
           </div>
 
           <Input
-            label="Key Skills (comma separated)"
+            label="Key skills (comma separated)"
             value={skills}
             onChange={(e) => setSkills(e.target.value)}
             placeholder="e.g. First Aid, Logistics, Construction Support"
           />
 
           {/* Emergency Contact */}
-          <div className="space-y-4 pt-4 border-t-2 border-border">
-            <h4 className="font-display text-xl font-black text-ink-primary flex items-center gap-2">
+          <div className="space-y-4 pt-4 border-t border-[#D5DAE1]">
+            <h4 className="font-display text-xl font-bold text-ink-primary flex items-center gap-2">
               <Heart className="w-5 h-5 text-role-teamlead" weight="fill" />
-              <span>Emergency Contact Person</span>
+              <span>Emergency contact person</span>
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <Input
-                label="Contact Name"
+                label="Contact name"
                 value={contactName}
                 onChange={(e) => setContactName(e.target.value)}
                 required
@@ -253,7 +252,7 @@ export const VolunteerProfilePage: React.FC = () => {
                 required
               />
               <Input
-                label="Emergency Phone"
+                label="Emergency phone"
                 value={contactPhone}
                 onChange={(e) => setContactPhone(e.target.value)}
                 required
@@ -261,7 +260,7 @@ export const VolunteerProfilePage: React.FC = () => {
             </div>
           </div>
 
-          <div className="pt-4 border-t-2 border-border flex justify-end">
+          <div className="pt-4 border-t border-[#D5DAE1] flex justify-end">
             <Button
               type="submit"
               variant="primary"
@@ -269,25 +268,25 @@ export const VolunteerProfilePage: React.FC = () => {
               isLoading={isSaving}
               leftIcon={<FloppyDisk className="w-4 h-4" weight="bold" />}
             >
-              Save Profile Changes
+              Save profile changes
             </Button>
           </div>
         </form>
       )}
 
-      {/* TAB 2: NOTIFICATION PREFERENCES (FR-NTF-04) */}
+      {/* TAB 2: NOTIFICATION PREFERENCES */}
       {activeTab === 'notifications' && (
-        <form onSubmit={handleSaveNotifications} className="border-2 border-ink-primary bg-white p-6 sm:p-8 space-y-6 shadow-ticket">
-          <div className="border-b-2 border-border pb-3">
-            <h3 className="font-display text-2xl font-black text-ink-primary">
-              Email & Alert Preferences
+        <form onSubmit={handleSaveNotifications} className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 space-y-6">
+          <div className="border-b border-[#D5DAE1] pb-3">
+            <h3 className="font-display text-xl font-bold text-ink-primary">
+              Email and alert preferences
             </h3>
-            <p className="font-sans text-xs text-ink-secondary mt-1">
+            <p className="font-sans text-sm text-ink-secondary mt-1">
               Select which notifications you want to receive. Account security notices (password resets, verification codes) are always sent.
             </p>
           </div>
 
-          <div className="space-y-4 divide-y divide-border">
+          <div className="space-y-4 divide-y divide-[#D5DAE1]">
             <label className="flex items-start gap-3 pt-3 first:pt-0 cursor-pointer">
               <input
                 type="checkbox"
@@ -297,9 +296,9 @@ export const VolunteerProfilePage: React.FC = () => {
               />
               <div className="space-y-0.5">
                 <span className="font-sans text-sm font-bold text-ink-primary block">
-                  Activity Reminders & Schedule Changes
+                  Activity reminders and schedule changes
                 </span>
-                <span className="font-sans text-xs text-ink-secondary block">
+                <span className="font-sans text-[13px] text-ink-secondary block">
                   Receive alerts before your upcoming shifts and whenever location or timing changes.
                 </span>
               </div>
@@ -314,9 +313,9 @@ export const VolunteerProfilePage: React.FC = () => {
               />
               <div className="space-y-0.5">
                 <span className="font-sans text-sm font-bold text-ink-primary block">
-                  Hours Approvals & Decision Notices
+                  Hours approvals and decision notices
                 </span>
-                <span className="font-sans text-xs text-ink-secondary block">
+                <span className="font-sans text-[13px] text-ink-secondary block">
                   Be notified as soon as a Team Lead approves or provides feedback on your service hours.
                 </span>
               </div>
@@ -331,9 +330,9 @@ export const VolunteerProfilePage: React.FC = () => {
               />
               <div className="space-y-0.5">
                 <span className="font-sans text-sm font-bold text-ink-primary block">
-                  Rank Milestones & Promotion Announcements
+                  Rank milestones and promotion announcements
                 </span>
-                <span className="font-sans text-xs text-ink-secondary block">
+                <span className="font-sans text-[13px] text-ink-secondary block">
                   Updates when you meet rank thresholds or your promotion candidacy is decided.
                 </span>
               </div>
@@ -348,16 +347,16 @@ export const VolunteerProfilePage: React.FC = () => {
               />
               <div className="space-y-0.5">
                 <span className="font-sans text-sm font-bold text-ink-primary block">
-                  Team Lead Bulletins & General Notices
+                  Team lead bulletins and general notices
                 </span>
-                <span className="font-sans text-xs text-ink-secondary block">
+                <span className="font-sans text-[13px] text-ink-secondary block">
                   Notices broadcast to all volunteers by Team Leads and Program Managers.
                 </span>
               </div>
             </label>
           </div>
 
-          <div className="pt-4 border-t-2 border-border flex justify-end">
+          <div className="pt-4 border-t border-[#D5DAE1] flex justify-end">
             <Button
               type="submit"
               variant="primary"
@@ -365,7 +364,7 @@ export const VolunteerProfilePage: React.FC = () => {
               isLoading={isSaving}
               leftIcon={<FloppyDisk className="w-4 h-4" weight="bold" />}
             >
-              Save Notification Preferences
+              Save notification preferences
             </Button>
           </div>
         </form>

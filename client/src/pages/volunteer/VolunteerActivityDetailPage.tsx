@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
 import { Activity, Enrollment } from '../../types';
@@ -8,7 +8,6 @@ import { useToast } from '../../components/ui/ToastContext';
 import { 
   Calendar as CalendarIcon, 
   MapPin, 
-  Clock, 
   UsersThree, 
   QrCode, 
   UserCircle, 
@@ -100,7 +99,7 @@ export const VolunteerActivityDetailPage: React.FC = () => {
     return (
       <div className="space-y-6 max-w-4xl mx-auto">
         <Skeleton variant="text" className="h-8 w-1/3" />
-        <Skeleton variant="rect" className="h-96" />
+        <Skeleton variant="rect" className="h-96 rounded-[10px]" />
       </div>
     );
   }
@@ -111,7 +110,7 @@ export const VolunteerActivityDetailPage: React.FC = () => {
         icon={<Warning className="w-8 h-8 text-role-teamlead" weight="bold" />}
         title="Activity could not be found"
         description="The activity you are looking for may have been rescheduled or removed."
-        actionLabel="Return to Activities"
+        actionLabel="Return to activities"
         onAction={() => navigate('/volunteer/activities')}
       />
     );
@@ -122,62 +121,57 @@ export const VolunteerActivityDetailPage: React.FC = () => {
       {/* Back button */}
       <button
         onClick={() => navigate('/volunteer/activities')}
-        className="inline-flex items-center gap-1.5 font-sans text-xs font-bold text-ink-secondary hover:text-ink-primary cursor-pointer transition-colors"
+        className="inline-flex items-center gap-1.5 font-sans text-[13px] font-medium text-ink-secondary hover:text-ink-primary cursor-pointer transition-colors"
       >
         <ArrowLeft className="w-4 h-4" weight="bold" />
         <span>Back to all activities</span>
       </button>
 
-      {/* Main Ticket Silhouette Card */}
-      <div
-        className="border-2 border-ink-primary bg-white p-6 sm:p-8 shadow-ticket space-y-6"
-        style={{
-          clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)',
-        }}
-      >
+      {/* Main Card */}
+      <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 shadow-sm space-y-6">
         {/* Header Section */}
-        <div className="space-y-4 border-b-2 border-border pb-6">
+        <div className="space-y-4 border-b border-[#D5DAE1] pb-6">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="font-mono text-xs font-bold px-2.5 py-0.5 bg-canvas border border-ink-primary text-ink-primary">
+            <span className="font-mono text-[13px] font-medium px-2.5 py-0.5 bg-canvas-subdued/50 border border-[#D5DAE1] rounded-[4px] text-ink-primary">
               {activity.type.replace('_', ' ')}
             </span>
             <StatusMark status={activity.status} size="sm" />
             {activity.minRank && (
-              <span className="font-mono text-xs font-bold text-ink-tertiary flex items-center gap-1">
+              <span className="font-mono text-[13px] text-ink-tertiary flex items-center gap-1">
                 <ShieldCheck className="w-4 h-4 text-role-volunteer" weight="bold" />
-                <span>{activity.minRank.replace('_', ' ').toUpperCase()} required</span>
+                <span>{activity.minRank.replace('_', ' ')} required</span>
               </span>
             )}
             {isJoined && (
-              <span className="font-mono text-xs font-bold px-2.5 py-0.5 bg-role-volunteer text-white flex items-center gap-1">
+              <span className="font-mono text-[13px] font-medium px-2.5 py-0.5 bg-role-volunteer text-white rounded-[4px] flex items-center gap-1">
                 <CheckCircle className="w-3.5 h-3.5" weight="fill" />
                 <span>Enrolled</span>
               </span>
             )}
             {isWaiting && (
-              <span className="font-mono text-xs font-bold px-2.5 py-0.5 bg-role-applicant text-ink-primary flex items-center gap-1">
+              <span className="font-mono text-[13px] font-medium px-2.5 py-0.5 bg-role-applicantLight text-role-applicant rounded-[4px] border border-role-applicant/30 flex items-center gap-1">
                 <Hourglass className="w-3.5 h-3.5" weight="fill" />
-                <span>On Waiting List</span>
+                <span>On waiting list</span>
               </span>
             )}
           </div>
 
-          <h1 className="font-display text-4xl sm:text-5xl font-black tracking-tight text-ink-primary leading-tight">
+          <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight">
             {activity.title}
           </h1>
 
-          <p className="font-sans text-sm sm:text-base text-ink-secondary leading-relaxed">
+          <p className="font-sans text-[15px] sm:text-base text-ink-secondary leading-relaxed">
             {activity.description}
           </p>
         </div>
 
         {/* Operational Attributes Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 p-4 border-2 border-ink-primary bg-canvas font-sans text-xs">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 p-4 border border-[#D5DAE1] rounded-[8px] bg-canvas-subdued/30 font-sans text-[13px]">
           <div className="space-y-1">
-            <span className="font-sans text-[13px] font-bold text-ink-tertiary block">
-              Schedule & Timing
+            <span className="font-sans text-[13px] font-semibold text-ink-tertiary block">
+              Schedule & timing
             </span>
-            <div className="flex items-center gap-1.5 font-bold text-ink-primary">
+            <div className="flex items-center gap-1.5 font-semibold text-ink-primary">
               <CalendarIcon className="w-4 h-4 text-role-volunteer" weight="bold" />
               <span>
                 {new Date(activity.startsAt).toLocaleDateString('en-US', {
@@ -194,10 +188,10 @@ export const VolunteerActivityDetailPage: React.FC = () => {
           </div>
 
           <div className="space-y-1">
-            <span className="font-sans text-[13px] font-bold text-ink-tertiary block">
-              Venue Location
+            <span className="font-sans text-[13px] font-semibold text-ink-tertiary block">
+              Venue location
             </span>
-            <div className="flex items-center gap-1.5 font-bold text-ink-primary">
+            <div className="flex items-center gap-1.5 font-semibold text-ink-primary">
               <MapPin className="w-4 h-4 text-role-volunteer" weight="bold" />
               <span>{activity.place}</span>
             </div>
@@ -205,10 +199,10 @@ export const VolunteerActivityDetailPage: React.FC = () => {
           </div>
 
           <div className="space-y-1">
-            <span className="font-sans text-[13px] font-bold text-ink-tertiary block">
-              Roster Capacity
+            <span className="font-sans text-[13px] font-semibold text-ink-tertiary block">
+              Roster capacity
             </span>
-            <div className="flex items-center gap-1.5 font-bold text-ink-primary">
+            <div className="flex items-center gap-1.5 font-semibold text-ink-primary">
               <UsersThree className="w-4 h-4 text-role-volunteer" weight="bold" />
               <span>{activeParticipants.length} / {activity.capacity} spots</span>
             </div>
@@ -218,28 +212,28 @@ export const VolunteerActivityDetailPage: React.FC = () => {
           </div>
 
           <div className="space-y-1">
-            <span className="font-sans text-[13px] font-bold text-ink-tertiary block">
-              Lead Coordinator
+            <span className="font-sans text-[13px] font-semibold text-ink-tertiary block">
+              Lead coordinator
             </span>
-            <div className="flex items-center gap-1.5 font-bold text-ink-primary">
+            <div className="flex items-center gap-1.5 font-semibold text-ink-primary">
               <UserCircle className="w-4 h-4 text-role-teamlead" weight="bold" />
               <span>{activity.leadName || 'Assigned Lead'}</span>
             </div>
-            <span className="font-mono text-ink-secondary text-[13px] block">Field Team Lead</span>
+            <span className="font-mono text-ink-secondary text-[13px] block">Field team lead</span>
           </div>
         </div>
 
         {/* Required Skills & Equipment */}
         {activity.skills && activity.skills.length > 0 && (
           <div className="space-y-2">
-            <span className="font-sans text-xs font-bold text-ink-tertiary block">
-              Recommended Skills & Capabilities
+            <span className="font-sans text-[13px] font-semibold text-ink-tertiary block">
+              Recommended skills & capabilities
             </span>
             <div className="flex flex-wrap gap-2">
               {activity.skills.map((skill, i) => (
                 <span
                   key={i}
-                  className="px-3 py-1 bg-canvas border border-border font-sans text-xs font-semibold text-ink-primary flex items-center gap-1.5"
+                  className="px-3 py-1 bg-white border border-[#D5DAE1] rounded-[6px] font-sans text-[13px] font-medium text-ink-primary flex items-center gap-1.5"
                 >
                   <Tag className="w-3.5 h-3.5 text-role-volunteer" weight="bold" />
                   <span>{skill}</span>
@@ -250,14 +244,14 @@ export const VolunteerActivityDetailPage: React.FC = () => {
         )}
 
         {/* Action Panel */}
-        <div className="pt-6 border-t-2 border-border flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="text-xs text-ink-secondary">
+        <div className="pt-6 border-t border-[#D5DAE1] flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="text-[13px] text-ink-secondary">
             {isJoined ? (
-              <p className="text-role-volunteer font-bold">
+              <p className="text-role-volunteer font-semibold">
                 You are confirmed for this assignment. Please check in with the team lead upon arrival.
               </p>
             ) : isWaiting ? (
-              <p className="text-role-applicant font-bold">
+              <p className="text-role-applicant font-semibold">
                 You are on the waiting list. You will be notified if a spot becomes available.
               </p>
             ) : isFull ? (
@@ -280,7 +274,7 @@ export const VolunteerActivityDetailPage: React.FC = () => {
                   onClick={handleLeave}
                   isLoading={isUpdating}
                 >
-                  Withdraw from Activity
+                  Withdraw from activity
                 </Button>
                 <Button
                   variant="primary"
@@ -288,7 +282,7 @@ export const VolunteerActivityDetailPage: React.FC = () => {
                   leftIcon={<QrCode className="w-4 h-4" weight="bold" />}
                   onClick={() => navigate('/volunteer/check-in')}
                 >
-                  Check In Now
+                  Check in now
                 </Button>
               </>
             ) : isWaiting ? (
@@ -298,7 +292,7 @@ export const VolunteerActivityDetailPage: React.FC = () => {
                 onClick={handleLeave}
                 isLoading={isUpdating}
               >
-                Leave Waiting List
+                Leave waiting list
               </Button>
             ) : (
               <Button
@@ -308,7 +302,7 @@ export const VolunteerActivityDetailPage: React.FC = () => {
                 isLoading={isUpdating}
                 disabled={activity.status === 'completed' || activity.status === 'cancelled'}
               >
-                {isFull ? 'Join Waiting List' : 'Join Activity Roster'}
+                {isFull ? 'Join waiting list' : 'Join activity roster'}
               </Button>
             )}
           </div>

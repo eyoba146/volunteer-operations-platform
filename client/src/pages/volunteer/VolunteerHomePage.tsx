@@ -123,7 +123,7 @@ export const VolunteerHomePage: React.FC = () => {
         {progress && progress.nextRank && (
           <div className="pt-1 grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
             <div className="space-y-1">
-              <span className="text-xs font-semibold text-ink-secondary">
+              <span className="text-[13px] font-semibold text-ink-secondary">
                 Next rank
               </span>
               <h3 className="font-display text-2xl font-bold text-ink-primary">
@@ -239,7 +239,7 @@ export const VolunteerHomePage: React.FC = () => {
                 Community announcements
               </h3>
             </div>
-            <span className="text-xs font-semibold text-ink-secondary">
+            <span className="text-[13px] font-semibold text-ink-secondary">
               Latest updates
             </span>
           </div>
@@ -247,7 +247,7 @@ export const VolunteerHomePage: React.FC = () => {
           <div className="space-y-4 divide-y divide-[#D5DAE1]/60">
             {announcements.map((anc) => (
               <div key={anc.id} className="pt-3 first:pt-0 space-y-1">
-                <div className="flex items-center justify-between text-xs text-ink-secondary">
+                <div className="flex items-center justify-between text-[13px] text-ink-secondary">
                   <span>From: {anc.authorName}</span>
                   <span>{new Date(anc.createdAt).toLocaleDateString()}</span>
                 </div>

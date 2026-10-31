@@ -4,7 +4,8 @@ import { motion } from 'motion/react';
 export interface Waypoint {
   id: string;
   label: string;
-  altitude: string;
+  threshold?: string;
+  altitude?: string;
   description?: string;
   isCompleted?: boolean;
   isCurrent?: boolean;
@@ -21,11 +22,11 @@ interface TrailLineProps {
 
 export const TrailLine: React.FC<TrailLineProps> = ({
   waypoints = [
-    { id: 'start', label: 'Start', altitude: 'Registration', isCompleted: true },
-    { id: 'member', label: 'Member', altitude: '0 hrs • Verified', isCompleted: true },
-    { id: 'senior', label: 'Senior Member', altitude: '60 hrs • 8 acts', isCurrent: true },
-    { id: 'lead', label: 'Team Lead', altitude: '150 hrs • 20 acts' },
-    { id: 'manager', label: 'Manager', altitude: '300 hrs • 30 acts' },
+    { id: 'start', label: 'Start', threshold: 'Registration', isCompleted: true },
+    { id: 'member', label: 'Member', threshold: '0 hrs • Verified', isCompleted: true },
+    { id: 'senior', label: 'Senior Member', threshold: '60 hrs • 8 acts', isCurrent: true },
+    { id: 'lead', label: 'Team Lead', threshold: '150 hrs • 20 acts' },
+    { id: 'manager', label: 'Manager', threshold: '300 hrs • 30 acts' },
   ],
   currentWaypointIndex = 2,
   className = '',
@@ -141,7 +142,7 @@ export const TrailLine: React.FC<TrailLineProps> = ({
                     {wp.label}
                   </span>
                   <span className="font-sans text-[13px] font-medium text-ink-secondary mt-1">
-                    {wp.altitude}
+                    {wp.threshold || wp.altitude}
                   </span>
                 </button>
               );
