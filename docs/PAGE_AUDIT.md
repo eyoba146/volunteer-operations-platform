@@ -30,23 +30,23 @@ This document tracks visual, typographic, contrast, and plain language complianc
 | **Applicant** | `/applicant/apply` | `pages/applicant/ApplicantApplyPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Cleaned) | Pass (Cleaned) | Pass (Clean) | Done |
 | **Applicant** | `/applicant/payment` | `pages/applicant/ApplicantPaymentPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (Pass/Receipt) | Pass (Sentence) | Pass (Ledger rows) | Pass (Cleaned) | Pass (Clean) | Done |
 | **Applicant** | `/applicant/notifications` | `pages/applicant/ApplicantNotificationsPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Ledger rows) | Pass (Cleaned) | Pass (Clean) | Done |
-| **Volunteer** | `/volunteer/home` | `pages/volunteer/VolunteerHomePage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Volunteer** | `/volunteer/activities` | `pages/volunteer/VolunteerActivitiesPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Volunteer** | `/volunteer/activities/:id` | `pages/volunteer/VolunteerActivityDetailPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Volunteer** | `/volunteer/my-activities` | `pages/volunteer/VolunteerMyActivitiesPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Volunteer** | `/volunteer/check-in` | `pages/volunteer/VolunteerCheckInPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Volunteer** | `/volunteer/hours` | `pages/volunteer/VolunteerHoursPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Volunteer** | `/volunteer/rank-progress` | `pages/volunteer/VolunteerRankProgressPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Volunteer** | `/volunteer/certificates` | `pages/volunteer/VolunteerCertificatesPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Volunteer** | `/volunteer/id-card` | `pages/volunteer/VolunteerIdCardPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Volunteer** | `/volunteer/profile` | `pages/volunteer/VolunteerProfilePage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Team Lead** | `/team-lead/home` | `pages/team-lead/TeamLeadHomePage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Team Lead** | `/team-lead/approve-hours` | `pages/team-lead/TeamLeadApproveHoursPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Team Lead** | `/team-lead/activities` | `pages/team-lead/TeamLeadActivitiesPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Team Lead** | `/team-lead/create-activity` | `pages/team-lead/TeamLeadCreateActivityPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Team Lead** | `/team-lead/ratings` | `pages/team-lead/TeamLeadRatingsPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Team Lead** | `/team-lead/recommend-promotion` | `pages/team-lead/TeamLeadRecommendPromotionPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Team Lead** | `/team-lead/announcements` | `pages/team-lead/TeamLeadAnnouncementsPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
+| **Volunteer** | `/volunteer/home` | `pages/volunteer/VolunteerHomePage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Lead stat) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Volunteer** | `/volunteer/activities` | `pages/volunteer/VolunteerActivitiesPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Cleaned) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Volunteer** | `/volunteer/activities/:id` | `pages/volunteer/VolunteerActivityDetailPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Ledger rows) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Volunteer** | `/volunteer/my-activities` | `pages/volunteer/VolunteerMyActivitiesPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Cleaned) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Volunteer** | `/volunteer/check-in` | `pages/volunteer/VolunteerCheckInPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Cleaned) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Volunteer** | `/volunteer/hours` | `pages/volunteer/VolunteerHoursPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Ledger rows) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Volunteer** | `/volunteer/rank-progress` | `pages/volunteer/VolunteerRankProgressPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Trail curve) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Volunteer** | `/volunteer/certificates` | `pages/volunteer/VolunteerCertificatesPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (Ticket/Pass) | Pass (Sentence) | Pass (Physical pass) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Volunteer** | `/volunteer/id-card` | `pages/volunteer/VolunteerIdCardPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (Ticket/Pass) | Pass (Sentence) | Pass (Physical pass) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Volunteer** | `/volunteer/profile` | `pages/volunteer/VolunteerProfilePage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Cleaned) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Team Lead** | `/team-lead/home` | `pages/team-lead/TeamLeadHomePage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Lead stat) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Team Lead** | `/team-lead/approve-hours` | `pages/team-lead/TeamLeadApproveHoursPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Ledger rows) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Team Lead** | `/team-lead/activities` | `pages/team-lead/TeamLeadActivitiesPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Cleaned) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Team Lead** | `/team-lead/create-activity` | `pages/team-lead/TeamLeadCreateActivityPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Cleaned) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Team Lead** | `/team-lead/ratings` | `pages/team-lead/TeamLeadRatingsPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Cleaned) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Team Lead** | `/team-lead/recommend-promotion` | `pages/team-lead/TeamLeadRecommendPromotionPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Cleaned) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Team Lead** | `/team-lead/announcements` | `pages/team-lead/TeamLeadAnnouncementsPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Stream feed) | Pass (Cleaned) | Pass (Clean) | Done |
 | **Manager** | `/manager/dashboard` | `pages/manager/ManagerDashboardPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
 | **Manager** | `/manager/applications` | `pages/manager/ManagerApplicationsPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
 | **Manager** | `/manager/volunteers` | `pages/manager/ManagerVolunteersPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |

@@ -77,7 +77,7 @@ export const TeamLeadHomePage: React.FC = () => {
                 Welcome, {profile?.fullName || user?.username}
               </h1>
               <div className="flex flex-wrap items-center gap-2 pt-1 text-sm">
-                <span className="font-semibold text-xs px-2 py-0.5 rounded-[4px] bg-role-teamlead text-white">
+                <span className="font-semibold text-[13px] px-2 py-0.5 rounded-[4px] bg-role-teamlead text-white">
                   Team lead
                 </span>
                 <span className="text-[#D5DAE1]">•</span>
@@ -130,14 +130,14 @@ export const TeamLeadHomePage: React.FC = () => {
 
           <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm pt-2 md:pt-0 border-t md:border-t-0 border-[#D5DAE1]">
             <div className="space-y-0.5">
-              <span className="text-xs text-ink-secondary block">Supervised activities</span>
+              <span className="text-[13px] text-ink-secondary block">Supervised activities</span>
               <span className="text-xl font-bold text-ink-primary">
                 {leadActivities.length}
               </span>
             </div>
             <div className="w-px h-8 bg-[#D5DAE1] hidden sm:block" />
             <div className="space-y-0.5">
-              <span className="text-xs text-ink-secondary block">Assigned community area</span>
+              <span className="text-[13px] text-ink-secondary block">Assigned community area</span>
               <span className="text-xl font-bold text-ink-primary">
                 {profile?.area || 'Addis Ababa'}
               </span>
@@ -187,7 +187,7 @@ export const TeamLeadHomePage: React.FC = () => {
                 {/* Session Check-In Code Highlight for Volunteers */}
                 <div className="p-4 bg-canvas-subdued border border-[#D5DAE1] rounded-[8px] flex items-center justify-between gap-4 mt-2">
                   <div className="space-y-0.5">
-                    <span className="font-sans text-xs font-bold text-ink-secondary block">
+                    <span className="font-sans text-[13px] font-bold text-ink-secondary block">
                       Volunteer check-in code
                     </span>
                     <span className="font-sans text-[13px] text-ink-secondary">
