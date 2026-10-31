@@ -93,7 +93,7 @@ export const ManagerActivitiesPage: React.FC = () => {
       cell: (act) => (
         <div className="space-y-0.5 font-mono text-[13px] text-ink-primary">
           <span>{new Date(act.startsAt).toLocaleDateString()}</span>
-          <span className="text-ink-tertiary text-[12px] block">
+          <span className="text-ink-tertiary text-[13px] block">
             {new Date(act.startsAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
           </span>
         </div>
@@ -225,7 +225,7 @@ export const ManagerActivitiesPage: React.FC = () => {
             <div className="p-4 border border-[#D5DAE1] rounded-[8px] bg-white space-y-3">
               <div className="flex items-center justify-between">
                 <div>
-                  <span className="text-[12px] text-ink-tertiary block">Current state</span>
+                  <span className="text-[13px] text-ink-tertiary block">Current state</span>
                   <StatusMark status={selectedActivity.status} size="md" />
                 </div>
                 <div className="flex items-center gap-2">
@@ -281,7 +281,7 @@ export const ManagerActivitiesPage: React.FC = () => {
                         <span className="font-semibold text-ink-primary text-sm block">
                           {profile?.fullName || user?.username || 'Enrolled volunteer'}
                         </span>
-                        <div className="flex items-center gap-2 text-[12px] text-ink-secondary">
+                        <div className="flex items-center gap-2 text-[13px] text-ink-secondary">
                           <span className="font-mono text-ink-tertiary">
                             {profile?.volunteerNumber || 'VTS-2026'}
                           </span>

@@ -222,7 +222,7 @@ export const ManagerReportsPage: React.FC = () => {
                 <div className="w-full h-2.5 bg-white border border-[#D5DAE1] rounded-[4px] overflow-hidden">
                   <div className={`h-full ${wp.color}`} style={{ width: `${wp.pct}%` }} />
                 </div>
-                <span className="text-[12px] text-ink-tertiary block font-sans">
+                <span className="text-[13px] text-ink-tertiary block font-sans">
                   {wp.note}
                 </span>
               </div>
@@ -256,12 +256,12 @@ export const ManagerReportsPage: React.FC = () => {
               <div key={reg.area} className="p-3 border border-[#D5DAE1] rounded-[8px] bg-canvas-subdued/30 space-y-1">
                 <div className="flex justify-between items-baseline">
                   <span className="font-semibold text-[13px] text-ink-primary">{reg.area}</span>
-                  <span className="font-mono text-[12px] font-semibold text-role-manager">{reg.count} volunteers ({reg.pct}%)</span>
+                  <span className="font-mono text-[13px] font-semibold text-role-manager">{reg.count} volunteers ({reg.pct}%)</span>
                 </div>
                 <div className="w-full h-2 bg-white border border-[#D5DAE1] rounded-[4px] overflow-hidden">
                   <div className="h-full bg-role-manager" style={{ width: `${reg.pct}%` }} />
                 </div>
-                <span className="text-[12px] text-ink-tertiary block font-mono">
+                <span className="text-[13px] text-ink-tertiary block font-mono">
                   {reg.ranks}
                 </span>
               </div>
@@ -298,7 +298,7 @@ export const ManagerReportsPage: React.FC = () => {
               <div key={idx} className="p-3 border border-[#D5DAE1] rounded-[8px] bg-canvas-subdued/30 space-y-1">
                 <div className="flex justify-between items-baseline">
                   <span className="font-semibold text-[13px] text-ink-primary">{item.title}</span>
-                  <span className="font-mono text-[12px] font-semibold text-role-volunteer">{item.pct}% ({item.turn}/{item.cap})</span>
+                  <span className="font-mono text-[13px] font-semibold text-role-volunteer">{item.pct}% ({item.turn}/{item.cap})</span>
                 </div>
                 <div className="w-full h-2 bg-white border border-[#D5DAE1] rounded-[4px] overflow-hidden">
                   <div className="h-full bg-role-volunteer" style={{ width: `${item.pct}%` }} />
@@ -340,7 +340,7 @@ export const ManagerReportsPage: React.FC = () => {
                     <span className="font-semibold text-ink-primary text-sm block">
                       {v.name}
                     </span>
-                    <span className="text-[12px] text-ink-tertiary font-mono">
+                    <span className="text-[13px] text-ink-tertiary font-mono">
                       {v.role} • {v.area}
                     </span>
                   </div>
@@ -350,7 +350,7 @@ export const ManagerReportsPage: React.FC = () => {
                   <span className="text-sm font-semibold text-ink-primary block leading-none">
                     {v.hours} hrs
                   </span>
-                  <span className="text-[12px] text-role-applicant flex items-center justify-end gap-0.5 pt-0.5">
+                  <span className="text-[13px] text-role-applicant flex items-center justify-end gap-0.5 pt-0.5">
                     <Star className="w-3 h-3 fill-amber-500 text-amber-500" weight="fill" />
                     <span>{v.rating} ({v.acts} shifts)</span>
                   </span>

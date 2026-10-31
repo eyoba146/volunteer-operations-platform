@@ -5,7 +5,7 @@ import * as api from '../../api';
 import { RankRule, Rank } from '../../types';
 import { Input, Button, StatusMark, Skeleton } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
-import { FloppyDisk, ArrowLeft, ChartLineUp, ShieldCheck, Lightning } from '@phosphor-icons/react';
+import { FloppyDisk, ArrowLeft, Lightning } from '@phosphor-icons/react';
 
 export const AdminRankRulesPage: React.FC = () => {
   const { user, profile } = useAuth();
@@ -42,7 +42,7 @@ export const AdminRankRulesPage: React.FC = () => {
     try {
       await api.updateRankRule(rule.rank, rule, user.id, profile?.fullName || user.username);
       toast.success(
-        `Thresholds for ${rule.rank.replace('_', ' ')} updated. Volunteer progress meters recalculate automatically.`
+        `Thresholds for ${rule.rank.replace('_', ' ')} updated. Volunteer progress recalculates automatically.`
       );
     } catch (err: any) {
       toast.error(err.message || 'Could not save rank rule.');
@@ -65,38 +65,33 @@ export const AdminRankRulesPage: React.FC = () => {
     <div className="max-w-4xl mx-auto space-y-6 text-left">
       <button
         onClick={() => navigate('/admin/overview')}
-        className="inline-flex items-center gap-1.5 text-xs font-mono font-medium text-ink-tertiary hover:text-ink-primary transition-colors cursor-pointer"
+        className="inline-flex items-center gap-1.5 text-[13px] font-mono font-medium text-ink-tertiary hover:text-ink-primary transition-colors cursor-pointer"
       >
         <ArrowLeft className="w-4 h-4" />
         <span>Return to administration overview</span>
       </button>
 
-      {/* Header */}
-      <div
-        className="border-4 border-ink-primary bg-white p-6 sm:p-8 space-y-4 shadow-ticket"
-        style={{
-          clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)',
-        }}
-      >
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b-2 border-ink-primary pb-5">
+      {/* Header Card */}
+      <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 space-y-4 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#D5DAE1] pb-4">
           <div className="space-y-1">
-            <span className="font-sans text-xs font-bold text-amber-600 tracking-tight block">
-              Merit Ladder Calibration
+            <span className="font-sans text-[13px] font-semibold text-amber-600 tracking-tight block">
+              Progress ladder rules
             </span>
-            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl tracking-tight text-ink-primary leading-none">
-              Rank Progression Rules
+            <h1 className="font-display font-black text-2xl sm:text-3xl tracking-tight text-ink-primary leading-tight">
+              Rank progression rules
             </h1>
-            <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
+            <p className="font-sans text-sm text-ink-secondary mt-1">
               Configure minimum verified service hours, completed activities, leader ratings, and required training courses.
             </p>
           </div>
         </div>
 
         {/* Live recalculation callout */}
-        <div className="p-3 bg-emerald-50 border-2 border-emerald-300 flex items-center gap-3 text-xs text-emerald-900 font-sans">
-          <Lightning className="w-5 h-5 text-emerald-600 shrink-0" weight="fill" />
-          <span>
-            <strong>Live Rules Engine:</strong> Any change saved below immediately recalculates volunteer rank progress routes, percentage completion bars, and Manager promotion board eligibility across the entire platform in real time.
+        <div className="p-3 bg-emerald-50/60 border border-emerald-200 rounded-[8px] flex items-center gap-3 text-sm text-emerald-950 font-sans">
+          <Lightning className="w-5 h-5 text-role-volunteer shrink-0" weight="fill" />
+          <span className="text-[13px]">
+            <strong>Rules engine:</strong> Any change saved below immediately recalculates volunteer progress meters, percentage completion bars, and Manager promotion eligibility across the entire platform in real time.
           </span>
         </div>
       </div>
@@ -105,16 +100,13 @@ export const AdminRankRulesPage: React.FC = () => {
         {rules.map((rule) => (
           <div
             key={rule.rank}
-            className="border-2 border-ink-primary bg-white p-6 sm:p-8 space-y-5 shadow-ticket text-left"
-            style={{
-              clipPath: 'polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)',
-            }}
+            className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 space-y-5 shadow-sm text-left"
           >
-            <div className="flex items-center justify-between border-b-2 border-border pb-3">
+            <div className="flex items-center justify-between border-b border-[#D5DAE1] pb-3">
               <div className="flex items-center gap-3">
                 <StatusMark status={rule.rank} size="md" />
-                <h3 className="font-display text-2xl font-black tracking-tight text-ink-primary">
-                  {rule.rank.replace('_', ' ')} Criteria Thresholds
+                <h3 className="font-display text-xl font-bold tracking-tight text-ink-primary">
+                  {rule.rank.replace('_', ' ')} criteria thresholds
                 </h3>
               </div>
               <Button
@@ -124,13 +116,14 @@ export const AdminRankRulesPage: React.FC = () => {
                 onClick={() => handleSaveRank(rule)}
                 leftIcon={<FloppyDisk className="w-3.5 h-3.5" weight="bold" />}
               >
-                Save {rule.rank.replace('_', ' ')} Rules
+                Save {rule.rank.replace('_', ' ')} rules
               </Button>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* Form inputs in 2-column comfortable grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Input
-                label="Minimum Approved Hours"
+                label="Minimum approved hours"
                 type="number"
                 value={rule.minHours}
                 onChange={(e) => handleFieldChange(rule.rank, 'minHours', parseFloat(e.target.value) || 0)}
@@ -138,7 +131,7 @@ export const AdminRankRulesPage: React.FC = () => {
               />
 
               <Input
-                label="Minimum Completed Activities"
+                label="Minimum completed activities"
                 type="number"
                 value={rule.minActivities}
                 onChange={(e) => handleFieldChange(rule.rank, 'minActivities', parseInt(e.target.value) || 0)}
@@ -146,7 +139,7 @@ export const AdminRankRulesPage: React.FC = () => {
               />
 
               <Input
-                label="Minimum Average Rating (1–5)"
+                label="Minimum average rating (1–5)"
                 type="number"
                 step="0.1"
                 min="1.0"
@@ -157,7 +150,7 @@ export const AdminRankRulesPage: React.FC = () => {
               />
 
               <Input
-                label="Minimum Months Active"
+                label="Minimum months active"
                 type="number"
                 value={rule.minMonths}
                 onChange={(e) => handleFieldChange(rule.rank, 'minMonths', parseFloat(e.target.value) || 0)}
@@ -167,7 +160,7 @@ export const AdminRankRulesPage: React.FC = () => {
 
             <div className="space-y-1">
               <Input
-                label="Mandatory Training Course Title"
+                label="Mandatory training course title"
                 value={rule.requiredTraining}
                 onChange={(e) => handleFieldChange(rule.rank, 'requiredTraining', e.target.value)}
                 hint="Must match course certificates issued to volunteers for promotion eligibility."

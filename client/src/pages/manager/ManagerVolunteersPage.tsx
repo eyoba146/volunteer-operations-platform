@@ -264,25 +264,25 @@ export const ManagerVolunteersPage: React.FC = () => {
             {/* Performance Metric Strip */}
             <div className="border border-[#D5DAE1] rounded-[8px] bg-white divide-x divide-[#D5DAE1] grid grid-cols-3 overflow-hidden">
               <div className="p-3 text-center space-y-0.5">
-                <span className="text-[12px] font-medium text-ink-tertiary block">Approved hours</span>
+                <span className="text-[13px] font-medium text-ink-tertiary block">Approved hours</span>
                 <span className="font-display text-2xl font-bold text-ink-primary block leading-none">
                   {volunteerStats.hours}
                 </span>
-                <span className="text-[12px] text-ink-secondary">hrs verified</span>
+                <span className="text-[13px] text-ink-secondary">hrs verified</span>
               </div>
               <div className="p-3 text-center space-y-0.5">
-                <span className="text-[12px] font-medium text-ink-tertiary block">Activities done</span>
+                <span className="text-[13px] font-medium text-ink-tertiary block">Activities done</span>
                 <span className="font-display text-2xl font-bold text-ink-primary block leading-none">
                   {volunteerStats.activities}
                 </span>
-                <span className="text-[12px] text-ink-secondary">sessions</span>
+                <span className="text-[13px] text-ink-secondary">sessions</span>
               </div>
               <div className="p-3 text-center space-y-0.5">
-                <span className="text-[12px] font-medium text-ink-tertiary block">Rating score</span>
+                <span className="text-[13px] font-medium text-ink-tertiary block">Rating score</span>
                 <span className="font-display text-2xl font-bold text-role-applicant block leading-none">
                   {volunteerStats.rating}
                 </span>
-                <span className="text-[12px] text-ink-secondary">out of 5.0</span>
+                <span className="text-[13px] text-ink-secondary">out of 5.0</span>
               </div>
             </div>
 
@@ -305,7 +305,7 @@ export const ManagerVolunteersPage: React.FC = () => {
                       <span className="font-bold text-ink-primary text-[13px] font-display">
                         {m.rankTitle || m.rank.replace('_', ' ')}
                       </span>
-                      <span className="font-mono text-[12px] text-ink-tertiary">
+                      <span className="font-mono text-[13px] text-ink-tertiary">
                         {m.achievedAt}
                       </span>
                     </div>
@@ -314,7 +314,7 @@ export const ManagerVolunteersPage: React.FC = () => {
                       {m.note || 'Milestone verified and recorded.'}
                     </p>
 
-                    <div className="flex flex-wrap items-center gap-2 font-mono text-[12px] text-ink-tertiary pt-0.5">
+                    <div className="flex flex-wrap items-center gap-2 font-mono text-[13px] text-ink-tertiary pt-0.5">
                       {m.hoursRecorded !== undefined && (
                         <span>Hours: <strong>{m.hoursRecorded} hrs</strong></span>
                       )}
@@ -346,7 +346,7 @@ export const ManagerVolunteersPage: React.FC = () => {
                 </div>
               </div>
               <div>
-                <span className="text-[12px] text-ink-tertiary block">Registered area</span>
+                <span className="text-[13px] text-ink-tertiary block">Registered area</span>
                 <span className="text-[13px] font-medium text-ink-primary">{inspecting.profile.area}</span>
               </div>
             </div>
@@ -368,7 +368,7 @@ export const ManagerVolunteersPage: React.FC = () => {
               </span>
               <div className="flex flex-wrap gap-1.5">
                 {inspecting.profile.skills.map((s) => (
-                  <span key={s} className="px-2 py-0.5 bg-white border border-[#D5DAE1] rounded-[4px] font-mono text-[12px] font-medium text-ink-primary">
+                  <span key={s} className="px-2 py-0.5 bg-white border border-[#D5DAE1] rounded-[4px] font-mono text-[13px] font-medium text-ink-primary">
                     {s}
                   </span>
                 ))}

@@ -5,7 +5,6 @@ export interface Waypoint {
   id: string;
   label: string;
   threshold?: string;
-  altitude?: string;
   description?: string;
   isCompleted?: boolean;
   isCurrent?: boolean;
@@ -142,7 +141,7 @@ export const TrailLine: React.FC<TrailLineProps> = ({
                     {wp.label}
                   </span>
                   <span className="font-sans text-[13px] font-medium text-ink-secondary mt-1">
-                    {wp.threshold || wp.altitude}
+                    {wp.threshold}
                   </span>
                 </button>
               );

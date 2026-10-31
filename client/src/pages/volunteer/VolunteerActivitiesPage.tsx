@@ -296,7 +296,7 @@ export const VolunteerActivitiesPage: React.FC = () => {
                 >
                   <span className="font-mono text-[13px] font-medium">{d.dayNumber}</span>
                   {d.hasActivities && (
-                    <div className="flex items-center gap-1 font-mono text-[12px] font-medium text-white bg-role-volunteer px-1.5 py-0.5 rounded-[4px] self-start">
+                    <div className="flex items-center gap-1 font-mono text-[13px] font-medium text-white bg-role-volunteer px-1.5 py-0.5 rounded-[4px] self-start">
                       <span>{d.count} session{d.count > 1 ? 's' : ''}</span>
                     </div>
                   )}

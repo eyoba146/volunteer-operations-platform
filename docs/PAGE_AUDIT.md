@@ -60,11 +60,11 @@ This document tracks visual, typographic, contrast, and plain language complianc
 | **Finance** | `/finance/needs-review` | `pages/finance/FinanceNeedsReviewPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Ledger rows) | Pass (Cleaned) | Pass (Clean) | Done |
 | **Finance** | `/finance/receipts-refunds` | `pages/finance/FinanceReceiptsRefundsPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Lead stat) | Pass (Cleaned) | Pass (Clean) | Done |
 | **Finance** | `/finance/reports` | `pages/finance/FinanceReportsPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Comparison) | Pass (Cleaned) | Pass (Clean) | Done |
-| **Admin** | `/admin/overview` | `pages/admin/AdminOverviewPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Admin** | `/admin/settings` | `pages/admin/AdminSettingsPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Admin** | `/admin/rank-rules` | `pages/admin/AdminRankRulesPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Admin** | `/admin/accounts` | `pages/admin/AdminAccountsPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Admin** | `/admin/activity-history` | `pages/admin/AdminActivityHistoryPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
+| **Admin** | `/admin/overview` | `pages/admin/AdminOverviewPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Lead stat) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Admin** | `/admin/settings` | `pages/admin/AdminSettingsPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Cleaned) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Admin** | `/admin/rank-rules` | `pages/admin/AdminRankRulesPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (2-col grid) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Admin** | `/admin/accounts` | `pages/admin/AdminAccountsPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Ledger rows) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Admin** | `/admin/activity-history` | `pages/admin/AdminActivityHistoryPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Ledger rows) | Pass (Cleaned) | Pass (Clean) | Done |
 | **Shared** | Top Bar & Dock | `components/layout/AppShellLayout.tsx` | Pass (AA) | Pass (White top bar) | Pass (1px border) | Pass (Sentence) | Pass (Clean) | Pass (Cleaned) | Pass (Clean) | Done |
 | **Shared** | Public Top & Foot | `components/layout/PublicLayout.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px border) | Pass (Sentence) | Pass (Clean) | Pass (Cleaned) | Pass (Clean) | Done |
 | **Shared** | Email Preview | `components/demo/DemoEmailInbox.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Clean) | Pass (Cleaned) | Pass (Clean) | Done |

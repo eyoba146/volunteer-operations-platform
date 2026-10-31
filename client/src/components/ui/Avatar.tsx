@@ -53,7 +53,7 @@ export const Avatar: React.FC<AvatarProps> = ({
   };
 
   const sizeStyles = {
-    sm: 'w-8 h-8 text-xs',
+    sm: 'w-8 h-8 text-[13px]',
     md: 'w-11 h-11 text-sm',
     lg: 'w-16 h-16 text-base',
     xl: 'w-24 h-24 text-xl',

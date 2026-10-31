@@ -278,12 +278,12 @@ export const ManagerApplicationsPage: React.FC = () => {
           </span>
           <div className="flex flex-wrap gap-1">
             {app.formData?.skills?.slice(0, 2).map((s) => (
-              <span key={s} className="px-2 py-0.5 bg-canvas-subdued/50 border border-[#D5DAE1] rounded-[4px] text-[12px] font-mono text-ink-primary">
+              <span key={s} className="px-2 py-0.5 bg-canvas-subdued/50 border border-[#D5DAE1] rounded-[4px] text-[13px] font-mono text-ink-primary">
                 {s}
               </span>
             ))}
             {(app.formData?.skills?.length || 0) > 2 && (
-              <span className="text-[12px] text-ink-tertiary">
+              <span className="text-[13px] text-ink-tertiary">
                 +{(app.formData?.skills?.length || 0) - 2} more
               </span>
             )}
@@ -442,7 +442,7 @@ export const ManagerApplicationsPage: React.FC = () => {
                   <h4 className="font-display text-base font-bold text-ink-primary">
                     Uploaded verification images
                   </h4>
-                  <span className="text-[12px] font-semibold text-role-manager bg-role-managerLight/30 px-2 py-0.5 rounded-[4px] border border-role-manager/30">
+                  <span className="text-[13px] font-semibold text-role-manager bg-role-managerLight/30 px-2 py-0.5 rounded-[4px] border border-role-manager/30">
                     Admissions secure view
                   </span>
                 </div>
@@ -515,7 +515,7 @@ export const ManagerApplicationsPage: React.FC = () => {
                 <span className="text-[13px] font-semibold text-ink-tertiary block">Skills & capacities</span>
                 <div className="flex flex-wrap gap-1 pt-1">
                   {inspectingApp.formData?.skills?.map((s) => (
-                    <span key={s} className="px-2 py-0.5 bg-canvas-subdued/50 border border-[#D5DAE1] rounded-[4px] text-[12px] font-sans text-ink-primary">
+                    <span key={s} className="px-2 py-0.5 bg-canvas-subdued/50 border border-[#D5DAE1] rounded-[4px] text-[13px] font-sans text-ink-primary">
                       {s}
                     </span>
                   ))}
@@ -539,7 +539,7 @@ export const ManagerApplicationsPage: React.FC = () => {
                 <h4 className="font-display text-sm font-bold text-ink-primary">
                   Internal private notes
                 </h4>
-                <span className="text-[12px] text-ink-tertiary">
+                <span className="text-[13px] text-ink-tertiary">
                   Visible to managers only
                 </span>
               </div>
@@ -552,7 +552,7 @@ export const ManagerApplicationsPage: React.FC = () => {
                     <div key={n.id} className="p-2.5 bg-white border border-[#D5DAE1] rounded-[6px] space-y-1">
                       <div className="flex items-center justify-between">
                         <span className="font-semibold text-ink-primary">{n.authorName}</span>
-                        <span className="font-mono text-[12px] text-ink-tertiary">
+                        <span className="font-mono text-[13px] text-ink-tertiary">
                           {new Date(n.createdAt).toLocaleDateString()}
                         </span>
                       </div>

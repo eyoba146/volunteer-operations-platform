@@ -181,7 +181,7 @@ export const ManagerPromotionsPage: React.FC = () => {
                         <span className="text-[13px] font-semibold text-ink-primary block leading-tight">
                           Verified service hours
                         </span>
-                        <span className="text-[12px] text-ink-secondary font-mono">
+                        <span className="text-[13px] text-ink-secondary font-mono">
                           Eligible threshold satisfied
                         </span>
                       </div>
@@ -189,21 +189,21 @@ export const ManagerPromotionsPage: React.FC = () => {
 
                     <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-[13px] pt-2 md:pt-0 border-t md:border-t-0 border-[#D5DAE1]">
                       <div className="space-y-0.5">
-                        <span className="text-[12px] text-ink-secondary block">Completed sessions</span>
+                        <span className="text-[13px] text-ink-secondary block">Completed sessions</span>
                         <span className="text-lg font-bold text-ink-primary">
                           {promo.evidence.completedActivities}
                         </span>
                       </div>
                       <div className="w-px h-8 bg-[#D5DAE1] hidden sm:block" />
                       <div className="space-y-0.5">
-                        <span className="text-[12px] text-ink-secondary block">Average rating</span>
+                        <span className="text-[13px] text-ink-secondary block">Average rating</span>
                         <span className="text-lg font-bold text-role-applicant">
                           {promo.evidence.averageRating} / 5.0
                         </span>
                       </div>
                       <div className="w-px h-8 bg-[#D5DAE1] hidden sm:block" />
                       <div className="space-y-0.5">
-                        <span className="text-[12px] text-ink-secondary block">Active tenure</span>
+                        <span className="text-[13px] text-ink-secondary block">Active tenure</span>
                         <span className="text-lg font-bold text-ink-primary">
                           {promo.evidence.monthsActive} mos
                         </span>

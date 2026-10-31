@@ -2,16 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import * as api from '../../api';
 import { ActivityLogEntry } from '../../types';
-import { Button, StatusMark, Skeleton } from '../../components/ui';
+import { Button, Skeleton } from '../../components/ui';
 import { 
   Gear, 
   ChartLineUp, 
   UsersThree, 
   Scroll, 
-  ShieldCheck, 
   ArrowRight,
-  Clock,
-  Money
 } from '@phosphor-icons/react';
 
 export const AdminOverviewPage: React.FC = () => {
@@ -62,13 +59,13 @@ export const AdminOverviewPage: React.FC = () => {
   return (
     <div className="space-y-8 text-left">
       {/* Editorial Header */}
-      <div className="border border-[#D5DAE1] bg-white rounded-[10px] p-6 sm:p-8 space-y-6">
+      <div className="border border-[#D5DAE1] bg-white rounded-[10px] p-6 sm:p-8 space-y-6 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-[#D5DAE1] pb-6">
           <div className="space-y-1">
-            <span className="text-[13px] font-bold text-amber-600">
+            <span className="text-[13px] font-semibold text-amber-600">
               Admin home
             </span>
-            <h1 className="font-display font-bold text-3xl sm:text-4xl tracking-tight text-ink-primary">
+            <h1 className="font-display font-bold text-2xl sm:text-3xl tracking-tight text-ink-primary">
               Platform administration and configuration
             </h1>
             <p className="text-sm text-ink-secondary mt-1 max-w-xl leading-relaxed">
@@ -107,21 +104,21 @@ export const AdminOverviewPage: React.FC = () => {
           {/* Simple Inline List with dividers */}
           <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm pt-2 md:pt-0 border-t md:border-t-0 border-[#D5DAE1]">
             <div className="space-y-0.5">
-              <span className="text-xs text-ink-secondary block">Field activities</span>
+              <span className="text-[13px] text-ink-secondary block">Field activities</span>
               <span className="text-xl font-bold text-ink-primary">
                 {activityCount}
               </span>
             </div>
             <div className="w-px h-8 bg-[#D5DAE1] hidden sm:block" />
             <div className="space-y-0.5">
-              <span className="text-xs text-ink-secondary block">Registration fee</span>
+              <span className="text-[13px] text-ink-secondary block">Registration fee</span>
               <span className="text-xl font-bold text-role-volunteer">
                 ETB {feeSetting}.00
               </span>
             </div>
             <div className="w-px h-8 bg-[#D5DAE1] hidden sm:block" />
             <div className="space-y-0.5">
-              <span className="text-xs text-ink-secondary block">History entries</span>
+              <span className="text-[13px] text-ink-secondary block">History entries</span>
               <span className="text-xl font-bold text-ink-primary">
                 {logCount}
               </span>
@@ -132,8 +129,8 @@ export const AdminOverviewPage: React.FC = () => {
 
       {/* Two Column Layout: Live Activity History Stream & Administrative Areas */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Live System Activity Feed (Replacing duplicate quick links with live stream) */}
-        <div className="lg:col-span-7 border border-[#D5DAE1] bg-white rounded-[10px] p-6 space-y-4 flex flex-col justify-between">
+        {/* Live System Activity Feed */}
+        <div className="lg:col-span-7 border border-[#D5DAE1] bg-white rounded-[10px] p-6 space-y-4 flex flex-col justify-between shadow-sm">
           <div className="space-y-4">
             <div className="flex items-center justify-between border-b border-[#D5DAE1] pb-3">
               <div className="flex items-center gap-2">
@@ -157,10 +154,10 @@ export const AdminOverviewPage: React.FC = () => {
                   <div key={log.id} className="py-3 flex items-start justify-between gap-3 text-sm">
                     <div className="space-y-0.5">
                       <div className="flex items-center gap-2">
-                        <span className="font-bold text-ink-primary">
+                        <span className="font-bold text-ink-primary text-[13px]">
                           {log.actorName || 'System'}
                         </span>
-                        <span className="text-xs px-2 py-0.5 rounded-[4px] bg-canvas-subdued text-ink-secondary border border-[#D5DAE1]">
+                        <span className="text-[13px] px-2 py-0.5 rounded-[4px] bg-canvas-subdued text-ink-secondary border border-[#D5DAE1]">
                           {log.action}
                         </span>
                       </div>
@@ -168,7 +165,7 @@ export const AdminOverviewPage: React.FC = () => {
                         {log.subject || 'System operation executed'}
                       </p>
                     </div>
-                    <span className="text-xs text-ink-tertiary shrink-0 mt-0.5">
+                    <span className="text-[13px] text-ink-tertiary shrink-0 mt-0.5 font-mono">
                       {new Date(log.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </span>
                   </div>
@@ -191,7 +188,7 @@ export const AdminOverviewPage: React.FC = () => {
         {/* Administrative Areas: Cards with Text Links with Arrows (Rule 2) */}
         <div className="lg:col-span-5 space-y-4">
           {/* Settings Panel */}
-          <div className="border border-[#D5DAE1] bg-white rounded-[10px] p-5 space-y-3">
+          <div className="border border-[#D5DAE1] bg-white rounded-[10px] p-5 space-y-3 shadow-sm">
             <div className="flex items-center gap-2.5">
               <div className="w-9 h-9 rounded-[6px] bg-canvas-subdued border border-[#D5DAE1] flex items-center justify-center shrink-0">
                 <Gear className="w-5 h-5 text-ink-primary" weight="bold" />
@@ -217,7 +214,7 @@ export const AdminOverviewPage: React.FC = () => {
           </div>
 
           {/* Rank Rules Panel */}
-          <div className="border border-[#D5DAE1] bg-white rounded-[10px] p-5 space-y-3">
+          <div className="border border-[#D5DAE1] bg-white rounded-[10px] p-5 space-y-3 shadow-sm">
             <div className="flex items-center gap-2.5">
               <div className="w-9 h-9 rounded-[6px] bg-canvas-subdued border border-[#D5DAE1] flex items-center justify-center shrink-0">
                 <ChartLineUp className="w-5 h-5 text-role-teamlead" weight="bold" />
@@ -243,7 +240,7 @@ export const AdminOverviewPage: React.FC = () => {
           </div>
 
           {/* Staff Accounts Panel */}
-          <div className="border border-[#D5DAE1] bg-white rounded-[10px] p-5 space-y-3">
+          <div className="border border-[#D5DAE1] bg-white rounded-[10px] p-5 space-y-3 shadow-sm">
             <div className="flex items-center gap-2.5">
               <div className="w-9 h-9 rounded-[6px] bg-canvas-subdued border border-[#D5DAE1] flex items-center justify-center shrink-0">
                 <UsersThree className="w-5 h-5 text-ink-primary" weight="bold" />

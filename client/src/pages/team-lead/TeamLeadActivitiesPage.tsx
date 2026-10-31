@@ -159,7 +159,7 @@ export const TeamLeadActivitiesPage: React.FC = () => {
               {/* Check-In Code Badge & Lead Actions */}
               <div className="shrink-0 flex flex-col sm:flex-row items-end sm:items-center gap-4">
                 <div className="border border-[#D5DAE1] rounded-[8px] bg-canvas-subdued/30 p-3 text-center min-w-[120px]">
-                  <span className="font-sans text-[12px] font-semibold text-ink-tertiary block">
+                  <span className="font-sans text-[13px] font-semibold text-ink-tertiary block">
                     Session code
                   </span>
                   <span className="font-mono text-2xl font-bold text-ink-primary tracking-widest block">
@@ -241,7 +241,7 @@ export const TeamLeadActivitiesPage: React.FC = () => {
                         <span className="font-sans font-semibold text-ink-primary block">
                           Volunteer ID: {enr.userId}
                         </span>
-                        <span className="font-mono text-[12px] text-ink-tertiary block">
+                        <span className="font-mono text-[13px] text-ink-tertiary block">
                           Joined {new Date(enr.joinedAt).toLocaleDateString()}
                         </span>
                       </div>

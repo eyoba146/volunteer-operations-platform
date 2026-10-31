@@ -269,11 +269,11 @@ export const ManagerAnnouncementsPage: React.FC = () => {
                     <div className="space-y-0.5">
                       <div className="flex items-center gap-2">
                         {ann.pinned && (
-                          <span className="font-mono text-[12px] font-semibold px-1.5 py-0.5 bg-amber-100 text-amber-800 rounded-[4px] flex items-center gap-1 border border-amber-300">
+                          <span className="font-mono text-[13px] font-semibold px-1.5 py-0.5 bg-amber-100 text-amber-800 rounded-[4px] flex items-center gap-1 border border-amber-300">
                             <PushPin className="w-3 h-3" weight="fill" /> Pinned
                           </span>
                         )}
-                        <span className="font-mono text-[12px] font-medium px-2 py-0.5 bg-canvas-subdued/50 border border-[#D5DAE1] rounded-[4px] text-ink-primary">
+                        <span className="font-mono text-[13px] font-medium px-2 py-0.5 bg-canvas-subdued/50 border border-[#D5DAE1] rounded-[4px] text-ink-primary">
                           {getAudienceLabel(ann.audience)}
                         </span>
                       </div>
@@ -282,7 +282,7 @@ export const ManagerAnnouncementsPage: React.FC = () => {
                       </h4>
                     </div>
 
-                    <span className="font-mono text-[12px] text-ink-tertiary whitespace-nowrap">
+                    <span className="font-mono text-[13px] text-ink-tertiary whitespace-nowrap">
                       {new Date(ann.createdAt).toLocaleDateString()}
                     </span>
                   </div>
@@ -291,7 +291,7 @@ export const ManagerAnnouncementsPage: React.FC = () => {
                     {ann.body}
                   </p>
 
-                  <div className="flex items-center justify-between pt-2 border-t border-[#D5DAE1]/60 text-[12px] font-mono text-ink-tertiary">
+                  <div className="flex items-center justify-between pt-2 border-t border-[#D5DAE1]/60 text-[13px] font-mono text-ink-tertiary">
                     <span>Broadcast by: <strong>{ann.authorName}</strong> ({ann.authorRole})</span>
                   </div>
                 </div>

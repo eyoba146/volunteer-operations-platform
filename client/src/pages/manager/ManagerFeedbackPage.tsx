@@ -94,27 +94,27 @@ export const ManagerFeedbackPage: React.FC = () => {
         {/* Metric Strip */}
         <div className="border border-[#D5DAE1] rounded-[8px] bg-white divide-x divide-[#D5DAE1] grid grid-cols-1 sm:grid-cols-3 overflow-hidden">
           <div className="p-3 text-center space-y-0.5">
-            <span className="text-[12px] text-ink-tertiary font-mono block">Average rating</span>
+            <span className="text-[13px] text-ink-tertiary font-mono block">Average rating</span>
             <span className="font-display text-2xl sm:text-3xl font-bold text-role-applicant leading-none block">
-              {avgScore} <span className="text-[12px] font-mono font-normal text-ink-tertiary">/ 5.0</span>
+              {avgScore} <span className="text-[13px] font-mono font-normal text-ink-tertiary">/ 5.0</span>
             </span>
-            <span className="text-[12px] text-ink-secondary">Overall volunteer sentiment</span>
+            <span className="text-[13px] text-ink-secondary">Overall volunteer sentiment</span>
           </div>
 
           <div className="p-3 text-center space-y-0.5">
-            <span className="text-[12px] text-ink-tertiary font-mono block">Total debriefs</span>
+            <span className="text-[13px] text-ink-tertiary font-mono block">Total debriefs</span>
             <span className="font-display text-2xl sm:text-3xl font-bold text-ink-primary leading-none block">
               {feedbackList.length}
             </span>
-            <span className="text-[12px] text-ink-secondary">Post-activity submissions</span>
+            <span className="text-[13px] text-ink-secondary">Post-activity submissions</span>
           </div>
 
           <div className="p-3 text-center space-y-0.5">
-            <span className="text-[12px] text-ink-tertiary font-mono block">Action required</span>
+            <span className="text-[13px] text-ink-tertiary font-mono block">Action required</span>
             <span className="font-display text-2xl sm:text-3xl font-bold text-role-teamlead leading-none block">
               {unreviewedCount}
             </span>
-            <span className="text-[12px] text-ink-secondary">Awaiting manager review</span>
+            <span className="text-[13px] text-ink-secondary">Awaiting manager review</span>
           </div>
         </div>
 
@@ -164,11 +164,11 @@ export const ManagerFeedbackPage: React.FC = () => {
                       {fb.userName}
                     </span>
                     {fb.userArea && (
-                      <span className="font-mono text-[12px] text-ink-tertiary px-1.5 py-0.5 bg-canvas-subdued/50 border border-[#D5DAE1] rounded-[4px]">
+                      <span className="font-mono text-[13px] text-ink-tertiary px-1.5 py-0.5 bg-canvas-subdued/50 border border-[#D5DAE1] rounded-[4px]">
                         {fb.userArea}
                       </span>
                     )}
-                    <span className={`font-mono text-[12px] font-semibold px-2 py-0.5 rounded-[4px] ${
+                    <span className={`font-mono text-[13px] font-semibold px-2 py-0.5 rounded-[4px] ${
                       fb.status === 'new' ? 'bg-amber-100 text-amber-900 border border-amber-300' : 'bg-canvas-subdued/50 text-ink-tertiary border border-[#D5DAE1]'
                     }`}>
                       {fb.status === 'new' ? 'Unreviewed' : 'Reviewed'}
@@ -216,7 +216,7 @@ export const ManagerFeedbackPage: React.FC = () => {
                 "{fb.comment}"
               </p>
 
-              <div className="flex items-center justify-between text-[12px] font-mono text-ink-tertiary pt-1">
+              <div className="flex items-center justify-between text-[13px] font-mono text-ink-tertiary pt-1">
                 <span>Submitted: {new Date(fb.submittedAt).toLocaleDateString()}</span>
                 <span>Feedback ID: {fb.id}</span>
               </div>

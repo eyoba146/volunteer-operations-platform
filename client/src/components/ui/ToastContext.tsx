@@ -94,11 +94,11 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
               <div className="shrink-0 mt-0.5">{typeConfig.icon}</div>
               <div className="flex-1 space-y-0.5 text-left">
                 {t.title && (
-                  <h4 className="font-sans text-xs font-semibold tracking-wider text-ink-primary">
+                  <h4 className="font-sans text-[13px] font-semibold tracking-wider text-ink-primary">
                     {t.title}
                   </h4>
                 )}
-                <p className="font-sans text-xs text-ink-secondary leading-normal">
+                <p className="font-sans text-[13px] text-ink-secondary leading-normal">
                   {t.message}
                 </p>
               </div>

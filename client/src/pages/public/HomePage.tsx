@@ -258,7 +258,7 @@ export const HomePage: React.FC = () => {
             waypoints={RANKS.map((r, i) => ({
               id: r.id,
               label: r.name,
-              altitude: r.hours,
+              threshold: r.hours,
               isCompleted: i <= activeRankIndex,
               isCurrent: i === activeRankIndex,
             }))}
