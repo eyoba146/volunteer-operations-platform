@@ -49,29 +49,29 @@ export const SheetModal: React.FC<SheetModalProps> = ({
       <div className="fixed inset-0 z-50 flex justify-end">
         {/* Solid neutral backdrop */}
         <div
-          className="fixed inset-0 bg-black/60 transition-opacity"
+          className="fixed inset-0 bg-ink-primary/50 transition-opacity"
           onClick={onClose}
           aria-hidden="true"
         />
 
         {/* Drawer pane */}
-        <div className="relative w-full max-w-xl h-full bg-white border-l-2 border-ink-primary shadow-[8px_8px_0_#111111] flex flex-col z-10 animate-in slide-in-from-right duration-200">
-          <div className="flex items-start justify-between p-5 border-b-2 border-ink-primary bg-canvas-subdued">
+        <div className="relative w-full max-w-xl h-full bg-white border-l border-[#D5DAE1] shadow-2xl flex flex-col z-10 animate-in slide-in-from-right duration-200">
+          <div className="flex items-start justify-between p-5 border-b border-[#D5DAE1] bg-canvas-subdued">
             <div>
               {title && (
-                <h3 className="font-display text-2xl font-black text-ink-primary tracking-tight leading-tight">
+                <h3 className="font-display text-2xl font-bold text-ink-primary tracking-tight leading-tight">
                   {title}
                 </h3>
               )}
               {subtitle && (
-                <p className="font-sans text-xs text-ink-secondary mt-0.5 leading-relaxed">
+                <p className="font-sans text-sm text-ink-secondary mt-0.5 leading-relaxed">
                   {subtitle}
                 </p>
               )}
             </div>
             <button
               onClick={onClose}
-              className="p-1.5 text-ink-primary hover:bg-canvas-inset border-2 border-ink-primary transition-colors cursor-pointer shadow-[2px_2px_0_#111111] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
+              className="p-1.5 text-ink-primary hover:bg-canvas-inset border border-[#D5DAE1] rounded-[8px] transition-colors cursor-pointer"
               aria-label="Close pane"
             >
               <X className="w-5 h-5" weight="bold" />
@@ -89,33 +89,33 @@ export const SheetModal: React.FC<SheetModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/60 transition-opacity"
+        className="fixed inset-0 bg-ink-primary/50 transition-opacity"
         onClick={onClose}
         aria-hidden="true"
       />
 
       {/* Modal Dialog */}
       <div
-        className={`relative w-full ${maxWidthClass} bg-white border-2 border-ink-primary shadow-[8px_8px_0_#111111] z-10 animate-in fade-in zoom-in-95 duration-150 rounded-none`}
+        className={`relative w-full ${maxWidthClass} bg-white border border-[#D5DAE1] rounded-[10px] shadow-2xl z-10 animate-in fade-in zoom-in-95 duration-150 overflow-hidden`}
         role="dialog"
         aria-modal="true"
       >
-        <div className="flex items-start justify-between p-5 border-b-2 border-ink-primary bg-canvas-subdued">
+        <div className="flex items-start justify-between p-5 border-b border-[#D5DAE1] bg-canvas-subdued">
           <div>
             {title && (
-              <h3 className="font-display text-2xl font-black text-ink-primary tracking-tight leading-tight">
+              <h3 className="font-display text-2xl font-bold text-ink-primary tracking-tight leading-tight">
                 {title}
               </h3>
             )}
             {subtitle && (
-              <p className="font-sans text-xs text-ink-secondary mt-0.5 leading-relaxed">
+              <p className="font-sans text-sm text-ink-secondary mt-0.5 leading-relaxed">
                 {subtitle}
               </p>
             )}
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-ink-primary hover:bg-canvas-inset border-2 border-ink-primary transition-colors cursor-pointer shadow-[2px_2px_0_#111111] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
+            className="p-1.5 text-ink-primary hover:bg-canvas-inset border border-[#D5DAE1] rounded-[8px] transition-colors cursor-pointer"
             aria-label="Close dialog"
           >
             <X className="w-5 h-5" weight="bold" />

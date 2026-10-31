@@ -47,13 +47,13 @@ export const TicketPass: React.FC<TicketPassProps> = ({
       {/* Top Banner with Badge */}
       <div className={`px-4 py-2.5 flex items-center justify-between border-b-2 border-ink-primary ${headerAccent}`}>
         <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 bg-current shrink-0" />
-          <span className="font-display text-base font-black tracking-tight">
-            {subtitle || 'VTS Pass'}
+          <span className="w-2.5 h-2.5 bg-current shrink-0 rounded-full" />
+          <span className="font-display text-base font-bold tracking-tight">
+            {subtitle || 'VTS pass'}
           </span>
         </div>
         {badge && (
-          <span className="font-sans text-xs px-2 py-0.5 bg-ink-primary text-white font-bold border border-ink-primary">
+          <span className="font-sans text-[13px] px-2 py-0.5 bg-ink-primary text-white font-bold rounded-[4px]">
             {badge}
           </span>
         )}
@@ -62,7 +62,7 @@ export const TicketPass: React.FC<TicketPassProps> = ({
       {/* Main Ticket Body */}
       <div className="p-5 sm:p-6 space-y-3">
         <div>
-          {meta && <span className="font-sans text-xs font-bold text-ink-secondary block mb-1">{meta}</span>}
+          {meta && <span className="font-sans text-[13px] font-bold text-ink-secondary block mb-1">{meta}</span>}
           <h3 className="font-display text-2xl sm:text-3xl font-black text-ink-primary tracking-tight leading-tight">
             {title}
           </h3>
@@ -77,8 +77,8 @@ export const TicketPass: React.FC<TicketPassProps> = ({
         <div className="absolute -left-2.5 -top-2.5 w-5 h-5 rounded-full bg-canvas border-2 border-ink-primary" />
         <div className="absolute -right-2.5 -top-2.5 w-5 h-5 rounded-full bg-canvas border-2 border-ink-primary" />
 
-        <div className="font-sans text-xs font-bold text-ink-primary">
-          {stubCode ? `Pass # ${stubCode}` : 'VTS Trail Pass'}
+        <div className="font-sans text-[13px] font-bold text-ink-primary">
+          {stubCode ? `Pass # ${stubCode}` : 'VTS trail pass'}
         </div>
 
         {footer ? (

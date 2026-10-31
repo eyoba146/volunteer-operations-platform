@@ -46,7 +46,7 @@ const DEMO_PERSONAS = [
     role: 'Finance Officer',
     name: 'Abel Hailu',
     username: 'abel.hailu',
-    stage: 'Telebirr Audit • 2 flagged payments to review',
+    stage: 'Telebirr review • 2 flagged payments to review',
     badgeClass: 'bg-ink-primary text-white font-bold',
   },
   {
@@ -83,11 +83,11 @@ export const SignInPage: React.FC = () => {
 
   useEffect(() => {
     if (user) {
-      redirectToRoleWorkspace(user.role);
+      redirectToRoleHome(user.role);
     }
   }, [user]);
 
-  const redirectToRoleWorkspace = (role: string) => {
+  const redirectToRoleHome = (role: string) => {
     const from = (location.state as any)?.from?.pathname;
     if (from && from !== '/unauthorized' && from !== '/sign-in') {
       navigate(from, { replace: true });
@@ -136,7 +136,7 @@ export const SignInPage: React.FC = () => {
     try {
       const loggedIn = await signIn(identifier, password);
       toast.success(`Welcome back, ${loggedIn.username}!`);
-      redirectToRoleWorkspace(loggedIn.role);
+      redirectToRoleHome(loggedIn.role);
     } catch (err: any) {
       setErrorMessage(err.message || 'Could not sign in. Please verify your credentials.');
     } finally {
@@ -154,7 +154,7 @@ export const SignInPage: React.FC = () => {
     <div className="max-w-xl mx-auto px-4 sm:px-6 py-10 md:py-14 space-y-6">
       {/* Editorial Header */}
       <div className="space-y-2 border-b border-[#D5DAE1] pb-6 text-center">
-        <div className="inline-block px-3 py-1 bg-canvas-subdued text-ink-primary font-semibold text-xs rounded-[6px] border border-[#D5DAE1] mb-2">
+        <div className="inline-block px-3 py-1 bg-canvas-subdued text-ink-primary font-semibold text-[13px] rounded-[6px] border border-[#D5DAE1] mb-2">
           Operations access
         </div>
         <h1 className="font-display font-bold text-3xl sm:text-4xl text-ink-primary tracking-tight">
@@ -175,7 +175,7 @@ export const SignInPage: React.FC = () => {
           <div className="flex items-center gap-2">
             <Sparkle className="w-4 h-4 text-role-applicant" weight="fill" />
             <span>Demo evaluator accounts</span>
-            <span className="font-sans text-xs px-2 py-0.5 bg-canvas-inset text-ink-secondary rounded-[4px] border border-[#D5DAE1] ml-1">
+            <span className="font-sans text-[13px] px-2 py-0.5 bg-canvas-inset text-ink-secondary rounded-[4px] border border-[#D5DAE1] ml-1">
               Password: Demo@1234
             </span>
           </div>
@@ -206,7 +206,7 @@ export const SignInPage: React.FC = () => {
                     {p.stage}
                   </span>
                 </div>
-                <div className="font-sans text-xs text-ink-secondary bg-canvas-inset px-2 py-1 rounded-[4px] border border-[#D5DAE1]">
+                <div className="font-sans text-[13px] text-ink-secondary bg-canvas-inset px-2 py-1 rounded-[4px] border border-[#D5DAE1]">
                   {p.username}
                 </div>
               </button>
@@ -217,7 +217,7 @@ export const SignInPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setEmailInboxOpen(true)}
-                className="text-xs font-semibold text-ink-secondary hover:text-ink-primary flex items-center gap-1.5 py-1 px-2 rounded-[6px] border border-[#D5DAE1] hover:bg-canvas-subdued cursor-pointer"
+                className="text-[13px] font-semibold text-ink-secondary hover:text-ink-primary flex items-center gap-1.5 py-1 px-2 rounded-[6px] border border-[#D5DAE1] hover:bg-canvas-subdued cursor-pointer"
               >
                 <Envelope className="w-3.5 h-3.5 text-role-applicant" weight="bold" />
                 <span>Preview transactional emails</span>

@@ -173,7 +173,7 @@ export const RegisterPage: React.FC = () => {
     <div className="max-w-xl mx-auto px-4 sm:px-6 py-10 md:py-14 space-y-6">
       {/* Editorial Header */}
       <div className="space-y-2 border-b border-[#D5DAE1] pb-6 text-center">
-        <div className="inline-block px-3 py-1 bg-canvas-subdued text-ink-primary font-semibold text-xs rounded-[6px] border border-[#D5DAE1] mb-2">
+        <div className="inline-block px-3 py-1 bg-canvas-subdued text-ink-primary font-semibold text-[13px] rounded-[6px] border border-[#D5DAE1] mb-2">
           New volunteer pass
         </div>
         <h1 className="font-display font-bold text-3xl sm:text-4xl text-ink-primary tracking-tight">

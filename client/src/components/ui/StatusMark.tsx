@@ -284,11 +284,11 @@ export const StatusMark: React.FC<StatusMarkProps> = ({
   const sizeClasses =
     size === 'sm'
       ? 'text-[13px] px-2 py-0.5 gap-1.5'
-      : 'text-xs px-2.5 py-1 gap-1.5';
+      : 'text-[13px] px-2.5 py-1 gap-1.5';
 
   return (
     <span
-      className={`inline-flex items-center font-sans font-bold text-xs tracking-tight border-2 rounded-none ${sizeClasses} ${classes} ${className}`}
+      className={`inline-flex items-center font-sans font-bold text-[13px] tracking-tight border rounded-[6px] ${sizeClasses} ${classes} ${className}`}
     >
       {icon}
       <span>{text}</span>

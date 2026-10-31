@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams, useNavigate, Link } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import * as api from '../../api';
 import { useAuth } from '../../context/AuthContext';
 import { Button } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
-import { Envelope, ArrowClockwise, Check, ArrowRight } from '@phosphor-icons/react';
+import { Envelope, ArrowRight } from '@phosphor-icons/react';
 import { DemoEmailInbox } from '../../components/demo/DemoEmailInbox';
 
 export const VerifyEmailPage: React.FC = () => {
   const { refreshUser } = useAuth();
   const [searchParams] = useSearchParams();
-  const [email, setEmail] = useState(searchParams.get('email') || '');
+  const [email] = useState(searchParams.get('email') || '');
   const [code, setCode] = useState(searchParams.get('code') || '');
   const [isLoading, setIsLoading] = useState(false);
   const [isResending, setIsResending] = useState(false);
@@ -71,34 +71,29 @@ export const VerifyEmailPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto px-4 sm:px-6 py-12 md:py-16 space-y-8">
+    <div className="max-w-lg mx-auto px-4 sm:px-6 py-10 md:py-14 space-y-6">
       {/* Header */}
-      <div className="space-y-2 border-b-2 border-ink-primary pb-6 text-center">
-        <h1 className="font-display font-black text-5xl sm:text-6xl tracking-tight text-ink-primary leading-none">
-          Confirm Your Email
+      <div className="space-y-2 border-b border-[#D5DAE1] pb-6 text-center">
+        <h1 className="font-display font-bold text-3xl sm:text-4xl tracking-tight text-ink-primary leading-tight">
+          Confirm your email
         </h1>
-        <p className="font-sans text-sm sm:text-base text-ink-secondary">
-          We sent a 6-digit code to <strong className="font-mono text-ink-primary">{email || 'your email'}</strong>.
+        <p className="font-sans text-base text-ink-secondary">
+          We sent a 6-digit code to <strong className="font-sans font-bold text-ink-primary">{email || 'your email'}</strong>.
         </p>
       </div>
 
-      {/* Ticket Container */}
-      <div
-        className="bg-white border-2 border-ink-primary p-6 sm:p-8 shadow-ticket space-y-6"
-        style={{
-          clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)',
-        }}
-      >
-        <form onSubmit={handleVerify} className="space-y-6">
+      {/* Card Container */}
+      <div className="bg-white border border-[#D5DAE1] rounded-[10px] p-6 sm:p-8 space-y-5">
+        <form onSubmit={handleVerify} className="space-y-5">
           {errorMessage && (
-            <div className="p-4 bg-red-50 border-2 border-role-teamlead text-role-teamlead text-xs font-sans font-bold">
+            <div className="p-3.5 bg-red-50 border border-role-teamlead rounded-[8px] text-role-teamlead text-sm font-semibold">
               {errorMessage}
             </div>
           )}
 
           <div className="space-y-2 text-center">
-            <label className="block font-sans text-xs font-bold tracking-tight text-ink-primary">
-              6-Digit Verification Code
+            <label className="block font-sans text-sm font-bold tracking-tight text-ink-primary">
+              6-digit verification code
             </label>
             <input
               type="text"
@@ -106,7 +101,7 @@ export const VerifyEmailPage: React.FC = () => {
               value={code}
               onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
               placeholder="000000"
-              className="w-full text-center font-mono text-3xl sm:text-4xl tracking-widest font-black py-3 px-4 border-2 border-ink-primary bg-canvas-inset text-ink-primary focus:border-role-applicant outline-none"
+              className="w-full text-center font-sans text-3xl sm:text-4xl tracking-widest font-black py-3 px-4 border-[1.5px] border-[#475569] rounded-[8px] bg-white text-ink-primary focus:border-ink-primary outline-none"
               autoFocus
               required
             />
@@ -114,18 +109,18 @@ export const VerifyEmailPage: React.FC = () => {
 
           <Button
             type="submit"
-            variant="saffron"
+            variant="primary"
             size="lg"
-            className="w-full text-base font-bold"
+            className="w-full"
             isLoading={isLoading}
-            rightIcon={<ArrowRight className="w-4 h-4" weight="bold" />}
+            rightIcon={<ArrowRight className="w-5 h-5" weight="bold" />}
           >
-            Confirm & Continue
+            Confirm and continue
           </Button>
 
           {/* Quick Evaluator Simulator Helper */}
-          <div className="p-3 bg-canvas-subdued border border-border flex items-center justify-between text-xs">
-            <span className="font-sans font-bold text-ink-secondary">
+          <div className="p-3 bg-canvas-subdued border border-[#D5DAE1] rounded-[8px] flex items-center justify-between text-[13px]">
+            <span className="font-sans font-semibold text-ink-secondary">
               Need to see the simulated email?
             </span>
             <button
@@ -134,11 +129,11 @@ export const VerifyEmailPage: React.FC = () => {
               className="text-role-applicant font-bold hover:underline flex items-center gap-1 cursor-pointer"
             >
               <Envelope className="w-4 h-4" weight="bold" />
-              <span>Preview Emails</span>
+              <span>Preview emails</span>
             </button>
           </div>
 
-          <div className="pt-2 text-center text-xs font-sans text-ink-secondary border-t border-border flex items-center justify-between">
+          <div className="pt-2 text-center text-[13px] font-sans text-ink-secondary border-t border-[#D5DAE1] flex items-center justify-between">
             <span>Did not receive code?</span>
             <button
               type="button"
@@ -146,7 +141,7 @@ export const VerifyEmailPage: React.FC = () => {
               disabled={resendCountdown > 0 || isResending}
               className="font-bold text-ink-primary disabled:text-ink-tertiary cursor-pointer hover:underline"
             >
-              {resendCountdown > 0 ? `Resend in ${resendCountdown}s` : 'Resend Code'}
+              {resendCountdown > 0 ? `Resend in ${resendCountdown}s` : 'Resend code'}
             </button>
           </div>
         </form>

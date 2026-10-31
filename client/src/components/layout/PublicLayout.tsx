@@ -8,7 +8,7 @@ export const PublicLayout: React.FC = () => {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
-  const getWorkspacePath = () => {
+  const getMySpacePath = () => {
     if (!user) return '/sign-in';
     switch (user.role) {
       case 'applicant':
@@ -67,7 +67,7 @@ export const PublicLayout: React.FC = () => {
                 <Button
                   variant="primary"
                   size="sm"
-                  onClick={() => navigate(getWorkspacePath())}
+                  onClick={() => navigate(getMySpacePath())}
                 >
                   <span>Open my space</span>
                 </Button>

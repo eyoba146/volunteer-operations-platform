@@ -4,7 +4,7 @@ import * as api from '../../api';
 import { SheetModal } from './SheetModal';
 import { Button } from './Button';
 import { useToast } from './ToastContext';
-import { Camera, Trash, MagnifyingGlassPlus, ArrowCounterClockwise, Check } from '@phosphor-icons/react';
+import { Camera, Trash, MagnifyingGlassPlus, Check } from '@phosphor-icons/react';
 
 interface ProfilePhotoModalProps {
   isOpen: boolean;
@@ -25,7 +25,6 @@ export const ProfilePhotoModal: React.FC<ProfilePhotoModalProps> = ({ isOpen, on
   const [fileError, setFileError] = useState<string | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const currentPhoto = user?.avatarUrl || profile?.avatarUrl || profile?.photoUrl;
 
@@ -98,34 +97,26 @@ export const ProfilePhotoModal: React.FC<ProfilePhotoModalProps> = ({ isOpen, on
           });
 
           // Draw image centered with zoom and offset
-          const aspect = img.width / img.height;
-          let drawW = 400 * zoom;
-          let drawH = 400 * zoom;
-          if (aspect > 1) {
-            drawW = 400 * aspect * zoom;
-          } else {
-            drawH = (400 / aspect) * zoom;
-          }
-
-          const centerX = 200 + offsetX;
-          const centerY = 200 + offsetY;
-          const drawX = centerX - drawW / 2;
-          const drawY = centerY - drawH / 2;
-
-          ctx.fillStyle = '#111111';
+          ctx.fillStyle = '#FFFFFF';
           ctx.fillRect(0, 0, 400, 400);
-          ctx.drawImage(img, drawX, drawY, drawW, drawH);
 
+          const scale = zoom;
+          const drawW = img.width * scale;
+          const drawH = img.height * scale;
+          const drawX = (400 - drawW) / 2 + offsetX;
+          const drawY = (400 - drawH) / 2 + offsetY;
+
+          ctx.drawImage(img, drawX, drawY, drawW, drawH);
           finalDataUrl = canvas.toDataURL('image/jpeg', 0.88);
         }
       }
 
       await api.updateProfilePhoto(user.id, finalDataUrl);
       await refreshUser();
-      toast.success(finalDataUrl ? 'Profile photo saved successfully.' : 'Profile photo removed.');
+      toast.success('Profile photo updated successfully.');
       onClose();
     } catch (err: any) {
-      setFileError(err.message || 'Could not save profile photo.');
+      setFileError(err.message || 'Failed to save photo.');
     } finally {
       setIsSaving(false);
     }
@@ -133,15 +124,16 @@ export const ProfilePhotoModal: React.FC<ProfilePhotoModalProps> = ({ isOpen, on
 
   const handleRemovePhoto = async () => {
     if (!user) return;
+    if (!window.confirm('Remove your profile photo?')) return;
     setIsSaving(true);
     try {
       await api.updateProfilePhoto(user.id, undefined);
-      setRawImage(null);
       await refreshUser();
-      toast.info('Your profile photo was removed.');
+      setRawImage(null);
+      toast.info('Profile photo removed.');
       onClose();
     } catch (err: any) {
-      toast.error(err.message || 'Could not remove photo.');
+      setFileError(err.message || 'Failed to remove photo.');
     } finally {
       setIsSaving(false);
     }
@@ -151,21 +143,21 @@ export const ProfilePhotoModal: React.FC<ProfilePhotoModalProps> = ({ isOpen, on
     <SheetModal
       isOpen={isOpen}
       onClose={onClose}
-      title="Profile Picture"
-      subtitle="Upload and crop your official volunteer portrait"
+      title="Update profile photo"
+      subtitle="Upload and crop a clear square photo for your ID pass and rosters"
       maxWidth="md"
     >
-      <div className="space-y-6 text-left">
+      <div className="space-y-5">
         {fileError && (
-          <div className="p-3 bg-red-50 border-2 border-role-teamlead text-role-teamlead text-xs font-bold">
+          <div className="p-3 bg-red-50 border border-role-teamlead text-role-teamlead text-sm font-semibold rounded-[8px]">
             {fileError}
           </div>
         )}
 
-        {/* Square Crop & Preview Viewport */}
-        <div className="flex flex-col items-center gap-4">
+        {/* Viewfinder Canvas / Area */}
+        <div className="flex flex-col items-center justify-center space-y-3">
           <div
-            className="relative w-64 h-64 border-4 border-ink-primary bg-canvas-subdued overflow-hidden select-none cursor-grab active:cursor-grabbing shadow-[4px_4px_0_#111111]"
+            className="relative w-64 h-64 border border-[#D5DAE1] rounded-[10px] bg-canvas-subdued overflow-hidden cursor-move flex items-center justify-center select-none"
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
@@ -174,8 +166,8 @@ export const ProfilePhotoModal: React.FC<ProfilePhotoModalProps> = ({ isOpen, on
             {rawImage ? (
               <img
                 src={rawImage}
-                alt="Crop preview"
-                className="absolute origin-center transition-transform duration-75 pointer-events-none"
+                alt="Upload preview"
+                className="absolute pointer-events-none select-none max-w-none transition-transform duration-75"
                 style={{
                   transform: `translate(${offsetX}px, ${offsetY}px) scale(${zoom})`,
                   maxWidth: '100%',
@@ -194,9 +186,9 @@ export const ProfilePhotoModal: React.FC<ProfilePhotoModalProps> = ({ isOpen, on
                 className="w-full h-full object-cover"
               />
             ) : (
-              <div className="w-full h-full flex flex-col items-center justify-center bg-canvas-inset text-ink-tertiary">
+              <div className="w-full h-full flex flex-col items-center justify-center bg-canvas-inset text-ink-secondary">
                 <Camera className="w-12 h-12 mb-2" weight="bold" />
-                <span className="text-xs font-bold tracking-wider">No Photo Chosen</span>
+                <span className="text-sm font-bold tracking-tight">No photo chosen</span>
               </div>
             )}
 
@@ -207,18 +199,18 @@ export const ProfilePhotoModal: React.FC<ProfilePhotoModalProps> = ({ isOpen, on
             </div>
           </div>
 
-          <p className="text-xs text-ink-tertiary">
+          <p className="text-[13px] text-ink-secondary">
             {rawImage ? 'Drag to position photo. Use zoom slider to fit.' : 'Square crop (400 × 400 px) for ID cards and rosters.'}
           </p>
         </div>
 
         {/* Zoom Slider Control (only when new image is loaded) */}
         {rawImage && (
-          <div className="space-y-2 bg-canvas-subdued p-4 border-2 border-ink-primary">
-            <div className="flex items-center justify-between text-xs font-bold text-ink-primary">
+          <div className="space-y-2 bg-canvas-subdued p-4 border border-[#D5DAE1] rounded-[8px]">
+            <div className="flex items-center justify-between text-sm font-bold text-ink-primary">
               <span className="flex items-center gap-1.5">
                 <MagnifyingGlassPlus className="w-4 h-4" weight="bold" />
-                Zoom & Scale
+                Zoom and scale
               </span>
               <span>{Math.round(zoom * 100)}%</span>
             </div>
@@ -244,7 +236,7 @@ export const ProfilePhotoModal: React.FC<ProfilePhotoModalProps> = ({ isOpen, on
         />
 
         {/* Action Controls */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-2 border-t-2 border-ink-primary">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-3 border-t border-[#D5DAE1]">
           <div className="flex items-center gap-2">
             <Button
               type="button"
@@ -253,7 +245,7 @@ export const ProfilePhotoModal: React.FC<ProfilePhotoModalProps> = ({ isOpen, on
               onClick={() => fileInputRef.current?.click()}
               leftIcon={<Camera className="w-4 h-4" weight="bold" />}
             >
-              {currentPhoto || rawImage ? 'Choose Different File' : 'Choose File'}
+              {currentPhoto || rawImage ? 'Choose different file' : 'Choose file'}
             </Button>
 
             {currentPhoto && !rawImage && (
@@ -283,7 +275,7 @@ export const ProfilePhotoModal: React.FC<ProfilePhotoModalProps> = ({ isOpen, on
               onClick={handleSave}
               leftIcon={<Check className="w-4 h-4" weight="bold" />}
             >
-              Save Picture
+              Save picture
             </Button>
           </div>
         </div>
@@ -291,4 +283,3 @@ export const ProfilePhotoModal: React.FC<ProfilePhotoModalProps> = ({ isOpen, on
     </SheetModal>
   );
 };
-

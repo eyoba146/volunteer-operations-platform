@@ -29,7 +29,7 @@ export const ProgressMeter: React.FC<ProgressMeterProps> = ({
     <div className={`space-y-2.5 ${className}`}>
       <div className="flex items-end justify-between">
         <div>
-          <span className="font-sans text-xs font-bold tracking-tight text-ink-secondary block">
+          <span className="font-sans text-sm font-bold tracking-tight text-ink-secondary block">
             {label}
           </span>
           <div className="flex items-baseline gap-1 mt-0.5">
@@ -46,24 +46,24 @@ export const ProgressMeter: React.FC<ProgressMeterProps> = ({
           <span className="font-display text-3xl font-black text-ink-primary leading-none">
             {percentage}%
           </span>
-          <span className="font-sans text-xs text-ink-tertiary block">
-            {isCompleted ? 'Station reached' : `${Math.max(0, target - current)} ${unit} remaining`}
+          <span className="font-sans text-[13px] text-ink-secondary block">
+            {isCompleted ? 'Milestone reached' : `${Math.max(0, target - current)} ${unit} remaining`}
           </span>
         </div>
       </div>
 
-      {/* SVG Trail Route Segment */}
-      <div className="relative w-full h-3.5 bg-canvas-inset overflow-hidden border border-border">
-        {/* Animated Drawing Trail Route Line */}
+      {/* Trail Route Segment */}
+      <div className="relative w-full h-3 bg-canvas-inset overflow-hidden rounded-[6px] border border-[#D5DAE1]">
+        {/* Animated Trail Route Line */}
         <motion.div
-          className="h-full relative"
+          className="h-full relative rounded-l-[4px]"
           style={{ backgroundColor: effectiveColor }}
           initial={{ width: 0 }}
           animate={{ width: `${percentage}%` }}
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
         >
           {/* Waypoint marker head */}
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-3.5 bg-ink-primary" />
+          <div className="absolute right-0 top-0 bottom-0 w-1 bg-ink-primary" />
         </motion.div>
       </div>
     </div>

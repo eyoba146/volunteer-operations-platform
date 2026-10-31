@@ -34,7 +34,7 @@ export const StatNumber: React.FC<StatNumberProps> = ({
           {label}
         </span>
         {sublabel && (
-          <span className="font-sans text-xs text-ink-tertiary block mt-0.5">
+          <span className="font-sans text-[13px] text-ink-secondary block mt-0.5">
             {sublabel}
           </span>
         )}
@@ -42,4 +42,3 @@ export const StatNumber: React.FC<StatNumberProps> = ({
     </div>
   );
 };
-

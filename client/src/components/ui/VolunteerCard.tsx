@@ -22,7 +22,7 @@ export const VolunteerCard: React.FC<VolunteerCardProps> = ({
 
   return (
     <div
-      className={`relative max-w-sm w-full bg-white border-4 border-ink-primary p-6 shadow-[6px_6px_0_#111111] space-y-5 text-left select-none ${className}`}
+      className={`relative max-w-sm w-full bg-white border-2 border-ink-primary p-6 shadow-[6px_6px_0_#111111] space-y-5 text-left select-none ${className}`}
       id="printable-volunteer-id-card"
       style={{
         clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)',
@@ -31,14 +31,14 @@ export const VolunteerCard: React.FC<VolunteerCardProps> = ({
       {/* Top Header */}
       <div className="flex items-start justify-between border-b-2 border-ink-primary pb-4">
         <div>
-          <span className="font-display text-2xl font-black text-ink-primary tracking-tight block">
-            VTS Trail Pass
+          <span className="font-display text-2xl font-bold text-ink-primary tracking-tight block">
+            VTS trail pass
           </span>
-          <span className="font-sans text-xs font-bold text-role-volunteer">
-            Verified Community Volunteer
+          <span className="font-sans text-[13px] font-bold text-role-volunteer">
+            Verified community volunteer
           </span>
         </div>
-        <div className="w-10 h-10 bg-role-volunteer text-white border-2 border-ink-primary flex items-center justify-center font-bold">
+        <div className="w-10 h-10 bg-role-volunteer text-white border border-ink-primary rounded-[6px] flex items-center justify-center font-bold">
           <CheckCircle className="w-6 h-6" weight="fill" />
         </div>
       </div>
@@ -60,22 +60,22 @@ export const VolunteerCard: React.FC<VolunteerCardProps> = ({
           <div className="pt-0.5">
             <StatusMark status={rank} size="sm" />
           </div>
-          <p className="font-sans text-xs font-bold text-ink-secondary">{profile.area}</p>
+          <p className="font-sans text-[13px] font-bold text-ink-secondary">{profile.area}</p>
         </div>
       </div>
 
       {/* Verification Data Grid */}
-      <div className="grid grid-cols-2 gap-3 p-3 bg-canvas-subdued border-2 border-ink-primary text-xs font-sans">
+      <div className="grid grid-cols-2 gap-3 p-3 bg-canvas-subdued border border-[#D5DAE1] rounded-[8px] text-sm font-sans">
         <div>
           <span className="text-[13px] text-ink-secondary font-bold block">Pass ID</span>
-          <span className="font-sans text-xs font-bold text-ink-primary">{profile.volunteerNumber || 'VTS-AA-2026-084'}</span>
+          <span className="font-sans text-[13px] font-bold text-ink-primary">{profile.volunteerNumber || 'VTS-AA-2026-084'}</span>
         </div>
         <div>
-          <span className="text-[13px] text-ink-secondary font-bold block">Approved Hours</span>
+          <span className="text-[13px] text-ink-secondary font-bold block">Approved hours</span>
           <span className="font-display text-xl font-black text-ink-primary leading-none">{approvedHours} hrs</span>
         </div>
         <div>
-          <span className="text-[13px] text-ink-secondary font-bold block">Duty Region</span>
+          <span className="text-[13px] text-ink-secondary font-bold block">Community area</span>
           <span className="font-bold text-ink-primary truncate block">{profile.area}</span>
         </div>
         <div>
@@ -88,13 +88,13 @@ export const VolunteerCard: React.FC<VolunteerCardProps> = ({
       <div className="pt-4 border-t-2 border-dashed border-ink-primary flex items-center justify-between">
         <div className="space-y-0.5">
           <span className="text-[13px] font-sans text-ink-secondary font-bold block">
-            Scan to Verify on Trail
+            Scan to verify on trail
           </span>
-          <span className="font-sans text-xs font-bold text-ink-primary">
+          <span className="font-sans text-[13px] font-bold text-ink-primary">
             {profile.volunteerNumber || 'VTS-AA-2026-084'}
           </span>
         </div>
-        <div className="w-12 h-12 border-2 border-ink-primary p-0.5 bg-white flex items-center justify-center shadow-[2px_2px_0_#111111]">
+        <div className="w-12 h-12 border border-ink-primary p-0.5 bg-white rounded-[6px] flex items-center justify-center shadow-[2px_2px_0_#111111]">
           <QrCode className="w-full h-full text-ink-primary" weight="bold" />
         </div>
       </div>

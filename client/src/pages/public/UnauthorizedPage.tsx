@@ -30,16 +30,16 @@ export const UnauthorizedPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-canvas flex items-center justify-center p-6 text-center">
-      <div className="max-w-md w-full border border-border bg-canvas-raised p-8 md:p-10 shadow-subtle space-y-5">
-        <div className="w-12 h-12 mx-auto border border-border bg-canvas-subdued flex items-center justify-center text-civic-rust">
+      <div className="max-w-md w-full border border-[#D5DAE1] bg-white rounded-[10px] p-8 md:p-10 space-y-5">
+        <div className="w-12 h-12 mx-auto border border-role-teamlead/40 bg-red-50 rounded-[8px] flex items-center justify-center text-role-teamlead">
           <ShieldWarning className="w-6 h-6" />
         </div>
 
         <div className="space-y-2">
-          <span className="font-mono text-xs tracking-tight text-ink-tertiary block">
-            Access Notice
+          <span className="font-sans text-[13px] font-bold tracking-tight text-ink-secondary block">
+            Access notice
           </span>
-          <h1 className="font-serif text-2xl font-bold text-ink-primary">
+          <h1 className="font-display text-2xl font-bold text-ink-primary">
             You do not have access to this page
           </h1>
           <p className="font-sans text-sm text-ink-secondary leading-relaxed">
@@ -60,11 +60,10 @@ export const UnauthorizedPage: React.FC = () => {
             leftIcon={<House className="w-4 h-4" />}
             onClick={() => navigate(getRoleHome())}
           >
-            Go to my workspace
+            Open my space
           </Button>
         </div>
       </div>
     </div>
   );
 };
-

@@ -25,32 +25,27 @@ export const ForgotPasswordPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto px-4 sm:px-6 py-12 md:py-16 space-y-8">
-      <div className="space-y-2 border-b-2 border-ink-primary pb-6 text-center">
-        <h1 className="font-display font-black text-5xl sm:text-6xl tracking-tight text-ink-primary leading-none">
-          Recover Password
+    <div className="max-w-lg mx-auto px-4 sm:px-6 py-10 md:py-14 space-y-6">
+      <div className="space-y-2 border-b border-[#D5DAE1] pb-6 text-center">
+        <h1 className="font-display font-bold text-3xl sm:text-4xl tracking-tight text-ink-primary leading-tight">
+          Recover password
         </h1>
-        <p className="font-sans text-sm sm:text-base text-ink-secondary">
+        <p className="font-sans text-base text-ink-secondary">
           Enter your email address and we will send you a link to choose a new password.
         </p>
       </div>
 
-      <div
-        className="bg-white border-2 border-ink-primary p-6 sm:p-8 shadow-ticket space-y-5"
-        style={{
-          clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)',
-        }}
-      >
+      <div className="bg-white border border-[#D5DAE1] rounded-[10px] p-6 sm:p-8 space-y-5">
         {isSubmitted ? (
-          <div className="space-y-4 text-center py-4">
-            <div className="w-14 h-14 mx-auto bg-green-50 text-role-volunteer border-2 border-role-volunteer flex items-center justify-center">
-              <CheckCircle className="w-8 h-8" weight="fill" />
+          <div className="space-y-4 text-center py-2">
+            <div className="w-12 h-12 mx-auto bg-green-50 text-role-volunteer border border-role-volunteer rounded-[8px] flex items-center justify-center">
+              <CheckCircle className="w-6 h-6" weight="fill" />
             </div>
-            <h3 className="font-display text-3xl font-black text-ink-primary">
-              Check Your Email
+            <h3 className="font-display text-2xl font-bold text-ink-primary">
+              Check your email
             </h3>
-            <p className="font-sans text-xs sm:text-sm text-ink-secondary leading-relaxed">
-              If an account exists for <strong className="font-mono text-ink-primary">{email}</strong>, we have sent a reset link to your inbox.
+            <p className="font-sans text-sm text-ink-secondary leading-relaxed">
+              If an account exists for <strong className="font-sans font-bold text-ink-primary">{email}</strong>, we have sent a reset link to your inbox.
             </p>
             <div className="pt-2 flex flex-col gap-2">
               <Button
@@ -58,11 +53,11 @@ export const ForgotPasswordPage: React.FC = () => {
                 size="md"
                 onClick={() => setEmailInboxOpen(true)}
               >
-                Preview Reset Email
+                Preview reset email
               </Button>
               <Link
                 to="/sign-in"
-                className="font-sans text-xs font-bold text-ink-secondary hover:text-ink-primary pt-2 block"
+                className="font-sans text-[13px] font-semibold text-ink-secondary hover:text-ink-primary pt-2 block"
               >
                 &larr; Back to sign in
               </Link>
@@ -70,34 +65,30 @@ export const ForgotPasswordPage: React.FC = () => {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-5">
-            <div className="space-y-1.5">
-              <label className="block font-sans text-xs font-bold tracking-tight text-ink-primary">
-                Email Address
-              </label>
-              <Input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="e.g. dawit@example.com"
-                leftIcon={<Envelope className="w-4 h-4 text-ink-secondary" />}
-                required
-              />
-            </div>
+            <Input
+              label="Email address"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="e.g. dawit@example.com"
+              leftIcon={<Envelope className="w-4 h-4 text-ink-secondary" />}
+              required
+            />
 
             <Button
               type="submit"
               variant="primary"
               size="lg"
-              className="w-full text-base font-bold"
+              className="w-full"
               isLoading={isLoading}
             >
-              Send Reset Link
+              Send reset link
             </Button>
 
-            <div className="pt-2 text-center border-t border-border">
+            <div className="pt-2 text-center border-t border-[#D5DAE1]">
               <Link
                 to="/sign-in"
-                className="font-sans text-xs font-bold text-ink-secondary hover:text-ink-primary inline-flex items-center gap-1"
+                className="font-sans text-[13px] font-semibold text-ink-secondary hover:text-ink-primary inline-flex items-center gap-1"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 <span>Back to sign in</span>

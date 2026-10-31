@@ -94,12 +94,12 @@ export const HomePage: React.FC = () => {
       roleColor: '#0E6266',
       badge: 'Program leadership',
       summary:
-        'Operations leaders who evaluate candidate applications, decide promotions, organize regional programs, and review audit reports.',
+        'Operations leaders who evaluate candidate applications, decide promotions, organize regional programs, and review operational reports.',
       unlocks: [
         'Review incoming applicant queue and make admission decisions',
         'Approve promotion requests to Senior Member, Lead, and Manager',
         'Oversee city-wide schedules and volunteer rosters',
-        'Export activity and financial audit reports',
+        'Export activity and financial reports',
       ],
     },
   ];
@@ -121,7 +121,7 @@ export const HomePage: React.FC = () => {
       num: '03',
       title: 'Pay once via Telebirr',
       detail:
-        'A one-time registration fee of ETB 200 covers your official digital volunteer ID pass with instant confirmation.',
+        'A one-time registration fee of ETB 200 covers your digital volunteer ID pass with instant confirmation.',
     },
     {
       num: '04',
@@ -138,7 +138,7 @@ export const HomePage: React.FC = () => {
     spots: '24 spots remaining',
     tag: 'Environment',
     description:
-      'Join our city environmental team for a morning waste audit and square maintenance project. Equipment and gloves provided on site.',
+      'Join our city environmental team for a morning waste sorting and square maintenance project. Equipment and gloves provided on site.',
     hours: '4 hours credit',
   };
 
@@ -302,7 +302,7 @@ export const HomePage: React.FC = () => {
             <div className="lg:col-span-5 space-y-4">
               <div className="flex items-center gap-2">
                 <span
-                  className="px-2.5 py-0.5 rounded-[4px] text-xs font-bold text-white"
+                  className="px-2.5 py-0.5 rounded-[4px] text-[13px] font-bold text-white"
                   style={{ backgroundColor: currentRank.roleColor }}
                 >
                   {currentRank.badge}
@@ -493,7 +493,7 @@ export const HomePage: React.FC = () => {
           <div className="lg:col-span-7 flex flex-col justify-between">
             <div className="text-sm font-semibold text-ink-secondary mb-2 flex items-center justify-between">
               <span>More upcoming opportunities</span>
-              <span className="text-xs text-ink-tertiary">Scroll right →</span>
+              <span className="text-[13px] text-ink-secondary">Scroll right →</span>
             </div>
 
             <div className="flex gap-4 overflow-x-auto pb-4 pt-1 no-scrollbar">
@@ -528,7 +528,7 @@ export const HomePage: React.FC = () => {
       {/* 5. CLOSING CALL TO ACTION: Light Surface with High-Contrast Primary & Secondary Buttons */}
       <section className="bg-white border-t border-[#D5DAE1] py-16 md:py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center space-y-5">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-canvas-subdued border border-[#D5DAE1] rounded-[6px] text-xs font-semibold text-ink-secondary">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-canvas-subdued border border-[#D5DAE1] rounded-[6px] text-[13px] font-semibold text-ink-secondary">
             <span>Verified community service</span>
           </div>
 

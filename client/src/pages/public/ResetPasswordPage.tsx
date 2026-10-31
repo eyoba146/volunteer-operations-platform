@@ -44,31 +44,26 @@ export const ResetPasswordPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto px-4 sm:px-6 py-12 md:py-16 space-y-8">
-      <div className="space-y-2 border-b-2 border-ink-primary pb-6 text-center">
-        <h1 className="font-display font-black text-5xl sm:text-6xl tracking-tight text-ink-primary leading-none">
-          Set New Password
+    <div className="max-w-lg mx-auto px-4 sm:px-6 py-10 md:py-14 space-y-6">
+      <div className="space-y-2 border-b border-[#D5DAE1] pb-6 text-center">
+        <h1 className="font-display font-bold text-3xl sm:text-4xl tracking-tight text-ink-primary leading-tight">
+          Set new password
         </h1>
-        <p className="font-sans text-sm sm:text-base text-ink-secondary">
+        <p className="font-sans text-base text-ink-secondary">
           Enter and confirm your new account password below.
         </p>
       </div>
 
-      <div
-        className="bg-white border-2 border-ink-primary p-6 sm:p-8 shadow-ticket space-y-6"
-        style={{
-          clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)',
-        }}
-      >
+      <div className="bg-white border border-[#D5DAE1] rounded-[10px] p-6 sm:p-8 space-y-5">
         {isSuccess ? (
-          <div className="space-y-4 text-center py-4">
-            <div className="w-14 h-14 mx-auto bg-green-50 text-role-volunteer border-2 border-role-volunteer flex items-center justify-center">
-              <CheckCircle className="w-8 h-8" weight="fill" />
+          <div className="space-y-4 text-center py-2">
+            <div className="w-12 h-12 mx-auto bg-green-50 text-role-volunteer border border-role-volunteer rounded-[8px] flex items-center justify-center">
+              <CheckCircle className="w-6 h-6" weight="fill" />
             </div>
-            <h3 className="font-display text-3xl font-black text-ink-primary">
-              Password Updated
+            <h3 className="font-display text-2xl font-bold text-ink-primary">
+              Password updated
             </h3>
-            <p className="font-sans text-xs sm:text-sm text-ink-secondary leading-relaxed">
+            <p className="font-sans text-sm text-ink-secondary leading-relaxed">
               Your password has been reset. You can now sign in to your volunteer account.
             </p>
             <div className="pt-2">
@@ -77,62 +72,54 @@ export const ResetPasswordPage: React.FC = () => {
                 size="lg"
                 className="w-full font-bold"
                 onClick={() => navigate('/sign-in')}
-                rightIcon={<ArrowRight className="w-4 h-4" weight="bold" />}
+                rightIcon={<ArrowRight className="w-5 h-5" weight="bold" />}
               >
-                Sign In Now
+                Sign in now
               </Button>
             </div>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-5">
             {errorMessage && (
-              <div className="p-4 bg-red-50 border-2 border-role-teamlead text-role-teamlead text-xs font-sans font-bold">
+              <div className="p-3.5 bg-red-50 border border-role-teamlead rounded-[8px] text-role-teamlead text-sm font-semibold">
                 {errorMessage}
               </div>
             )}
 
-            <div className="space-y-1.5">
-              <label className="block font-sans text-xs font-bold tracking-tight text-ink-primary">
-                New Password
-              </label>
-              <Input
-                type="password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                placeholder="At least 8 characters"
-                leftIcon={<Key className="w-4 h-4 text-ink-secondary" />}
-                required
-              />
-            </div>
+            <Input
+              label="New password"
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              placeholder="At least 8 characters"
+              leftIcon={<Key className="w-4 h-4 text-ink-secondary" weight="bold" />}
+              required
+            />
 
-            <div className="space-y-1.5">
-              <label className="block font-sans text-xs font-bold tracking-tight text-ink-primary">
-                Confirm New Password
-              </label>
-              <Input
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Re-enter your new password"
-                leftIcon={<Key className="w-4 h-4 text-ink-secondary" />}
-                required
-              />
-            </div>
+            <Input
+              label="Confirm new password"
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="Re-enter your new password"
+              leftIcon={<Key className="w-4 h-4 text-ink-secondary" weight="bold" />}
+              required
+            />
 
             <Button
               type="submit"
               variant="primary"
               size="lg"
-              className="w-full text-base font-bold"
+              className="w-full"
               isLoading={isLoading}
             >
-              Update Password
+              Update password
             </Button>
 
-            <div className="pt-2 text-center border-t border-border">
+            <div className="pt-2 text-center border-t border-[#D5DAE1]">
               <Link
                 to="/sign-in"
-                className="font-sans text-xs font-bold text-ink-secondary hover:text-ink-primary"
+                className="font-sans text-[13px] font-semibold text-ink-secondary hover:text-ink-primary"
               >
                 Cancel and return to sign in
               </Link>
