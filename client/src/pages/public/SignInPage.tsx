@@ -149,28 +149,31 @@ export const SignInPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto px-4 sm:px-6 py-12 md:py-16 space-y-8">
+    <div className="max-w-2xl mx-auto px-4 sm:px-6 py-10 md:py-14 space-y-8">
       {/* Editorial Header */}
       <div className="space-y-2 border-b-2 border-ink-primary pb-6 text-center">
-        <h1 className="font-display font-black text-5xl sm:text-6xl uppercase tracking-tight text-ink-primary leading-none">
-          Sign In to VTS
+        <div className="inline-block px-3 py-1 bg-canvas-subdued text-ink-primary font-display font-black text-xs uppercase tracking-wider border-2 border-ink-primary shadow-[2px_2px_0_#111111] mb-2">
+          Operations Access
+        </div>
+        <h1 className="font-display font-black text-4xl sm:text-5xl text-ink-primary tracking-tight leading-tight">
+          Sign In to Trail
         </h1>
-        <p className="font-sans text-sm sm:text-base text-ink-secondary">
-          Enter your credentials to access your volunteer trail and field assignments.
+        <p className="font-sans text-base text-ink-secondary max-w-lg mx-auto">
+          Enter your volunteer or staff credentials to access your field initiatives, hours log, and operational consoles.
         </p>
       </div>
 
       {/* Collapsible Demo Evaluator Accounts Panel */}
-      <div className="bg-white border-2 border-ink-primary shadow-ticket overflow-hidden">
+      <div className="bg-white border-2 border-ink-primary shadow-[6px_6px_0_#111111] overflow-hidden">
         <button
           type="button"
           onClick={() => setDemoPanelOpen(!demoPanelOpen)}
-          className="w-full px-5 py-3.5 bg-canvas-subdued border-b-2 border-ink-primary flex items-center justify-between font-display text-lg font-black uppercase text-ink-primary hover:bg-canvas-inset transition-colors cursor-pointer select-none"
+          className="w-full px-5 py-3.5 bg-canvas-subdued border-b-2 border-ink-primary flex items-center justify-between font-display text-lg font-black text-ink-primary hover:bg-canvas-inset transition-colors cursor-pointer select-none"
         >
           <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 bg-role-applicant" />
-            <span>Demo Accounts • Quick Select</span>
-            <span className="font-mono text-xs font-bold px-2 py-0.5 bg-ink-primary text-white ml-2">
+            <Sparkle className="w-5 h-5 text-role-applicant" weight="fill" />
+            <span>Demo Accounts • One-Click Fill</span>
+            <span className="font-sans text-xs font-bold px-2 py-0.5 bg-ink-primary text-white ml-2 border border-ink-primary">
               Password: Demo@1234
             </span>
           </div>
@@ -178,19 +181,19 @@ export const SignInPage: React.FC = () => {
         </button>
 
         {demoPanelOpen && (
-          <div className="p-4 bg-white space-y-2 divide-y divide-border">
+          <div className="p-4 bg-white space-y-2 divide-y-2 divide-canvas-subdued">
             {DEMO_PERSONAS.map((p) => (
               <button
                 key={p.username}
                 type="button"
                 onClick={() => handleSelectDemoAccount(p.username)}
-                className={`w-full pt-2.5 pb-2 text-left flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-2 hover:bg-canvas-subdued transition-colors cursor-pointer ${
-                  identifier === p.username ? 'bg-canvas-subdued font-bold' : ''
+                className={`w-full pt-3 pb-2 text-left flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 hover:bg-canvas-subdued transition-colors cursor-pointer border-2 border-transparent hover:border-ink-primary ${
+                  identifier === p.username ? 'bg-canvas-subdued border-ink-primary font-bold shadow-[2px_2px_0_#111111]' : ''
                 }`}
               >
                 <div className="space-y-0.5">
                   <div className="flex items-center gap-2">
-                    <span className={`text-[10px] font-sans font-bold px-1.5 py-0.5 uppercase ${p.color}`}>
+                    <span className={`text-[11px] font-sans font-bold px-2 py-0.5 border border-ink-primary ${p.color}`}>
                       {p.role}
                     </span>
                     <span className="font-sans text-sm font-bold text-ink-primary">
@@ -201,7 +204,7 @@ export const SignInPage: React.FC = () => {
                     {p.stage}
                   </span>
                 </div>
-                <div className="font-mono text-xs font-bold text-ink-tertiary">
+                <div className="font-sans text-xs font-bold text-ink-secondary bg-canvas-inset px-2 py-1 border border-ink-primary/30">
                   {p.username}
                 </div>
               </button>
@@ -212,28 +215,26 @@ export const SignInPage: React.FC = () => {
 
       {/* Main Sign In Form */}
       <div
-        className="bg-white border-2 border-ink-primary p-6 sm:p-8 shadow-ticket space-y-6"
+        className="bg-white border-2 border-ink-primary p-6 sm:p-8 shadow-[6px_6px_0_#111111] space-y-6"
         style={{
           clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)',
         }}
       >
         <form onSubmit={handleSubmit} className="space-y-5">
           {errorMessage && (
-            <div className="p-4 bg-red-50 border-2 border-role-teamlead text-role-teamlead text-xs font-sans font-bold">
+            <div className="p-4 bg-red-50 border-2 border-role-teamlead text-role-teamlead text-sm font-sans font-bold">
               {errorMessage}
             </div>
           )}
 
           <div className="space-y-1.5">
-            <label className="block font-sans text-xs font-bold uppercase tracking-tight text-ink-primary">
-              Username or Email Address
-            </label>
             <Input
+              label="Username or Email Address"
               type="text"
               value={identifier}
               onChange={(e) => setIdentifier(e.target.value)}
-              placeholder="e.g. hana.tesfaye or volunteer@example.com"
-              leftIcon={<UserIcon className="w-4 h-4 text-ink-secondary" />}
+              placeholder="e.g. hana.tesfaye or hana@example.et"
+              leftIcon={<UserIcon className="w-4 h-4 text-ink-secondary" weight="bold" />}
               autoComplete="username"
               required
             />
@@ -241,7 +242,7 @@ export const SignInPage: React.FC = () => {
 
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <label className="block font-sans text-xs font-bold uppercase tracking-tight text-ink-primary">
+              <label className="block text-sm font-bold text-ink-primary tracking-tight">
                 Password
               </label>
               <Link
@@ -256,14 +257,15 @@ export const SignInPage: React.FC = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
-              leftIcon={<Key className="w-4 h-4 text-ink-secondary" />}
+              leftIcon={<Key className="w-4 h-4 text-ink-secondary" weight="bold" />}
               rightIcon={
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="text-ink-tertiary hover:text-ink-primary cursor-pointer"
+                  className="p-1 text-ink-secondary hover:text-ink-primary cursor-pointer"
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
-                  {showPassword ? <EyeSlash className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  {showPassword ? <EyeSlash className="w-4 h-4" weight="bold" /> : <Eye className="w-4 h-4" weight="bold" />}
                 </button>
               }
               autoComplete="current-password"
@@ -275,17 +277,17 @@ export const SignInPage: React.FC = () => {
             type="submit"
             variant="primary"
             size="lg"
-            className="w-full text-base font-bold"
+            className="w-full"
             isLoading={isLoading}
-            rightIcon={<ArrowRight className="w-4 h-4" weight="bold" />}
+            rightIcon={<ArrowRight className="w-5 h-5" weight="bold" />}
           >
             Sign In to Trail
           </Button>
 
-          <div className="pt-2 text-center text-xs font-sans text-ink-secondary border-t border-border">
-            Do not have an account yet?{' '}
-            <Link to="/register" className="font-bold text-ink-primary underline underline-offset-2">
-              Join as a volunteer
+          <div className="pt-4 text-center text-sm font-sans text-ink-secondary border-t-2 border-dashed border-ink-primary flex flex-col sm:flex-row items-center justify-between gap-2">
+            <span>New volunteer?</span>
+            <Link to="/register" className="font-bold text-ink-primary hover:underline border-b-2 border-ink-primary">
+              Register a new account →
             </Link>
           </div>
         </form>

@@ -21,7 +21,7 @@ export const Tabs: React.FC<TabsProps> = ({
 }) => {
   return (
     <div
-      className={`flex items-center gap-1 border-b border-border overflow-x-auto no-scrollbar ${className}`}
+      className={`flex items-center gap-2 p-1.5 bg-canvas-subdued border-2 border-ink-primary overflow-x-auto no-scrollbar ${className}`}
       role="tablist"
     >
       {tabs.map((tab) => {
@@ -32,19 +32,19 @@ export const Tabs: React.FC<TabsProps> = ({
             role="tab"
             aria-selected={isActive}
             onClick={() => onChange(tab.id)}
-            className={`flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold uppercase tracking-wider transition-colors duration-150 border-b-2 -mb-[1px] whitespace-nowrap cursor-pointer ${
+            className={`flex items-center gap-2 px-4 py-2 text-sm font-bold tracking-tight transition-all duration-100 whitespace-nowrap cursor-pointer rounded-none select-none ${
               isActive
-                ? 'border-ink-primary text-ink-primary bg-canvas-raised'
-                : 'border-transparent text-ink-tertiary hover:text-ink-primary hover:border-border'
+                ? 'bg-white border-2 border-ink-primary shadow-[3px_3px_0_#111111] text-ink-primary -translate-x-[1px] -translate-y-[1px]'
+                : 'border-2 border-transparent text-ink-secondary hover:text-ink-primary hover:border-ink-primary/30'
             }`}
           >
             <span>{tab.label}</span>
             {tab.count !== undefined && (
               <span
-                className={`font-mono text-[11px] px-1.5 py-0.2 rounded-none border ${
+                className={`text-xs px-2 py-0.5 border font-display font-black leading-none ${
                   isActive
-                    ? 'border-ink-primary bg-canvas-inset text-ink-primary font-bold'
-                    : 'border-border bg-canvas-subdued text-ink-secondary'
+                    ? 'border-ink-primary bg-ink-primary text-white'
+                    : 'border-ink-primary/40 bg-white text-ink-secondary'
                 }`}
               >
                 {tab.count}
@@ -56,4 +56,3 @@ export const Tabs: React.FC<TabsProps> = ({
     </div>
   );
 };
-

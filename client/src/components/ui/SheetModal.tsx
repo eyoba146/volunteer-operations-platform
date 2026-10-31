@@ -49,32 +49,32 @@ export const SheetModal: React.FC<SheetModalProps> = ({
       <div className="fixed inset-0 z-50 flex justify-end">
         {/* Solid neutral backdrop */}
         <div
-          className="fixed inset-0 bg-ink-primary/40 transition-opacity"
+          className="fixed inset-0 bg-black/60 transition-opacity"
           onClick={onClose}
           aria-hidden="true"
         />
 
         {/* Drawer pane */}
-        <div className="relative w-full max-w-xl h-full bg-canvas-raised border-l border-border-strong shadow-modal flex flex-col z-10 animate-in slide-in-from-right duration-200">
-          <div className="flex items-start justify-between p-5 border-b border-border bg-canvas-subdued">
+        <div className="relative w-full max-w-xl h-full bg-white border-l-2 border-ink-primary shadow-[8px_8px_0_#111111] flex flex-col z-10 animate-in slide-in-from-right duration-200">
+          <div className="flex items-start justify-between p-5 border-b-2 border-ink-primary bg-canvas-subdued">
             <div>
               {title && (
-                <h3 className="font-serif text-xl font-semibold text-ink-primary">
+                <h3 className="font-display text-2xl font-black text-ink-primary tracking-tight leading-tight">
                   {title}
                 </h3>
               )}
               {subtitle && (
-                <p className="font-sans text-xs text-ink-secondary mt-0.5">
+                <p className="font-sans text-xs text-ink-secondary mt-0.5 leading-relaxed">
                   {subtitle}
                 </p>
               )}
             </div>
             <button
               onClick={onClose}
-              className="p-1.5 text-ink-secondary hover:text-ink-primary hover:bg-canvas-inset border border-transparent hover:border-border transition-colors cursor-pointer"
+              className="p-1.5 text-ink-primary hover:bg-canvas-inset border-2 border-ink-primary transition-colors cursor-pointer shadow-[2px_2px_0_#111111] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
               aria-label="Close pane"
             >
-              <X className="w-5 h-5" />
+              <X className="w-5 h-5" weight="bold" />
             </button>
           </div>
 
@@ -89,42 +89,41 @@ export const SheetModal: React.FC<SheetModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-ink-primary/50 transition-opacity"
+        className="fixed inset-0 bg-black/60 transition-opacity"
         onClick={onClose}
         aria-hidden="true"
       />
 
       {/* Modal Dialog */}
       <div
-        className={`relative w-full ${maxWidthClass} bg-canvas-raised border border-border-strong shadow-modal z-10 animate-in fade-in zoom-in-95 duration-150`}
+        className={`relative w-full ${maxWidthClass} bg-white border-2 border-ink-primary shadow-[8px_8px_0_#111111] z-10 animate-in fade-in zoom-in-95 duration-150 rounded-none`}
         role="dialog"
         aria-modal="true"
       >
-        <div className="flex items-start justify-between p-5 border-b border-border bg-canvas-subdued">
+        <div className="flex items-start justify-between p-5 border-b-2 border-ink-primary bg-canvas-subdued">
           <div>
             {title && (
-              <h3 className="font-serif text-xl font-semibold text-ink-primary">
+              <h3 className="font-display text-2xl font-black text-ink-primary tracking-tight leading-tight">
                 {title}
               </h3>
             )}
             {subtitle && (
-              <p className="font-sans text-xs text-ink-secondary mt-0.5">
+              <p className="font-sans text-xs text-ink-secondary mt-0.5 leading-relaxed">
                 {subtitle}
               </p>
             )}
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-ink-secondary hover:text-ink-primary hover:bg-canvas-inset border border-transparent hover:border-border transition-colors cursor-pointer"
+            className="p-1.5 text-ink-primary hover:bg-canvas-inset border-2 border-ink-primary transition-colors cursor-pointer shadow-[2px_2px_0_#111111] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
             aria-label="Close dialog"
           >
-            <X className="w-5 h-5" />
+            <X className="w-5 h-5" weight="bold" />
           </button>
         </div>
 
-        <div className="p-5">{children}</div>
+        <div className="p-5 max-h-[80vh] overflow-y-auto">{children}</div>
       </div>
     </div>
   );
 };
-

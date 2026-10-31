@@ -118,14 +118,15 @@ export const ApplicantApplyPage: React.FC = () => {
         const savedLocal = localStorage.getItem(storageKey);
         const localData = savedLocal ? JSON.parse(savedLocal) : null;
 
+        const userFullName = `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.username;
         const d = localData || app?.formData;
         if (d) {
-          setFullName(d.fullName || user.username);
-          setPhone(d.phone || '+251 9');
+          setFullName(d.fullName || userFullName);
+          setPhone(d.phone || user.phone || '+251 9');
           setDateOfBirth(d.dateOfBirth || '2001-01-01');
           setArea(d.area || 'Bole, Addis Ababa');
           setLanguages(d.languages?.join(', ') || 'Amharic, English');
-          setPhotoUrl(d.photoUrl || '');
+          setPhotoUrl(d.photoUrl || user.avatarUrl || '');
           setIdPhotoUrl(d.idPhotoUrl || '');
           setSelectedSkills(d.skills || ['Community Outreach']);
           setSelectedAvailability(d.availability || ['Saturday mornings']);
@@ -136,7 +137,9 @@ export const ApplicantApplyPage: React.FC = () => {
             setContactPhone(d.emergencyContact.phone || '+251 9');
           }
         } else {
-          setFullName(user.username);
+          setFullName(userFullName);
+          if (user.phone) setPhone(user.phone);
+          if (user.avatarUrl) setPhotoUrl(user.avatarUrl);
         }
       } finally {
         setIsLoading(false);

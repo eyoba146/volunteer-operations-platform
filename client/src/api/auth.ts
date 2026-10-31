@@ -1,6 +1,44 @@
-import { User, Role } from '../types';
+import { User, VolunteerProfile } from '../types';
 import { store } from './store';
 import { delay } from './delay';
+import { validateAndNormalizeEthiopianPhone } from '../utils/phone';
+
+export function checkDuplicate(
+  field: 'email' | 'username' | 'phone',
+  value: string,
+  currentUserId?: string
+): string | null {
+  const state = store.getState();
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+
+  if (field === 'email') {
+    const lower = trimmed.toLowerCase();
+    const exists = state.users.some(
+      (u) => u.email.toLowerCase() === lower && u.id !== currentUserId
+    );
+    return exists ? 'That email is already registered. Try signing in.' : null;
+  }
+
+  if (field === 'username') {
+    const lower = trimmed.toLowerCase();
+    const exists = state.users.some(
+      (u) => u.username.toLowerCase() === lower && u.id !== currentUserId
+    );
+    return exists ? 'That username is already taken. Try choosing another.' : null;
+  }
+
+  if (field === 'phone') {
+    const phoneRes = validateAndNormalizeEthiopianPhone(trimmed);
+    if (!phoneRes.isValid) return null; // format error handled elsewhere
+    const exists = state.users.some(
+      (u) => u.phone === phoneRes.normalized && u.id !== currentUserId
+    );
+    return exists ? 'That phone number is already registered. Try signing in.' : null;
+  }
+
+  return null;
+}
 
 export async function signIn(identifier: string, password: string): Promise<User> {
   await delay(350, 700);
@@ -40,22 +78,35 @@ export async function signIn(identifier: string, password: string): Promise<User
 }
 
 export async function register(
-  email: string,
+  firstName: string,
+  lastName: string,
   username: string,
+  email: string,
+  phone: string,
   password: string
 ): Promise<{ user: User; verificationCode: string }> {
   await delay(400, 800);
   const state = store.getState();
+
+  const cleanFirst = firstName.trim();
+  const cleanLast = lastName.trim();
   const lowerEmail = email.trim().toLowerCase();
   const lowerUsername = username.trim().toLowerCase();
 
-  if (state.users.some((u) => u.email.toLowerCase() === lowerEmail)) {
-    throw new Error('An account with this email address already exists.');
+  // Duplicate checks
+  const emailDup = checkDuplicate('email', lowerEmail);
+  if (emailDup) throw new Error(emailDup);
+
+  const userDup = checkDuplicate('username', lowerUsername);
+  if (userDup) throw new Error(userDup);
+
+  const phoneRes = validateAndNormalizeEthiopianPhone(phone);
+  if (!phoneRes.isValid) {
+    throw new Error(phoneRes.error || 'Please enter a valid Ethiopian mobile number.');
   }
 
-  if (state.users.some((u) => u.username.toLowerCase() === lowerUsername)) {
-    throw new Error('This username is already taken. Please choose another.');
-  }
+  const phoneDup = checkDuplicate('phone', phoneRes.normalized);
+  if (phoneDup) throw new Error(phoneDup);
 
   const newId = `usr-${Date.now()}`;
   const now = new Date().toISOString();
@@ -63,25 +114,48 @@ export async function register(
 
   const newUser: User = {
     id: newId,
+    firstName: cleanFirst,
+    lastName: cleanLast,
     username: lowerUsername,
     email: lowerEmail,
+    phone: phoneRes.normalized,
     passwordHash: password,
     role: 'applicant',
     accountStatus: 'unverified',
     createdAt: now,
   };
 
+  const newProfile: VolunteerProfile = {
+    userId: newId,
+    firstName: cleanFirst,
+    lastName: cleanLast,
+    fullName: `${cleanFirst} ${cleanLast}`.trim(),
+    phone: phoneRes.formatted,
+    dateOfBirth: '2001-01-01',
+    area: 'Bole, Addis Ababa',
+    bio: '',
+    skills: [],
+    availability: ['Weekends'],
+    languages: ['Amharic'],
+    emergencyContact: {
+      name: '',
+      relationship: '',
+      phone: '',
+    },
+    memberSince: now.slice(0, 10),
+  };
+
   // Add initial email
   const newEmail = {
     id: `em-${Date.now()}`,
     to: lowerEmail,
-    toName: username,
+    toName: `${cleanFirst} ${cleanLast}`.trim() || lowerUsername,
     subject: 'Welcome to VTS — Your 6-Digit Email Verification Code',
     category: 'verification' as const,
     sentAt: now,
     read: false,
     code: verificationCode,
-    body: `Hello ${username},\n\nThank you for beginning your registration with VTS.\n\nYour 6-digit verification code is: ${verificationCode}\n\nThis code is valid for 15 minutes. Enter it to activate your account access.\n\nWarm regards,\nVTS Admissions Team`,
+    body: `Hello ${cleanFirst},\n\nThank you for beginning your volunteer registration with VTS.\n\nYour 6-digit verification code is: ${verificationCode}\n\nThis code is valid for 15 minutes. Enter it to activate your account access.\n\nWarm regards,\nVTS Admissions Team`,
     actionLabel: 'Verify Email',
     actionUrl: `/verify-email?code=${verificationCode}&email=${encodeURIComponent(lowerEmail)}`,
   };
@@ -89,12 +163,13 @@ export async function register(
   store.setState((prev) => ({
     ...prev,
     users: [...prev.users, newUser],
+    profiles: [...prev.profiles, newProfile],
     emails: [newEmail, ...prev.emails],
     activityLog: [
       {
         id: `log-${Date.now()}`,
         actorId: newId,
-        actorName: username,
+        actorName: `${cleanFirst} ${cleanLast}`,
         actorRole: 'Applicant',
         action: 'Registered new applicant account',
         subject: lowerEmail,
@@ -105,6 +180,43 @@ export async function register(
   }));
 
   return { user: newUser, verificationCode };
+}
+
+export async function updateProfilePhoto(userId: string, avatarUrl?: string): Promise<User> {
+  await delay(250, 500);
+  const state = store.getState();
+  const user = state.users.find((u) => u.id === userId);
+  if (!user) throw new Error('User not found.');
+
+  const updatedUser: User = {
+    ...user,
+    avatarUrl,
+  };
+
+  store.setState((prev) => ({
+    ...prev,
+    users: prev.users.map((u) => (u.id === userId ? updatedUser : u)),
+    profiles: prev.profiles.map((p) =>
+      p.userId === userId
+        ? { ...p, avatarUrl, photoUrl: avatarUrl }
+        : p
+    ),
+    activityLog: [
+      {
+        id: `log-${Date.now()}`,
+        actorId: user.id,
+        actorName: user.username,
+        actorRole: user.role,
+        action: avatarUrl ? 'Updated profile photo' : 'Removed profile photo',
+        subject: user.email,
+        createdAt: new Date().toISOString(),
+      },
+      ...prev.activityLog,
+    ],
+  }));
+
+  store.setCurrentUser(updatedUser);
+  return updatedUser;
 }
 
 export async function verifyEmail(email: string, code: string): Promise<User> {
@@ -200,7 +312,7 @@ export async function forgotPassword(email: string): Promise<void> {
     sentAt: now,
     read: false,
     code: resetToken,
-    body: `Hello ${user.username},\n\nWe received a request to reset your password for the Volunteer Tracking System.\n\nClick the link below or enter token ${resetToken} to set a new password:\n\nIf you did not request this, you can safely ignore this email.`,
+    body: `Hello ${user.username},\n\nWe received a request to reset your password for the Volunteer Tracking System.\n\nClick the link below or enter recovery code ${resetToken} to set a new password:\n\nIf you did not request this, you can safely ignore this email.`,
     actionLabel: 'Reset Password',
     actionUrl: `/reset-password?token=${resetToken}&email=${encodeURIComponent(lowerEmail)}`,
   };

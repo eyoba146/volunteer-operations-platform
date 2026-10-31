@@ -67,6 +67,9 @@ export const DEMO_USERS: User[] = [
   {
     id: 'usr-hana',
     username: 'hana.tesfaye',
+    firstName: 'Hana',
+    lastName: 'Tesfaye',
+    phone: '+251911234567',
     email: 'hana.tesfaye@example.et',
     passwordHash: 'Demo@1234',
     role: 'applicant',
@@ -78,6 +81,9 @@ export const DEMO_USERS: User[] = [
   {
     id: 'usr-dawit',
     username: 'dawit.bekele',
+    firstName: 'Dawit',
+    lastName: 'Bekele',
+    phone: '+251923456789',
     email: 'dawit.bekele@example.et',
     passwordHash: 'Demo@1234',
     role: 'volunteer',
@@ -89,6 +95,9 @@ export const DEMO_USERS: User[] = [
   {
     id: 'usr-selam',
     username: 'selam.alemu',
+    firstName: 'Selam',
+    lastName: 'Alemu',
+    phone: '+251934567890',
     email: 'selam.alemu@example.et',
     passwordHash: 'Demo@1234',
     role: 'volunteer',
@@ -100,6 +109,9 @@ export const DEMO_USERS: User[] = [
   {
     id: 'usr-yonas',
     username: 'yonas.kebede',
+    firstName: 'Yonas',
+    lastName: 'Kebede',
+    phone: '+251945678901',
     email: 'yonas.kebede@example.et',
     passwordHash: 'Demo@1234',
     role: 'team_lead',
@@ -111,6 +123,9 @@ export const DEMO_USERS: User[] = [
   {
     id: 'usr-marta',
     username: 'marta.girma',
+    firstName: 'Marta',
+    lastName: 'Girma',
+    phone: '+251916789012',
     email: 'marta.girma@example.et',
     passwordHash: 'Demo@1234',
     role: 'manager',
@@ -122,6 +137,9 @@ export const DEMO_USERS: User[] = [
   {
     id: 'usr-abel',
     username: 'abel.hailu',
+    firstName: 'Abel',
+    lastName: 'Hailu',
+    phone: '+251927890123',
     email: 'abel.hailu@example.et',
     passwordHash: 'Demo@1234',
     role: 'finance',
@@ -133,6 +151,9 @@ export const DEMO_USERS: User[] = [
   {
     id: 'usr-ruth',
     username: 'ruth.mengistu',
+    firstName: 'Ruth',
+    lastName: 'Mengistu',
+    phone: '+251918901234',
     email: 'ruth.mengistu@example.et',
     passwordHash: 'Demo@1234',
     role: 'admin',
@@ -147,6 +168,8 @@ export const DEMO_USERS: User[] = [
 export const DEMO_PROFILES: VolunteerProfile[] = [
   {
     userId: 'usr-hana',
+    firstName: 'Hana',
+    lastName: 'Tesfaye',
     fullName: 'Hana Tesfaye',
     phone: '+251 91 123 4567',
     dateOfBirth: '2001-04-14',
@@ -164,6 +187,8 @@ export const DEMO_PROFILES: VolunteerProfile[] = [
   },
   {
     userId: 'usr-dawit',
+    firstName: 'Dawit',
+    lastName: 'Bekele',
     fullName: 'Dawit Bekele',
     phone: '+251 92 345 6789',
     dateOfBirth: '1998-09-22',
@@ -183,6 +208,8 @@ export const DEMO_PROFILES: VolunteerProfile[] = [
   },
   {
     userId: 'usr-selam',
+    firstName: 'Selam',
+    lastName: 'Alemu',
     fullName: 'Selam Alemu',
     phone: '+251 93 456 7890',
     dateOfBirth: '1996-03-10',
@@ -202,6 +229,8 @@ export const DEMO_PROFILES: VolunteerProfile[] = [
   },
   {
     userId: 'usr-yonas',
+    firstName: 'Yonas',
+    lastName: 'Kebede',
     fullName: 'Yonas Kebede',
     phone: '+251 94 567 8901',
     dateOfBirth: '1993-11-05',
@@ -221,6 +250,8 @@ export const DEMO_PROFILES: VolunteerProfile[] = [
   },
   {
     userId: 'usr-marta',
+    firstName: 'Marta',
+    lastName: 'Girma',
     fullName: 'Marta Girma',
     phone: '+251 91 678 9012',
     dateOfBirth: '1989-07-18',
@@ -240,6 +271,8 @@ export const DEMO_PROFILES: VolunteerProfile[] = [
   },
   {
     userId: 'usr-abel',
+    firstName: 'Abel',
+    lastName: 'Hailu',
     fullName: 'Abel Hailu',
     phone: '+251 92 789 0123',
     dateOfBirth: '1992-05-12',
@@ -258,6 +291,8 @@ export const DEMO_PROFILES: VolunteerProfile[] = [
   },
   {
     userId: 'usr-ruth',
+    firstName: 'Ruth',
+    lastName: 'Mengistu',
     fullName: 'Ruth Mengistu',
     phone: '+251 91 890 1234',
     dateOfBirth: '1985-02-28',
@@ -321,6 +356,9 @@ export const ADDITIONAL_USERS: User[] = ETHIOPIAN_NAMES.map((person, index) => {
   return {
     id: `usr-vol-${num}`,
     username,
+    firstName: person.first,
+    lastName: person.last,
+    phone: `+2519${(10000000 + num * 23145).toString().slice(0, 8)}`,
     email: `${username}@example.et`,
     passwordHash: 'Demo@1234',
     role: num <= 8 ? 'volunteer' : num <= 14 ? 'volunteer' : num <= 30 ? 'volunteer' : 'applicant',
@@ -336,6 +374,8 @@ export const ADDITIONAL_PROFILES: VolunteerProfile[] = ETHIOPIAN_NAMES.map((pers
   const rank: Rank = num <= 6 ? 'senior_member' : num <= 28 ? 'member' : 'member';
   return {
     userId: `usr-vol-${num}`,
+    firstName: person.first,
+    lastName: person.last,
     fullName: `${person.first} ${person.last}`,
     phone: `+251 9${(10000000 + num * 23145).toString().slice(0, 8)}`,
     dateOfBirth: `199${(num % 9) + 1}-0${(num % 8) + 1}-1${(num % 9)}`,

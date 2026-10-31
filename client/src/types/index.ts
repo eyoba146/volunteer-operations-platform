@@ -86,6 +86,10 @@ export interface User {
   id: string;
   username: string;
   email: string;
+  firstName?: string;
+  lastName?: string;
+  phone?: string;
+  avatarUrl?: string;
   passwordHash?: string;
   role: Role;
   accountStatus: AccountStatus;
@@ -102,8 +106,11 @@ export interface EmergencyContact {
 
 export interface VolunteerProfile {
   userId: string;
+  firstName?: string;
+  lastName?: string;
   fullName: string;
   phone: string;
+  avatarUrl?: string;
   dateOfBirth: string; // ISO date YYYY-MM-DD
   area: string; // e.g. "Bole, Addis Ababa"
   bio: string;
@@ -138,8 +145,11 @@ export interface Application {
   paymentDeadline?: string;
   notes: ApplicationNote[];
   formData?: {
+    firstName?: string;
+    lastName?: string;
     fullName: string;
     phone: string;
+    avatarUrl?: string;
     dateOfBirth: string;
     area: string;
     skills: string[];

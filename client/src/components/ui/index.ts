@@ -15,3 +15,4 @@ export * from './VolunteerCard';
 export * from './TrailLine';
 export * from './TicketPass';
 export * from './StatNumber';
+export * from './ProfilePhotoModal';

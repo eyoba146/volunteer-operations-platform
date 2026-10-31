@@ -29,8 +29,9 @@ import {
   MagnifyingGlass,
   ArrowClockwise,
   ChatCircleText,
+  Camera,
 } from '@phosphor-icons/react';
-import { Avatar, StatusMark, Button } from '../ui';
+import { Avatar, StatusMark, Button, ProfilePhotoModal } from '../ui';
 import { DemoEmailInbox } from '../demo/DemoEmailInbox';
 import { store } from '../../api';
 import { useToast } from '../ui/ToastContext';
@@ -45,6 +46,7 @@ export const AppShellLayout: React.FC = () => {
   const { user, profile, signOut } = useAuth();
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [emailInboxOpen, setEmailInboxOpen] = useState(false);
+  const [photoModalOpen, setPhotoModalOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const toast = useToast();
@@ -61,6 +63,12 @@ export const AppShellLayout: React.FC = () => {
       window.location.reload();
     }
   };
+
+  const displayName =
+    profile?.fullName ||
+    `${user?.firstName || ''} ${user?.lastName || ''}`.trim() ||
+    user?.username ||
+    'Volunteer';
 
   // Generate navigation links based on user role
   const getNavItems = (): NavItemConfig[] => {
@@ -196,19 +204,19 @@ export const AppShellLayout: React.FC = () => {
             >
               VTS
             </button>
-            <span className="font-mono text-xs px-2 py-0.5 rounded-none font-bold uppercase tracking-wider hidden sm:inline-block shadow-sm">
+            <span className="font-sans text-xs px-2.5 py-1 rounded-none font-bold hidden sm:inline-block border border-current shadow-[2px_2px_0_#111111]">
               {roleStyles.label}
             </span>
           </div>
 
           {/* Desktop Horizontal Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-1 h-full overflow-x-auto no-scrollbar">
+          <nav className="hidden lg:flex items-center gap-1.5 h-full overflow-x-auto no-scrollbar">
             {navItems.map((item) => (
               <NavLink
                 key={item.to}
                 to={item.to}
                 className={({ isActive }) =>
-                  `px-3 h-full flex items-center gap-1.5 font-sans text-xs font-bold uppercase tracking-tight transition-all duration-150 ${
+                  `px-3.5 h-full flex items-center gap-1.5 font-sans text-xs font-bold tracking-tight transition-all duration-150 ${
                     isActive ? roleStyles.activeTab : roleStyles.inactiveTab
                   }`
                 }
@@ -223,21 +231,34 @@ export const AppShellLayout: React.FC = () => {
             {/* Preview Emails Simulator Trigger */}
             <button
               onClick={() => setEmailInboxOpen(true)}
-              className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold border border-current hover:bg-white/20 transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold border-2 border-current hover:bg-white/20 transition-all cursor-pointer shadow-[2px_2px_0_#111111] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
               title="Preview simulated transactional emails"
             >
               <Envelope className="w-4 h-4" weight="bold" />
               <span className="hidden md:inline">Preview Emails</span>
             </button>
 
-            {/* User Badge */}
+            {/* User Profile Picture & Name (Click to Change Photo) */}
             <div className="flex items-center gap-2 pl-2">
-              <span className="font-sans text-xs font-bold hidden sm:inline">
-                {profile?.fullName || user?.username}
-              </span>
+              <button
+                onClick={() => setPhotoModalOpen(true)}
+                className="flex items-center gap-2 p-1 border-2 border-current hover:bg-white/20 transition-all cursor-pointer shadow-[2px_2px_0_#111111]"
+                title="Click to update profile portrait"
+              >
+                <Avatar
+                  name={displayName}
+                  photoUrl={profile?.photoUrl}
+                  avatarUrl={user?.avatarUrl || profile?.avatarUrl}
+                  size="sm"
+                />
+                <span className="font-sans text-xs font-bold hidden sm:inline pr-1">
+                  {displayName}
+                </span>
+              </button>
+
               <button
                 onClick={handleSignOut}
-                className="p-1.5 border border-current hover:bg-white/20 transition-colors cursor-pointer"
+                className="p-2 border-2 border-current hover:bg-white/20 transition-all cursor-pointer shadow-[2px_2px_0_#111111] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
                 title="Sign Out"
               >
                 <SignOut className="w-4 h-4" weight="bold" />
@@ -253,7 +274,7 @@ export const AppShellLayout: React.FC = () => {
       </main>
 
       {/* MOBILE FLOATING DOCK (Bottom Pinned) */}
-      <div className="lg:hidden fixed bottom-4 left-4 right-4 z-40 bg-ink-primary text-white border-2 border-black p-2 flex items-center justify-around shadow-dock">
+      <div className="lg:hidden fixed bottom-4 left-4 right-4 z-40 bg-ink-primary text-white border-2 border-black p-2 flex items-center justify-around shadow-[4px_4px_0_#000]">
         {navItems.slice(0, 4).map((item) => {
           const isActive = location.pathname.startsWith(item.to);
           return (
@@ -282,20 +303,28 @@ export const AppShellLayout: React.FC = () => {
 
       {/* MOBILE FULL DRAWER MODAL */}
       {mobileDrawerOpen && (
-        <div className="lg:hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex flex-col justify-end">
+        <div className="lg:hidden fixed inset-0 z-50 bg-black/70 flex flex-col justify-end">
           <div className="bg-white border-t-4 border-ink-primary p-6 space-y-6 max-h-[85vh] overflow-y-auto animate-in slide-in-from-bottom duration-200">
             <div className="flex items-center justify-between border-b-2 border-ink-primary pb-4">
-              <div>
-                <span className="font-display text-2xl font-black uppercase text-ink-primary leading-none block">
-                  {profile?.fullName || user?.username}
-                </span>
-                <span className="font-sans text-xs font-bold text-ink-secondary">
-                  Role: {user?.role.toUpperCase()}
-                </span>
+              <div className="flex items-center gap-3">
+                <Avatar
+                  name={displayName}
+                  photoUrl={profile?.photoUrl}
+                  avatarUrl={user?.avatarUrl || profile?.avatarUrl}
+                  size="md"
+                />
+                <div>
+                  <span className="font-display text-xl font-black text-ink-primary leading-none block">
+                    {displayName}
+                  </span>
+                  <span className="font-sans text-xs font-bold text-ink-secondary">
+                    Role: {user?.role.toUpperCase()}
+                  </span>
+                </div>
               </div>
               <button
                 onClick={() => setMobileDrawerOpen(false)}
-                className="p-2 border-2 border-ink-primary hover:bg-canvas-subdued cursor-pointer"
+                className="p-2 border-2 border-ink-primary hover:bg-canvas-subdued cursor-pointer shadow-[2px_2px_0_#111111]"
               >
                 <X className="w-5 h-5" weight="bold" />
               </button>
@@ -309,7 +338,7 @@ export const AppShellLayout: React.FC = () => {
                     navigate(item.to);
                     setMobileDrawerOpen(false);
                   }}
-                  className="p-3 text-left border border-border hover:border-ink-primary bg-canvas-subdued/50 hover:bg-white flex items-center gap-2.5 transition-colors font-sans text-xs font-bold"
+                  className="p-3 text-left border-2 border-ink-primary hover:bg-canvas-subdued bg-white flex items-center gap-2.5 transition-colors font-sans text-xs font-bold shadow-[2px_2px_0_#111111]"
                 >
                   {item.icon}
                   <span>{item.label}</span>
@@ -317,7 +346,18 @@ export const AppShellLayout: React.FC = () => {
               ))}
             </nav>
 
-            <div className="pt-4 border-t border-border flex items-center justify-between gap-3">
+            <div className="pt-4 border-t-2 border-ink-primary flex items-center justify-between gap-3">
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => {
+                  setMobileDrawerOpen(false);
+                  setPhotoModalOpen(true);
+                }}
+                leftIcon={<Camera className="w-4 h-4" weight="bold" />}
+              >
+                Profile Photo
+              </Button>
               <Button
                 variant="secondary"
                 size="sm"
@@ -338,6 +378,12 @@ export const AppShellLayout: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Profile Photo Modal */}
+      <ProfilePhotoModal
+        isOpen={photoModalOpen}
+        onClose={() => setPhotoModalOpen(false)}
+      />
 
       {/* Demo Email Preview Inbox */}
       <DemoEmailInbox

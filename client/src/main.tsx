@@ -1,18 +1,14 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 
-// Fontsource Typography Packages
-import '@fontsource/big-shoulders-display/400';
-import '@fontsource/big-shoulders-display/700';
-import '@fontsource/big-shoulders-display/800';
-import '@fontsource/big-shoulders-display/900';
-import '@fontsource/schibsted-grotesk/400.css';
-import '@fontsource/schibsted-grotesk/500.css';
-import '@fontsource/schibsted-grotesk/600.css';
-import '@fontsource/schibsted-grotesk/700.css';
-import '@fontsource/jetbrains-mono/400.css';
-import '@fontsource/jetbrains-mono/500.css';
-import '@fontsource/jetbrains-mono/600.css';
+// Fontsource Typography Packages: Bricolage Grotesque (Headlines) & Hanken Grotesk (Body)
+import '@fontsource/bricolage-grotesque/600.css';
+import '@fontsource/bricolage-grotesque/700.css';
+import '@fontsource/bricolage-grotesque/800.css';
+import '@fontsource/hanken-grotesk/400.css';
+import '@fontsource/hanken-grotesk/500.css';
+import '@fontsource/hanken-grotesk/600.css';
+import '@fontsource/hanken-grotesk/700.css';
 
 import './index.css'
 import App from './App.tsx'

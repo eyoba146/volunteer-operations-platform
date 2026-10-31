@@ -21,7 +21,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={inputId}
-            className="block text-xs font-bold uppercase tracking-tight text-ink-primary"
+            className="block text-sm font-bold text-ink-primary tracking-tight"
           >
             {label}
             {props.required && <span className="text-role-teamlead ml-1">*</span>}
@@ -30,7 +30,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
         <div className="relative flex items-center">
           {effectiveLeft && (
-            <div className="absolute left-3 flex items-center pointer-events-none text-ink-tertiary">
+            <div className="absolute left-3.5 flex items-center pointer-events-none text-ink-secondary">
               {effectiveLeft}
             </div>
           )}
@@ -38,28 +38,28 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           <input
             ref={ref}
             id={inputId}
-            className={`w-full bg-canvas-raised text-ink-primary font-sans text-sm border-2 border-border transition-colors duration-150 py-2.5 px-3 placeholder:text-ink-tertiary/60 ${
-              effectiveLeft ? 'pl-9' : ''
-            } ${effectiveRight ? 'pr-9' : ''} ${
+            className={`w-full bg-white text-ink-primary font-sans text-base border-2 border-ink-primary rounded-none transition-all duration-100 py-2.5 px-3.5 placeholder:text-ink-tertiary/70 ${
+              effectiveLeft ? 'pl-10' : ''
+            } ${effectiveRight ? 'pr-10' : ''} ${
               error
-                ? 'border-role-teamlead focus:border-role-teamlead focus:ring-1 focus:ring-role-teamlead'
-                : 'hover:border-ink-secondary focus:border-ink-primary focus:ring-1 focus:ring-ink-primary'
+                ? 'border-role-teamlead focus:border-role-teamlead focus:shadow-[3px_3px_0_#D63927]'
+                : 'hover:border-black focus:border-black focus:shadow-[3px_3px_0_#111111]'
             } outline-none disabled:bg-canvas-subdued disabled:cursor-not-allowed ${className}`}
             {...props}
           />
 
           {effectiveRight && (
-            <div className="absolute right-3 flex items-center text-ink-tertiary">
+            <div className="absolute right-3.5 flex items-center text-ink-secondary">
               {effectiveRight}
             </div>
           )}
         </div>
 
         {hint && !error && (
-          <p className="text-xs text-ink-tertiary font-sans">{hint}</p>
+          <p className="text-xs text-ink-secondary font-sans leading-relaxed">{hint}</p>
         )}
         {error && (
-          <p className="text-xs text-role-teamlead font-sans font-bold">{error}</p>
+          <p className="text-xs text-role-teamlead font-sans font-bold leading-relaxed">{error}</p>
         )}
       </div>
     );

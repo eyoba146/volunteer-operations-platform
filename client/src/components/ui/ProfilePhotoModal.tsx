@@ -1,0 +1,294 @@
+import React, { useState, useRef } from 'react';
+import { useAuth } from '../../context/AuthContext';
+import * as api from '../../api';
+import { SheetModal } from './SheetModal';
+import { Button } from './Button';
+import { useToast } from './ToastContext';
+import { Camera, Trash, MagnifyingGlassPlus, ArrowCounterClockwise, Check } from '@phosphor-icons/react';
+
+interface ProfilePhotoModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export const ProfilePhotoModal: React.FC<ProfilePhotoModalProps> = ({ isOpen, onClose }) => {
+  const { user, profile, refreshUser } = useAuth();
+  const toast = useToast();
+
+  const [rawImage, setRawImage] = useState<string | null>(null);
+  const [zoom, setZoom] = useState<number>(1);
+  const [offsetX, setOffsetX] = useState<number>(0);
+  const [offsetY, setOffsetY] = useState<number>(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [isSaving, setIsSaving] = useState(false);
+  const [fileError, setFileError] = useState<string | null>(null);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  const currentPhoto = user?.avatarUrl || profile?.avatarUrl || profile?.photoUrl;
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFileError(null);
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate type: JPG, PNG, WebP
+    const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    if (!validTypes.includes(file.type)) {
+      setFileError('Please select a JPG, PNG, or WebP photo.');
+      return;
+    }
+
+    // Validate size: max 5 MB
+    const maxBytes = 5 * 1024 * 1024;
+    if (file.size > maxBytes) {
+      setFileError('The image is larger than 5 MB. Please choose a smaller photo.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      setRawImage(event.target?.result as string);
+      setZoom(1);
+      setOffsetX(0);
+      setOffsetY(0);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!rawImage) return;
+    setIsDragging(true);
+    setDragStart({ x: e.clientX - offsetX, y: e.clientY - offsetY });
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging) return;
+    setOffsetX(e.clientX - dragStart.x);
+    setOffsetY(e.clientY - dragStart.y);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleSave = async () => {
+    if (!user) return;
+    setIsSaving(true);
+    setFileError(null);
+
+    try {
+      let finalDataUrl: string | undefined = undefined;
+
+      if (rawImage) {
+        // Render square 400x400 crop onto off-screen canvas
+        const canvas = document.createElement('canvas');
+        canvas.width = 400;
+        canvas.height = 400;
+        const ctx = canvas.getContext('2d');
+
+        if (ctx) {
+          const img = new Image();
+          await new Promise<void>((resolve, reject) => {
+            img.onload = () => resolve();
+            img.onerror = reject;
+            img.src = rawImage;
+          });
+
+          // Draw image centered with zoom and offset
+          const aspect = img.width / img.height;
+          let drawW = 400 * zoom;
+          let drawH = 400 * zoom;
+          if (aspect > 1) {
+            drawW = 400 * aspect * zoom;
+          } else {
+            drawH = (400 / aspect) * zoom;
+          }
+
+          const centerX = 200 + offsetX;
+          const centerY = 200 + offsetY;
+          const drawX = centerX - drawW / 2;
+          const drawY = centerY - drawH / 2;
+
+          ctx.fillStyle = '#111111';
+          ctx.fillRect(0, 0, 400, 400);
+          ctx.drawImage(img, drawX, drawY, drawW, drawH);
+
+          finalDataUrl = canvas.toDataURL('image/jpeg', 0.88);
+        }
+      }
+
+      await api.updateProfilePhoto(user.id, finalDataUrl);
+      await refreshUser();
+      toast.success(finalDataUrl ? 'Profile photo saved successfully.' : 'Profile photo removed.');
+      onClose();
+    } catch (err: any) {
+      setFileError(err.message || 'Could not save profile photo.');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleRemovePhoto = async () => {
+    if (!user) return;
+    setIsSaving(true);
+    try {
+      await api.updateProfilePhoto(user.id, undefined);
+      setRawImage(null);
+      await refreshUser();
+      toast.info('Your profile photo was removed.');
+      onClose();
+    } catch (err: any) {
+      toast.error(err.message || 'Could not remove photo.');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  return (
+    <SheetModal
+      isOpen={isOpen}
+      onClose={onClose}
+      title="Profile Picture"
+      subtitle="Upload and crop your official volunteer portrait"
+      maxWidth="md"
+    >
+      <div className="space-y-6 text-left">
+        {fileError && (
+          <div className="p-3 bg-red-50 border-2 border-role-teamlead text-role-teamlead text-xs font-bold">
+            {fileError}
+          </div>
+        )}
+
+        {/* Square Crop & Preview Viewport */}
+        <div className="flex flex-col items-center gap-4">
+          <div
+            className="relative w-64 h-64 border-4 border-ink-primary bg-canvas-subdued overflow-hidden select-none cursor-grab active:cursor-grabbing shadow-[4px_4px_0_#111111]"
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseUp}
+          >
+            {rawImage ? (
+              <img
+                src={rawImage}
+                alt="Crop preview"
+                className="absolute origin-center transition-transform duration-75 pointer-events-none"
+                style={{
+                  transform: `translate(${offsetX}px, ${offsetY}px) scale(${zoom})`,
+                  maxWidth: '100%',
+                  maxHeight: '100%',
+                  top: '0',
+                  left: '0',
+                  right: '0',
+                  bottom: '0',
+                  margin: 'auto',
+                }}
+              />
+            ) : currentPhoto ? (
+              <img
+                src={currentPhoto}
+                alt="Current profile"
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full flex flex-col items-center justify-center bg-canvas-inset text-ink-tertiary">
+                <Camera className="w-12 h-12 mb-2" weight="bold" />
+                <span className="text-xs font-bold uppercase tracking-wider">No Photo Chosen</span>
+              </div>
+            )}
+
+            {/* Viewfinder crosshairs */}
+            <div className="absolute inset-0 border border-white/40 pointer-events-none flex items-center justify-center">
+              <div className="w-full h-[1px] bg-white/20" />
+              <div className="h-full w-[1px] bg-white/20 absolute" />
+            </div>
+          </div>
+
+          <p className="text-xs text-ink-tertiary">
+            {rawImage ? 'Drag to position photo. Use zoom slider to fit.' : 'Square crop (400 × 400 px) for ID cards and rosters.'}
+          </p>
+        </div>
+
+        {/* Zoom Slider Control (only when new image is loaded) */}
+        {rawImage && (
+          <div className="space-y-2 bg-canvas-subdued p-4 border-2 border-ink-primary">
+            <div className="flex items-center justify-between text-xs font-bold text-ink-primary">
+              <span className="flex items-center gap-1.5">
+                <MagnifyingGlassPlus className="w-4 h-4" weight="bold" />
+                Zoom & Scale
+              </span>
+              <span>{Math.round(zoom * 100)}%</span>
+            </div>
+            <input
+              type="range"
+              min="0.8"
+              max="3"
+              step="0.05"
+              value={zoom}
+              onChange={(e) => setZoom(parseFloat(e.target.value))}
+              className="w-full accent-ink-primary cursor-pointer"
+            />
+          </div>
+        )}
+
+        {/* Hidden File Input */}
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          onChange={handleFileChange}
+          className="hidden"
+        />
+
+        {/* Action Controls */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-2 border-t-2 border-ink-primary">
+          <div className="flex items-center gap-2">
+            <Button
+              type="button"
+              variant="secondary"
+              size="sm"
+              onClick={() => fileInputRef.current?.click()}
+              leftIcon={<Camera className="w-4 h-4" weight="bold" />}
+            >
+              {currentPhoto || rawImage ? 'Choose Different File' : 'Choose File'}
+            </Button>
+
+            {currentPhoto && !rawImage && (
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={handleRemovePhoto}
+                leftIcon={<Trash className="w-4 h-4 text-role-teamlead" weight="bold" />}
+                className="text-role-teamlead hover:bg-red-50"
+              >
+                Remove
+              </Button>
+            )}
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Button type="button" variant="ghost" size="sm" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              variant="primary"
+              size="sm"
+              isLoading={isSaving}
+              disabled={!rawImage && !currentPhoto}
+              onClick={handleSave}
+              leftIcon={<Check className="w-4 h-4" weight="bold" />}
+            >
+              Save Picture
+            </Button>
+          </div>
+        </div>
+      </div>
+    </SheetModal>
+  );
+};
+

@@ -10,18 +10,26 @@
   html, body {
     margin: 0;
     padding: 0;
-    background-color: #F4F5F7; /* Cool near-white (never cream, never beige) */
-    color: #111315;
-    font-family: 'Schibsted Grotesk', sans-serif;
+    background-color: #F4F5F7;
+    color: #111111;
+    font-family: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     min-height: 100%;
     overflow-x: hidden;
   }
 
-  /* High contrast focus outline */
+  /* Headings use Bricolage Grotesque */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    letter-spacing: -0.02em;
+  }
+
+  /* High contrast solid focus outline */
   *:focus-visible {
-    outline: 2px solid #111315;
+    outline: 2px solid #111111;
     outline-offset: 2px;
   }
 
@@ -30,14 +38,14 @@
     height: 6px;
   }
   ::-webkit-scrollbar-track {
-    background: #EBEDF0;
+    background: #E8EBEF;
   }
   ::-webkit-scrollbar-thumb {
-    background: #C4C9D0;
-    border-radius: 2px;
+    background: #111111;
+    border-radius: 0px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #959DA8;
+    background: #374151;
   }
 }
 
@@ -64,7 +72,7 @@
   .ticket-stub {
     border-style: dashed;
     border-width: 0 0 2px 0;
-    border-color: #DDE1E5;
+    border-color: #111111;
   }
 
   /* Hide scrollbar for clean horizontal snap rails */

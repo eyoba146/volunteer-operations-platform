@@ -8,22 +8,22 @@ export default {
     extend: {
       colors: {
         canvas: {
-          DEFAULT: '#F4F5F7', // Cool near-white (not cream, not beige)
-          subdued: '#EBEDF0', // Cool light gray
+          DEFAULT: '#F4F5F7', // Cool off-white
+          subdued: '#E8EBEF', // Clean light gray
           raised:  '#FFFFFF', // Pure crisp white
-          inset:   '#E2E5E9', // Tactile cool inset
+          inset:   '#DEE2E6', // Tactile cool inset
           dark:    '#111315', // Pure carbon
         },
         ink: {
-          primary:   '#111315', // High-contrast deep carbon
-          secondary: '#495057', // Clean neutral slate
-          tertiary:  '#717A84', // Muted metadata
+          primary:   '#111111', // High-contrast deep carbon
+          secondary: '#374151', // Clean neutral slate
+          tertiary:  '#6B7280', // Muted metadata
           inverted:  '#FFFFFF',
         },
         border: {
-          DEFAULT: '#DDE1E5', // Structural divider
-          subdued: '#EAEEF2', // Soft separator
-          strong:  '#111315', // Heavy accent
+          DEFAULT: '#111111', // Structural divider - 2px solid near-black
+          subdued: '#D1D5DB', // Soft secondary separator
+          strong:  '#111111', // Heavy accent
         },
         // Role Dominant Fields
         role: {
@@ -47,18 +47,29 @@ export default {
         }
       },
       fontFamily: {
-        display: ['"Big Shoulders Display"', 'sans-serif'],
-        sans: ['"Schibsted Grotesk"', 'sans-serif'],
-        mono: ['"JetBrains Mono"', 'monospace'],
+        display: ['"Bricolage Grotesque"', 'sans-serif'],
+        sans: ['"Hanken Grotesk"', 'sans-serif'],
+        mono: ['"Hanken Grotesk"', 'sans-serif'], // Replace monospace with clean sans
       },
       borderRadius: {
+        none: '0px',
+        sm: '2px',
+        DEFAULT: '4px',
+        md: '6px',
         'ticket': '4px',
-        'ticket-lg': '12px',
+        'ticket-lg': '6px',
       },
       boxShadow: {
-        'ticket': '0 4px 12px rgba(17, 19, 21, 0.06)',
-        'float': '0 12px 32px rgba(17, 19, 21, 0.12)',
-        'dock': '0 8px 30px rgba(17, 19, 21, 0.18)',
+        'none': '0 0 0 transparent',
+        'sm': '2px 2px 0 #111111',
+        'hard': '4px 4px 0 #111111',
+        'hard-sm': '2px 2px 0 #111111',
+        'hard-lg': '6px 6px 0 #111111',
+        'hard-xl': '8px 8px 0 #111111',
+        'ticket': '4px 4px 0 #111111',
+        'float': '6px 6px 0 #111111',
+        'dock': '4px 4px 0 #000000',
+        'modal': '8px 8px 0 #111111',
       },
     },
   },

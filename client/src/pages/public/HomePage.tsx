@@ -1,6 +1,5 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'motion/react';
 import {
   ArrowRight,
   ShieldCheck,
@@ -12,7 +11,7 @@ import {
   Sparkle,
   TrendUp,
 } from '@phosphor-icons/react';
-import { Button, TrailLine, TicketPass, StatNumber } from '../../components/ui';
+import { Button, TrailLine, TicketPass } from '../../components/ui';
 
 export const HomePage: React.FC = () => {
   const navigate = useNavigate();
@@ -56,7 +55,7 @@ export const HomePage: React.FC = () => {
     {
       num: '01',
       title: 'Sign Up Fast',
-      detail: 'Register with your email and confirm your 6-digit verification code. No long paperwork.',
+      detail: 'Register with your name, phone and email, then confirm your 6-digit code. No long paperwork.',
     },
     {
       num: '02',
@@ -66,7 +65,7 @@ export const HomePage: React.FC = () => {
     {
       num: '03',
       title: 'Pay Once via Telebirr',
-      detail: 'A one-time ETB 200 fee covers your duty insurance and printable volunteer ID pass.',
+      detail: 'A one-time registration fee covers your duty insurance and official printable volunteer pass.',
     },
     {
       num: '04',
@@ -123,11 +122,11 @@ export const HomePage: React.FC = () => {
             </span>
           </div>
 
-          {/* Giant Condensed Headline Cropped/Bleeding Edge */}
+          {/* Giant Headline */}
           <div className="overflow-visible">
-            <h1 className="font-display font-black text-6xl sm:text-8xl md:text-9xl tracking-tighter uppercase leading-[0.88] max-w-5xl">
+            <h1 className="font-display font-black text-5xl sm:text-7xl md:text-8xl tracking-tight leading-[0.92] max-w-5xl">
               YOUR TIME COUNTS. <br />
-              <span className="text-white drop-shadow-sm">NOW IT SHOWS.</span>
+              <span className="text-white drop-shadow-[3px_3px_0_#111111]">NOW IT SHOWS.</span>
             </h1>
           </div>
 
@@ -160,7 +159,7 @@ export const HomePage: React.FC = () => {
         <div className="max-w-7xl mx-auto mt-8 relative z-10">
           <TrailLine
             currentWaypointIndex={1}
-            strokeColor="#111315"
+            strokeColor="#111111"
             showLabels={false}
             className="opacity-90"
           />
@@ -171,14 +170,14 @@ export const HomePage: React.FC = () => {
       <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-12">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b-2 border-ink-primary pb-6">
           <div>
-            <span className="font-sans text-xs font-bold text-ink-tertiary uppercase tracking-wider block">
+            <span className="font-sans text-xs font-bold text-ink-secondary uppercase tracking-wider block">
               Ascending Ranks
             </span>
-            <h2 className="font-display text-4xl sm:text-5xl md:text-6xl font-black tracking-tight uppercase leading-none mt-1">
+            <h2 className="font-display text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-none mt-1">
               The Four Altitude Stations
             </h2>
           </div>
-          <p className="font-sans text-sm sm:text-base text-ink-secondary max-w-md">
+          <p className="font-sans text-sm sm:text-base text-ink-secondary max-w-md leading-relaxed">
             Rank is not a title; it is altitude earned through hours on the ground and verified by team leads.
           </p>
         </div>
@@ -202,7 +201,7 @@ export const HomePage: React.FC = () => {
           {RANKS_TRAIL.map((rank, idx) => (
             <div
               key={rank.title}
-              className="bg-white border-2 border-ink-primary shadow-ticket p-6 space-y-5 flex flex-col justify-between hover:-translate-y-1 transition-transform"
+              className="bg-white border-2 border-ink-primary shadow-[4px_4px_0_#111111] p-6 space-y-5 flex flex-col justify-between hover:shadow-[6px_6px_0_#111111] hover:-translate-x-[1px] hover:-translate-y-[1px] transition-all"
               style={{
                 clipPath: 'polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)',
               }}
@@ -212,27 +211,27 @@ export const HomePage: React.FC = () => {
                   <span className="font-display text-3xl font-black text-ink-primary">
                     0{idx + 1}
                   </span>
-                  <span className={`font-mono text-xs px-2 py-0.5 font-bold ${rank.color}`}>
+                  <span className={`font-sans text-xs px-2.5 py-0.5 font-bold border border-ink-primary ${rank.color}`}>
                     {rank.altitude}
                   </span>
                 </div>
 
                 <div>
-                  <h3 className="font-display text-3xl font-black uppercase text-ink-primary leading-tight">
+                  <h3 className="font-display text-3xl font-black text-ink-primary leading-tight">
                     {rank.title}
                   </h3>
-                  <span className="font-sans text-xs font-bold text-ink-tertiary">
+                  <span className="font-sans text-xs font-bold text-ink-secondary">
                     {rank.badge}
                   </span>
                 </div>
 
-                <p className="font-sans text-xs text-ink-secondary leading-relaxed">
+                <p className="font-sans text-sm text-ink-secondary leading-relaxed">
                   {rank.desc}
                 </p>
               </div>
 
-              <div className="pt-4 border-t-2 border-dashed border-border space-y-2">
-                <span className="font-sans text-[11px] font-bold text-ink-primary uppercase tracking-tight block">
+              <div className="pt-4 border-t-2 border-dashed border-ink-primary space-y-2">
+                <span className="font-sans text-xs font-bold text-ink-primary block">
                   What this unlocks:
                 </span>
                 <ul className="space-y-1">
@@ -253,10 +252,10 @@ export const HomePage: React.FC = () => {
       <section className="bg-canvas-subdued border-y-2 border-ink-primary py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto space-y-10">
           <div className="space-y-2">
-            <span className="font-sans text-xs font-bold text-ink-tertiary uppercase tracking-wider block">
+            <span className="font-sans text-xs font-bold text-ink-secondary uppercase tracking-wider block">
               How To Join
             </span>
-            <h2 className="font-display text-4xl sm:text-5xl font-black uppercase tracking-tight leading-none">
+            <h2 className="font-display text-4xl sm:text-5xl font-black tracking-tight leading-none">
               Four Steps. Zero Friction.
             </h2>
           </div>
@@ -265,15 +264,15 @@ export const HomePage: React.FC = () => {
             {JOIN_STEPS.map((step) => (
               <div
                 key={step.num}
-                className="bg-white border-2 border-ink-primary p-6 space-y-4"
+                className="bg-white border-2 border-ink-primary p-6 space-y-4 shadow-[4px_4px_0_#111111]"
               >
                 <span className="font-display text-6xl font-black text-role-applicant leading-none block">
                   {step.num}
                 </span>
-                <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
+                <h3 className="font-display text-2xl font-black text-ink-primary">
                   {step.title}
                 </h3>
-                <p className="font-sans text-xs text-ink-secondary leading-relaxed">
+                <p className="font-sans text-sm text-ink-secondary leading-relaxed">
                   {step.detail}
                 </p>
               </div>
@@ -286,10 +285,10 @@ export const HomePage: React.FC = () => {
       <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-10">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b-2 border-ink-primary pb-6">
           <div className="space-y-1">
-            <span className="font-sans text-xs font-bold text-ink-tertiary uppercase tracking-wider block">
+            <span className="font-sans text-xs font-bold text-ink-secondary uppercase tracking-wider block">
               Ready To Volunteer
             </span>
-            <h2 className="font-display text-4xl sm:text-5xl font-black uppercase tracking-tight leading-none">
+            <h2 className="font-display text-4xl sm:text-5xl font-black tracking-tight leading-none">
               Upcoming Field Activities
             </h2>
           </div>
@@ -297,7 +296,7 @@ export const HomePage: React.FC = () => {
             variant="secondary"
             size="md"
             onClick={() => navigate('/register')}
-            rightIcon={<ArrowRight className="w-4 h-4" />}
+            rightIcon={<ArrowRight className="w-4 h-4" weight="bold" />}
           >
             Browse All Activities
           </Button>
@@ -333,10 +332,10 @@ export const HomePage: React.FC = () => {
       {/* 5. BOLD CLOSING BAND: Black & Saffron High-Contrast Field */}
       <section className="bg-ink-primary text-white border-t-4 border-role-applicant py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto text-center space-y-6">
-          <span className="font-mono text-xs px-3 py-1 bg-role-applicant text-ink-primary font-bold uppercase tracking-wider inline-block">
+          <span className="font-sans text-xs px-3 py-1 bg-role-applicant text-ink-primary font-bold uppercase tracking-wider inline-block border border-ink-primary shadow-[2px_2px_0_#111111]">
             One Community • Verified Service
           </span>
-          <h2 className="font-display font-black text-5xl sm:text-7xl md:text-8xl tracking-tight uppercase leading-none">
+          <h2 className="font-display font-black text-5xl sm:text-7xl md:text-8xl tracking-tight leading-none">
             Ready to hit the trail?
           </h2>
           <p className="font-sans text-base sm:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
@@ -354,7 +353,7 @@ export const HomePage: React.FC = () => {
             <Button
               variant="secondary"
               size="xl"
-              className="bg-transparent text-white border-2 border-white hover:bg-white hover:text-ink-primary"
+              className="bg-transparent text-white border-2 border-white hover:bg-white hover:text-ink-primary shadow-[4px_4px_0_#FFFFFF]"
               onClick={() => navigate('/sign-in')}
             >
               Sign In to Your Account

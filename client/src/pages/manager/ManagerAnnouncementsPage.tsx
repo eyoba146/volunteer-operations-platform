@@ -316,3 +316,4 @@ export const ManagerAnnouncementsPage: React.FC = () => {
     </div>
   );
 };
+

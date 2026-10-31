@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
 import { VolunteerProfile } from '../../types';
-import { Input, Select, Button, StatusMark, Avatar, Skeleton, Tabs } from '../../components/ui';
+import { Input, Select, Button, StatusMark, Avatar, Skeleton, Tabs, ProfilePhotoModal } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
-import { FloppyDisk, UserCircle, Phone, MapPin, Heart, Bell, ShieldCheck } from '@phosphor-icons/react';
+import { FloppyDisk, UserCircle, Phone, MapPin, Heart, Bell, ShieldCheck, Camera } from '@phosphor-icons/react';
 
 const ETHIOPIAN_AREAS = [
   { value: 'Bole, Addis Ababa', label: 'Bole, Addis Ababa' },
@@ -22,6 +22,7 @@ const ETHIOPIAN_AREAS = [
 export const VolunteerProfilePage: React.FC = () => {
   const { user, profile, refreshUser } = useAuth();
   const [activeTab, setActiveTab] = useState<'profile' | 'notifications'>('profile');
+  const [photoModalOpen, setPhotoModalOpen] = useState(false);
 
   // Profile Fields
   const [fullName, setFullName] = useState('');
@@ -122,30 +123,43 @@ export const VolunteerProfilePage: React.FC = () => {
 
       {/* Profile Overview Card (Ticket Silhouette) */}
       <div
-        className="border-2 border-ink-primary bg-white p-6 flex flex-col sm:flex-row items-center gap-6 shadow-ticket"
+        className="border-2 border-ink-primary bg-white p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6 shadow-[6px_6px_0_#111111]"
         style={{
           clipPath: 'polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)',
         }}
       >
-        <Avatar
-          name={profile.fullName}
-          photoUrl={profile.photoUrl}
-          rank={profile.rank}
-          size="xl"
-          showRankBadge
-        />
-        <div className="space-y-1 text-center sm:text-left flex-1">
+        <div className="flex flex-col items-center gap-3 shrink-0">
+          <Avatar
+            name={profile.fullName}
+            photoUrl={profile.photoUrl}
+            avatarUrl={user?.avatarUrl || profile.avatarUrl}
+            rank={profile.rank}
+            size="xl"
+            showRankBadge
+          />
+          <Button
+            type="button"
+            variant="secondary"
+            size="sm"
+            onClick={() => setPhotoModalOpen(true)}
+            leftIcon={<Camera className="w-4 h-4" weight="bold" />}
+          >
+            Change Photo
+          </Button>
+        </div>
+
+        <div className="space-y-1.5 text-center sm:text-left flex-1">
           <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-            <h2 className="font-display text-3xl font-black uppercase tracking-tight text-ink-primary">
+            <h2 className="font-display text-3xl font-black text-ink-primary tracking-tight">
               {profile.fullName}
             </h2>
             <StatusMark status={profile.rank || 'member'} size="sm" />
           </div>
-          <p className="font-mono text-xs font-bold text-ink-secondary">
-            ID: {profile.volunteerNumber} • Registered: {profile.memberSince || 'Aug 2026'}
+          <p className="font-sans text-xs font-bold text-ink-secondary">
+            Pass ID: {profile.volunteerNumber} • Registered: {profile.memberSince || 'Aug 2026'}
           </p>
           <p className="font-sans text-xs text-ink-secondary">
-            Username: <span className="font-mono font-bold">{user?.username}</span> • Email: <span className="font-mono font-bold">{user?.email}</span>
+            Username: <span className="font-bold text-ink-primary">{user?.username}</span> • Email: <span className="font-bold text-ink-primary">{user?.email}</span>
           </p>
         </div>
       </div>
@@ -356,6 +370,12 @@ export const VolunteerProfilePage: React.FC = () => {
           </div>
         </form>
       )}
+
+      {/* Profile Photo Cropper Modal */}
+      <ProfilePhotoModal
+        isOpen={photoModalOpen}
+        onClose={() => setPhotoModalOpen(false)}
+      />
     </div>
   );
 };
