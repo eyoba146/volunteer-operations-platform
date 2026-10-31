@@ -6,9 +6,9 @@ import { Input, Button } from '../../components/ui';
 import { ShieldCheck, MagnifyingGlass, CheckCircle, Warning, QrCode } from '@phosphor-icons/react';
 
 const SAMPLE_CODES = [
-  { code: 'VTS-CERT-8842-ET', label: "Dawit's Membership Certificate" },
-  { code: 'VTS-CERT-7731-ET', label: "Selam's Senior Member Certificate" },
-  { code: 'VTS-CERT-9140-ET', label: "Dawit's Training Qualification" },
+  { code: 'VTS-CERT-8842-ET', label: "Dawit's Membership Pass" },
+  { code: 'VTS-CERT-7731-ET', label: "Selam's Senior Member Pass" },
+  { code: 'VTS-CERT-9140-ET', label: "Dawit's Safety Pass" },
 ];
 
 export const CertificateCheckPage: React.FC = () => {
@@ -48,27 +48,22 @@ export const CertificateCheckPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 space-y-10">
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12 md:py-16 space-y-8">
       {/* Header */}
-      <div className="space-y-2 border-b-2 border-ink-primary pb-6 text-center">
-        <h1 className="font-display font-black text-5xl sm:text-6xl uppercase tracking-tight text-ink-primary leading-none">
+      <div className="space-y-2 text-center pb-2">
+        <h1 className="font-display font-extrabold text-4xl sm:text-5xl tracking-tight text-slate-900 leading-none">
           Verify Volunteer Pass
         </h1>
-        <p className="font-sans text-sm sm:text-base text-ink-secondary max-w-xl mx-auto">
+        <p className="font-sans text-sm text-slate-500 max-w-lg mx-auto">
           Enter a certificate code to check the authenticity and completed hours of any credential issued by VTS.
         </p>
       </div>
 
-      {/* Search Input Box (Ticket Style) */}
-      <div
-        className="bg-white border-2 border-ink-primary p-6 sm:p-8 shadow-ticket space-y-5"
-        style={{
-          clipPath: 'polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)',
-        }}
-      >
+      {/* Search Input Box */}
+      <div className="bg-white rounded-[24px] shadow-soft border border-slate-100 p-6 sm:p-8 space-y-5">
         <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row items-end gap-3">
           <div className="flex-1 w-full space-y-1.5">
-            <label className="block font-sans text-xs font-bold uppercase tracking-tight text-ink-primary">
+            <label className="block font-sans text-xs font-semibold text-slate-700">
               Verification Code
             </label>
             <Input
@@ -76,7 +71,7 @@ export const CertificateCheckPage: React.FC = () => {
               value={code}
               onChange={(e) => setCode(e.target.value.toUpperCase())}
               placeholder="e.g. VTS-CERT-8842-ET"
-              leftIcon={<QrCode className="w-4 h-4 text-ink-secondary" />}
+              leftIcon={<QrCode className="w-4 h-4 text-slate-400" />}
               required
             />
           </div>
@@ -86,15 +81,15 @@ export const CertificateCheckPage: React.FC = () => {
             size="md"
             isLoading={isLoading}
             leftIcon={<MagnifyingGlass className="w-4 h-4" weight="bold" />}
-            className="w-full sm:w-auto font-bold"
+            className="w-full sm:w-auto"
           >
             Verify Pass
           </Button>
         </form>
 
         {/* Quick Demo Test Codes */}
-        <div className="pt-3 border-t border-border flex flex-wrap items-center gap-2 text-xs font-sans text-ink-secondary">
-          <span className="font-bold text-ink-primary">Quick Test Passes:</span>
+        <div className="pt-3 border-t border-slate-100 flex flex-wrap items-center gap-2 text-xs font-sans text-slate-500">
+          <span className="font-semibold text-slate-700">Quick Test Passes:</span>
           {SAMPLE_CODES.map((s) => (
             <button
               key={s.code}
@@ -103,7 +98,7 @@ export const CertificateCheckPage: React.FC = () => {
                 setCode(s.code);
                 doVerify(s.code);
               }}
-              className="px-2.5 py-1 font-mono text-xs font-bold bg-canvas-subdued border border-ink-primary hover:bg-black hover:text-white transition-colors cursor-pointer"
+              className="px-3 py-1 font-mono text-xs font-semibold rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors cursor-pointer"
             >
               {s.code}
             </button>
@@ -115,55 +110,45 @@ export const CertificateCheckPage: React.FC = () => {
       {searched && !isLoading && result && (
         <div className="animate-in fade-in duration-200">
           {result.valid && result.certificate ? (
-            <div
-              className="bg-white border-4 border-ink-primary shadow-float overflow-hidden"
-              style={{
-                clipPath: 'polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 0 100%)',
-              }}
-            >
-              {/* Green Header Banner */}
-              <div className="bg-role-volunteer text-white px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b-2 border-ink-primary">
+            <div className="bg-white rounded-[28px] shadow-soft border border-slate-100 overflow-hidden">
+              {/* Header Banner */}
+              <div className="bg-emerald-50 text-emerald-800 px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-emerald-100">
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="w-6 h-6 text-white" weight="fill" />
-                  <span className="font-display text-2xl font-black uppercase tracking-tight">
+                  <CheckCircle className="w-5 h-5 text-emerald-600" weight="fill" />
+                  <span className="font-display text-lg font-bold tracking-tight">
                     AUTHENTICATED VOLUNTEER PASS
                   </span>
                 </div>
-                <span className="font-mono text-xs px-2.5 py-1 bg-black text-white font-bold">
+                <span className="font-mono text-xs px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-semibold">
                   {result.certificate.verificationCode}
                 </span>
               </div>
 
-              {/* Certificate Pass Body */}
-              <div className="p-8 md:p-12 space-y-8">
-                <div className="space-y-3 text-center">
-                  <span className="font-sans text-xs font-bold uppercase tracking-wider text-ink-tertiary">
+              {/* Pass Body */}
+              <div className="p-8 sm:p-10 space-y-8">
+                <div className="space-y-2 text-center">
+                  <span className="font-sans text-xs font-semibold text-slate-400">
                     This credential certifies that
                   </span>
-                  <h2 className="font-display font-black text-5xl sm:text-6xl uppercase tracking-tight text-ink-primary leading-none">
+                  <h2 className="font-display font-extrabold text-3xl sm:text-4xl text-slate-900 tracking-tight leading-tight">
                     {result.certificate.userName}
                   </h2>
-                  <p className="font-sans text-lg font-bold text-role-volunteer">
+                  <p className="font-sans text-base font-semibold text-brand">
                     {result.certificate.title}
                   </p>
                 </div>
 
                 {/* Metadata Grid */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-5 bg-canvas-subdued border-2 border-border text-left">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-5 bg-slate-50 rounded-[18px] border border-slate-100 text-left">
                   <div>
-                    <span className="text-xs font-sans text-ink-tertiary block">
-                      Volunteer Pass ID
-                    </span>
-                    <span className="font-mono text-sm font-bold text-ink-primary">
+                    <span className="text-xs font-sans text-slate-400 block">Volunteer Pass ID</span>
+                    <span className="font-mono text-sm font-semibold text-slate-800">
                       {result.certificate.volunteerNumber}
                     </span>
                   </div>
-
                   <div>
-                    <span className="text-xs font-sans text-ink-tertiary block">
-                      Date Issued
-                    </span>
-                    <span className="font-mono text-sm font-bold text-ink-primary">
+                    <span className="text-xs font-sans text-slate-400 block">Date Issued</span>
+                    <span className="font-mono text-sm font-semibold text-slate-800">
                       {new Date(result.certificate.issuedAt).toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'short',
@@ -171,52 +156,37 @@ export const CertificateCheckPage: React.FC = () => {
                       })}
                     </span>
                   </div>
-
                   <div>
-                    <span className="text-xs font-sans text-ink-tertiary block">
-                      Issued By
-                    </span>
-                    <span className="font-sans text-sm font-bold text-ink-primary">
+                    <span className="text-xs font-sans text-slate-400 block">Issued By</span>
+                    <span className="font-sans text-sm font-semibold text-slate-800">
                       {result.certificate.issuerName}
                     </span>
                   </div>
-
                   <div>
-                    <span className="text-xs font-sans text-ink-tertiary block">
-                      Status
-                    </span>
-                    <span className="font-sans text-xs font-bold text-role-volunteer uppercase">
-                      Active & Good Standing
+                    <span className="text-xs font-sans text-slate-400 block">Authority</span>
+                    <span className="font-sans text-sm font-semibold text-slate-800">
+                      {result.certificate.issuerRole}
                     </span>
                   </div>
                 </div>
 
-                {/* Perforated Divider */}
-                <div className="relative border-t-2 border-dashed border-border pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <div className="font-sans text-xs text-ink-secondary">
-                    Verification signature: <strong className="font-mono text-ink-primary">{result.certificate.id}</strong>
-                  </div>
-                  <div className="flex gap-1.5">
-                    <span className="w-2 h-6 bg-ink-primary" />
-                    <span className="w-1 h-6 bg-ink-primary" />
-                    <span className="w-3 h-6 bg-ink-primary" />
-                    <span className="w-1 h-6 bg-ink-primary" />
-                    <span className="w-2 h-6 bg-ink-primary" />
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-slate-100 text-xs text-slate-500 font-sans">
+                  <span>Record verified and active in VTS central database.</span>
+                  <div className="p-2 bg-slate-50 rounded-[12px] border border-slate-100">
+                    <QrCode className="w-6 h-6 text-slate-700" />
                   </div>
                 </div>
               </div>
             </div>
           ) : (
-            <div className="bg-white border-2 border-role-teamlead p-8 text-center space-y-4">
-              <div className="w-12 h-12 mx-auto bg-red-50 text-role-teamlead border-2 border-role-teamlead flex items-center justify-center">
-                <Warning className="w-6 h-6" weight="bold" />
+            <div className="p-8 bg-rose-50 border border-rose-200 rounded-[24px] text-center space-y-3">
+              <Warning className="w-8 h-8 text-rose-600 mx-auto" />
+              <div className="space-y-1">
+                <h3 className="font-display text-xl font-bold text-rose-900">Pass Not Found</h3>
+                <p className="font-sans text-xs text-rose-700 max-w-sm mx-auto">
+                  {result.message || 'We could not find an authenticated volunteer pass matching that verification code.'}
+                </p>
               </div>
-              <h3 className="font-display text-3xl font-black uppercase text-ink-primary">
-                Record Not Found
-              </h3>
-              <p className="font-sans text-sm text-ink-secondary max-w-md mx-auto">
-                {result.message || 'No record was found matching that verification code. Please check the digits stamped on your pass.'}
-              </p>
             </div>
           )}
         </div>

@@ -146,18 +146,19 @@ export const ApplicantStatusPage: React.FC = () => {
 
       {/* Urgent Payment Banner if Accepted (Section 4 & 12.1) */}
       {isAccepted && !isPaid && (
-        <div className="border-2 border-ink-primary bg-role-applicantLight p-6 space-y-4 shadow-ticket">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="space-y-1">
-              <span className="font-sans text-xs uppercase font-bold text-ink-primary block">
-                Next Step: Membership Activation
+        <div className="bg-white rounded-[24px] shadow-soft border border-slate-100 p-8 space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+            <div className="space-y-1.5">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-700 text-xs font-semibold">
+                <span className="w-2 h-2 rounded-full bg-amber-500" />
+                Next Step: Activation
               </span>
-              <h2 className="font-display text-2xl sm:text-3xl font-black uppercase text-ink-primary leading-tight">
+              <h2 className="font-display text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight leading-tight">
                 Congratulations! Your Application Has Been Accepted
               </h2>
-              <p className="font-sans text-xs sm:text-sm text-ink-secondary leading-relaxed max-w-2xl">
-                Please complete your one-time registration fee of <strong className="font-mono text-ink-primary">ETB 200.00</strong> using Telebirr. Your payment window closes on{' '}
-                <strong className="font-mono text-ink-primary">
+              <p className="font-sans text-xs sm:text-sm text-slate-500 leading-relaxed max-w-xl">
+                Please complete your one-time registration fee of <strong className="font-semibold text-slate-900">ETB 200.00</strong> using Telebirr. Your payment window closes on{' '}
+                <strong className="font-semibold text-slate-900">
                   {application.paymentDeadline
                     ? new Date(application.paymentDeadline).toLocaleDateString('en-US', {
                         month: 'short',
@@ -173,7 +174,7 @@ export const ApplicantStatusPage: React.FC = () => {
               size="lg"
               onClick={() => navigate('/applicant/payment')}
               leftIcon={<Money className="w-5 h-5" weight="bold" />}
-              className="shrink-0 font-bold"
+              className="shrink-0 font-semibold"
             >
               Pay with Telebirr (ETB 200)
             </Button>
@@ -183,12 +184,12 @@ export const ApplicantStatusPage: React.FC = () => {
 
       {/* Clarification Alert if More Info Needed */}
       {application.status === 'more_info_needed' && (
-        <div className="border border-civic-gold bg-civic-goldLight p-5 space-y-3">
+        <div className="bg-amber-50 border border-amber-200 rounded-[20px] p-6 space-y-3">
           <div className="flex items-start gap-3">
-            <Warning className="w-5 h-5 text-civic-gold shrink-0 mt-0.5" weight="bold" />
-            <div className="space-y-1 text-xs font-sans text-ink-primary">
-              <h3 className="font-bold">Clarification Requested by Program Manager</h3>
-              <p className="leading-relaxed">{application.decisionReason}</p>
+            <Warning className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" weight="bold" />
+            <div className="space-y-1 text-xs font-sans text-slate-900">
+              <h3 className="font-semibold text-sm">Clarification Requested by Program Manager</h3>
+              <p className="leading-relaxed text-slate-600">{application.decisionReason}</p>
               <div className="pt-2">
                 <Button
                   variant="secondary"
@@ -204,10 +205,10 @@ export const ApplicantStatusPage: React.FC = () => {
       )}
 
       {/* Main Two-Track Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Timeline Column */}
-        <div className="lg:col-span-2 border border-border bg-canvas-raised p-6 md:p-8 space-y-6">
-          <h2 className="font-serif text-xl font-bold text-ink-primary border-b border-border pb-3">
+        <div className="lg:col-span-2 bg-white rounded-[24px] shadow-soft border border-slate-100 p-8 space-y-6">
+          <h2 className="font-display text-xl font-bold text-slate-900 border-b border-slate-100 pb-3">
             Recruitment Milestones
           </h2>
           <Timeline items={timelineItems} />

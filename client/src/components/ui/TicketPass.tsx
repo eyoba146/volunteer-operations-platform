@@ -25,74 +25,71 @@ export const TicketPass: React.FC<TicketPassProps> = ({
   onClick,
   className = '',
 }) => {
-  const headerAccent = {
-    applicant: 'bg-role-applicant text-ink-primary',
-    volunteer: 'bg-role-volunteer text-white',
-    teamlead:  'bg-role-teamlead text-white',
-    manager:   'bg-role-manager text-white',
-    finance:   'bg-role-finance text-role-financeAccent',
-    neutral:   'bg-canvas-subdued text-ink-primary',
+  const roleDot = {
+    applicant: 'bg-role-applicant',
+    volunteer: 'bg-role-volunteer',
+    teamlead:  'bg-role-teamlead',
+    manager:   'bg-role-manager',
+    finance:   'bg-slate-900',
+    neutral:   'bg-brand',
   }[variant];
 
   return (
     <div
       onClick={onClick}
-      className={`relative bg-white border-2 border-ink-primary shadow-ticket transition-all duration-200 select-none ${
-        onClick ? 'cursor-pointer hover:-rotate-1 hover:-translate-y-1' : ''
+      className={`relative bg-white rounded-[24px] shadow-soft hover:shadow-soft-hover transition-all duration-200 border border-slate-100 overflow-hidden ${
+        onClick ? 'cursor-pointer hover:-translate-y-0.5' : ''
       } ${className}`}
-      style={{
-        clipPath: 'polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)',
-      }}
     >
       {/* Top Banner with Badge */}
-      <div className={`px-4 py-2.5 flex items-center justify-between border-b-2 border-ink-primary ${headerAccent}`}>
+      <div className="px-5 py-3.5 flex items-center justify-between border-b border-slate-100 bg-slate-50/70">
         <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 bg-current shrink-0" />
-          <span className="font-display text-base font-black tracking-tight uppercase">
-            {subtitle || 'VTS PASS'}
+          <span className={`w-2 h-2 rounded-full shrink-0 ${roleDot}`} />
+          <span className="font-sans text-xs font-semibold text-slate-700">
+            {subtitle || 'Volunteer Pass'}
           </span>
         </div>
         {badge && (
-          <span className="font-mono text-xs px-2 py-0.5 bg-ink-primary text-white font-bold">
+          <span className="font-sans text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-white border border-slate-200/80 text-slate-700 shadow-sm">
             {badge}
           </span>
         )}
       </div>
 
       {/* Main Ticket Body */}
-      <div className="p-5 space-y-3">
+      <div className="p-6 space-y-3">
         <div>
-          {meta && <span className="font-mono text-xs text-ink-tertiary block mb-1">{meta}</span>}
-          <h3 className="font-display text-2xl sm:text-3xl font-black text-ink-primary tracking-tight leading-none uppercase">
+          {meta && <span className="font-sans text-xs text-slate-500 block mb-1">{meta}</span>}
+          <h3 className="font-display text-xl sm:text-2xl font-bold text-slate-900 tracking-tight leading-snug">
             {title}
           </h3>
         </div>
 
-        {children && <div className="font-sans text-sm text-ink-secondary">{children}</div>}
+        {children && <div className="font-sans text-sm text-slate-600 leading-relaxed">{children}</div>}
       </div>
 
       {/* Perforated Stub Divider */}
-      <div className="relative border-t-2 border-dashed border-border flex items-center justify-between px-4 py-3 bg-canvas-subdued/40">
+      <div className="relative border-t border-dashed border-slate-200 flex items-center justify-between px-5 py-3.5 bg-slate-50/50">
         {/* Left and Right Notches */}
-        <div className="absolute -left-2.5 -top-2.5 w-5 h-5 rounded-full bg-canvas border border-ink-primary" />
-        <div className="absolute -right-2.5 -top-2.5 w-5 h-5 rounded-full bg-canvas border border-ink-primary" />
+        <div className="absolute -left-3 -top-3 w-6 h-6 rounded-full bg-canvas border border-slate-100" />
+        <div className="absolute -right-3 -top-3 w-6 h-6 rounded-full bg-canvas border border-slate-100" />
 
-        <div className="font-mono text-xs font-bold text-ink-secondary">
-          {stubCode ? `PASS # ${stubCode}` : 'VTS TRAIL PASS'}
+        <div className="font-mono text-xs font-medium text-slate-500">
+          {stubCode ? `#${stubCode}` : 'VTS PASS'}
         </div>
 
         {footer ? (
           <div>{footer}</div>
         ) : (
-          <div className="flex gap-1">
-            <span className="w-1.5 h-4 bg-ink-primary" />
-            <span className="w-0.5 h-4 bg-ink-primary" />
-            <span className="w-2 h-4 bg-ink-primary" />
-            <span className="w-1 h-4 bg-ink-primary" />
+          <div className="flex gap-1 items-center opacity-60">
+            <span className="w-1 h-3.5 bg-slate-800 rounded-full" />
+            <span className="w-0.5 h-3.5 bg-slate-800 rounded-full" />
+            <span className="w-1.5 h-3.5 bg-slate-800 rounded-full" />
+            <span className="w-0.5 h-3.5 bg-slate-800 rounded-full" />
+            <span className="w-1 h-3.5 bg-slate-800 rounded-full" />
           </div>
         )}
       </div>
     </div>
   );
 };
-

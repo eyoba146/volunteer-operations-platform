@@ -99,45 +99,41 @@ export const ApplicantPaymentPage: React.FC = () => {
   // If applicant is already activated as Member or payment confirmed!
   if (simulationState === 'success' || payment?.status === 'confirmed') {
     return (
-      <div
-        className="max-w-xl mx-auto border-4 border-role-volunteer bg-white p-8 md:p-10 shadow-float space-y-6 text-center animate-in zoom-in-95 duration-200"
-        style={{
-          clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)',
-        }}
-      >
-        <div className="w-16 h-16 mx-auto bg-green-50 border-2 border-role-volunteer text-role-volunteer flex items-center justify-center">
-          <CheckCircle className="w-10 h-10" weight="fill" />
+      <div className="max-w-xl mx-auto bg-white rounded-[28px] shadow-soft border border-slate-100 p-8 md:p-10 space-y-6 text-center animate-in zoom-in-95 duration-200">
+        <div className="w-14 h-14 mx-auto rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center">
+          <CheckCircle className="w-8 h-8" weight="fill" />
         </div>
 
         <div className="space-y-2">
-          <span className="font-mono text-xs uppercase px-2.5 py-1 bg-role-volunteer text-white font-bold inline-block">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold">
+            <span className="w-2 h-2 rounded-full bg-emerald-500" />
             Payment Confirmed • Welcome to the Trail
           </span>
-          <h1 className="font-display text-4xl sm:text-5xl font-black uppercase tracking-tight text-ink-primary leading-none">
+          <h1 className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 leading-tight">
             You are now an Active Member!
           </h1>
-          <p className="font-sans text-sm text-ink-secondary leading-relaxed max-w-md mx-auto">
-            Your registration fee of <strong className="font-mono text-ink-primary">ETB 200.00</strong> was received via Telebirr. Your volunteer ID pass and upcoming activities are now unlocked.
+          <p className="font-sans text-sm text-slate-500 leading-relaxed max-w-md mx-auto">
+            Your registration fee of <strong className="font-semibold text-slate-900">ETB 200.00</strong> was received via Telebirr. Your volunteer ID pass and upcoming activities are now unlocked.
           </p>
         </div>
 
         {/* Receipt Box */}
-        <div className="border-2 border-dashed border-border bg-canvas-subdued p-5 space-y-2.5 font-mono text-xs text-left">
+        <div className="bg-slate-50 rounded-[18px] border border-slate-100 p-5 space-y-2.5 text-xs text-left">
           <div className="flex justify-between">
-            <span className="text-ink-tertiary">Receipt Number:</span>
-            <span className="font-bold text-ink-primary">{payment?.receiptNumber || 'REC-2026-00084'}</span>
+            <span className="text-slate-400">Receipt Number:</span>
+            <span className="font-semibold font-mono text-slate-900">{payment?.receiptNumber || 'REC-2026-00084'}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-ink-tertiary">Telebirr Ref:</span>
-            <span className="text-ink-primary">{payment?.telebirrReference}</span>
+            <span className="text-slate-400">Telebirr Ref:</span>
+            <span className="font-mono text-slate-900">{payment?.telebirrReference}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-ink-tertiary">Amount Paid:</span>
-            <span className="font-bold text-ink-primary">ETB 200.00</span>
+            <span className="text-slate-400">Amount Paid:</span>
+            <span className="font-semibold text-slate-900">ETB 200.00</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-ink-tertiary">Rank Unlocked:</span>
-            <span className="font-bold text-role-volunteer uppercase">Member (Basecamp)</span>
+            <span className="text-slate-400">Rank Unlocked:</span>
+            <span className="font-semibold text-emerald-600">Member (Basecamp)</span>
           </div>
         </div>
 
@@ -176,20 +172,20 @@ export const ApplicantPaymentPage: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
         {/* Left Column: What It Covers */}
         <div className="md:col-span-2 space-y-5">
-          <div className="border-2 border-ink-primary bg-white p-5 space-y-4 shadow-ticket">
-            <h3 className="font-display text-2xl font-black uppercase text-ink-primary border-b border-border pb-2">
+          <div className="bg-white rounded-[24px] shadow-soft border border-slate-100 p-6 space-y-4">
+            <h3 className="font-display text-xl font-bold text-slate-900 border-b border-slate-100 pb-3">
               Registration Fee
             </h3>
 
             <div className="space-y-1">
-              <span className="font-sans text-xs font-bold text-ink-tertiary">Total Amount Due</span>
-              <div className="font-display text-5xl font-black text-ink-primary leading-none">
-                ETB 200<span className="text-2xl font-sans text-ink-tertiary font-normal">.00</span>
+              <span className="font-sans text-xs text-slate-400">Total Amount Due</span>
+              <div className="font-display text-4xl sm:text-5xl font-extrabold text-slate-900 leading-none">
+                ETB 200<span className="text-xl font-sans text-slate-400 font-normal">.00</span>
               </div>
             </div>
 
-            <div className="space-y-2 pt-2 border-t border-border text-xs font-sans text-ink-secondary leading-relaxed">
-              <span className="font-bold text-ink-primary block">What this covers:</span>
+            <div className="space-y-2 pt-2 border-t border-slate-100 text-xs font-sans text-slate-500 leading-relaxed">
+              <span className="font-semibold text-slate-800 block">What this covers:</span>
               <ul className="space-y-1.5 list-disc list-inside">
                 <li>Printable Volunteer ID Pass with verification code</li>
                 <li>Duty insurance coverage on field assignments</li>
@@ -198,7 +194,7 @@ export const ApplicantPaymentPage: React.FC = () => {
               </ul>
             </div>
 
-            <div className="p-3 bg-canvas-subdued border border-border text-[11px] font-mono text-ink-tertiary">
+            <div className="p-3 bg-slate-50 rounded-[12px] border border-slate-100 text-[11px] font-mono text-slate-500">
               Merchant: VTS Volunteer Corps<br />
               Shortcode: 884120
             </div>
@@ -207,19 +203,19 @@ export const ApplicantPaymentPage: React.FC = () => {
 
         {/* Right Column: Telebirr Payment Rail */}
         <div className="md:col-span-3 space-y-6">
-          <div className="border-2 border-border-strong bg-canvas-raised p-6 space-y-6 shadow-subtle">
+          <div className="bg-white rounded-[24px] shadow-soft border border-slate-100 p-6 sm:p-8 space-y-6">
             {/* Top Telebirr brand accent */}
-            <div className="flex items-center justify-between border-b border-border pb-4">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-none bg-civic-gold text-ink-primary flex items-center justify-center font-bold text-sm">
+                <div className="w-8 h-8 rounded-full bg-amber-500 text-white flex items-center justify-center font-bold text-xs">
                   tb
                 </div>
                 <div>
-                  <h4 className="font-sans text-sm font-bold text-ink-primary">
+                  <h4 className="font-sans text-sm font-semibold text-slate-900">
                     Telebirr SuperApp / USSD
                   </h4>
-                  <span className="text-[10px] font-mono text-ink-tertiary">
-                    Ethio telecom payment gateway
+                  <span className="text-[11px] font-sans text-slate-400">
+                    Ethio Telecom payment rail
                   </span>
                 </div>
               </div>
@@ -228,7 +224,7 @@ export const ApplicantPaymentPage: React.FC = () => {
 
             {/* Delay/Waiting notification */}
             {simulationState === 'delay' && (
-              <div className="p-4 border border-civic-gold bg-civic-goldLight space-y-2 text-xs font-sans text-ink-primary">
+              <div className="p-4 rounded-[16px] border border-amber-200 bg-amber-50 space-y-2 text-xs font-sans text-slate-900">
                 <div className="flex items-center gap-2 font-bold text-[#784E0B]">
                   <Clock className="w-4 h-4" />
                   <span>We are checking your payment</span>
@@ -316,17 +312,17 @@ export const ApplicantPaymentPage: React.FC = () => {
                 </div>
 
                 {/* Evaluator Simulation Control Panel (Section 12.2) */}
-                <div className="p-4 border-2 border-dashed border-civic-gold bg-civic-goldLight/70 space-y-3 text-left">
+                <div className="p-5 rounded-[18px] border border-amber-200 bg-amber-50/70 space-y-3 text-left">
                   <div className="flex items-center justify-between">
-                    <span className="font-mono text-[11px] uppercase font-bold text-ink-primary">
-                      Demo Telebirr Simulator Controls
+                    <span className="font-sans text-xs font-semibold text-slate-800">
+                      Demo Telebirr Simulator
                     </span>
-                    <span className="font-mono text-[10px] text-ink-tertiary">
-                      Test each edge case
+                    <span className="font-sans text-[11px] text-slate-400">
+                      Test outcome states
                     </span>
                   </div>
 
-                  <p className="text-xs font-sans text-ink-secondary leading-relaxed">
+                  <p className="text-xs font-sans text-slate-600 leading-relaxed">
                     Choose an outcome to demonstrate the system’s handling of telecom transactions:
                   </p>
 

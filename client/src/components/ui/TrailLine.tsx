@@ -29,12 +29,12 @@ export const TrailLine: React.FC<TrailLineProps> = ({
   currentWaypointIndex = 2,
   className = '',
   showLabels = true,
-  strokeColor = '#111315',
+  strokeColor = '#0D5C46',
 }) => {
   return (
-    <div className={`relative w-full select-none py-6 ${className}`}>
+    <div className={`relative w-full select-none py-4 ${className}`}>
       {/* SVG Canvas for Trail Path */}
-      <div className="relative w-full h-24 overflow-visible">
+      <div className="relative w-full h-20 overflow-visible">
         <svg
           viewBox="0 0 1000 100"
           className="w-full h-full overflow-visible"
@@ -44,8 +44,8 @@ export const TrailLine: React.FC<TrailLineProps> = ({
           <path
             d="M 50 70 Q 250 20, 500 60 T 950 30"
             fill="none"
-            stroke="#DDE1E5"
-            strokeWidth="4"
+            stroke="#E2E8F0"
+            strokeWidth="3"
             strokeDasharray="6 6"
             strokeLinecap="round"
           />
@@ -55,90 +55,57 @@ export const TrailLine: React.FC<TrailLineProps> = ({
             d="M 50 70 Q 250 20, 500 60 T 950 30"
             fill="none"
             stroke={strokeColor}
-            strokeWidth="5"
+            strokeWidth="4"
             strokeLinecap="round"
             initial={{ pathLength: 0 }}
-            animate={{ pathLength: currentWaypointIndex / (waypoints.length - 1) }}
-            transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
+            animate={{ pathLength: Math.min(1, Math.max(0.1, (currentWaypointIndex + 0.5) / waypoints.length)) }}
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           />
-
-          {/* Waypoint Coordinates along the path */}
-          {[
-            { cx: 50, cy: 70 },
-            { cx: 275, cy: 38 },
-            { cx: 500, cy: 60 },
-            { cx: 725, cy: 45 },
-            { cx: 950, cy: 30 },
-          ].map((pt, i) => {
-            const isPassed = i <= currentWaypointIndex;
-            const isCurrent = i === currentWaypointIndex;
-            return (
-              <g key={i}>
-                {isCurrent && (
-                  <motion.circle
-                    cx={pt.cx}
-                    cy={pt.cy}
-                    r="16"
-                    fill="none"
-                    stroke={strokeColor}
-                    strokeWidth="2"
-                    initial={{ scale: 0.8, opacity: 0.4 }}
-                    animate={{ scale: [1, 1.4, 1], opacity: [0.6, 0.1, 0.6] }}
-                    transition={{ repeat: Infinity, duration: 2.2 }}
-                  />
-                )}
-                <circle
-                  cx={pt.cx}
-                  cy={pt.cy}
-                  r={isCurrent ? 9 : 7}
-                  fill={isPassed ? strokeColor : '#FFFFFF'}
-                  stroke={strokeColor}
-                  strokeWidth="3"
-                />
-              </g>
-            );
-          })}
         </svg>
 
-        {/* HTML Labels Placed Along Waypoints */}
-        {showLabels && (
-          <div className="flex justify-between w-full pt-4 px-2">
-            {waypoints.map((wp, idx) => {
-              const isPassed = idx <= currentWaypointIndex;
-              const isCurrent = idx === currentWaypointIndex;
+        {/* Waypoint stations */}
+        <div className="absolute inset-0 flex justify-between items-center px-4 sm:px-8 pointer-events-none">
+          {waypoints.map((wp, index) => {
+            const isCompleted = wp.isCompleted || index < currentWaypointIndex;
+            const isCurrent = wp.isCurrent || index === currentWaypointIndex;
 
-              return (
-                <div
-                  key={wp.id}
-                  className={`flex flex-col ${
-                    idx === 0
-                      ? 'items-start text-left'
-                      : idx === waypoints.length - 1
-                      ? 'items-end text-right'
-                      : 'items-center text-center'
-                  } max-w-[120px]`}
+            return (
+              <div
+                key={wp.id}
+                className="relative flex flex-col items-center pointer-events-auto"
+                style={{
+                  transform: `translateY(${index % 2 === 0 ? '10px' : '-10px'})`,
+                }}
+              >
+                {/* Station circle badge */}
+                <motion.div
+                  className={`w-8 h-8 rounded-full flex items-center justify-center font-sans text-xs font-bold transition-all shadow-soft border ${
+                    isCurrent
+                      ? 'bg-brand text-white border-brand ring-4 ring-brand/15 scale-110'
+                      : isCompleted
+                      ? 'bg-white text-brand border-brand/50'
+                      : 'bg-white text-slate-400 border-slate-200'
+                  }`}
+                  whileHover={{ scale: 1.15 }}
                 >
-                  <span
-                    className={`font-display text-lg tracking-tight font-black leading-none uppercase ${
-                      isCurrent
-                        ? 'text-ink-primary'
-                        : isPassed
-                        ? 'text-ink-primary opacity-80'
-                        : 'text-ink-tertiary'
-                    }`}
-                  >
-                    {wp.label}
-                  </span>
-                  <span className="font-mono text-[11px] font-semibold text-ink-secondary mt-0.5">
-                    {wp.altitude}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-        )}
+                  {isCompleted && !isCurrent ? '✓' : index + 1}
+                </motion.div>
+
+                {showLabels && (
+                  <div className="absolute top-10 flex flex-col items-center text-center w-28 -left-10">
+                    <span className="font-display text-xs font-bold text-slate-800 tracking-tight leading-tight">
+                      {wp.label}
+                    </span>
+                    <span className="font-sans text-[10px] text-slate-500 mt-0.5">
+                      {wp.altitude}
+                    </span>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
 };
-

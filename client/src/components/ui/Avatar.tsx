@@ -29,54 +29,43 @@ export const Avatar: React.FC<AvatarProps> = ({
   const sizeStyles = {
     sm: 'w-7 h-7 text-[11px]',
     md: 'w-10 h-10 text-xs',
-    lg: 'w-14 h-14 text-sm',
-    xl: 'w-20 h-20 text-lg',
+    lg: 'w-12 h-12 text-sm',
+    xl: 'w-16 h-16 text-base',
   }[size];
 
-  const getRankBorder = () => {
+  const getRankDot = () => {
     switch (rank) {
       case 'manager':
-        return 'border-ink-primary';
+        return 'bg-role-manager';
       case 'team_lead':
-        return 'border-civic-navy';
+        return 'bg-role-teamlead';
       case 'senior_member':
-        return 'border-civic-gold';
+        return 'bg-amber-500';
       case 'member':
-        return 'border-civic-green';
+        return 'bg-role-volunteer';
       default:
-        return 'border-border';
+        return 'bg-slate-400';
     }
   };
 
   return (
     <div className={`relative inline-block ${className}`}>
       <div
-        className={`${sizeStyles} ${getRankBorder()} rounded-none border bg-canvas-subdued flex items-center justify-center font-mono font-semibold text-ink-primary select-none overflow-hidden`}
+        className={`${sizeStyles} rounded-full bg-slate-100 border border-slate-200/80 flex items-center justify-center font-sans font-semibold text-slate-700 select-none overflow-hidden`}
       >
         {photoUrl ? (
           <img src={photoUrl} alt={name} className="w-full h-full object-cover" />
         ) : (
-          <span className="tracking-tighter">{getInitials(name)}</span>
+          <span>{getInitials(name)}</span>
         )}
       </div>
 
       {showRankBadge && rank && (
         <span
+          className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-white ${getRankDot()}`}
           title={rank.replace('_', ' ')}
-          className={`absolute -bottom-1 -right-1 w-3.5 h-3.5 border border-canvas-raised flex items-center justify-center text-[9px] font-bold ${
-            rank === 'manager'
-              ? 'bg-ink-primary text-canvas'
-              : rank === 'team_lead'
-              ? 'bg-civic-navy text-canvas'
-              : rank === 'senior_member'
-              ? 'bg-civic-gold text-ink-primary'
-              : 'bg-civic-green text-canvas'
-          }`}
-        >
-          {rank === 'manager' ? 'M' : rank === 'team_lead' ? 'L' : rank === 'senior_member' ? 'S' : 'V'}
-        </span>
+        />
       )}
     </div>
   );
 };
-

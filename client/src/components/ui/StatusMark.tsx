@@ -1,14 +1,4 @@
 import React from 'react';
-import { 
-  Check, 
-  Clock, 
-  Warning, 
-  X, 
-  Minus, 
-  ArrowClockwise,
-  ShieldCheck,
-  Star
-} from '@phosphor-icons/react';
 
 export type AnyStatus = 
   | 'active'
@@ -61,207 +51,72 @@ export const StatusMark: React.FC<StatusMarkProps> = ({
   size = 'md',
   className = '',
 }) => {
-  // Architectural status definitions: high contrast, solid micro-dots, structural borders
-  const getDescriptor = () => {
+  const getDescriptor = (): { text: string; dotClass: string } => {
     switch (status) {
-      // Success / Verified
-      case 'confirmed':
-        return {
-          text: label || 'Confirmed',
-          icon: <Check className="w-3 h-3 text-civic-green" weight="bold" />,
-          classes: 'border-civic-green/40 bg-civic-greenLight text-civic-green',
-        };
-      case 'approved':
-        return {
-          text: label || 'Approved',
-          icon: <Check className="w-3 h-3 text-civic-green" weight="bold" />,
-          classes: 'border-civic-green/40 bg-civic-greenLight text-civic-green',
-        };
-      case 'accepted':
-        return {
-          text: label || 'Accepted',
-          icon: <Check className="w-3 h-3 text-civic-green" weight="bold" />,
-          classes: 'border-civic-green/40 bg-civic-greenLight text-civic-green',
-        };
       case 'active':
-        return {
-          text: label || 'Active',
-          icon: <span className="w-1.5 h-1.5 rounded-none bg-civic-green" />,
-          classes: 'border-civic-green/40 bg-civic-greenLight text-civic-green',
-        };
+      case 'confirmed':
+      case 'accepted':
+      case 'approved':
       case 'completed':
-        return {
-          text: label || 'Completed',
-          icon: <Check className="w-3 h-3 text-ink-primary" weight="bold" />,
-          classes: 'border-border-strong bg-canvas-subdued text-ink-primary',
-        };
+        return { text: label || status.replace('_', ' '), dotClass: 'bg-emerald-500' };
 
-      // Review / Pending / Caution
-      case 'needs_review':
-        return {
-          text: label || 'Needs Review',
-          icon: <Warning className="w-3 h-3 text-civic-rust" weight="bold" />,
-          classes: 'border-civic-rust/50 bg-civic-rustLight text-civic-rust',
-        };
-      case 'more_info_needed':
-        return {
-          text: label || 'More Info Needed',
-          icon: <Warning className="w-3 h-3 text-civic-gold" weight="bold" />,
-          classes: 'border-civic-gold/60 bg-civic-goldLight text-[#784E0B]',
-        };
-      case 'in_review':
-        return {
-          text: label || 'In Review',
-          icon: <Clock className="w-3 h-3 text-[#784E0B]" weight="bold" />,
-          classes: 'border-civic-gold/50 bg-civic-goldLight text-[#784E0B]',
-        };
-      case 'submitted':
-        return {
-          text: label || 'Submitted',
-          icon: <Clock className="w-3 h-3 text-civic-navy" weight="bold" />,
-          classes: 'border-civic-navy/40 bg-civic-navyLight text-civic-navy',
-        };
       case 'waiting':
-        return {
-          text: label || 'Waiting',
-          icon: <ArrowClockwise className="w-3 h-3 text-civic-navy animate-spin" />,
-          classes: 'border-civic-navy/40 bg-civic-navyLight text-civic-navy',
-        };
-      case 'logged':
-        return {
-          text: label || 'Logged (Pending)',
-          icon: <Clock className="w-3 h-3 text-ink-secondary" weight="bold" />,
-          classes: 'border-border bg-canvas-subdued text-ink-secondary',
-        };
-      case 'recommended':
-        return {
-          text: label || 'Recommended',
-          icon: <Star className="w-3 h-3 text-civic-gold" weight="fill" />,
-          classes: 'border-civic-gold bg-civic-goldLight text-[#784E0B]',
-        };
-      case 'eligible':
-        return {
-          text: label || 'Eligible for Promotion',
-          icon: <ShieldCheck className="w-3 h-3 text-civic-green" weight="bold" />,
-          classes: 'border-civic-green bg-civic-greenLight text-civic-green',
-        };
-      case 'open':
-        return {
-          text: label || 'Open for Sign-up',
-          icon: <span className="w-1.5 h-1.5 bg-civic-green" />,
-          classes: 'border-civic-green/40 bg-civic-greenLight text-civic-green',
-        };
+      case 'submitted':
+      case 'in_review':
       case 'in_progress':
-        return {
-          text: label || 'In Progress',
-          icon: <span className="w-1.5 h-1.5 bg-civic-gold animate-pulse" />,
-          classes: 'border-civic-gold/50 bg-civic-goldLight text-[#784E0B]',
-        };
-      case 'full':
-        return {
-          text: label || 'Roster Full',
-          icon: <Minus className="w-3 h-3 text-ink-secondary" />,
-          classes: 'border-border bg-canvas-subdued text-ink-secondary',
-        };
+      case 'logged':
+        return { text: label || status.replace('_', ' '), dotClass: 'bg-amber-500' };
 
-      // Inactive / Negative / Terminated
+      case 'needs_review':
+      case 'more_info_needed':
+      case 'recommended':
+        return { text: label || (status === 'needs_review' ? 'Needs review' : status.replace('_', ' ')), dotClass: 'bg-orange-500' };
+
+      case 'failed':
       case 'rejected':
       case 'declined':
-        return {
-          text: label || (status === 'rejected' ? 'Rejected' : 'Declined'),
-          icon: <X className="w-3 h-3 text-civic-rust" weight="bold" />,
-          classes: 'border-civic-rust/40 bg-civic-rustLight text-civic-rust',
-        };
-      case 'failed':
-        return {
-          text: label || 'Payment Failed',
-          icon: <X className="w-3 h-3 text-civic-rust" weight="bold" />,
-          classes: 'border-civic-rust/40 bg-civic-rustLight text-civic-rust',
-        };
-      case 'refunded':
-        return {
-          text: label || 'Refunded',
-          icon: <ArrowClockwise className="w-3 h-3 text-ink-secondary" weight="bold" />,
-          classes: 'border-border bg-canvas-subdued text-ink-secondary',
-        };
-      case 'expired':
-        return {
-          text: label || 'Window Expired',
-          icon: <X className="w-3 h-3 text-ink-tertiary" />,
-          classes: 'border-border bg-canvas-subdued text-ink-tertiary',
-        };
       case 'cancelled':
-        return {
-          text: label || 'Cancelled',
-          icon: <X className="w-3 h-3 text-ink-tertiary" />,
-          classes: 'border-border bg-canvas-subdued text-ink-tertiary',
-        };
-      case 'withdrawn':
-        return {
-          text: label || 'Withdrawn',
-          icon: <Minus className="w-3 h-3 text-ink-tertiary" />,
-          classes: 'border-border bg-canvas-subdued text-ink-tertiary',
-        };
       case 'suspended':
-        return {
-          text: label || 'Suspended',
-          icon: <X className="w-3 h-3 text-civic-rust" weight="bold" />,
-          classes: 'border-civic-rust bg-civic-rustLight text-civic-rust',
-        };
-      case 'unverified':
-        return {
-          text: label || 'Email Unverified',
-          icon: <Clock className="w-3 h-3 text-ink-secondary" />,
-          classes: 'border-border bg-canvas-subdued text-ink-secondary',
-        };
+        return { text: label || status.replace('_', ' '), dotClass: 'bg-rose-500' };
 
-      // Ranks
       case 'member':
-        return {
-          text: label || 'Member',
-          icon: <span className="w-1.5 h-1.5 bg-civic-green" />,
-          classes: 'border-civic-green/40 bg-canvas-raised text-civic-green font-semibold',
-        };
+        return { text: label || 'Member', dotClass: 'bg-emerald-600' };
       case 'senior_member':
-        return {
-          text: label || 'Senior Member',
-          icon: <Star className="w-3 h-3 text-civic-gold" weight="fill" />,
-          classes: 'border-civic-gold bg-canvas-raised text-[#784E0B] font-semibold',
-        };
+        return { text: label || 'Senior Member', dotClass: 'bg-teal-600' };
       case 'team_lead':
-        return {
-          text: label || 'Team Lead',
-          icon: <ShieldCheck className="w-3 h-3 text-civic-navy" weight="fill" />,
-          classes: 'border-civic-navy bg-canvas-raised text-civic-navy font-semibold',
-        };
+        return { text: label || 'Team Lead', dotClass: 'bg-rose-600' };
       case 'manager':
-        return {
-          text: label || 'Manager',
-          icon: <ShieldCheck className="w-3 h-3 text-ink-primary" weight="fill" />,
-          classes: 'border-ink-primary bg-canvas-raised text-ink-primary font-semibold',
-        };
+        return { text: label || 'Manager', dotClass: 'bg-teal-700' };
+      case 'volunteer':
+        return { text: label || 'Volunteer', dotClass: 'bg-emerald-600' };
+      case 'applicant':
+        return { text: label || 'Applicant', dotClass: 'bg-amber-500' };
+      case 'finance':
+        return { text: label || 'Finance', dotClass: 'bg-slate-900' };
+      case 'admin':
+        return { text: label || 'Administrator', dotClass: 'bg-slate-700' };
+
+      case 'open':
+        return { text: label || 'Open', dotClass: 'bg-emerald-500' };
+      case 'full':
+        return { text: label || 'Full', dotClass: 'bg-slate-400' };
+      case 'eligible':
+        return { text: label || 'Eligible', dotClass: 'bg-emerald-500' };
+      case 'not_eligible':
+        return { text: label || 'Not Eligible', dotClass: 'bg-slate-400' };
 
       default:
-        return {
-          text: label || status,
-          icon: <Minus className="w-3 h-3 text-ink-tertiary" />,
-          classes: 'border-border bg-canvas-subdued text-ink-secondary',
-        };
+        return { text: label || status.replace('_', ' '), dotClass: 'bg-slate-400' };
     }
   };
 
-  const { text, icon, classes } = getDescriptor();
-  const sizeClasses =
-    size === 'sm'
-      ? 'text-[11px] px-2 py-0.5 gap-1.5'
-      : 'text-xs px-2.5 py-1 gap-1.5';
+  const { text, dotClass } = getDescriptor();
+  const textSize = size === 'sm' ? 'text-[11px]' : 'text-xs';
 
   return (
-    <span
-      className={`inline-flex items-center font-sans font-bold text-xs tracking-tight border-2 rounded-none ${sizeClasses} ${classes} ${className}`}
-    >
-      {icon}
-      <span>{text}</span>
+    <span className={`inline-flex items-center gap-2 ${textSize} font-medium text-slate-700 select-none ${className}`}>
+      <span className={`w-2 h-2 rounded-full shrink-0 ${dotClass}`} />
+      <span className="capitalize">{text}</span>
     </span>
   );
 };

@@ -57,33 +57,28 @@ export const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-xl mx-auto px-4 sm:px-6 py-12 md:py-16 space-y-8">
-      {/* Editorial Header */}
-      <div className="space-y-2 border-b-2 border-ink-primary pb-6 text-center">
-        <h1 className="font-display font-black text-5xl sm:text-6xl uppercase tracking-tight text-ink-primary leading-none">
-          Join As Volunteer
+    <div className="max-w-md mx-auto px-4 sm:px-6 py-12 md:py-16 space-y-6">
+      {/* Header */}
+      <div className="space-y-2 text-center pb-2">
+        <h1 className="font-display font-extrabold text-4xl sm:text-5xl tracking-tight text-slate-900 leading-none">
+          Join as Volunteer
         </h1>
-        <p className="font-sans text-sm sm:text-base text-ink-secondary">
-          Your time counts. Sign up in 60 seconds to start logging your community hours.
+        <p className="font-sans text-sm text-slate-500 max-w-sm mx-auto">
+          Sign up in 60 seconds to start logging your community hours.
         </p>
       </div>
 
-      {/* Ticket Pass Form Container */}
-      <div
-        className="bg-white border-2 border-ink-primary p-6 sm:p-8 shadow-ticket space-y-6"
-        style={{
-          clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)',
-        }}
-      >
-        <form onSubmit={handleSubmit} className="space-y-5">
+      {/* Main Register Form */}
+      <div className="bg-white rounded-[24px] shadow-soft border border-slate-100 p-6 sm:p-8 space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-4">
           {errorMessage && (
-            <div className="p-4 bg-red-50 border-2 border-role-teamlead text-role-teamlead text-xs font-sans font-bold">
+            <div className="p-3.5 bg-rose-50 border border-rose-200 rounded-[14px] text-rose-700 text-xs font-sans">
               {errorMessage}
             </div>
           )}
 
           <div className="space-y-1.5">
-            <label className="block font-sans text-xs font-bold uppercase tracking-tight text-ink-primary">
+            <label className="block font-sans text-xs font-semibold text-slate-700">
               Email Address
             </label>
             <Input
@@ -91,29 +86,29 @@ export const RegisterPage: React.FC = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="e.g. dawit@example.com"
-              leftIcon={<Envelope className="w-4 h-4 text-ink-secondary" />}
+              leftIcon={<Envelope className="w-4 h-4 text-slate-400" />}
               autoComplete="email"
               required
             />
           </div>
 
           <div className="space-y-1.5">
-            <label className="block font-sans text-xs font-bold uppercase tracking-tight text-ink-primary">
-              Username
+            <label className="block font-sans text-xs font-semibold text-slate-700">
+              Choose Username
             </label>
             <Input
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="e.g. dawit.bekele"
-              leftIcon={<UserIcon className="w-4 h-4 text-ink-secondary" />}
+              leftIcon={<UserIcon className="w-4 h-4 text-slate-400" />}
               autoComplete="username"
               required
             />
           </div>
 
           <div className="space-y-1.5">
-            <label className="block font-sans text-xs font-bold uppercase tracking-tight text-ink-primary">
+            <label className="block font-sans text-xs font-semibold text-slate-700">
               Create Password
             </label>
             <Input
@@ -121,46 +116,60 @@ export const RegisterPage: React.FC = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="At least 8 characters"
-              leftIcon={<Key className="w-4 h-4 text-ink-secondary" />}
+              leftIcon={<Key className="w-4 h-4 text-slate-400" />}
               autoComplete="new-password"
               required
             />
 
-            {/* Password Validation Indicators */}
-            <div className="pt-2 grid grid-cols-3 gap-2 text-[11px] font-sans">
-              <span className={`flex items-center gap-1 ${hasMinLength ? 'text-role-volunteer font-bold' : 'text-ink-tertiary'}`}>
-                {hasMinLength ? <Check className="w-3.5 h-3.5" weight="bold" /> : <X className="w-3.5 h-3.5" />}
-                8+ characters
-              </span>
-              <span className={`flex items-center gap-1 ${hasNumber ? 'text-role-volunteer font-bold' : 'text-ink-tertiary'}`}>
-                {hasNumber ? <Check className="w-3.5 h-3.5" weight="bold" /> : <X className="w-3.5 h-3.5" />}
-                One number
-              </span>
-              <span className={`flex items-center gap-1 ${hasUppercase ? 'text-role-volunteer font-bold' : 'text-ink-tertiary'}`}>
-                {hasUppercase ? <Check className="w-3.5 h-3.5" weight="bold" /> : <X className="w-3.5 h-3.5" />}
-                One capital letter
-              </span>
+            {/* Password Criteria Checklist */}
+            <div className="p-3 bg-slate-50 rounded-[14px] text-xs font-sans space-y-1 text-slate-600">
+              <div className="flex items-center gap-1.5">
+                {hasMinLength ? (
+                  <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" weight="bold" />
+                ) : (
+                  <X className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                )}
+                <span>At least 8 characters</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                {hasNumber ? (
+                  <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" weight="bold" />
+                ) : (
+                  <X className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                )}
+                <span>Includes a number (0-9)</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                {hasUppercase ? (
+                  <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" weight="bold" />
+                ) : (
+                  <X className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                )}
+                <span>Includes an uppercase letter</span>
+              </div>
             </div>
           </div>
 
-          <Button
-            type="submit"
-            variant="saffron"
-            size="lg"
-            className="w-full text-base font-bold"
-            isLoading={isLoading}
-            rightIcon={<ArrowRight className="w-4 h-4" weight="bold" />}
-          >
-            Create My Volunteer Pass
-          </Button>
-
-          <div className="pt-2 text-center text-xs font-sans text-ink-secondary border-t border-border">
-            Already registered?{' '}
-            <Link to="/sign-in" className="font-bold text-ink-primary underline underline-offset-2">
-              Sign in to your account
-            </Link>
+          <div className="pt-2">
+            <Button
+              type="submit"
+              variant="primary"
+              size="md"
+              className="w-full"
+              isLoading={isLoading}
+              rightIcon={<ArrowRight className="w-4 h-4" weight="bold" />}
+            >
+              Continue to Verification
+            </Button>
           </div>
         </form>
+
+        <div className="text-center pt-4 border-t border-slate-100 text-xs text-slate-500 font-sans">
+          Already have an account?{' '}
+          <Link to="/sign-in" className="font-semibold text-brand hover:underline">
+            Sign In
+          </Link>
+        </div>
       </div>
     </div>
   );

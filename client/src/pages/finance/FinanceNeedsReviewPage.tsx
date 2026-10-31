@@ -145,15 +145,15 @@ export const FinanceNeedsReviewPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Editorial Header */}
-      <div className="border-b border-border pb-5 space-y-1">
-        <span className="font-mono text-xs uppercase tracking-wider text-ink-tertiary block">
-          FINANCIAL EXCEPTION DESK
+      {/* Header */}
+      <div className="border-b border-slate-100 pb-5 space-y-1">
+        <span className="font-sans text-xs font-semibold text-brand block">
+          Finance Exception Desk
         </span>
-        <h1 className="font-serif text-2xl md:text-3xl font-bold text-ink-primary">
+        <h1 className="font-display text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
           Payments Needing Review
         </h1>
-        <p className="font-sans text-xs sm:text-sm text-ink-secondary">
+        <p className="font-sans text-xs sm:text-sm text-slate-500">
           Investigate incoming Telebirr settlements where phone numbers or timing caused automatic reconciliation delays.
         </p>
       </div>

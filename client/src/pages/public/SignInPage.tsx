@@ -11,49 +11,49 @@ const DEMO_PERSONAS = [
     name: 'Hana Tesfaye',
     username: 'hana.tesfaye',
     stage: 'Accepted • Ready to pay Telebirr fee',
-    color: 'bg-role-applicant text-ink-primary',
+    dotColor: 'bg-role-applicant',
   },
   {
     role: 'Volunteer (Member)',
     name: 'Dawit Bekele',
     username: 'dawit.bekele',
     stage: 'Active Member • Enrolled in today cleanup',
-    color: 'bg-role-volunteer text-white',
+    dotColor: 'bg-role-volunteer',
   },
   {
     role: 'Volunteer (Senior)',
     name: 'Selam Alemu',
     username: 'selam.alemu',
     stage: '168 hrs completed • Promotion pending',
-    color: 'bg-amber-600 text-white',
+    dotColor: 'bg-amber-500',
   },
   {
     role: 'Team Lead',
     name: 'Yonas Kebede',
     username: 'yonas.kebede',
     stage: 'Field Coordinator • Approves hours & rates work',
-    color: 'bg-role-teamlead text-white',
+    dotColor: 'bg-role-teamlead',
   },
   {
     role: 'Manager',
     name: 'Marta Girma',
     username: 'marta.girma',
     stage: 'Operations • Reviews applicants & promotions',
-    color: 'bg-role-manager text-white',
+    dotColor: 'bg-role-manager',
   },
   {
     role: 'Finance Officer',
     name: 'Abel Hailu',
     username: 'abel.hailu',
-    stage: 'Telebirr Audit • 2 flagged payments to review',
-    color: 'bg-role-finance text-role-financeAccent',
+    stage: 'Telebirr Audit • Flagged payments to review',
+    dotColor: 'bg-slate-900',
   },
   {
     role: 'Super Admin',
     name: 'Ruth Mengistu',
     username: 'ruth.mengistu',
     stage: 'Director • Calibrates fees & rank rules',
-    color: 'bg-role-admin text-white',
+    dotColor: 'bg-slate-700',
   },
 ];
 
@@ -121,10 +121,9 @@ export const SignInPage: React.FC = () => {
     setErrorMessage('');
 
     if (!identifier.trim()) {
-      setErrorMessage('Please enter your username or email address.');
+      setErrorMessage('Please enter your username or email.');
       return;
     }
-
     if (!password) {
       setErrorMessage('Please enter your password.');
       return;
@@ -132,76 +131,77 @@ export const SignInPage: React.FC = () => {
 
     setIsLoading(true);
     try {
-      const loggedIn = await signIn(identifier, password);
+      const loggedIn = await signIn(identifier.trim(), password);
       toast.success(`Welcome back, ${loggedIn.username}!`);
       redirectToRoleWorkspace(loggedIn.role);
     } catch (err: any) {
-      setErrorMessage(err.message || 'Could not sign in. Please verify your credentials.');
+      setErrorMessage(err.message || 'Incorrect credentials. Please try again.');
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleSelectDemoAccount = (username: string) => {
-    setIdentifier(username);
+  const handleSelectDemoAccount = (un: string) => {
+    setIdentifier(un);
     setPassword('Demo@1234');
     setErrorMessage('');
   };
 
   return (
-    <div className="max-w-2xl mx-auto px-4 sm:px-6 py-12 md:py-16 space-y-8">
-      {/* Editorial Header */}
-      <div className="space-y-2 border-b-2 border-ink-primary pb-6 text-center">
-        <h1 className="font-display font-black text-5xl sm:text-6xl uppercase tracking-tight text-ink-primary leading-none">
-          Sign In to VTS
+    <div className="max-w-xl mx-auto px-4 sm:px-6 py-12 md:py-16 space-y-6">
+      {/* Header */}
+      <div className="space-y-2 text-center pb-2">
+        <h1 className="font-display font-extrabold text-4xl sm:text-5xl tracking-tight text-slate-900 leading-none">
+          Sign In
         </h1>
-        <p className="font-sans text-sm sm:text-base text-ink-secondary">
-          Enter your credentials to access your volunteer trail and field assignments.
+        <p className="font-sans text-sm text-slate-500 max-w-sm mx-auto">
+          Access your volunteer profile, logged hours, and field assignments.
         </p>
       </div>
 
-      {/* Collapsible Demo Evaluator Accounts Panel */}
-      <div className="bg-white border-2 border-ink-primary shadow-ticket overflow-hidden">
+      {/* Quick Select Demo Accounts Panel */}
+      <div className="bg-white rounded-[24px] shadow-soft border border-slate-100 overflow-hidden">
         <button
           type="button"
           onClick={() => setDemoPanelOpen(!demoPanelOpen)}
-          className="w-full px-5 py-3.5 bg-canvas-subdued border-b-2 border-ink-primary flex items-center justify-between font-display text-lg font-black uppercase text-ink-primary hover:bg-canvas-inset transition-colors cursor-pointer select-none"
+          className="w-full px-5 py-3.5 bg-slate-50/70 border-b border-slate-100 flex items-center justify-between font-sans text-xs font-semibold text-slate-700 hover:bg-slate-100/60 transition-colors cursor-pointer select-none"
         >
           <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 bg-role-applicant" />
+            <span className="w-2 h-2 rounded-full bg-brand" />
             <span>Demo Accounts • Quick Select</span>
-            <span className="font-mono text-xs font-bold px-2 py-0.5 bg-ink-primary text-white ml-2">
+            <span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-white border border-slate-200 text-slate-500 ml-1">
               Password: Demo@1234
             </span>
           </div>
-          {demoPanelOpen ? <CaretUp className="w-5 h-5" weight="bold" /> : <CaretDown className="w-5 h-5" weight="bold" />}
+          {demoPanelOpen ? <CaretUp className="w-4 h-4 text-slate-500" /> : <CaretDown className="w-4 h-4 text-slate-500" />}
         </button>
 
         {demoPanelOpen && (
-          <div className="p-4 bg-white space-y-2 divide-y divide-border">
+          <div className="p-3 bg-white space-y-1 max-h-72 overflow-y-auto divide-y divide-slate-100">
             {DEMO_PERSONAS.map((p) => (
               <button
                 key={p.username}
                 type="button"
                 onClick={() => handleSelectDemoAccount(p.username)}
-                className={`w-full pt-2.5 pb-2 text-left flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-2 hover:bg-canvas-subdued transition-colors cursor-pointer ${
-                  identifier === p.username ? 'bg-canvas-subdued font-bold' : ''
+                className={`w-full text-left flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 p-3 rounded-[14px] hover:bg-slate-50 transition-colors cursor-pointer ${
+                  identifier === p.username ? 'bg-slate-50 font-semibold' : ''
                 }`}
               >
                 <div className="space-y-0.5">
                   <div className="flex items-center gap-2">
-                    <span className={`text-[10px] font-sans font-bold px-1.5 py-0.5 uppercase ${p.color}`}>
-                      {p.role}
-                    </span>
-                    <span className="font-sans text-sm font-bold text-ink-primary">
+                    <span className={`w-2 h-2 rounded-full shrink-0 ${p.dotColor}`} />
+                    <span className="font-sans text-xs font-semibold text-slate-800">
                       {p.name}
                     </span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
+                      {p.role}
+                    </span>
                   </div>
-                  <span className="font-sans text-xs text-ink-secondary block">
+                  <span className="font-sans text-xs text-slate-500 block pl-4">
                     {p.stage}
                   </span>
                 </div>
-                <div className="font-mono text-xs font-bold text-ink-tertiary">
+                <div className="font-mono text-xs text-slate-400 pl-4 sm:pl-0">
                   {p.username}
                 </div>
               </button>
@@ -211,29 +211,24 @@ export const SignInPage: React.FC = () => {
       </div>
 
       {/* Main Sign In Form */}
-      <div
-        className="bg-white border-2 border-ink-primary p-6 sm:p-8 shadow-ticket space-y-6"
-        style={{
-          clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)',
-        }}
-      >
-        <form onSubmit={handleSubmit} className="space-y-5">
+      <div className="bg-white rounded-[24px] shadow-soft border border-slate-100 p-6 sm:p-8 space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-4">
           {errorMessage && (
-            <div className="p-4 bg-red-50 border-2 border-role-teamlead text-role-teamlead text-xs font-sans font-bold">
+            <div className="p-3.5 bg-rose-50 border border-rose-200 rounded-[14px] text-rose-700 text-xs font-sans">
               {errorMessage}
             </div>
           )}
 
           <div className="space-y-1.5">
-            <label className="block font-sans text-xs font-bold uppercase tracking-tight text-ink-primary">
-              Username or Email Address
+            <label className="block font-sans text-xs font-semibold text-slate-700">
+              Username or Email
             </label>
             <Input
               type="text"
               value={identifier}
               onChange={(e) => setIdentifier(e.target.value)}
               placeholder="e.g. hana.tesfaye or volunteer@example.com"
-              leftIcon={<UserIcon className="w-4 h-4 text-ink-secondary" />}
+              leftIcon={<UserIcon className="w-4 h-4 text-slate-400" />}
               autoComplete="username"
               required
             />
@@ -241,54 +236,57 @@ export const SignInPage: React.FC = () => {
 
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <label className="block font-sans text-xs font-bold uppercase tracking-tight text-ink-primary">
+              <label className="block font-sans text-xs font-semibold text-slate-700">
                 Password
               </label>
               <Link
                 to="/forgot-password"
-                className="font-sans text-xs font-bold text-ink-secondary hover:text-ink-primary hover:underline"
+                className="font-sans text-xs font-medium text-brand hover:underline"
               >
                 Forgot password?
               </Link>
             </div>
-            <Input
-              type={showPassword ? 'text' : 'password'}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              leftIcon={<Key className="w-4 h-4 text-ink-secondary" />}
-              rightIcon={
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="text-ink-tertiary hover:text-ink-primary cursor-pointer"
-                >
-                  {showPassword ? <EyeSlash className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
-              }
-              autoComplete="current-password"
-              required
-            />
+            <div className="relative">
+              <Input
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter password"
+                leftIcon={<Key className="w-4 h-4 text-slate-400" />}
+                autoComplete="current-password"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 cursor-pointer"
+                aria-label="Toggle password visibility"
+              >
+                {showPassword ? <EyeSlash className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
           </div>
 
-          <Button
-            type="submit"
-            variant="primary"
-            size="lg"
-            className="w-full text-base font-bold"
-            isLoading={isLoading}
-            rightIcon={<ArrowRight className="w-4 h-4" weight="bold" />}
-          >
-            Sign In to Trail
-          </Button>
-
-          <div className="pt-2 text-center text-xs font-sans text-ink-secondary border-t border-border">
-            Do not have an account yet?{' '}
-            <Link to="/register" className="font-bold text-ink-primary underline underline-offset-2">
-              Join as a volunteer
-            </Link>
+          <div className="pt-2">
+            <Button
+              type="submit"
+              variant="primary"
+              size="md"
+              className="w-full"
+              isLoading={isLoading}
+              rightIcon={<ArrowRight className="w-4 h-4" weight="bold" />}
+            >
+              Sign In
+            </Button>
           </div>
         </form>
+
+        <div className="text-center pt-4 border-t border-slate-100 text-xs text-slate-500 font-sans">
+          Do not have an account yet?{' '}
+          <Link to="/register" className="font-semibold text-brand hover:underline">
+            Join as Volunteer
+          </Link>
+        </div>
       </div>
     </div>
   );

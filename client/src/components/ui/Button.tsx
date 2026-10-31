@@ -21,36 +21,36 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const baseStyles =
-    'inline-flex items-center justify-center font-sans font-semibold tracking-tight transition-all duration-150 cursor-pointer select-none disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-2 focus-visible:outline-ink-primary focus-visible:outline-offset-2';
+    'inline-flex items-center justify-center font-sans font-medium tracking-tight transition-all duration-200 cursor-pointer select-none disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-2 focus-visible:outline-brand focus-visible:outline-offset-2';
 
   const sizeStyles = {
-    sm: 'text-xs px-3 py-1.5 gap-1.5 min-h-[34px] rounded-none',
-    md: 'text-sm px-4 py-2.5 gap-2 min-h-[42px] rounded-none',
-    lg: 'text-base px-6 py-3.5 gap-2.5 min-h-[50px] rounded-none',
-    xl: 'text-lg px-8 py-4 gap-3 min-h-[58px] rounded-none font-bold',
+    sm: 'text-xs px-3.5 py-1.5 gap-1.5 min-h-[36px] rounded-full',
+    md: 'text-sm px-5 py-2.5 gap-2 min-h-[44px] rounded-full',
+    lg: 'text-base px-6 py-3 gap-2.5 min-h-[48px] rounded-full font-semibold',
+    xl: 'text-lg px-8 py-3.5 gap-3 min-h-[54px] rounded-full font-bold',
   }[size];
 
   const variantStyles = {
     primary:
-      'bg-ink-primary text-white hover:bg-black active:translate-y-[1px] shadow-sm hover:-translate-y-0.5',
+      'bg-brand text-white hover:bg-brand-hover active:translate-y-0 shadow-pill hover:shadow-soft hover:-translate-y-0.5',
     secondary:
-      'bg-white text-ink-primary border-2 border-ink-primary hover:bg-canvas-subdued active:translate-y-[1px] shadow-sm hover:-translate-y-0.5',
+      'bg-white text-slate-800 border border-slate-200/90 hover:bg-slate-50/80 active:translate-y-0 shadow-pill hover:-translate-y-0.5',
     saffron:
-      'bg-role-applicant text-ink-primary font-bold hover:bg-[#cf7b02] active:translate-y-[1px] shadow-sm hover:-translate-y-0.5',
+      'bg-role-applicant text-white hover:brightness-105 active:translate-y-0 shadow-pill hover:-translate-y-0.5',
     grass:
-      'bg-role-volunteer text-white font-bold hover:bg-[#186b3e] active:translate-y-[1px] shadow-sm hover:-translate-y-0.5',
+      'bg-role-volunteer text-white hover:brightness-105 active:translate-y-0 shadow-pill hover:-translate-y-0.5',
     tomato:
-      'bg-role-teamlead text-white font-bold hover:bg-[#be3121] active:translate-y-[1px] shadow-sm hover:-translate-y-0.5',
+      'bg-role-teamlead text-white hover:brightness-105 active:translate-y-0 shadow-pill hover:-translate-y-0.5',
     teal:
-      'bg-role-manager text-white font-bold hover:bg-[#0a4d50] active:translate-y-[1px] shadow-sm hover:-translate-y-0.5',
+      'bg-role-manager text-white hover:brightness-105 active:translate-y-0 shadow-pill hover:-translate-y-0.5',
     telebirr:
-      'bg-[#E58B05] text-ink-primary font-bold hover:brightness-105 active:translate-y-[1px] shadow-sm hover:-translate-y-0.5',
+      'bg-[#E58B05] text-white hover:brightness-105 active:translate-y-0 shadow-pill hover:-translate-y-0.5',
     danger:
-      'bg-role-teamlead text-white hover:bg-[#be3121] active:translate-y-[1px]',
+      'bg-red-600 text-white hover:bg-red-700 shadow-pill',
     ghost:
-      'bg-transparent text-ink-secondary hover:text-ink-primary hover:bg-canvas-subdued/80',
+      'bg-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-100/70',
     link:
-      'bg-transparent text-ink-primary hover:underline p-0 min-h-0',
+      'bg-transparent text-brand hover:underline p-0 min-h-0',
   }[variant];
 
   return (

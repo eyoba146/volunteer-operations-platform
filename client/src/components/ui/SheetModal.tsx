@@ -47,84 +47,86 @@ export const SheetModal: React.FC<SheetModalProps> = ({
   if (mode === 'sheet') {
     return (
       <div className="fixed inset-0 z-50 flex justify-end">
-        {/* Solid neutral backdrop */}
+        {/* Soft backdrop */}
         <div
-          className="fixed inset-0 bg-ink-primary/40 transition-opacity"
+          className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs transition-opacity"
           onClick={onClose}
           aria-hidden="true"
         />
 
         {/* Drawer pane */}
-        <div className="relative w-full max-w-xl h-full bg-canvas-raised border-l border-border-strong shadow-modal flex flex-col z-10 animate-in slide-in-from-right duration-200">
-          <div className="flex items-start justify-between p-5 border-b border-border bg-canvas-subdued">
+        <div className="relative w-full max-w-xl h-full bg-white border-l border-slate-100 shadow-2xl flex flex-col z-10 animate-in slide-in-from-right duration-200">
+          <div className="flex items-start justify-between p-6 border-b border-slate-100 bg-slate-50/60">
             <div>
               {title && (
-                <h3 className="font-serif text-xl font-semibold text-ink-primary">
+                <h3 className="font-display text-2xl font-bold text-slate-900 tracking-tight">
                   {title}
                 </h3>
               )}
               {subtitle && (
-                <p className="font-sans text-xs text-ink-secondary mt-0.5">
+                <p className="font-sans text-xs text-slate-500 mt-0.5">
                   {subtitle}
                 </p>
               )}
             </div>
             <button
               onClick={onClose}
-              className="p-1.5 text-ink-secondary hover:text-ink-primary hover:bg-canvas-inset border border-transparent hover:border-border transition-colors cursor-pointer"
+              className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-900 flex items-center justify-center transition-colors cursor-pointer"
               aria-label="Close pane"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" weight="bold" />
             </button>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-5">{children}</div>
+          <div className="flex-1 overflow-y-auto p-6 space-y-4">
+            {children}
+          </div>
         </div>
       </div>
     );
   }
 
-  // Centered modal
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+      {/* Soft backdrop */}
       <div
-        className="fixed inset-0 bg-ink-primary/50 transition-opacity"
+        className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs transition-opacity"
         onClick={onClose}
         aria-hidden="true"
       />
 
       {/* Modal Dialog */}
       <div
-        className={`relative w-full ${maxWidthClass} bg-canvas-raised border border-border-strong shadow-modal z-10 animate-in fade-in zoom-in-95 duration-150`}
+        className={`relative w-full ${maxWidthClass} bg-white rounded-[24px] shadow-soft border border-slate-100 overflow-hidden z-10 animate-in zoom-in-95 duration-200`}
         role="dialog"
         aria-modal="true"
       >
-        <div className="flex items-start justify-between p-5 border-b border-border bg-canvas-subdued">
-          <div>
-            {title && (
-              <h3 className="font-serif text-xl font-semibold text-ink-primary">
-                {title}
-              </h3>
-            )}
-            {subtitle && (
-              <p className="font-sans text-xs text-ink-secondary mt-0.5">
-                {subtitle}
-              </p>
-            )}
+        {(title || subtitle) && (
+          <div className="flex items-start justify-between p-6 border-b border-slate-100 bg-slate-50/60">
+            <div>
+              {title && (
+                <h3 className="font-display text-2xl font-bold text-slate-900 tracking-tight">
+                  {title}
+                </h3>
+              )}
+              {subtitle && (
+                <p className="font-sans text-xs text-slate-500 mt-0.5">
+                  {subtitle}
+                </p>
+              )}
+            </div>
+            <button
+              onClick={onClose}
+              className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-900 flex items-center justify-center transition-colors cursor-pointer"
+              aria-label="Close dialog"
+            >
+              <X className="w-4 h-4" weight="bold" />
+            </button>
           </div>
-          <button
-            onClick={onClose}
-            className="p-1.5 text-ink-secondary hover:text-ink-primary hover:bg-canvas-inset border border-transparent hover:border-border transition-colors cursor-pointer"
-            aria-label="Close dialog"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        </div>
+        )}
 
-        <div className="p-5">{children}</div>
+        <div className="p-6">{children}</div>
       </div>
     </div>
   );
 };
-

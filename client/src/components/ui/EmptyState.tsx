@@ -22,19 +22,19 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
 }) => {
   return (
     <div
-      className={`border border-border bg-canvas-raised p-8 md:p-12 text-center max-w-xl mx-auto space-y-4 ${className}`}
+      className={`bg-white rounded-[24px] shadow-soft border border-slate-100 p-8 md:p-12 text-center max-w-xl mx-auto space-y-5 ${className}`}
     >
       {icon && (
-        <div className="w-12 h-12 mx-auto flex items-center justify-center border border-border bg-canvas-subdued text-ink-secondary">
+        <div className="w-11 h-11 rounded-[14px] mx-auto flex items-center justify-center bg-brand text-white shadow-sm">
           {icon}
         </div>
       )}
 
       <div className="space-y-1.5">
-        <h3 className="font-serif text-lg md:text-xl font-semibold text-ink-primary">
+        <h3 className="font-display text-xl font-bold text-slate-900 tracking-tight">
           {title}
         </h3>
-        <p className="font-sans text-sm text-ink-secondary leading-relaxed max-w-md mx-auto">
+        <p className="font-sans text-sm text-slate-500 leading-relaxed max-w-md mx-auto">
           {description}
         </p>
       </div>
@@ -49,4 +49,3 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
     </div>
   );
 };
-

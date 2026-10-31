@@ -22,10 +22,10 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
         {label && (
           <label
             htmlFor={selectId}
-            className="block text-xs font-semibold uppercase tracking-wider text-ink-secondary"
+            className="block text-xs font-semibold text-slate-700"
           >
             {label}
-            {props.required && <span className="text-civic-rust ml-1">*</span>}
+            {props.required && <span className="text-red-500 ml-1">*</span>}
           </label>
         )}
 
@@ -33,11 +33,11 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           <select
             ref={ref}
             id={selectId}
-            className={`w-full bg-canvas-raised text-ink-primary font-sans text-sm rounded border transition-colors duration-150 py-2 pl-3 pr-9 appearance-none ${
+            className={`w-full bg-white text-slate-900 font-sans text-sm rounded-[14px] border border-slate-200/90 shadow-sm transition-all duration-150 py-2.5 pl-3.5 pr-10 appearance-none ${
               error
-                ? 'border-civic-rust focus:border-civic-rust focus:ring-1 focus:ring-civic-rust'
-                : 'border-border hover:border-ink-secondary/70 focus:border-ink-primary focus:ring-1 focus:ring-ink-primary'
-            } outline-none disabled:bg-canvas-subdued disabled:cursor-not-allowed ${className}`}
+                ? 'border-red-500 focus:border-red-500 focus:ring-2 focus:ring-red-500/15'
+                : 'border-slate-200/90 hover:border-slate-300 focus:border-brand focus:ring-2 focus:ring-brand/15'
+            } outline-none disabled:bg-slate-50 disabled:cursor-not-allowed ${className}`}
             {...props}
           >
             {options

@@ -21,7 +21,7 @@ export const Tabs: React.FC<TabsProps> = ({
 }) => {
   return (
     <div
-      className={`flex items-center gap-1 border-b border-border overflow-x-auto no-scrollbar ${className}`}
+      className={`inline-flex items-center p-1 bg-slate-100/90 rounded-full gap-1 overflow-x-auto no-scrollbar ${className}`}
       role="tablist"
     >
       {tabs.map((tab) => {
@@ -32,19 +32,19 @@ export const Tabs: React.FC<TabsProps> = ({
             role="tab"
             aria-selected={isActive}
             onClick={() => onChange(tab.id)}
-            className={`flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold uppercase tracking-wider transition-colors duration-150 border-b-2 -mb-[1px] whitespace-nowrap cursor-pointer ${
+            className={`flex items-center gap-2 px-4 py-1.5 text-xs font-semibold rounded-full transition-all duration-200 whitespace-nowrap cursor-pointer select-none ${
               isActive
-                ? 'border-ink-primary text-ink-primary bg-canvas-raised'
-                : 'border-transparent text-ink-tertiary hover:text-ink-primary hover:border-border'
+                ? 'bg-white text-slate-900 shadow-sm'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
             }`}
           >
             <span>{tab.label}</span>
             {tab.count !== undefined && (
               <span
-                className={`font-mono text-[11px] px-1.5 py-0.2 rounded-none border ${
+                className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
                   isActive
-                    ? 'border-ink-primary bg-canvas-inset text-ink-primary font-bold'
-                    : 'border-border bg-canvas-subdued text-ink-secondary'
+                    ? 'bg-brand/10 text-brand'
+                    : 'bg-slate-200/80 text-slate-600'
                 }`}
               >
                 {tab.count}

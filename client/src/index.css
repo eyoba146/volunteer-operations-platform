@@ -10,8 +10,8 @@
   html, body {
     margin: 0;
     padding: 0;
-    background-color: #F4F5F7; /* Cool near-white (never cream, never beige) */
-    color: #111315;
+    background-color: #F8FAFC; /* Very light cool-tinted blue-grey near-white */
+    color: #0F172A; /* Slate-900 */
     font-family: 'Schibsted Grotesk', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -19,9 +19,9 @@
     overflow-x: hidden;
   }
 
-  /* High contrast focus outline */
+  /* Soft modern focus ring */
   *:focus-visible {
-    outline: 2px solid #111315;
+    outline: 2px solid #0D5C46;
     outline-offset: 2px;
   }
 
@@ -30,14 +30,14 @@
     height: 6px;
   }
   ::-webkit-scrollbar-track {
-    background: #EBEDF0;
+    background: #F1F5F9;
   }
   ::-webkit-scrollbar-thumb {
-    background: #C4C9D0;
-    border-radius: 2px;
+    background: #CBD5E1;
+    border-radius: 9999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #959DA8;
+    background: #94A3B8;
   }
 }
 

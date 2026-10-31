@@ -69,42 +69,44 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         {toasts.map((t) => {
           const typeConfig = {
             success: {
-              icon: <Check className="w-4 h-4 text-civic-green" weight="bold" />,
-              border: 'border-civic-green',
+              icon: <Check className="w-3.5 h-3.5 text-emerald-600" weight="bold" />,
+              bg: 'bg-emerald-50 text-emerald-600',
             },
             error: {
-              icon: <Warning className="w-4 h-4 text-civic-rust" weight="bold" />,
-              border: 'border-civic-rust',
+              icon: <Warning className="w-3.5 h-3.5 text-rose-600" weight="bold" />,
+              bg: 'bg-rose-50 text-rose-600',
             },
             warning: {
-              icon: <Warning className="w-4 h-4 text-civic-gold" weight="bold" />,
-              border: 'border-civic-gold',
+              icon: <Warning className="w-3.5 h-3.5 text-amber-600" weight="bold" />,
+              bg: 'bg-amber-50 text-amber-600',
             },
             info: {
-              icon: <Info className="w-4 h-4 text-civic-navy" weight="bold" />,
-              border: 'border-civic-navy',
+              icon: <Info className="w-3.5 h-3.5 text-brand" weight="bold" />,
+              bg: 'bg-brand/10 text-brand',
             },
           }[t.type];
 
           return (
             <div
               key={t.id}
-              className={`pointer-events-auto bg-canvas-raised border-l-4 ${typeConfig.border} border-y border-r border-border p-3.5 shadow-modal flex items-start gap-3 animate-in slide-in-from-bottom-2 duration-150`}
+              className="pointer-events-auto bg-white rounded-[16px] shadow-soft border border-slate-100 p-4 flex items-start gap-3 animate-in slide-in-from-bottom-2 duration-200"
             >
-              <div className="shrink-0 mt-0.5">{typeConfig.icon}</div>
+              <div className={`w-7 h-7 rounded-full shrink-0 flex items-center justify-center ${typeConfig.bg}`}>
+                {typeConfig.icon}
+              </div>
               <div className="flex-1 space-y-0.5 text-left">
                 {t.title && (
-                  <h4 className="font-sans text-xs font-semibold uppercase tracking-wider text-ink-primary">
+                  <h4 className="font-sans text-xs font-semibold text-slate-900">
                     {t.title}
                   </h4>
                 )}
-                <p className="font-sans text-xs text-ink-secondary leading-normal">
+                <p className="font-sans text-xs text-slate-600 leading-normal">
                   {t.message}
                 </p>
               </div>
               <button
                 onClick={() => removeToast(t.id)}
-                className="shrink-0 p-1 text-ink-tertiary hover:text-ink-primary cursor-pointer"
+                className="shrink-0 p-1 text-slate-400 hover:text-slate-700 cursor-pointer"
                 aria-label="Dismiss message"
               >
                 <X className="w-3.5 h-3.5" />

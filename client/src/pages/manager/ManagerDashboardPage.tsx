@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
 import { Application, Promotion, Activity } from '../../types';
-import { Button, StatusMark, Skeleton } from '../../components/ui';
+import { Button, StatusMark, Skeleton, StatNumber } from '../../components/ui';
 import { 
   ClipboardText, 
   UsersThree, 
@@ -54,7 +54,7 @@ export const ManagerDashboardPage: React.FC = () => {
     return (
       <div className="space-y-6">
         <Skeleton variant="text" className="h-8 w-1/3" />
-        <Skeleton variant="rect" className="h-32" />
+        <Skeleton variant="rect" className="h-44" />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Skeleton variant="rect" className="h-64" />
           <Skeleton variant="rect" className="h-64" />
@@ -65,212 +65,184 @@ export const ManagerDashboardPage: React.FC = () => {
 
   return (
     <div className="space-y-8">
-      {/* Editorial Header */}
-      <div className="border border-border bg-canvas-raised p-6 md:p-8 space-y-4 shadow-subtle">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-5">
+      {/* 1. HERO CARD: APPLICATIONS AWAITING DECISION */}
+      <div className="bg-white rounded-[24px] shadow-soft border border-slate-100 p-8 space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pb-6 border-b border-slate-100">
           <div className="space-y-1">
-            <span className="font-mono text-xs uppercase tracking-wider text-ink-tertiary block">
-              PROGRAM OPERATIONS DESK
+            <span className="font-sans text-xs font-semibold text-brand block">
+              Program Operations Desk
             </span>
-            <h1 className="font-serif text-2xl md:text-3xl font-bold text-ink-primary">
-              Manager Operations Overview
+            <h1 className="font-display text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-none">
+              Manager Overview
             </h1>
-            <p className="font-sans text-xs sm:text-sm text-ink-secondary">
-              Reviewing applicant intake, deciding promotion boards, and overseeing field operations across 5 cities.
+            <p className="font-sans text-xs sm:text-sm text-slate-500">
+              Overseeing volunteer intake, promotion decisions, and field crews.
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2.5">
             <Button
               variant="primary"
-              size="sm"
-              leftIcon={<ClipboardText className="w-4 h-4" />}
+              size="md"
+              leftIcon={<ClipboardText className="w-4 h-4" weight="bold" />}
               onClick={() => navigate('/manager/applications')}
             >
-              Application Queue ({stats?.waitingApplications})
+              Review Applications ({stats?.waitingApplications})
             </Button>
             <Button
               variant="secondary"
-              size="sm"
-              leftIcon={<ChartLineUp className="w-4 h-4" />}
+              size="md"
+              leftIcon={<ChartLineUp className="w-4 h-4" weight="bold" />}
               onClick={() => navigate('/manager/promotions')}
             >
-              Promotions Board ({stats?.promotionsWaiting})
+              Promotion Board ({stats?.promotionsWaiting})
             </Button>
           </div>
         </div>
 
-        {/* Operational Dispatch Numbers (Section 6.11 FR-RPT-01) */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 pt-2 font-mono text-xs">
-          <div className="border border-border bg-canvas-subdued p-4 space-y-1">
-            <span className="text-ink-tertiary uppercase text-[10px]">Awaiting Review</span>
-            <div className="text-2xl font-bold text-[#784E0B]">
+        {/* Hero Big Numeral + Secondary Info Tiles */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="p-6 bg-slate-50 rounded-[20px] space-y-2 border border-slate-100">
+            <span className="text-xs font-semibold text-amber-600">Intake Queue</span>
+            <div className="font-display text-4xl sm:text-5xl font-extrabold text-slate-900 leading-none">
               {stats?.waitingApplications || 0}
             </div>
-            <span className="text-[11px] font-sans text-ink-secondary block">
-              New applicants
-            </span>
+            <span className="text-xs text-slate-500 block">New applicants waiting</span>
           </div>
 
-          <div className="border border-border bg-canvas-subdued p-4 space-y-1">
-            <span className="text-ink-tertiary uppercase text-[10px]">Promotions Waiting</span>
-            <div className="text-2xl font-bold text-civic-gold">
+          <div className="p-6 bg-slate-50 rounded-[20px] space-y-2 border border-slate-100">
+            <span className="text-xs font-semibold text-teal-600">Promotion Candidates</span>
+            <div className="font-display text-4xl sm:text-5xl font-extrabold text-slate-900 leading-none">
               {stats?.promotionsWaiting || 0}
             </div>
-            <span className="text-[11px] font-sans text-ink-secondary block">
-              Eligible candidates
-            </span>
+            <span className="text-xs text-slate-500 block">Ready for board vote</span>
           </div>
 
-          <div className="border border-border bg-canvas-subdued p-4 space-y-1">
-            <span className="text-ink-tertiary uppercase text-[10px]">Activated Members</span>
-            <div className="text-2xl font-bold text-civic-green">
+          <div className="p-6 bg-slate-50 rounded-[20px] space-y-2 border border-slate-100">
+            <span className="text-xs font-semibold text-emerald-600">Activated Volunteers</span>
+            <div className="font-display text-4xl sm:text-5xl font-extrabold text-slate-900 leading-none">
               +{stats?.newVolunteersThisMonth || 0}
             </div>
-            <span className="text-[11px] font-sans text-ink-secondary block">
-              This month
-            </span>
+            <span className="text-xs text-slate-500 block">Joined this month</span>
           </div>
 
-          <div className="border border-border bg-canvas-subdued p-4 space-y-1">
-            <span className="text-ink-tertiary uppercase text-[10px]">Approved Hours</span>
-            <div className="text-2xl font-bold text-ink-primary">
-              {stats?.approvedHoursThisMonth || 0} hrs
+          <div className="p-6 bg-slate-50 rounded-[20px] space-y-2 border border-slate-100">
+            <span className="text-xs font-semibold text-slate-700">Verified Service</span>
+            <div className="font-display text-4xl sm:text-5xl font-extrabold text-slate-900 leading-none">
+              {stats?.approvedHoursThisMonth || 0}
+              <span className="text-lg font-sans text-slate-400 font-normal ml-1">hrs</span>
             </div>
-            <span className="text-[11px] font-sans text-ink-secondary block">
-              Verified service
-            </span>
-          </div>
-
-          <div className="border border-border bg-canvas-subdued p-4 space-y-1 col-span-2 sm:col-span-1">
-            <span className="text-ink-tertiary uppercase text-[10px]">Open Activities</span>
-            <div className="text-2xl font-bold text-ink-primary">
-              {stats?.upcomingActivities || 0}
-            </div>
-            <span className="text-[11px] font-sans text-ink-secondary block">
-              Across regions
-            </span>
+            <span className="text-xs text-slate-500 block">Approved field work</span>
           </div>
         </div>
       </div>
 
-      {/* Two Column Layout: Urgent Applications & Pending Promotions */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Applications Waiting */}
-        <div className="border border-border bg-canvas-raised p-6 space-y-5 flex flex-col justify-between">
+      {/* 2. INTAKE & PROMOTION DECISION LISTS */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Applicants Waiting Review */}
+        <div className="bg-white rounded-[24px] shadow-soft border border-slate-100 p-8 space-y-6 flex flex-col justify-between">
           <div className="space-y-4">
-            <div className="flex items-center justify-between border-b border-border pb-3">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <div className="flex items-center gap-2">
-                <ClipboardText className="w-4 h-4 text-ink-secondary" weight="bold" />
-                <h3 className="font-serif text-lg font-bold text-ink-primary">
-                  Applications Requiring Evaluation
+                <ClipboardText className="w-5 h-5 text-brand" weight="bold" />
+                <h3 className="font-display text-xl font-bold text-slate-900">
+                  Applicants Awaiting Review
                 </h3>
               </div>
-              <span className="font-mono text-xs text-ink-tertiary">
-                {pendingApplications.length} unreviewed
+              <span className="text-xs font-semibold text-slate-500">
+                {pendingApplications.length} pending
               </span>
             </div>
 
-            {pendingApplications.length === 0 ? (
-              <p className="text-xs font-sans text-ink-tertiary py-8 text-center">
-                All submitted applications have been reviewed.
-              </p>
-            ) : (
-              <div className="divide-y divide-border/60">
-                {pendingApplications.map((app) => (
-                  <div key={app.id} className="py-3 flex items-center justify-between gap-3 text-xs">
-                    <div>
-                      <h4 className="font-bold text-ink-primary">
-                        {app.formData?.fullName || 'Applicant'}
-                      </h4>
-                      <span className="font-mono text-ink-tertiary text-[11px]">
-                        {app.formData?.area || 'Addis Ababa'} • Submitted{' '}
-                        {app.submittedAt ? new Date(app.submittedAt).toLocaleDateString() : 'recently'}
-                      </span>
-                    </div>
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      onClick={() => navigate('/manager/applications')}
-                      leftIcon={<Eye className="w-3.5 h-3.5" />}
-                    >
-                      Review
-                    </Button>
+            <div className="space-y-3">
+              {pendingApplications.map((app) => (
+                <div
+                  key={app.id}
+                  className="p-4 bg-slate-50 rounded-[16px] border border-slate-100 flex items-center justify-between gap-4"
+                >
+                  <div className="space-y-0.5">
+                    <h4 className="font-sans text-sm font-semibold text-slate-900">
+                      {app.formData?.fullName || 'Applicant'}
+                    </h4>
+                    <span className="font-sans text-xs text-slate-500 block">
+                      {app.formData?.area || 'Addis Ababa'} • {app.formData?.skills?.slice(0, 2).join(', ') || 'General'}
+                    </span>
                   </div>
-                ))}
-              </div>
-            )}
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => navigate('/manager/applications')}
+                  >
+                    Review
+                  </Button>
+                </div>
+              ))}
+            </div>
           </div>
 
-          <div className="pt-4 border-t border-border">
-            <Button
-              variant="primary"
-              size="sm"
-              className="w-full"
-              onClick={() => navigate('/manager/applications')}
-              rightIcon={<ArrowRight className="w-3.5 h-3.5" />}
+          <div className="pt-2 text-right">
+            <Link
+              to="/manager/applications"
+              className="text-xs font-semibold text-brand hover:underline inline-flex items-center gap-1"
             >
-              Open Full Application Queue
-            </Button>
+              <span>View full application roster</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
           </div>
         </div>
 
-        {/* Promotions Waiting Board */}
-        <div className="border border-border bg-canvas-raised p-6 space-y-5 flex flex-col justify-between">
+        {/* Promotion Candidates Waiting */}
+        <div className="bg-white rounded-[24px] shadow-soft border border-slate-100 p-8 space-y-6 flex flex-col justify-between">
           <div className="space-y-4">
-            <div className="flex items-center justify-between border-b border-border pb-3">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <div className="flex items-center gap-2">
-                <Sparkle className="w-4 h-4 text-civic-gold" weight="fill" />
-                <h3 className="font-serif text-lg font-bold text-ink-primary">
-                  Promotions Awaiting Approval
+                <ChartLineUp className="w-5 h-5 text-brand" weight="bold" />
+                <h3 className="font-display text-xl font-bold text-slate-900">
+                  Promotion Candidates
                 </h3>
               </div>
-              <span className="font-mono text-xs text-ink-tertiary">
-                Board Queue
+              <span className="text-xs font-semibold text-slate-500">
+                {pendingPromotions.length} eligible
               </span>
             </div>
 
-            {pendingPromotions.length === 0 ? (
-              <p className="text-xs font-sans text-ink-tertiary py-8 text-center">
-                No active promotion recommendations waiting for manager decision.
-              </p>
-            ) : (
-              <div className="divide-y divide-border/60">
-                {pendingPromotions.map((promo) => (
-                  <div key={promo.id} className="py-3.5 space-y-1 text-xs">
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-ink-primary text-sm">
-                        {promo.userName}
-                      </span>
-                      <StatusMark status={promo.status} size="sm" />
-                    </div>
-                    <p className="text-ink-secondary text-[11px]">
-                      Nominated for promotion from <strong className="font-mono uppercase">{promo.fromRank.replace('_', ' ')}</strong> to{' '}
-                      <strong className="font-mono uppercase text-civic-green">{promo.toRank.replace('_', ' ')}</strong>.
-                    </p>
-                    <p className="text-[11px] text-ink-tertiary italic">
-                      "{promo.note}"
-                    </p>
+            <div className="space-y-3">
+              {pendingPromotions.map((promo) => (
+                <div
+                  key={promo.id}
+                  className="p-4 bg-slate-50 rounded-[16px] border border-slate-100 flex items-center justify-between gap-4"
+                >
+                  <div className="space-y-0.5">
+                    <h4 className="font-sans text-sm font-semibold text-slate-900">
+                      {promo.userName}
+                    </h4>
+                    <span className="font-sans text-xs text-slate-500 block">
+                      Advancing to <strong className="font-semibold text-slate-800">{promo.toRank.replace('_', ' ')}</strong>
+                    </span>
                   </div>
-                ))}
-              </div>
-            )}
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    onClick={() => navigate('/manager/promotions')}
+                  >
+                    Decide
+                  </Button>
+                </div>
+              ))}
+            </div>
           </div>
 
-          <div className="pt-4 border-t border-border">
-            <Button
-              variant="primary"
-              size="sm"
-              className="w-full"
-              onClick={() => navigate('/manager/promotions')}
-              rightIcon={<ArrowRight className="w-3.5 h-3.5" />}
+          <div className="pt-2 text-right">
+            <Link
+              to="/manager/promotions"
+              className="text-xs font-semibold text-brand hover:underline inline-flex items-center gap-1"
             >
-              Open Promotion Decision Board
-            </Button>
+              <span>Open promotion board</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
           </div>
         </div>
       </div>
     </div>
   );
 };
-

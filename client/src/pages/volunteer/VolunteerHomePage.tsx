@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
 import { Activity, Announcement, Enrollment } from '../../types';
 import { RankProgressData } from '../../api/promotions';
-import { Button, StatusMark, ProgressMeter, Skeleton, Avatar } from '../../components/ui';
+import { Button, StatusMark, ProgressMeter, Skeleton, Avatar, StatNumber } from '../../components/ui';
 import { 
   Calendar, 
   Clock, 
@@ -69,14 +69,9 @@ export const VolunteerHomePage: React.FC = () => {
 
   return (
     <div className="space-y-8">
-      {/* Volunteer Trail Header */}
-      <div
-        className="border-2 border-ink-primary bg-white p-6 md:p-8 shadow-ticket space-y-4"
-        style={{
-          clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)',
-        }}
-      >
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-border pb-5">
+      {/* 1. HERO CARD: THE RANK JOURNEY */}
+      <div className="bg-white rounded-[24px] shadow-soft border border-slate-100 p-8 space-y-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pb-6 border-b border-slate-100">
           <div className="flex items-center gap-4">
             <Avatar
               name={profile?.fullName || user?.username || 'Volunteer'}
@@ -86,33 +81,34 @@ export const VolunteerHomePage: React.FC = () => {
               showRankBadge
             />
             <div className="space-y-1">
-              <span className="font-sans text-xs font-bold text-role-volunteer uppercase tracking-tight block">
+              <span className="font-sans text-xs font-semibold text-brand block">
                 Volunteer Elevation Track
               </span>
-              <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-ink-primary leading-none">
+              <h1 className="font-display font-extrabold text-3xl sm:text-4xl text-slate-900 tracking-tight leading-none">
                 Good morning, {profile?.fullName || user?.username}
               </h1>
-              <div className="flex flex-wrap items-center gap-2 pt-1">
+              <div className="flex flex-wrap items-center gap-2 pt-0.5">
                 <StatusMark status={profile?.rank || 'member'} size="sm" />
-                <span className="font-mono text-xs font-bold text-ink-tertiary">
-                  ID: {profile?.volunteerNumber || 'VTS-AA-2026'}
+                <span className="text-slate-300">•</span>
+                <span className="font-mono text-xs text-slate-500">
+                  {profile?.volunteerNumber || 'VTS-AA-2026-0042'}
                 </span>
-                <span className="text-border">•</span>
-                <span className="font-sans text-xs font-semibold text-ink-secondary">
+                <span className="text-slate-300">•</span>
+                <span className="font-sans text-xs text-slate-500">
                   {profile?.area || 'Addis Ababa'}
                 </span>
               </div>
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2.5">
             <Button
               variant="secondary"
               size="md"
               leftIcon={<QrCode className="w-4 h-4" weight="bold" />}
               onClick={() => navigate('/volunteer/check-in')}
             >
-              Check-In Code
+              Check In
             </Button>
             <Button
               variant="primary"
@@ -120,24 +116,24 @@ export const VolunteerHomePage: React.FC = () => {
               leftIcon={<IdentificationCard className="w-4 h-4" weight="bold" />}
               onClick={() => navigate('/volunteer/id-card')}
             >
-              My Volunteer Pass
+              ID Pass
             </Button>
           </div>
         </div>
 
-        {/* Quick Rank Progression Strip */}
+        {/* Rank Progression Track */}
         {progress && progress.nextRank && (
-          <div className="pt-2 grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-            <div className="space-y-1">
-              <span className="font-sans text-xs font-bold text-ink-tertiary uppercase block">
-                Next Altitude Station
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+            <div className="space-y-1.5">
+              <span className="font-sans text-xs font-semibold text-slate-400 block">
+                Next Waypoint Station
               </span>
-              <h3 className="font-display text-3xl font-black uppercase text-ink-primary">
+              <h3 className="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
                 {progress.nextRank.replace('_', ' ')}
               </h3>
-              <p className="font-sans text-xs text-ink-secondary">
+              <p className="font-sans text-xs text-slate-500 leading-relaxed">
                 {progress.isEligible
-                  ? 'All thresholds met! You are eligible for promotion review.'
+                  ? 'All criteria met. You are eligible for promotion review.'
                   : `${Math.max(0, progress.targetHours - progress.approvedHours)} hours left to reach next camp.`}
               </p>
             </div>
@@ -148,17 +144,17 @@ export const VolunteerHomePage: React.FC = () => {
                 current={progress.approvedHours}
                 target={progress.targetHours}
                 unit="hrs"
-                color="green"
+                roleColor="#0D5C46"
               />
-              <div className="flex items-center justify-between text-xs">
-                <span className="font-mono text-ink-secondary">
-                  Completed Activities: <strong>{progress.completedActivities} / {progress.targetActivities}</strong>
+              <div className="flex items-center justify-between text-xs pt-1">
+                <span className="font-sans text-slate-600">
+                  Completed Activities: <strong className="font-semibold text-slate-900">{progress.completedActivities} / {progress.targetActivities}</strong>
                 </span>
                 <Link
                   to="/volunteer/rank-progress"
-                  className="font-sans font-semibold text-ink-primary hover:underline flex items-center gap-1"
+                  className="font-sans font-semibold text-brand hover:underline flex items-center gap-1"
                 >
-                  <span>Detailed breakdown</span>
+                  <span>View journey breakdown</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
@@ -167,108 +163,126 @@ export const VolunteerHomePage: React.FC = () => {
         )}
       </div>
 
-      {/* Two Column Layout: Next Activity & Community Bulletins */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Next / Featured Activity (Ticket Silhouette) */}
-        <div
-          className="border-2 border-ink-primary bg-white p-6 space-y-5 flex flex-col justify-between shadow-ticket"
-          style={{
-            clipPath: 'polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)',
-          }}
-        >
+      {/* 2. SECONDARY FLAT TINTED TILES OF DIFFERENT SIZES */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Next Activity Ticket (Span 2) */}
+        <div className="lg:col-span-2 bg-slate-50 rounded-[24px] p-8 space-y-6 border border-slate-100 flex flex-col justify-between">
           <div className="space-y-4">
-            <div className="flex items-center justify-between border-b-2 border-border pb-3">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200/80">
               <div className="flex items-center gap-2">
-                <Calendar className="w-5 h-5 text-role-volunteer" weight="bold" />
-                <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
-                  Next Field Activity
-                </h3>
+                <Calendar className="w-5 h-5 text-brand" weight="bold" />
+                <span className="font-display text-lg font-bold text-slate-900">
+                  Your Next Activity
+                </span>
               </div>
-              {nextActivity && <StatusMark status={nextActivity.status} size="sm" />}
+              {nextActivity && (
+                <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-white border border-slate-200 text-slate-700 shadow-2xs">
+                  {nextActivity.area}
+                </span>
+              )}
             </div>
 
             {nextActivity ? (
-              <div className="space-y-3">
-                <h4 className="font-display text-2xl font-black uppercase text-ink-primary leading-tight">
-                  {nextActivity.title}
-                </h4>
-                <p className="font-sans text-xs text-ink-secondary leading-relaxed line-clamp-3">
-                  {nextActivity.description}
-                </p>
+              <div className="space-y-4">
+                <div>
+                  <h3 className="font-display text-2xl font-bold text-slate-900 tracking-tight">
+                    {nextActivity.title}
+                  </h3>
+                  <p className="font-sans text-xs text-slate-500 mt-1 leading-relaxed">
+                    {nextActivity.description}
+                  </p>
+                </div>
 
-                <div className="space-y-1.5 pt-2 text-xs font-mono text-ink-secondary">
-                  <div className="flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-ink-tertiary" />
-                    <span>
-                      {new Date(nextActivity.startsAt).toLocaleString('en-US', {
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="p-3 bg-white rounded-[14px] border border-slate-200/80">
+                    <span className="text-[11px] text-slate-400 block">Date & Time</span>
+                    <span className="text-xs font-semibold text-slate-800">
+                      {new Date(nextActivity.startsAt).toLocaleDateString('en-US', {
                         weekday: 'short',
                         month: 'short',
                         day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
                       })}
                     </span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <MapPin className="w-4 h-4 text-ink-tertiary" />
-                    <span>{nextActivity.place}, {nextActivity.area}</span>
+                  <div className="p-3 bg-white rounded-[14px] border border-slate-200/80">
+                    <span className="text-[11px] text-slate-400 block">Location</span>
+                    <span className="text-xs font-semibold text-slate-800 truncate block">
+                      {nextActivity.place}
+                    </span>
+                  </div>
+                  <div className="p-3 bg-white rounded-[14px] border border-slate-200/80">
+                    <span className="text-[11px] text-slate-400 block">Service Area</span>
+                    <span className="text-xs font-semibold text-slate-800">
+                      {nextActivity.area}
+                    </span>
                   </div>
                 </div>
               </div>
             ) : (
-              <p className="text-xs font-sans text-ink-tertiary">
-                You are not currently enrolled in an upcoming activity.
-              </p>
+              <div className="py-6 text-center text-xs text-slate-500">
+                You are not currently enrolled in an active event.
+              </div>
             )}
           </div>
 
-          <div className="pt-4 border-t-2 border-dashed border-border flex items-center justify-between">
-            <Link
-              to={nextActivity ? `/volunteer/activities/${nextActivity.id}` : '/volunteer/activities'}
-              className="font-sans text-xs font-bold text-ink-secondary hover:text-ink-primary"
-            >
-              View Activity Details &rarr;
-            </Link>
+          <div className="pt-4 flex items-center justify-between border-t border-slate-200/80">
+            <span className="text-xs text-slate-500">
+              Check in on arrival using the 4-digit team pin.
+            </span>
             <Button
               variant="primary"
               size="sm"
-              leftIcon={<QrCode className="w-4 h-4" weight="bold" />}
-              onClick={() => navigate('/volunteer/check-in')}
+              onClick={() => navigate('/volunteer/activities')}
+              rightIcon={<ArrowRight className="w-4 h-4" weight="bold" />}
             >
-              Check In
+              Browse Activities
             </Button>
           </div>
         </div>
 
-        {/* Community Announcements */}
-        <div className="border-2 border-ink-primary bg-white p-6 space-y-4 shadow-ticket">
-          <div className="flex items-center justify-between border-b-2 border-border pb-3">
-            <div className="flex items-center gap-2">
-              <Megaphone className="w-5 h-5 text-role-teamlead" weight="bold" />
-              <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
-                Trail Notices
-              </h3>
+        {/* Community Announcements Bulletins (Span 1) */}
+        <div className="bg-slate-50 rounded-[24px] p-8 space-y-5 border border-slate-100 flex flex-col justify-between">
+          <div className="space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200/80">
+              <div className="flex items-center gap-2">
+                <Megaphone className="w-5 h-5 text-brand" weight="bold" />
+                <span className="font-display text-lg font-bold text-slate-900">
+                  Bulletins
+                </span>
+              </div>
+              <span className="text-[10px] font-semibold text-slate-400 uppercase">
+                Announcements
+              </span>
             </div>
-            <span className="font-sans text-xs font-bold text-ink-tertiary">
-              Latest updates
-            </span>
+
+            <div className="space-y-3">
+              {announcements.map((anc) => (
+                <div
+                  key={anc.id}
+                  className="p-3.5 bg-white rounded-[16px] border border-slate-200/80 space-y-1 shadow-2xs"
+                >
+                  <h4 className="font-sans text-xs font-semibold text-slate-900 leading-snug">
+                    {anc.title}
+                  </h4>
+                  <p className="font-sans text-[11px] text-slate-500 leading-relaxed line-clamp-2">
+                    {anc.body}
+                  </p>
+                  <span className="font-sans text-[10px] text-slate-400 block pt-1">
+                    {new Date(anc.createdAt).toLocaleDateString()}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
 
-          <div className="space-y-4 divide-y divide-border">
-            {announcements.map((anc) => (
-              <div key={anc.id} className="pt-3 first:pt-0 space-y-1.5">
-                <div className="flex items-center justify-between text-[11px] text-ink-tertiary font-mono">
-                  <span>From: {anc.authorName} ({anc.authorRole})</span>
-                  <span>{new Date(anc.createdAt).toLocaleDateString()}</span>
-                </div>
-                <h4 className="font-sans text-sm font-bold text-ink-primary leading-snug">
-                  {anc.title}
-                </h4>
-                <p className="font-sans text-xs text-ink-secondary leading-relaxed line-clamp-2">
-                  {anc.body}
-                </p>
-              </div>
-            ))}
+          <div className="pt-2 text-center">
+            <Link
+              to="/volunteer/certificates"
+              className="text-xs font-semibold text-brand hover:underline inline-flex items-center gap-1"
+            >
+              <span>View your earned certificates</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
           </div>
         </div>
       </div>
