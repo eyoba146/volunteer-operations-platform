@@ -106,14 +106,14 @@ export const FinanceOverviewPage: React.FC = () => {
           {/* Simple Inline List with dividers */}
           <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm pt-2 md:pt-0 border-t md:border-t-0 border-[#D5DAE1]">
             <div className="space-y-0.5">
-              <span className="text-xs text-ink-secondary block">Today's settlements</span>
+              <span className="text-[13px] text-ink-secondary block">Today's settlements</span>
               <span className="text-xl font-bold text-ink-primary">
                 ETB {stats?.todayETB.toLocaleString() || '0'}.00
               </span>
             </div>
             <div className="w-px h-8 bg-[#D5DAE1] hidden sm:block" />
             <div className="space-y-0.5">
-              <span className="text-xs text-ink-secondary block">Review cases</span>
+              <span className="text-[13px] text-ink-secondary block">Review cases</span>
               <span className={`text-xl font-bold ${
                 (stats?.needsReviewCount || 0) > 0 ? 'text-role-applicant' : 'text-role-volunteer'
               }`}>
@@ -122,7 +122,7 @@ export const FinanceOverviewPage: React.FC = () => {
             </div>
             <div className="w-px h-8 bg-[#D5DAE1] hidden sm:block" />
             <div className="space-y-0.5">
-              <span className="text-xs text-ink-secondary block">Refund reversals</span>
+              <span className="text-[13px] text-ink-secondary block">Refund reversals</span>
               <span className="text-xl font-bold text-ink-primary">
                 {stats?.refundedCount || 0}
               </span>
@@ -167,7 +167,7 @@ export const FinanceOverviewPage: React.FC = () => {
                     <span className="font-bold text-sm text-ink-primary block">
                       ETB {p.amount}.00
                     </span>
-                    <span className="text-xs text-ink-tertiary block">
+                    <span className="text-[13px] text-ink-tertiary block">
                       {new Date(p.createdAt).toLocaleDateString()}
                     </span>
                   </div>
@@ -197,46 +197,46 @@ export const FinanceOverviewPage: React.FC = () => {
                   Telebirr gateway status
                 </h3>
               </div>
-              <span className="text-xs font-bold text-role-volunteer px-2 py-0.5 bg-emerald-50 rounded-[4px] border border-emerald-200">
+              <span className="text-[13px] font-semibold text-role-volunteer px-2 py-0.5 bg-emerald-50 rounded-[4px] border border-emerald-200">
                 Connected
               </span>
             </div>
 
             <div className="space-y-3 text-sm">
-              <div className="p-3 bg-canvas-subdued rounded-[8px] flex justify-between items-center">
+              <div className="p-3 bg-canvas-subdued/40 rounded-[8px] flex justify-between items-center">
                 <div>
                   <span className="font-semibold text-ink-primary block text-[13px]">Merchant account</span>
-                  <span className="text-ink-secondary text-xs">Ethio Telecom enterprise integration</span>
+                  <span className="text-ink-secondary text-[13px]">Telecom payment integration</span>
                 </div>
-                <span className="font-bold text-ink-primary text-[13px]">VTS Ethiopia</span>
+                <span className="font-semibold text-ink-primary text-[13px]">VTS Ethiopia</span>
               </div>
 
-              <div className="p-3 bg-canvas-subdued rounded-[8px] flex justify-between items-center">
+              <div className="p-3 bg-canvas-subdued/40 rounded-[8px] flex justify-between items-center">
                 <div>
                   <span className="font-semibold text-ink-primary block text-[13px]">Telebirr shortcode</span>
-                  <span className="text-ink-secondary text-xs">Direct pay code</span>
+                  <span className="text-ink-secondary text-[13px]">Direct pay code</span>
                 </div>
-                <span className="font-bold bg-white px-2 py-0.5 rounded-[4px] border border-[#D5DAE1] text-ink-primary text-xs">
+                <span className="font-semibold bg-white px-2 py-0.5 rounded-[4px] border border-[#D5DAE1] text-ink-primary text-[13px]">
                   884120
                 </span>
               </div>
 
-              <div className="p-3 bg-canvas-subdued rounded-[8px] flex justify-between items-center">
+              <div className="p-3 bg-canvas-subdued/40 rounded-[8px] flex justify-between items-center">
                 <div>
                   <span className="font-semibold text-ink-primary block text-[13px]">Automatic matching</span>
-                  <span className="text-ink-secondary text-xs">Matched without manual review</span>
+                  <span className="text-ink-secondary text-[13px]">Matched without manual review</span>
                 </div>
-                <span className="font-bold text-role-volunteer text-[13px]">
+                <span className="font-semibold text-role-volunteer text-[13px]">
                   96.8%
                 </span>
               </div>
 
-              <div className="p-3 bg-canvas-subdued rounded-[8px] flex justify-between items-center">
+              <div className="p-3 bg-canvas-subdued/40 rounded-[8px] flex justify-between items-center">
                 <div>
                   <span className="font-semibold text-ink-primary block text-[13px]">Pending exceptions</span>
-                  <span className="text-ink-secondary text-xs">Payments needing confirmation</span>
+                  <span className="text-ink-secondary text-[13px]">Payments needing confirmation</span>
                 </div>
-                <span className="font-bold text-ink-primary text-[13px]">
+                <span className="font-semibold text-ink-primary text-[13px]">
                   {stats?.needsReviewCount || 0} cases
                 </span>
               </div>

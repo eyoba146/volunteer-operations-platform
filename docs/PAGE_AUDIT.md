@@ -55,20 +55,20 @@ This document tracks visual, typographic, contrast, and plain language complianc
 | **Manager** | `/manager/announcements` | `pages/manager/ManagerAnnouncementsPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Stream feed) | Pass (Cleaned) | Pass (Clean) | Done |
 | **Manager** | `/manager/feedback` | `pages/manager/ManagerFeedbackPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Cleaned) | Pass (Cleaned) | Pass (Clean) | Done |
 | **Manager** | `/manager/reports` | `pages/manager/ManagerReportsPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Ridgeline graph) | Pass (Cleaned) | Pass (Clean) | Done |
-| **Finance** | `/finance/overview` | `pages/finance/FinanceOverviewPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Finance** | `/finance/payments` | `pages/finance/FinancePaymentsPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Finance** | `/finance/needs-review` | `pages/finance/FinanceNeedsReviewPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Finance** | `/finance/receipts-refunds` | `pages/finance/FinanceReceiptsRefundsPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Finance** | `/finance/reports` | `pages/finance/FinanceReportsPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
+| **Finance** | `/finance/overview` | `pages/finance/FinanceOverviewPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Lead stat) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Finance** | `/finance/payments` | `pages/finance/FinancePaymentsPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Ledger rows) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Finance** | `/finance/needs-review` | `pages/finance/FinanceNeedsReviewPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Ledger rows) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Finance** | `/finance/receipts-refunds` | `pages/finance/FinanceReceiptsRefundsPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Lead stat) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Finance** | `/finance/reports` | `pages/finance/FinanceReportsPage.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Comparison) | Pass (Cleaned) | Pass (Clean) | Done |
 | **Admin** | `/admin/overview` | `pages/admin/AdminOverviewPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
 | **Admin** | `/admin/settings` | `pages/admin/AdminSettingsPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
 | **Admin** | `/admin/rank-rules` | `pages/admin/AdminRankRulesPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
 | **Admin** | `/admin/accounts` | `pages/admin/AdminAccountsPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
 | **Admin** | `/admin/activity-history` | `pages/admin/AdminActivityHistoryPage.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Shared** | Top Bar & Dock | `components/layout/AppShellLayout.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Shared** | Public Top & Foot | `components/layout/PublicLayout.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Shared** | Email Preview | `components/demo/DemoEmailInbox.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Shared** | Photo Crop Modal | `components/ui/ProfilePhotoModal.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
-| **Shared** | Drawer / Sheet | `components/ui/SheetModal.tsx` | Pending | Pending | Pending | Pending | Pending | Pending | Pending | Queued |
+| **Shared** | Top Bar & Dock | `components/layout/AppShellLayout.tsx` | Pass (AA) | Pass (White top bar) | Pass (1px border) | Pass (Sentence) | Pass (Clean) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Shared** | Public Top & Foot | `components/layout/PublicLayout.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px border) | Pass (Sentence) | Pass (Clean) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Shared** | Email Preview | `components/demo/DemoEmailInbox.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Clean) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Shared** | Photo Crop Modal | `components/ui/ProfilePhotoModal.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Clean) | Pass (Cleaned) | Pass (Clean) | Done |
+| **Shared** | Drawer / Sheet | `components/ui/SheetModal.tsx` | Pass (AA) | Pass (1 btn/sec) | Pass (1px/#D5DAE1) | Pass (Sentence) | Pass (Clean) | Pass (Cleaned) | Pass (Clean) | Done |
 
 ---
