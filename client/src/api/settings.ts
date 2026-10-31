@@ -73,7 +73,7 @@ export async function updateRankRule(
         actorId,
         actorName,
         actorRole: 'System Director',
-        action: `Updated qualification thresholds for rank: ${rank}`,
+        action: `Updated criteria thresholds for rank: ${rank}`,
         subject: `RankRule #${rank}`,
         createdAt: new Date().toISOString(),
       },

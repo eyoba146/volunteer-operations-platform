@@ -21,7 +21,7 @@ export const Tabs: React.FC<TabsProps> = ({
 }) => {
   return (
     <div
-      className={`flex items-center gap-2 p-1.5 bg-canvas-subdued border-2 border-ink-primary overflow-x-auto no-scrollbar ${className}`}
+      className={`flex items-center gap-1.5 p-1.5 bg-canvas-subdued border border-[#D5DAE1] rounded-[10px] overflow-x-auto no-scrollbar ${className}`}
       role="tablist"
     >
       {tabs.map((tab) => {
@@ -32,19 +32,19 @@ export const Tabs: React.FC<TabsProps> = ({
             role="tab"
             aria-selected={isActive}
             onClick={() => onChange(tab.id)}
-            className={`flex items-center gap-2 px-4 py-2 text-sm font-bold tracking-tight transition-all duration-100 whitespace-nowrap cursor-pointer rounded-none select-none ${
+            className={`flex items-center gap-2 px-4 py-2 text-sm font-bold tracking-tight transition-all duration-150 whitespace-nowrap cursor-pointer rounded-[8px] select-none ${
               isActive
-                ? 'bg-white border-2 border-ink-primary shadow-[3px_3px_0_#111111] text-ink-primary -translate-x-[1px] -translate-y-[1px]'
-                : 'border-2 border-transparent text-ink-secondary hover:text-ink-primary hover:border-ink-primary/30'
+                ? 'bg-white border border-[#D5DAE1] text-ink-primary shadow-sm font-bold'
+                : 'border border-transparent text-ink-secondary hover:text-ink-primary hover:bg-white/60'
             }`}
           >
             <span>{tab.label}</span>
             {tab.count !== undefined && (
               <span
-                className={`text-xs px-2 py-0.5 border font-display font-black leading-none ${
+                className={`text-[13px] px-2 py-0.5 rounded-full font-bold leading-none ${
                   isActive
-                    ? 'border-ink-primary bg-ink-primary text-white'
-                    : 'border-ink-primary/40 bg-white text-ink-secondary'
+                    ? 'bg-ink-primary text-white'
+                    : 'bg-canvas-subdued text-ink-secondary border border-[#D5DAE1]'
                 }`}
               >
                 {tab.count}

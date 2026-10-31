@@ -65,10 +65,10 @@ export const TeamLeadAnnouncementsPage: React.FC = () => {
     <div className="max-w-4xl mx-auto space-y-8">
       {/* Top Header */}
       <div className="border-b-2 border-border pb-5">
-        <span className="font-sans text-xs font-bold text-role-teamlead uppercase tracking-tight block">
+        <span className="font-sans text-xs font-bold text-role-teamlead tracking-tight block">
           Team Dispatch & Notices
         </span>
-        <h1 className="font-display text-4xl sm:text-5xl font-black uppercase tracking-tight text-ink-primary leading-none mt-1">
+        <h1 className="font-display text-4xl sm:text-5xl font-black tracking-tight text-ink-primary leading-none mt-1">
           Broadcast Field Notices
         </h1>
         <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
@@ -85,7 +85,7 @@ export const TeamLeadAnnouncementsPage: React.FC = () => {
           }}
         >
           <div className="border-b-2 border-border pb-2">
-            <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
+            <h3 className="font-display text-2xl font-black text-ink-primary">
               Post New Notice
             </h3>
           </div>
@@ -100,7 +100,7 @@ export const TeamLeadAnnouncementsPage: React.FC = () => {
             />
 
             <div className="space-y-1.5 text-left">
-              <label className="block text-xs font-bold uppercase text-ink-primary">
+              <label className="block text-xs font-bold text-ink-primary">
                 Message Content
               </label>
               <textarea
@@ -128,7 +128,7 @@ export const TeamLeadAnnouncementsPage: React.FC = () => {
 
         {/* Existing Notices Feed */}
         <div className="lg:col-span-3 border-2 border-ink-primary bg-white shadow-ticket divide-y-2 divide-border">
-          <div className="p-4 bg-canvas border-b-2 border-ink-primary font-display text-xl font-black uppercase text-ink-primary">
+          <div className="p-4 bg-canvas border-b-2 border-ink-primary font-display text-xl font-black text-ink-primary">
             Recent Announcements Stream
           </div>
 
@@ -145,7 +145,7 @@ export const TeamLeadAnnouncementsPage: React.FC = () => {
                   </span>
                   <span>{new Date(anc.createdAt).toLocaleDateString()}</span>
                 </div>
-                <h4 className="font-display text-2xl font-black uppercase text-ink-primary leading-tight">
+                <h4 className="font-display text-2xl font-black text-ink-primary leading-tight">
                   {anc.title}
                 </h4>
                 <p className="font-sans text-xs text-ink-secondary leading-relaxed whitespace-pre-line">

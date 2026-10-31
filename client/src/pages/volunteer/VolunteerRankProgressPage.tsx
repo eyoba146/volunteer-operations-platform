@@ -100,7 +100,7 @@ export const VolunteerRankProgressPage: React.FC = () => {
     {
       id: 'manager',
       label: 'Manager',
-      altitude: 'Summit • 300h',
+      altitude: 'Manager • 300h',
       isCompleted: progress.currentRank === 'manager',
       isCurrent: progress.currentRank === 'manager',
     },
@@ -111,10 +111,10 @@ export const VolunteerRankProgressPage: React.FC = () => {
       {/* Header */}
       <div className="border-b-2 border-border pb-5 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <span className="font-sans text-xs font-bold text-role-volunteer uppercase tracking-tight block">
-            Elevation & Advancement
+          <span className="font-sans text-xs font-bold text-role-volunteer tracking-tight block">
+            Rank and advancement
           </span>
-          <h1 className="font-display text-4xl sm:text-5xl font-black uppercase tracking-tight text-ink-primary leading-none mt-1">
+          <h1 className="font-display text-4xl sm:text-5xl font-black tracking-tight text-ink-primary leading-none mt-1">
             Rank Progression Board
           </h1>
           <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
@@ -136,11 +136,11 @@ export const VolunteerRankProgressPage: React.FC = () => {
       >
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b-2 border-border pb-3">
           <div className="space-y-0.5">
-            <span className="font-sans text-xs font-bold text-role-volunteer uppercase tracking-tight block">
+            <span className="font-sans text-xs font-bold text-role-volunteer tracking-tight block">
               Active Trail Route
             </span>
-            <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
-              Elevation Profile
+            <h3 className="font-display text-2xl font-black text-ink-primary">
+              Rank progression trail
             </h3>
           </div>
           <div className="flex items-center gap-2 font-mono text-xs font-bold bg-canvas px-3 py-1 border border-border">
@@ -164,10 +164,10 @@ export const VolunteerRankProgressPage: React.FC = () => {
           <div className="flex items-start gap-3">
             <Sparkle className="w-6 h-6 text-role-applicant shrink-0 mt-0.5" weight="fill" />
             <div className="space-y-1">
-              <span className="font-sans text-xs font-bold uppercase text-role-applicant block">
+              <span className="font-sans text-xs font-bold text-role-applicant block">
                 Promotion Recommendation Filed
               </span>
-              <h2 className="font-display text-2xl font-black uppercase text-ink-primary">
+              <h2 className="font-display text-2xl font-black text-ink-primary">
                 Awaiting Decision from Program Manager
               </h2>
               <p className="font-sans text-xs sm:text-sm text-ink-secondary leading-relaxed">
@@ -186,14 +186,14 @@ export const VolunteerRankProgressPage: React.FC = () => {
         <div className="border-2 border-ink-primary bg-role-volunteerLight p-6 shadow-ticket space-y-3">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="space-y-1">
-              <span className="font-sans text-xs font-bold uppercase text-role-volunteer block">
+              <span className="font-sans text-xs font-bold text-role-volunteer block">
                 All Thresholds Satisfied
               </span>
-              <h2 className="font-display text-2xl font-black uppercase text-ink-primary">
+              <h2 className="font-display text-2xl font-black text-ink-primary">
                 You are Eligible for Promotion to {progress.nextRank?.replace('_', ' ').toUpperCase()}!
               </h2>
               <p className="font-sans text-xs sm:text-sm text-ink-secondary leading-relaxed">
-                You have met all hours, activity, performance rating, and qualification requirements. You can submit your candidacy to the review board.
+                You have met all hours, activity, performance rating, and training requirements. You can submit your candidacy to the review board.
               </p>
             </div>
             <Button
@@ -213,7 +213,7 @@ export const VolunteerRankProgressPage: React.FC = () => {
         {/* Left Column: Current Station & Unlocked Privileges */}
         <div className="space-y-6">
           <div className="border-2 border-ink-primary bg-white p-6 shadow-ticket space-y-4">
-            <span className="font-sans text-xs font-bold uppercase text-ink-tertiary block">
+            <span className="font-sans text-xs font-bold text-ink-tertiary block">
               Current Rank Standing
             </span>
 
@@ -222,7 +222,7 @@ export const VolunteerRankProgressPage: React.FC = () => {
                 {progress.currentRank === 'senior_member' ? 'SM' : progress.currentRank === 'team_lead' ? 'TL' : 'M'}
               </div>
               <div>
-                <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
+                <h3 className="font-display text-2xl font-black text-ink-primary">
                   {progress.currentRank.replace('_', ' ')}
                 </h3>
                 <span className="font-mono text-xs text-ink-secondary">
@@ -254,10 +254,10 @@ export const VolunteerRankProgressPage: React.FC = () => {
           {/* Next Rank Info */}
           {progress.nextRank && (
             <div className="border-2 border-ink-primary bg-canvas p-6 shadow-ticket space-y-3">
-              <span className="font-sans text-xs font-bold uppercase text-ink-tertiary block">
+              <span className="font-sans text-xs font-bold text-ink-tertiary block">
                 Target Station
               </span>
-              <h4 className="font-display text-2xl font-black uppercase text-ink-primary">
+              <h4 className="font-display text-2xl font-black text-ink-primary">
                 {progress.nextRank.replace('_', ' ')}
               </h4>
               <p className="font-sans text-xs text-ink-secondary leading-relaxed">
@@ -274,7 +274,7 @@ export const VolunteerRankProgressPage: React.FC = () => {
         {/* Right Column: 5 Requirement Meters (Section 5.2) */}
         <div className="lg:col-span-2 border-2 border-ink-primary bg-white p-6 sm:p-8 shadow-ticket space-y-6">
           <div className="border-b-2 border-border pb-3 flex items-center justify-between">
-            <h2 className="font-display text-2xl font-black uppercase text-ink-primary">
+            <h2 className="font-display text-2xl font-black text-ink-primary">
               Threshold Requirements: {progress.nextRank?.replace('_', ' ').toUpperCase() || 'NEXT RANK'}
             </h2>
             <span className="font-mono text-xs font-bold text-ink-tertiary">
@@ -292,7 +292,7 @@ export const VolunteerRankProgressPage: React.FC = () => {
                 unit="hrs"
                 color="green"
               />
-              <span className="font-mono text-[11px] text-ink-secondary block">
+              <span className="font-mono text-[13px] text-ink-secondary block">
                 {progress.approvedHours >= progress.targetHours
                   ? 'Requirement satisfied'
                   : `${Math.round((progress.targetHours - progress.approvedHours) * 10) / 10} hours left to complete`}
@@ -308,7 +308,7 @@ export const VolunteerRankProgressPage: React.FC = () => {
                 unit="acts"
                 color="green"
               />
-              <span className="font-mono text-[11px] text-ink-secondary block">
+              <span className="font-mono text-[13px] text-ink-secondary block">
                 {progress.completedActivities >= progress.targetActivities
                   ? 'Requirement satisfied'
                   : `${progress.targetActivities - progress.completedActivities} activities left to attend`}
@@ -324,7 +324,7 @@ export const VolunteerRankProgressPage: React.FC = () => {
                 unit="/ 5.0"
                 color="gold"
               />
-              <span className="font-mono text-[11px] text-ink-secondary block">
+              <span className="font-mono text-[13px] text-ink-secondary block">
                 {progress.averageRating >= progress.targetRating
                   ? 'Requirement satisfied'
                   : 'Score must meet or exceed minimum threshold'}
@@ -340,7 +340,7 @@ export const VolunteerRankProgressPage: React.FC = () => {
                 unit="mo"
                 color="navy"
               />
-              <span className="font-mono text-[11px] text-ink-secondary block">
+              <span className="font-mono text-[13px] text-ink-secondary block">
                 {progress.monthsActive >= progress.targetMonths
                   ? 'Requirement satisfied'
                   : `${Math.max(0, Math.round((progress.targetMonths - progress.monthsActive) * 10) / 10)} months remaining`}
@@ -350,8 +350,8 @@ export const VolunteerRankProgressPage: React.FC = () => {
             {/* 5. Required Training Session */}
             <div className="space-y-2 pt-2 border-t-2 border-border">
               <div className="flex items-center justify-between text-xs">
-                <span className="font-sans font-bold text-ink-primary uppercase">
-                  5. Qualification Training
+                <span className="font-sans font-bold text-ink-primary">
+                  5. Orientation & training
                 </span>
                 <span className="font-mono text-xs font-bold text-ink-primary">
                   {progress.requiredTraining}

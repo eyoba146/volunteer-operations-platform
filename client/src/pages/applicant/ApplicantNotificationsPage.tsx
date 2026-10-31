@@ -50,7 +50,7 @@ export const ApplicantNotificationsPage: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between border-b-2 border-ink-primary pb-5 gap-3">
         <div>
-          <h1 className="font-display font-black text-4xl sm:text-5xl uppercase tracking-tight text-ink-primary leading-none">
+          <h1 className="font-display font-black text-4xl sm:text-5xl tracking-tight text-ink-primary leading-none">
             Notifications
           </h1>
           <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
@@ -87,7 +87,7 @@ export const ApplicantNotificationsPage: React.FC = () => {
 
               <div className="flex-1 space-y-1 text-left">
                 <div className="flex flex-wrap items-baseline justify-between gap-2">
-                  <h3 className="font-display text-lg font-black uppercase text-ink-primary">
+                  <h3 className="font-display text-lg font-black text-ink-primary">
                     {notif.title}
                   </h3>
                   <span className="font-mono text-xs text-ink-tertiary">

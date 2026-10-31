@@ -143,7 +143,7 @@ export const ApplicantPaymentPage: React.FC = () => {
           <Clock className="w-8 h-8" weight="bold" />
         </div>
         <div className="space-y-2">
-          <h1 className="font-display text-3xl font-black uppercase text-ink-primary">
+          <h1 className="font-display text-3xl font-black text-ink-primary">
             Payment Window Expired
           </h1>
           <p className="font-sans text-xs sm:text-sm text-ink-secondary leading-relaxed">
@@ -190,10 +190,10 @@ export const ApplicantPaymentPage: React.FC = () => {
           </div>
 
           <div className="space-y-2 max-w-xl mx-auto">
-            <span className="font-display text-lg font-black uppercase tracking-wide bg-role-volunteer text-white px-3 py-1 inline-block">
+            <span className="font-display text-lg font-black tracking-wide bg-role-volunteer text-white px-3 py-1 inline-block">
               Payment Confirmed • Member Rank Unlocked
             </span>
-            <h1 className="font-display text-4xl sm:text-5xl font-black uppercase tracking-tight text-ink-primary leading-none">
+            <h1 className="font-display text-4xl sm:text-5xl font-black tracking-tight text-ink-primary leading-none">
               Welcome to the Volunteer Corps!
             </h1>
             <p className="font-sans text-xs sm:text-sm text-ink-secondary leading-relaxed">
@@ -225,7 +225,7 @@ export const ApplicantPaymentPage: React.FC = () => {
           {/* Left: Volunteer ID Card */}
           <div className="space-y-3">
             <div className="flex items-center justify-between border-b border-border pb-2">
-              <h2 className="font-display text-2xl font-black uppercase text-ink-primary">
+              <h2 className="font-display text-2xl font-black text-ink-primary">
                 Your Volunteer Pass
               </h2>
               <span className="font-sans text-xs font-bold text-role-volunteer">
@@ -244,7 +244,7 @@ export const ApplicantPaymentPage: React.FC = () => {
           <div className="border-4 border-ink-primary bg-white p-6 md:p-8 space-y-5 shadow-ticket text-left">
             <div className="flex items-center justify-between border-b-2 border-ink-primary pb-3">
               <div>
-                <span className="font-display text-2xl font-black uppercase text-ink-primary block leading-none">
+                <span className="font-display text-2xl font-black text-ink-primary block leading-none">
                   Payment Receipt
                 </span>
                 <span className="font-sans text-xs font-bold text-role-volunteer">
@@ -281,7 +281,7 @@ export const ApplicantPaymentPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="p-3 bg-canvas-subdued border border-border text-[11px] font-sans text-ink-secondary">
+            <div className="p-3 bg-canvas-subdued border border-border text-[13px] font-sans text-ink-secondary">
               A copy of this payment receipt and your volunteer onboarding instructions have been sent to your email.
             </div>
 
@@ -304,7 +304,7 @@ export const ApplicantPaymentPage: React.FC = () => {
       {/* Header */}
       <div className="border-b-2 border-ink-primary pb-5 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <h1 className="font-display font-black text-4xl sm:text-5xl uppercase tracking-tight text-ink-primary leading-none">
+          <h1 className="font-display font-black text-4xl sm:text-5xl tracking-tight text-ink-primary leading-none">
             Registration Fee Payment
           </h1>
           <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
@@ -324,34 +324,34 @@ export const ApplicantPaymentPage: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
         {/* Left Column: What It Covers */}
         <div className="md:col-span-2 space-y-5">
-          <div className="border-4 border-ink-primary bg-white p-6 space-y-5 shadow-ticket">
-            <div className="border-b border-border pb-3">
+          <div className="border border-[#D5DAE1] bg-white rounded-[10px] p-6 space-y-5">
+            <div className="border-b border-[#D5DAE1] pb-3">
               <span className="font-sans text-xs font-bold text-role-applicant block">
-                One-Time Payment
+                One-time activation fee
               </span>
-              <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
-                Membership Fee
+              <h3 className="font-display text-2xl font-bold text-ink-primary">
+                Membership fee
               </h3>
             </div>
 
             <div className="space-y-1">
-              <span className="font-sans text-xs font-bold text-ink-tertiary">Total Amount Due</span>
-              <div className="font-display text-6xl font-black text-ink-primary leading-none">
-                ETB 200<span className="text-2xl font-sans text-ink-tertiary font-normal">.00</span>
+              <span className="font-sans text-xs font-semibold text-ink-secondary">Total amount due</span>
+              <div className="font-display text-5xl font-black text-ink-primary leading-none">
+                ETB 200<span className="text-xl font-sans text-ink-secondary font-normal">.00</span>
               </div>
             </div>
 
-            <div className="space-y-2 pt-3 border-t border-border text-xs font-sans text-ink-secondary leading-relaxed">
+            <div className="space-y-2 pt-3 border-t border-[#D5DAE1] text-[13px] font-sans text-ink-secondary leading-relaxed">
               <span className="font-bold text-ink-primary block">What this covers:</span>
               <ul className="space-y-1.5 list-disc list-inside">
-                <li>Official Volunteer ID Pass with verifiable QR code</li>
-                <li>Duty insurance coverage during volunteer fieldwork</li>
-                <li>Access to regional activity rosters & check-in pins</li>
-                <li>Certificate of Membership upon activation</li>
+                <li>Volunteer ID pass with verifiable QR code</li>
+                <li>Access to open field activity rosters and check-in codes</li>
+                <li>Personal service hours recording and verification</li>
+                <li>Digital certificate of membership upon activation</li>
               </ul>
             </div>
 
-            <div className="p-3 bg-canvas-subdued border border-border text-[11px] font-mono text-ink-tertiary">
+            <div className="p-3 bg-canvas-subdued border border-border text-[13px] font-mono text-ink-tertiary">
               Merchant: VTS Volunteer Corps<br />
               Shortcode: 884120
             </div>
@@ -368,7 +368,7 @@ export const ApplicantPaymentPage: React.FC = () => {
                   tb
                 </div>
                 <div>
-                  <h4 className="font-display text-2xl font-black uppercase text-ink-primary leading-tight">
+                  <h4 className="font-display text-2xl font-black text-ink-primary leading-tight">
                     Telebirr Express Pay
                   </h4>
                   <span className="text-xs font-sans text-ink-secondary block">
@@ -384,7 +384,7 @@ export const ApplicantPaymentPage: React.FC = () => {
               <div className="p-5 border-2 border-role-applicant bg-role-applicantLight space-y-3 text-xs font-sans text-ink-primary">
                 <div className="flex items-center gap-2 font-bold text-ink-primary">
                   <Clock className="w-5 h-5 text-role-applicant animate-spin" weight="bold" />
-                  <span className="text-sm font-display font-black uppercase">We are checking your payment</span>
+                  <span className="text-sm font-display font-black">We are checking your payment</span>
                 </div>
                 <p className="leading-relaxed">
                   This usually takes less than a minute. Your transaction (Ref: <strong className="font-mono">{payment?.telebirrReference}</strong>) has been queued for verification. If network delay occurs, Finance will resolve it manually.
@@ -406,7 +406,7 @@ export const ApplicantPaymentPage: React.FC = () => {
               <div className="p-5 border-2 border-role-teamlead bg-role-teamleadLight space-y-3 text-xs font-sans text-ink-primary">
                 <div className="flex items-center gap-2 font-bold text-role-teamlead">
                   <WarningCircle className="w-5 h-5 shrink-0" weight="bold" />
-                  <span className="text-sm font-display font-black uppercase">Payment Could Not Be Completed</span>
+                  <span className="text-sm font-display font-black">Payment Could Not Be Completed</span>
                 </div>
                 <p className="leading-relaxed">
                   The payment request timed out or was cancelled on your mobile handset. Please verify that your Telebirr wallet has sufficient funds (ETB 200.00) and try again.
@@ -429,7 +429,7 @@ export const ApplicantPaymentPage: React.FC = () => {
               <div className="p-5 border-2 border-role-teamlead bg-role-teamleadLight space-y-3 text-xs font-sans text-ink-primary">
                 <div className="flex items-center gap-2 font-bold text-role-teamlead">
                   <WarningCircle className="w-5 h-5 shrink-0" weight="bold" />
-                  <span className="text-sm font-display font-black uppercase">Duplicate Payment Flagged</span>
+                  <span className="text-sm font-display font-black">Duplicate Payment Flagged</span>
                 </div>
                 <p className="leading-relaxed">
                   A duplicate payment of ETB 200.00 was detected. The system has confirmed your primary membership activation and automatically routed the secondary transaction to Finance for an immediate refund.
@@ -461,7 +461,7 @@ export const ApplicantPaymentPage: React.FC = () => {
 
                 <div className="p-4 border-2 border-border bg-canvas-subdued flex items-center justify-between gap-4">
                   <div className="space-y-1">
-                    <span className="font-display text-lg font-black uppercase text-ink-primary block leading-none">
+                    <span className="font-display text-lg font-black text-ink-primary block leading-none">
                       Telebirr QR Option
                     </span>
                     <p className="font-sans text-xs text-ink-secondary">
@@ -494,7 +494,7 @@ export const ApplicantPaymentPage: React.FC = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <h4 className="font-display text-3xl font-black uppercase text-ink-primary">
+                  <h4 className="font-display text-3xl font-black text-ink-primary">
                     Authorizing on Your Phone
                   </h4>
                   <p className="font-sans text-xs sm:text-sm text-ink-secondary max-w-sm mx-auto leading-relaxed">
@@ -505,10 +505,10 @@ export const ApplicantPaymentPage: React.FC = () => {
                 {/* Telebirr Edge Case Simulation Control Panel (Section 12.2 & 4.2) */}
                 <div className="p-5 border-2 border-dashed border-ink-primary bg-canvas-subdued text-left space-y-4">
                   <div className="flex items-center justify-between border-b border-border pb-2">
-                    <span className="font-display text-lg font-black uppercase text-ink-primary">
+                    <span className="font-display text-lg font-black text-ink-primary">
                       Demo Telebirr Gateway Controls
                     </span>
-                    <span className="font-mono text-[11px] text-ink-tertiary">
+                    <span className="font-mono text-[13px] text-ink-tertiary">
                       Section 4.2 Edge Cases
                     </span>
                   </div>

@@ -133,10 +133,10 @@ export const VolunteerCheckInPage: React.FC = () => {
         </div>
 
         <div className="space-y-1">
-          <span className="font-sans text-xs font-bold text-role-volunteer uppercase tracking-tight block">
+          <span className="font-sans text-xs font-bold text-role-volunteer tracking-tight block">
             Attendance Logged
           </span>
-          <h2 className="font-display text-3xl font-black uppercase tracking-tight text-ink-primary">
+          <h2 className="font-display text-3xl font-black tracking-tight text-ink-primary">
             Session Completed
           </h2>
           <p className="font-sans text-xs text-ink-secondary">
@@ -165,7 +165,7 @@ export const VolunteerCheckInPage: React.FC = () => {
           </div>
           <div className="flex justify-between border-t border-border pt-2">
             <span className="text-ink-secondary">Review Status:</span>
-            <span className="font-bold text-role-applicant uppercase">Logged • Awaiting Lead Decision</span>
+            <span className="font-bold text-role-applicant">Logged • Awaiting Lead Decision</span>
           </div>
         </div>
 
@@ -195,10 +195,10 @@ export const VolunteerCheckInPage: React.FC = () => {
     return (
       <div className="max-w-lg mx-auto space-y-6">
         <div className="border-b-2 border-border pb-4 text-center">
-          <span className="font-sans text-xs font-bold text-role-volunteer uppercase tracking-tight block">
+          <span className="font-sans text-xs font-bold text-role-volunteer tracking-tight block">
             On-Site Active Session
           </span>
-          <h1 className="font-display text-4xl font-black uppercase tracking-tight text-ink-primary leading-none mt-1">
+          <h1 className="font-display text-4xl font-black tracking-tight text-ink-primary leading-none mt-1">
             Checked In
           </h1>
         </div>
@@ -212,7 +212,7 @@ export const VolunteerCheckInPage: React.FC = () => {
           <div className="flex items-center justify-between border-b-2 border-border pb-3">
             <div className="flex items-center gap-2">
               <span className="w-3 h-3 bg-role-volunteer rounded-full animate-ping" />
-              <span className="font-sans text-xs font-bold text-role-volunteer uppercase tracking-tight">
+              <span className="font-sans text-xs font-bold text-role-volunteer tracking-tight">
                 Active On Duty
               </span>
             </div>
@@ -222,7 +222,7 @@ export const VolunteerCheckInPage: React.FC = () => {
           </div>
 
           <div className="space-y-2">
-            <h3 className="font-display text-2xl font-black uppercase text-ink-primary leading-tight">
+            <h3 className="font-display text-2xl font-black text-ink-primary leading-tight">
               {activeSession.activityTitle}
             </h3>
             <p className="font-sans text-xs text-ink-secondary">
@@ -263,10 +263,10 @@ export const VolunteerCheckInPage: React.FC = () => {
     <div className="max-w-xl mx-auto space-y-6">
       {/* Header */}
       <div className="border-b-2 border-border pb-5 text-center">
-        <span className="font-sans text-xs font-bold text-role-volunteer uppercase tracking-tight block">
+        <span className="font-sans text-xs font-bold text-role-volunteer tracking-tight block">
           On-Site Attendance
         </span>
-        <h1 className="font-display text-4xl sm:text-5xl font-black uppercase tracking-tight text-ink-primary leading-none mt-1">
+        <h1 className="font-display text-4xl sm:text-5xl font-black tracking-tight text-ink-primary leading-none mt-1">
           Activity Check-In
         </h1>
         <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1 max-w-md mx-auto">
@@ -281,7 +281,7 @@ export const VolunteerCheckInPage: React.FC = () => {
             setMethod('code');
             setErrorMessage('');
           }}
-          className={`flex-1 py-2 font-sans text-xs font-bold uppercase flex items-center justify-center gap-1.5 cursor-pointer transition-colors ${
+          className={`flex-1 py-2 font-sans text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer transition-colors ${
             method === 'code'
               ? 'bg-ink-primary text-white'
               : 'text-ink-secondary hover:text-ink-primary'
@@ -295,7 +295,7 @@ export const VolunteerCheckInPage: React.FC = () => {
             setMethod('qr');
             setErrorMessage('');
           }}
-          className={`flex-1 py-2 font-sans text-xs font-bold uppercase flex items-center justify-center gap-1.5 cursor-pointer transition-colors ${
+          className={`flex-1 py-2 font-sans text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer transition-colors ${
             method === 'qr'
               ? 'bg-ink-primary text-white'
               : 'text-ink-secondary hover:text-ink-primary'
@@ -350,7 +350,7 @@ export const VolunteerCheckInPage: React.FC = () => {
             className="space-y-5"
           >
             <div className="space-y-1.5">
-              <label className="block text-xs font-bold uppercase text-ink-primary">
+              <label className="block text-xs font-bold text-ink-primary">
                 4-Digit Session Code
               </label>
               <input
@@ -362,7 +362,7 @@ export const VolunteerCheckInPage: React.FC = () => {
                 className="w-full text-center font-mono text-3xl font-black tracking-[0.5em] p-3 border-2 border-ink-primary bg-canvas text-ink-primary focus:outline-none focus:ring-2 focus:ring-role-volunteer"
                 required
               />
-              <span className="font-sans text-[11px] text-ink-secondary block text-center">
+              <span className="font-sans text-[13px] text-ink-secondary block text-center">
                 Ask your Team Lead for the active 4-digit code.
               </span>
             </div>

@@ -12,7 +12,7 @@ const ACTIVITY_TYPES: { value: ActivityType; label: string }[] = [
   { value: 'event', label: 'Event Marshalling / Coordination' },
   { value: 'project', label: 'Community Special Project' },
   { value: 'shift', label: 'Logistics / Clinic Shift' },
-  { value: 'training', label: 'Qualification Training' },
+  { value: 'training', label: 'Orientation & Training' },
 ];
 
 const AREA_OPTIONS = [
@@ -83,7 +83,7 @@ export const TeamLeadCreateActivityPage: React.FC = () => {
     <div className="max-w-3xl mx-auto space-y-6">
       <button
         onClick={() => navigate('/team-lead/activities')}
-        className="inline-flex items-center gap-1.5 font-sans text-xs font-bold uppercase text-ink-secondary hover:text-ink-primary transition-colors cursor-pointer"
+        className="inline-flex items-center gap-1.5 font-sans text-xs font-bold text-ink-secondary hover:text-ink-primary transition-colors cursor-pointer"
       >
         <ArrowLeft className="w-4 h-4" weight="bold" />
         <span>Back to my activities</span>
@@ -91,10 +91,10 @@ export const TeamLeadCreateActivityPage: React.FC = () => {
 
       {/* Header */}
       <div className="border-b-2 border-border pb-5">
-        <span className="font-sans text-xs font-bold text-role-teamlead uppercase tracking-tight block">
+        <span className="font-sans text-xs font-bold text-role-teamlead tracking-tight block">
           Assignment Publisher
         </span>
-        <h1 className="font-display text-4xl sm:text-5xl font-black uppercase tracking-tight text-ink-primary leading-none mt-1">
+        <h1 className="font-display text-4xl sm:text-5xl font-black tracking-tight text-ink-primary leading-none mt-1">
           Create Volunteer Activity
         </h1>
         <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
@@ -190,7 +190,7 @@ export const TeamLeadCreateActivityPage: React.FC = () => {
           </div>
 
           <div className="space-y-1.5 text-left">
-            <label className="block text-xs font-bold uppercase text-ink-primary">
+            <label className="block text-xs font-bold text-ink-primary">
               Activity Description & Objective
             </label>
             <textarea

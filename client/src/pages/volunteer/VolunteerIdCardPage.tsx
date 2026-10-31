@@ -27,10 +27,10 @@ export const VolunteerIdCardPage: React.FC = () => {
     <div className="max-w-xl mx-auto space-y-8">
       {/* Header */}
       <div className="border-b-2 border-border pb-5 text-center">
-        <span className="font-sans text-xs font-bold text-role-volunteer uppercase tracking-tight block">
+        <span className="font-sans text-xs font-bold text-role-volunteer tracking-tight block">
           Digital Credential
         </span>
-        <h1 className="font-display text-4xl sm:text-5xl font-black uppercase tracking-tight text-ink-primary leading-none mt-1">
+        <h1 className="font-display text-4xl sm:text-5xl font-black tracking-tight text-ink-primary leading-none mt-1">
           Volunteer ID Pass
         </h1>
         <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">

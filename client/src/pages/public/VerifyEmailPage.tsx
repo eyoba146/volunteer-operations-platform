@@ -74,7 +74,7 @@ export const VerifyEmailPage: React.FC = () => {
     <div className="max-w-lg mx-auto px-4 sm:px-6 py-12 md:py-16 space-y-8">
       {/* Header */}
       <div className="space-y-2 border-b-2 border-ink-primary pb-6 text-center">
-        <h1 className="font-display font-black text-5xl sm:text-6xl uppercase tracking-tight text-ink-primary leading-none">
+        <h1 className="font-display font-black text-5xl sm:text-6xl tracking-tight text-ink-primary leading-none">
           Confirm Your Email
         </h1>
         <p className="font-sans text-sm sm:text-base text-ink-secondary">
@@ -97,7 +97,7 @@ export const VerifyEmailPage: React.FC = () => {
           )}
 
           <div className="space-y-2 text-center">
-            <label className="block font-sans text-xs font-bold uppercase tracking-tight text-ink-primary">
+            <label className="block font-sans text-xs font-bold tracking-tight text-ink-primary">
               6-Digit Verification Code
             </label>
             <input

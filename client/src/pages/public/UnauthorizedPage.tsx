@@ -36,7 +36,7 @@ export const UnauthorizedPage: React.FC = () => {
         </div>
 
         <div className="space-y-2">
-          <span className="font-mono text-xs uppercase tracking-wider text-ink-tertiary block">
+          <span className="font-mono text-xs tracking-tight text-ink-tertiary block">
             Access Notice
           </span>
           <h1 className="font-serif text-2xl font-bold text-ink-primary">

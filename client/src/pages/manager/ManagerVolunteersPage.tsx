@@ -77,7 +77,7 @@ export const ManagerVolunteersPage: React.FC = () => {
       if (item.profile.rank === 'senior_member' || item.profile.rank === 'team_lead' || item.profile.rank === 'manager') {
         milestones.push({
           rank: 'senior_member',
-          rankTitle: 'Senior Member Elevation',
+          rankTitle: 'Senior Member Promotion',
           achievedAt: '2026-04-10',
           hoursRecorded: 64,
           approvedBy: 'Marta Girma',
@@ -115,7 +115,7 @@ export const ManagerVolunteersPage: React.FC = () => {
             <span className="font-sans font-bold text-ink-primary block">
               {profile.fullName}
             </span>
-            <span className="font-mono text-[11px] text-ink-tertiary block">
+            <span className="font-mono text-[13px] text-ink-tertiary block">
               {profile.volunteerNumber || 'VTS-2026'}
             </span>
           </div>
@@ -171,10 +171,10 @@ export const ManagerVolunteersPage: React.FC = () => {
       >
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b-2 border-ink-primary pb-5">
           <div className="space-y-1">
-            <span className="font-sans text-xs font-bold text-role-manager uppercase tracking-tight block">
+            <span className="font-sans text-xs font-bold text-role-manager tracking-tight block">
               Volunteer Operations Directory
             </span>
-            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-ink-primary leading-none">
+            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl tracking-tight text-ink-primary leading-none">
               Volunteer Directory & Records
             </h1>
             <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
@@ -183,7 +183,7 @@ export const ManagerVolunteersPage: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="font-mono text-xs font-bold text-white bg-role-manager px-3 py-1.5 shadow-sm uppercase">
+            <span className="font-mono text-xs font-bold text-white bg-role-manager px-3 py-1.5 shadow-sm">
               Total Volunteers: {volunteers.length}
             </span>
           </div>
@@ -253,7 +253,7 @@ export const ManagerVolunteersPage: React.FC = () => {
                 showRankBadge
               />
               <div className="space-y-1">
-                <h3 className="font-display text-2xl font-black uppercase tracking-tight text-ink-primary">
+                <h3 className="font-display text-2xl font-black tracking-tight text-ink-primary">
                   {inspecting.profile.fullName}
                 </h3>
                 <div className="flex items-center gap-2">
@@ -268,25 +268,25 @@ export const ManagerVolunteersPage: React.FC = () => {
             {/* Performance Metric Strip */}
             <div className="grid grid-cols-3 gap-2">
               <div className="p-3 border-2 border-border bg-canvas-subdued text-center space-y-0.5">
-                <span className="text-[10px] text-ink-tertiary uppercase block">Approved Hours</span>
+                <span className="text-[13px] text-ink-tertiary block">Approved Hours</span>
                 <span className="font-display text-2xl font-black text-ink-primary block leading-none">
                   {volunteerStats.hours}
                 </span>
-                <span className="text-[10px] text-ink-secondary">hrs verified</span>
+                <span className="text-[13px] text-ink-secondary">hrs verified</span>
               </div>
               <div className="p-3 border-2 border-border bg-canvas-subdued text-center space-y-0.5">
-                <span className="text-[10px] text-ink-tertiary uppercase block">Activities Done</span>
+                <span className="text-[13px] text-ink-tertiary block">Activities Done</span>
                 <span className="font-display text-2xl font-black text-ink-primary block leading-none">
                   {volunteerStats.activities}
                 </span>
-                <span className="text-[10px] text-ink-secondary">rosters</span>
+                <span className="text-[13px] text-ink-secondary">rosters</span>
               </div>
               <div className="p-3 border-2 border-border bg-canvas-subdued text-center space-y-0.5">
-                <span className="text-[10px] text-ink-tertiary uppercase block">Rating Score</span>
+                <span className="text-[13px] text-ink-tertiary block">Rating Score</span>
                 <span className="font-display text-2xl font-black text-[#784E0B] block leading-none">
                   {volunteerStats.rating}
                 </span>
-                <span className="text-[10px] text-ink-secondary">out of 5.0</span>
+                <span className="text-[13px] text-ink-secondary">out of 5.0</span>
               </div>
             </div>
 
@@ -294,7 +294,7 @@ export const ManagerVolunteersPage: React.FC = () => {
             <div className="p-4 border-2 border-ink-primary bg-white shadow-ticket space-y-3">
               <div className="flex items-center gap-2 border-b-2 border-border pb-2">
                 <ChartLineUp className="w-4 h-4 text-role-manager" weight="bold" />
-                <h4 className="font-display text-lg font-black uppercase tracking-tight text-ink-primary">
+                <h4 className="font-display text-lg font-black tracking-tight text-ink-primary">
                   Promotion & Rank Altitude Trail
                 </h4>
               </div>
@@ -302,14 +302,14 @@ export const ManagerVolunteersPage: React.FC = () => {
               <div className="relative pl-6 space-y-4 before:content-[''] before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-ink-primary">
                 {rankHistory.map((m, idx) => (
                   <div key={idx} className="relative space-y-1">
-                    {/* Elevation Node */}
+                    {/* Milestone Node */}
                     <div className="absolute -left-6 top-1 w-3 h-3 rounded-full bg-role-manager border-2 border-white ring-2 ring-ink-primary" />
 
                     <div className="flex items-baseline justify-between gap-2">
-                      <span className="font-bold text-ink-primary text-xs uppercase tracking-tight font-display text-sm">
+                      <span className="font-bold text-ink-primary text-xs tracking-tight font-display text-sm">
                         {m.rankTitle || m.rank.replace('_', ' ')}
                       </span>
-                      <span className="font-mono text-[10px] text-ink-tertiary">
+                      <span className="font-mono text-[13px] text-ink-tertiary">
                         {m.achievedAt}
                       </span>
                     </div>
@@ -318,7 +318,7 @@ export const ManagerVolunteersPage: React.FC = () => {
                       {m.note || 'Milestone verified and recorded.'}
                     </p>
 
-                    <div className="flex flex-wrap items-center gap-2 font-mono text-[10px] text-ink-tertiary pt-0.5">
+                    <div className="flex flex-wrap items-center gap-2 font-mono text-[13px] text-ink-tertiary pt-0.5">
                       {m.hoursRecorded !== undefined && (
                         <span>Hours: <strong>{m.hoursRecorded} hrs</strong></span>
                       )}
@@ -336,7 +336,7 @@ export const ManagerVolunteersPage: React.FC = () => {
 
             {/* Contact Information */}
             <div className="p-4 border-2 border-border bg-canvas-subdued space-y-3">
-              <span className="font-bold text-xs uppercase tracking-tight text-ink-primary block">
+              <span className="font-bold text-xs tracking-tight text-ink-primary block">
                 Contact Details & Area
               </span>
               <div className="grid grid-cols-2 gap-3">
@@ -350,14 +350,14 @@ export const ManagerVolunteersPage: React.FC = () => {
                 </div>
               </div>
               <div>
-                <span className="text-[10px] text-ink-tertiary uppercase block">Registered Hub</span>
+                <span className="text-[13px] text-ink-tertiary block">Registered Hub</span>
                 <span className="text-xs font-medium text-ink-primary">{inspecting.profile.area}</span>
               </div>
             </div>
 
             {/* Bio & Background */}
             <div className="p-4 border-2 border-border bg-canvas-subdued space-y-1.5">
-              <span className="font-bold text-xs uppercase tracking-tight text-ink-primary block">
+              <span className="font-bold text-xs tracking-tight text-ink-primary block">
                 Bio & Motivation
               </span>
               <p className="text-xs text-ink-secondary leading-relaxed">
@@ -367,12 +367,12 @@ export const ManagerVolunteersPage: React.FC = () => {
 
             {/* Skills Catalog */}
             <div className="p-4 border-2 border-border bg-canvas-subdued space-y-2">
-              <span className="font-bold text-xs uppercase tracking-tight text-ink-primary block">
+              <span className="font-bold text-xs tracking-tight text-ink-primary block">
                 Verified Skills
               </span>
               <div className="flex flex-wrap gap-1.5">
                 {inspecting.profile.skills.map((s) => (
-                  <span key={s} className="px-2 py-0.5 bg-white border border-border font-mono text-[11px] font-medium text-ink-primary">
+                  <span key={s} className="px-2 py-0.5 bg-white border border-border font-mono text-[13px] font-medium text-ink-primary">
                     {s}
                   </span>
                 ))}
@@ -382,7 +382,7 @@ export const ManagerVolunteersPage: React.FC = () => {
             {/* Emergency Contact */}
             {inspecting.profile.emergencyContact && (
               <div className="p-4 border-2 border-border bg-canvas-subdued space-y-1">
-                <span className="font-bold text-xs uppercase tracking-tight text-ink-primary block">
+                <span className="font-bold text-xs tracking-tight text-ink-primary block">
                   Emergency Contact
                 </span>
                 <p className="text-ink-secondary text-xs">

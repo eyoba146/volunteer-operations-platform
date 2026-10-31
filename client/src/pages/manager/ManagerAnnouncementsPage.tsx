@@ -109,10 +109,10 @@ export const ManagerAnnouncementsPage: React.FC = () => {
       >
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b-2 border-ink-primary pb-5">
           <div className="space-y-1">
-            <span className="font-sans text-xs font-bold text-role-manager uppercase tracking-tight block">
+            <span className="font-sans text-xs font-bold text-role-manager tracking-tight block">
               Program Broadcast Dispatch
             </span>
-            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-ink-primary leading-none">
+            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl tracking-tight text-ink-primary leading-none">
               Notices & Broadcasts
             </h1>
             <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
@@ -131,7 +131,7 @@ export const ManagerAnnouncementsPage: React.FC = () => {
           }}
         >
           <div className="border-b-2 border-border pb-2">
-            <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
+            <h3 className="font-display text-2xl font-black text-ink-primary">
               Compose Notice
             </h3>
           </div>
@@ -139,7 +139,7 @@ export const ManagerAnnouncementsPage: React.FC = () => {
           <form onSubmit={handleSubmit} className="space-y-4 text-left">
             {/* Audience Type Selection */}
             <div className="space-y-1.5">
-              <label className="block text-xs font-bold uppercase tracking-tight text-ink-primary">
+              <label className="block text-xs font-bold tracking-tight text-ink-primary">
                 Target Audience
               </label>
               <Select
@@ -154,10 +154,10 @@ export const ManagerAnnouncementsPage: React.FC = () => {
               />
             </div>
 
-            {/* Dynamic Audience Sub-Selector */}
+            {/* Audience Sub-Selector */}
             {audienceType === 'rank' && (
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold uppercase tracking-tight text-ink-primary">
+                <label className="block text-xs font-bold tracking-tight text-ink-primary">
                   Select Rank
                 </label>
                 <Select
@@ -174,7 +174,7 @@ export const ManagerAnnouncementsPage: React.FC = () => {
 
             {audienceType === 'area' && (
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold uppercase tracking-tight text-ink-primary">
+                <label className="block text-xs font-bold tracking-tight text-ink-primary">
                   Select Area
                 </label>
                 <Select
@@ -193,7 +193,7 @@ export const ManagerAnnouncementsPage: React.FC = () => {
 
             {audienceType === 'activity' && (
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold uppercase tracking-tight text-ink-primary">
+                <label className="block text-xs font-bold tracking-tight text-ink-primary">
                   Select Activity Roster
                 </label>
                 <Select
@@ -216,7 +216,7 @@ export const ManagerAnnouncementsPage: React.FC = () => {
             />
 
             <div className="space-y-1.5">
-              <label className="block text-xs font-bold uppercase tracking-tight text-ink-primary">
+              <label className="block text-xs font-bold tracking-tight text-ink-primary">
                 Notice Content
               </label>
               <textarea
@@ -257,7 +257,7 @@ export const ManagerAnnouncementsPage: React.FC = () => {
         {/* Announcements Stream */}
         <div className="lg:col-span-3 space-y-4">
           <div className="flex items-center justify-between border-b-2 border-ink-primary pb-2">
-            <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
+            <h3 className="font-display text-2xl font-black text-ink-primary">
               Active Broadcasts ({announcements.length})
             </h3>
           </div>
@@ -282,20 +282,20 @@ export const ManagerAnnouncementsPage: React.FC = () => {
                     <div className="space-y-0.5">
                       <div className="flex items-center gap-2">
                         {ann.pinned && (
-                          <span className="font-mono text-[10px] font-bold px-1.5 py-0.5 bg-amber-400 text-black uppercase flex items-center gap-1">
+                          <span className="font-mono text-[13px] font-bold px-1.5 py-0.5 bg-amber-400 text-black flex items-center gap-1">
                             <PushPin className="w-3 h-3" weight="fill" /> PINNED
                           </span>
                         )}
-                        <span className="font-mono text-[10px] font-bold px-2 py-0.5 bg-canvas-subdued border border-border text-ink-primary uppercase">
+                        <span className="font-mono text-[13px] font-bold px-2 py-0.5 bg-canvas-subdued border border-border text-ink-primary">
                           {getAudienceLabel(ann.audience)}
                         </span>
                       </div>
-                      <h4 className="font-display text-xl font-black uppercase text-ink-primary mt-1">
+                      <h4 className="font-display text-xl font-black text-ink-primary mt-1">
                         {ann.title}
                       </h4>
                     </div>
 
-                    <span className="font-mono text-[10px] text-ink-tertiary whitespace-nowrap">
+                    <span className="font-mono text-[13px] text-ink-tertiary whitespace-nowrap">
                       {new Date(ann.createdAt).toLocaleDateString()}
                     </span>
                   </div>
@@ -304,7 +304,7 @@ export const ManagerAnnouncementsPage: React.FC = () => {
                     {ann.body}
                   </p>
 
-                  <div className="flex items-center justify-between pt-2 border-t border-border/60 text-[11px] font-mono text-ink-tertiary">
+                  <div className="flex items-center justify-between pt-2 border-t border-border/60 text-[13px] font-mono text-ink-tertiary">
                     <span>Broadcast by: <strong>{ann.authorName}</strong> ({ann.authorRole})</span>
                   </div>
                 </div>

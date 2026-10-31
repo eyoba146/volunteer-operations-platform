@@ -86,10 +86,10 @@ export const TeamLeadRecommendPromotionPage: React.FC = () => {
     <div className="max-w-2xl mx-auto space-y-6">
       {/* Header */}
       <div className="border-b-2 border-border pb-5">
-        <span className="font-sans text-xs font-bold text-role-teamlead uppercase tracking-tight block">
+        <span className="font-sans text-xs font-bold text-role-teamlead tracking-tight block">
           Advancement Nominations
         </span>
-        <h1 className="font-display text-4xl sm:text-5xl font-black uppercase tracking-tight text-ink-primary leading-none mt-1">
+        <h1 className="font-display text-4xl sm:text-5xl font-black tracking-tight text-ink-primary leading-none mt-1">
           Recommend Volunteer for Promotion
         </h1>
         <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
@@ -147,7 +147,7 @@ export const TeamLeadRecommendPromotionPage: React.FC = () => {
           />
 
           <div className="space-y-1.5 text-left">
-            <label className="block text-xs font-bold uppercase text-ink-primary">
+            <label className="block text-xs font-bold text-ink-primary">
               Justification & Performance Evidence
             </label>
             <textarea

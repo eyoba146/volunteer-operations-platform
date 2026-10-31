@@ -16,14 +16,15 @@ export default {
         },
         ink: {
           primary:   '#111111', // High-contrast deep carbon
-          secondary: '#374151', // Clean neutral slate
-          tertiary:  '#6B7280', // Muted metadata
+          secondary: '#374151', // Clean neutral slate (meets 4.5:1 on light backgrounds)
+          tertiary:  '#4B5563', // Muted metadata (WCAG AA compliant >= 4.5:1 on white)
           inverted:  '#FFFFFF',
         },
         border: {
-          DEFAULT: '#111111', // Structural divider - 2px solid near-black
-          subdued: '#D1D5DB', // Soft secondary separator
-          strong:  '#111111', // Heavy accent
+          DEFAULT: '#D5DAE1', // Soft slate border for standard cards and panels
+          subdued: '#E2E8F0', // Soft secondary separator
+          strong:  '#111111', // Near-black for signatures and primary outlines
+          input:   '#475569', // 1.5px dark slate input border
         },
         // Role Dominant Fields
         role: {
@@ -36,7 +37,7 @@ export default {
           manager:         '#0E6266', // Deep Teal
           managerLight:    '#E5F2F2',
           finance:         '#111315', // Deep Ink
-          financeAccent:   '#B4F000', // Electric Lime
+          financeAccent:   '#784E0B', // High-contrast amber/gold for light surfaces
           admin:           '#202328', // Charcoal
           adminLight:      '#E9EBEF',
         },
@@ -53,22 +54,23 @@ export default {
       },
       borderRadius: {
         none: '0px',
-        sm: '2px',
-        DEFAULT: '4px',
-        md: '6px',
+        sm: '4px',
+        DEFAULT: '8px',
+        md: '8px',
+        lg: '10px',
+        card: '10px',
+        input: '8px',
+        button: '8px',
         'ticket': '4px',
         'ticket-lg': '6px',
       },
       boxShadow: {
         'none': '0 0 0 transparent',
-        'sm': '2px 2px 0 #111111',
-        'hard': '4px 4px 0 #111111',
-        'hard-sm': '2px 2px 0 #111111',
-        'hard-lg': '6px 6px 0 #111111',
-        'hard-xl': '8px 8px 0 #111111',
+        'sm': '1px 1px 0 #111111',
         'ticket': '4px 4px 0 #111111',
-        'float': '6px 6px 0 #111111',
-        'dock': '4px 4px 0 #000000',
+        'pass': '4px 4px 0 #111111',
+        'receipt': '4px 4px 0 #111111',
+        'id-card': '4px 4px 0 #111111',
         'modal': '8px 8px 0 #111111',
       },
     },

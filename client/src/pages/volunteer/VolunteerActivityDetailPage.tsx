@@ -122,7 +122,7 @@ export const VolunteerActivityDetailPage: React.FC = () => {
       {/* Back button */}
       <button
         onClick={() => navigate('/volunteer/activities')}
-        className="inline-flex items-center gap-1.5 font-sans text-xs font-bold uppercase text-ink-secondary hover:text-ink-primary cursor-pointer transition-colors"
+        className="inline-flex items-center gap-1.5 font-sans text-xs font-bold text-ink-secondary hover:text-ink-primary cursor-pointer transition-colors"
       >
         <ArrowLeft className="w-4 h-4" weight="bold" />
         <span>Back to all activities</span>
@@ -138,7 +138,7 @@ export const VolunteerActivityDetailPage: React.FC = () => {
         {/* Header Section */}
         <div className="space-y-4 border-b-2 border-border pb-6">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="font-mono text-xs font-bold uppercase px-2.5 py-0.5 bg-canvas border border-ink-primary text-ink-primary">
+            <span className="font-mono text-xs font-bold px-2.5 py-0.5 bg-canvas border border-ink-primary text-ink-primary">
               {activity.type.replace('_', ' ')}
             </span>
             <StatusMark status={activity.status} size="sm" />
@@ -149,20 +149,20 @@ export const VolunteerActivityDetailPage: React.FC = () => {
               </span>
             )}
             {isJoined && (
-              <span className="font-mono text-xs font-bold uppercase px-2.5 py-0.5 bg-role-volunteer text-white flex items-center gap-1">
+              <span className="font-mono text-xs font-bold px-2.5 py-0.5 bg-role-volunteer text-white flex items-center gap-1">
                 <CheckCircle className="w-3.5 h-3.5" weight="fill" />
                 <span>Enrolled</span>
               </span>
             )}
             {isWaiting && (
-              <span className="font-mono text-xs font-bold uppercase px-2.5 py-0.5 bg-role-applicant text-ink-primary flex items-center gap-1">
+              <span className="font-mono text-xs font-bold px-2.5 py-0.5 bg-role-applicant text-ink-primary flex items-center gap-1">
                 <Hourglass className="w-3.5 h-3.5" weight="fill" />
                 <span>On Waiting List</span>
               </span>
             )}
           </div>
 
-          <h1 className="font-display text-4xl sm:text-5xl font-black uppercase tracking-tight text-ink-primary leading-tight">
+          <h1 className="font-display text-4xl sm:text-5xl font-black tracking-tight text-ink-primary leading-tight">
             {activity.title}
           </h1>
 
@@ -174,7 +174,7 @@ export const VolunteerActivityDetailPage: React.FC = () => {
         {/* Operational Attributes Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 p-4 border-2 border-ink-primary bg-canvas font-sans text-xs">
           <div className="space-y-1">
-            <span className="font-sans text-[11px] font-bold text-ink-tertiary uppercase block">
+            <span className="font-sans text-[13px] font-bold text-ink-tertiary block">
               Schedule & Timing
             </span>
             <div className="flex items-center gap-1.5 font-bold text-ink-primary">
@@ -187,52 +187,52 @@ export const VolunteerActivityDetailPage: React.FC = () => {
                 })}
               </span>
             </div>
-            <span className="font-mono text-ink-secondary text-[11px] block">
+            <span className="font-mono text-ink-secondary text-[13px] block">
               {new Date(activity.startsAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} –{' '}
               {new Date(activity.endsAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </span>
           </div>
 
           <div className="space-y-1">
-            <span className="font-sans text-[11px] font-bold text-ink-tertiary uppercase block">
+            <span className="font-sans text-[13px] font-bold text-ink-tertiary block">
               Venue Location
             </span>
             <div className="flex items-center gap-1.5 font-bold text-ink-primary">
               <MapPin className="w-4 h-4 text-role-volunteer" weight="bold" />
               <span>{activity.place}</span>
             </div>
-            <span className="font-mono text-ink-secondary text-[11px] block">{activity.area}</span>
+            <span className="font-mono text-ink-secondary text-[13px] block">{activity.area}</span>
           </div>
 
           <div className="space-y-1">
-            <span className="font-sans text-[11px] font-bold text-ink-tertiary uppercase block">
+            <span className="font-sans text-[13px] font-bold text-ink-tertiary block">
               Roster Capacity
             </span>
             <div className="flex items-center gap-1.5 font-bold text-ink-primary">
               <UsersThree className="w-4 h-4 text-role-volunteer" weight="bold" />
               <span>{activeParticipants.length} / {activity.capacity} spots</span>
             </div>
-            <span className="font-mono text-ink-secondary text-[11px] block">
+            <span className="font-mono text-ink-secondary text-[13px] block">
               {spotsLeft > 0 ? `${spotsLeft} spots available` : 'Roster is full'}
             </span>
           </div>
 
           <div className="space-y-1">
-            <span className="font-sans text-[11px] font-bold text-ink-tertiary uppercase block">
+            <span className="font-sans text-[13px] font-bold text-ink-tertiary block">
               Lead Coordinator
             </span>
             <div className="flex items-center gap-1.5 font-bold text-ink-primary">
               <UserCircle className="w-4 h-4 text-role-teamlead" weight="bold" />
               <span>{activity.leadName || 'Assigned Lead'}</span>
             </div>
-            <span className="font-mono text-ink-secondary text-[11px] block">Field Team Lead</span>
+            <span className="font-mono text-ink-secondary text-[13px] block">Field Team Lead</span>
           </div>
         </div>
 
         {/* Required Skills & Equipment */}
         {activity.skills && activity.skills.length > 0 && (
           <div className="space-y-2">
-            <span className="font-sans text-xs font-bold text-ink-tertiary uppercase block">
+            <span className="font-sans text-xs font-bold text-ink-tertiary block">
               Recommended Skills & Capabilities
             </span>
             <div className="flex flex-wrap gap-2">

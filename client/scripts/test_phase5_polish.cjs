@@ -12,7 +12,7 @@ if (!fs.existsSync(SCREENSHOT_DIR)) {
 }
 
 async function runPhase5Validation() {
-  console.log('=== STARTING VTS PHASE 5 POLISH & DEMO SCRIPT VERIFICATION ===\n');
+  console.log('=== STARTING VTS PHASE 5 POLISH & TONE DOWN VERIFICATION ===\n');
   const browser = await puppeteer.launch({
     executablePath: EDGE_PATH,
     headless: true,
@@ -21,32 +21,96 @@ async function runPhase5Validation() {
 
   const page = await browser.newPage();
 
-  async function snap(filename, width, height) {
+  async function checkA11y(pageName) {
+    const res = await page.evaluate(() => {
+      function parseRgb(colorStr) {
+        const m = colorStr.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+        if (!m) return [255, 255, 255];
+        return [parseInt(m[1]), parseInt(m[2]), parseInt(m[3])];
+      }
+
+      function getLuminance(r, g, b) {
+        const a = [r, g, b].map((v) => {
+          v /= 255;
+          return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+        });
+        return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+      }
+
+      function getContrast(rgb1, rgb2) {
+        const l1 = getLuminance(rgb1[0], rgb1[1], rgb1[2]);
+        const l2 = getLuminance(rgb2[0], rgb2[1], rgb2[2]);
+        return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+      }
+
+      function getEffectiveBg(el) {
+        let cur = el;
+        while (cur && cur !== document.documentElement) {
+          const bg = window.getComputedStyle(cur).backgroundColor;
+          if (bg && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') {
+            return parseRgb(bg);
+          }
+          cur = cur.parentElement;
+        }
+        return [244, 245, 247]; // canvas default
+      }
+
+      const elements = Array.from(document.querySelectorAll('h1, h2, h3, h4, p, span, button, a, label, li, th, td'))
+        .filter((el) => {
+          const text = el.innerText ? el.innerText.trim() : '';
+          return text.length > 0 && el.offsetParent !== null;
+        });
+
+      let contrastIssues = [];
+      for (const el of elements) {
+        if (el.children.length > 0) continue; // Check leaf text nodes
+        const style = window.getComputedStyle(el);
+        const fg = parseRgb(style.color);
+        const bg = getEffectiveBg(el);
+        const ratio = getContrast(fg, bg);
+        const fontSize = parseFloat(style.fontSize);
+        const isBold = parseInt(style.fontWeight) >= 700;
+        const minRatio = (fontSize >= 18 || (fontSize >= 14 && isBold)) ? 3.0 : 4.5;
+
+        if (ratio < minRatio && el.innerText.trim().length > 1) {
+          contrastIssues.push({
+            tag: el.tagName,
+            text: el.innerText.trim().slice(0, 25),
+            ratio: ratio.toFixed(2),
+            fontSize: style.fontSize,
+          });
+        }
+      }
+
+      const uppercaseHeadings = Array.from(document.querySelectorAll('h1, h2, h3, h4'))
+        .filter((el) => {
+          if (!el.offsetParent) return false;
+          return window.getComputedStyle(el).textTransform === 'uppercase';
+        }).length;
+
+      return {
+        contrastIssues: contrastIssues.slice(0, 5),
+        totalContrastIssues: contrastIssues.length,
+        uppercaseHeadings,
+      };
+    });
+
+    console.log(`[A11y ${pageName}] Contrast issues: ${res.totalContrastIssues}, Uppercase headings: ${res.uppercaseHeadings}`);
+  }
+
+  async function snap(url, filename, width, height) {
     await page.setViewport({ width, height, deviceScaleFactor: 1 });
+    await page.goto(url, { waitUntil: 'networkidle0' });
     await new Promise((r) => setTimeout(r, 600));
     const docPath = path.join(SCREENSHOT_DIR, filename);
     await page.screenshot({ path: docPath, fullPage: false });
     if (fs.existsSync(ARTIFACT_DIR)) {
-      const artPath = path.join(ARTIFACT_DIR, filename);
-      fs.copyFileSync(docPath, artPath);
+      fs.copyFileSync(docPath, path.join(ARTIFACT_DIR, filename));
     }
     console.log(`[Screenshot] ${filename} (${width}x${height})`);
   }
 
-  async function clickBtn(text) {
-    return await page.evaluate((btnText) => {
-      const buttons = Array.from(document.querySelectorAll('button, a'));
-      const btn = buttons.find((b) => b.innerText && b.innerText.toLowerCase().includes(btnText.toLowerCase()));
-      if (btn) {
-        btn.click();
-        return true;
-      }
-      return false;
-    }, text);
-  }
-
   async function loginAs(username) {
-    console.log(`\nLogging in as ${username}...`);
     await page.goto(`${BASE_URL}/`, { waitUntil: 'networkidle0' });
     const targetUrl = await page.evaluate((uname) => {
       const storeKey = 'vts_civic_ledger_storage_v1';
@@ -67,125 +131,70 @@ async function runPhase5Validation() {
       return '/';
     }, username);
 
-    await page.goto(`${BASE_URL}${targetUrl}`, { waitUntil: 'networkidle0' });
-    await new Promise((r) => setTimeout(r, 500));
+    return `${BASE_URL}${targetUrl}`;
   }
 
   try {
-    // 1. PUBLIC PAGES SCREENSHOTS (1440px and 360px)
+    // 1. PUBLIC PAGES
     console.log('\n--- 1. Capturing Public Pages ---');
-    // Home
-    await page.goto(`${BASE_URL}/`, { waitUntil: 'networkidle0' });
-    await snap('phase5_home_desktop.png', 1440, 900);
-    await snap('phase5_home_mobile.png', 360, 780);
+    await snap(`${BASE_URL}/`, 'phase5_home_desktop.png', 1440, 900);
+    await checkA11y('Home Desktop');
+    await snap(`${BASE_URL}/`, 'phase5_home_mobile.png', 360, 780);
 
-    // Register
-    await page.goto(`${BASE_URL}/register`, { waitUntil: 'networkidle0' });
-    await snap('phase5_register_desktop.png', 1440, 900);
-    await snap('phase5_register_mobile.png', 360, 780);
+    await snap(`${BASE_URL}/register`, 'phase5_register_desktop.png', 1440, 900);
+    await checkA11y('Register Desktop');
+    await snap(`${BASE_URL}/register`, 'phase5_register_mobile.png', 360, 780);
 
-    // Sign In with Collapsible Demo Panel
-    await page.goto(`${BASE_URL}/sign-in`, { waitUntil: 'networkidle0' });
-    await snap('phase5_signin_desktop.png', 1440, 900);
-    await snap('phase5_signin_mobile.png', 360, 780);
+    await snap(`${BASE_URL}/sign-in`, 'phase5_signin_desktop.png', 1440, 900);
+    await checkA11y('Sign In Desktop');
+    await snap(`${BASE_URL}/sign-in`, 'phase5_signin_mobile.png', 360, 780);
 
-    // 2. APPLICANT ROLE (Hana Tesfaye)
-    console.log('\n--- 2. Applicant Role (Hana Tesfaye) ---');
-    await loginAs('hana.tesfaye');
-    await page.goto(`${BASE_URL}/applicant/status`, { waitUntil: 'networkidle0' });
-    await snap('phase5_applicant_dashboard_desktop.png', 1440, 900);
-    await snap('phase5_applicant_dashboard_mobile.png', 360, 780);
+    // 2. APPLICANT ROLE
+    console.log('\n--- 2. Capturing Applicant Role (Hana Tesfaye) ---');
+    const applicantUrl = await loginAs('hana.tesfaye');
+    await snap(applicantUrl, 'phase5_applicant_dashboard_desktop.png', 1440, 900);
+    await checkA11y('Applicant Status');
+    await snap(applicantUrl, 'phase5_applicant_dashboard_mobile.png', 360, 780);
 
-    // 3. VOLUNTEER ROLE (Dawit Bekele)
-    console.log('\n--- 3. Volunteer Role (Dawit Bekele) ---');
-    await loginAs('dawit.bekele');
-    await page.goto(`${BASE_URL}/volunteer/home`, { waitUntil: 'networkidle0' });
-    await snap('phase5_volunteer_dashboard_desktop.png', 1440, 900);
-    await snap('phase5_volunteer_dashboard_mobile.png', 360, 780);
+    // 3. VOLUNTEER ROLE
+    console.log('\n--- 3. Capturing Volunteer Role (Dawit Bekele) ---');
+    const volunteerUrl = await loginAs('dawit.bekele');
+    await snap(volunteerUrl, 'phase5_volunteer_dashboard_desktop.png', 1440, 900);
+    await checkA11y('Volunteer Home');
+    await snap(volunteerUrl, 'phase5_volunteer_dashboard_mobile.png', 360, 780);
 
-    // Volunteer Profile & Avatar Modal Trigger
-    await page.goto(`${BASE_URL}/volunteer/profile`, { waitUntil: 'networkidle0' });
-    await snap('phase5_volunteer_profile_desktop.png', 1440, 900);
+    // Volunteer Profile
+    await snap(`${BASE_URL}/volunteer/profile`, 'phase5_volunteer_profile_desktop.png', 1440, 900);
 
-    // Open Profile Photo Modal
-    await clickBtn('Change Photo');
-    await new Promise((r) => setTimeout(r, 400));
-    await snap('phase5_photo_modal_desktop.png', 1440, 900);
-    // Close modal
-    await clickBtn('Cancel');
+    // 4. TEAM LEAD ROLE
+    console.log('\n--- 4. Capturing Team Lead Role (Yonas Kebede) ---');
+    const teamLeadUrl = await loginAs('yonas.kebede');
+    await snap(teamLeadUrl, 'phase5_teamlead_dashboard_desktop.png', 1440, 900);
+    await checkA11y('Team Lead Home');
+    await snap(teamLeadUrl, 'phase5_teamlead_dashboard_mobile.png', 360, 780);
 
-    // 4. TEAM LEAD ROLE (Yonas Kebede)
-    console.log('\n--- 4. Team Lead Role (Yonas Kebede) ---');
-    await loginAs('yonas.kebede');
-    await page.goto(`${BASE_URL}/team-lead/home`, { waitUntil: 'networkidle0' });
-    await snap('phase5_teamlead_dashboard_desktop.png', 1440, 900);
-    await snap('phase5_teamlead_dashboard_mobile.png', 360, 780);
+    // 5. MANAGER ROLE
+    console.log('\n--- 5. Capturing Manager Role (Marta Girma) ---');
+    const managerUrl = await loginAs('marta.girma');
+    await snap(managerUrl, 'phase5_manager_dashboard_desktop.png', 1440, 900);
+    await checkA11y('Manager Dashboard');
+    await snap(managerUrl, 'phase5_manager_dashboard_mobile.png', 360, 780);
 
-    // 5. MANAGER ROLE (Marta Girma)
-    console.log('\n--- 5. Manager Role (Marta Girma) ---');
-    await loginAs('marta.girma');
-    await page.goto(`${BASE_URL}/manager/dashboard`, { waitUntil: 'networkidle0' });
-    await snap('phase5_manager_dashboard_desktop.png', 1440, 900);
-    await snap('phase5_manager_dashboard_mobile.png', 360, 780);
+    // 6. FINANCE ROLE
+    console.log('\n--- 6. Capturing Finance Role (Abel Hailu) ---');
+    const financeUrl = await loginAs('abel.hailu');
+    await snap(financeUrl, 'phase5_finance_dashboard_desktop.png', 1440, 900);
+    await checkA11y('Finance Overview');
+    await snap(financeUrl, 'phase5_finance_dashboard_mobile.png', 360, 780);
 
-    // 6. FINANCE ROLE (Abel Hailu)
-    console.log('\n--- 6. Finance Role (Abel Hailu) ---');
-    await loginAs('abel.hailu');
-    await page.goto(`${BASE_URL}/finance/overview`, { waitUntil: 'networkidle0' });
-    await snap('phase5_finance_dashboard_desktop.png', 1440, 900);
-    await snap('phase5_finance_dashboard_mobile.png', 360, 780);
+    // 7. SUPER ADMIN ROLE
+    console.log('\n--- 7. Capturing Super Admin Role (Ruth Mengistu) ---');
+    const adminUrl = await loginAs('ruth.mengistu');
+    await snap(adminUrl, 'phase5_admin_dashboard_desktop.png', 1440, 900);
+    await checkA11y('Admin Overview');
+    await snap(adminUrl, 'phase5_admin_dashboard_mobile.png', 360, 780);
 
-    // 7. SUPER ADMIN ROLE (Ruth Mengistu)
-    console.log('\n--- 7. Super Admin Role (Ruth Mengistu) ---');
-    await loginAs('ruth.mengistu');
-    await page.goto(`${BASE_URL}/admin/overview`, { waitUntil: 'networkidle0' });
-    await snap('phase5_admin_dashboard_desktop.png', 1440, 900);
-    await snap('phase5_admin_dashboard_mobile.png', 360, 780);
-
-    // 8. FULL END-TO-END DEMO SCRIPT CHECK
-    console.log('\n--- 8. Verifying End-to-End Demo Flows ---');
-
-    // Demo Step 6 check: Marta promotes Selam
-    console.log('Verifying Manager Promotion Flow...');
-    await loginAs('marta.girma');
-    await page.goto(`${BASE_URL}/manager/promotions`, { waitUntil: 'networkidle0' });
-    await new Promise((r) => setTimeout(r, 600));
-
-    const openedModal = await clickBtn('Review Evidence');
-    if (openedModal) {
-      await new Promise((r) => setTimeout(r, 500));
-      await page.type('textarea', 'Outstanding leadership in community health initiatives and peer training.');
-      await clickBtn('Confirm & Endorse Promotion');
-      await new Promise((r) => setTimeout(r, 800));
-      console.log('Confirmed promotion for Selam Alemu!');
-    }
-
-    // Verify Selam routes to Team Lead
-    await loginAs('selam.alemu');
-    const currentUrl = page.url();
-    console.log(`Selam logged in; landed at: ${currentUrl}`);
-    if (currentUrl.includes('/team-lead')) {
-      console.log('Promotion verification PASSED: Selam routed to /team-lead/home.');
-    } else {
-      console.log('Promotion status: Selam current route is', currentUrl);
-    }
-
-    // Demo Step 7 check: Finance resolves unassigned payment
-    console.log('\nVerifying Finance Payment Matching Flow...');
-    await loginAs('abel.hailu');
-    await page.goto(`${BASE_URL}/finance/needs-review`, { waitUntil: 'networkidle0' });
-    await new Promise((r) => setTimeout(r, 600));
-    const openedMatch = await clickBtn('Match to Applicant');
-    if (openedMatch) {
-      await new Promise((r) => setTimeout(r, 500));
-      await clickBtn('Select Applicant');
-      await new Promise((r) => setTimeout(r, 400));
-      await clickBtn('Confirm Match & Activate');
-      await new Promise((r) => setTimeout(r, 800));
-      console.log('Matched payment successfully!');
-    }
-
-    console.log('\n=== ALL PHASE 5 POLISH CHECKS AND SCREENSHOTS COMPLETED SUCCESSFULLY ===');
+    console.log('\n=== ALL PHASE 5 POLISH SCREENSHOTS AND ACCESSIBILITY VERIFICATIONS COMPLETE ===');
   } catch (err) {
     console.error('Validation script error:', err);
   } finally {

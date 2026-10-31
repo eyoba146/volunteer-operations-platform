@@ -98,7 +98,7 @@ export const ManagerActivitiesPage: React.FC = () => {
       cell: (act) => (
         <div className="space-y-0.5 font-mono text-xs text-ink-primary">
           <span>{new Date(act.startsAt).toLocaleDateString()}</span>
-          <span className="text-ink-tertiary text-[11px] block">
+          <span className="text-ink-tertiary text-[13px] block">
             {new Date(act.startsAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
           </span>
         </div>
@@ -153,10 +153,10 @@ export const ManagerActivitiesPage: React.FC = () => {
       >
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b-2 border-ink-primary pb-5">
           <div className="space-y-1">
-            <span className="font-sans text-xs font-bold text-role-manager uppercase tracking-tight block">
+            <span className="font-sans text-xs font-bold text-role-manager tracking-tight block">
               Central Field Coordination
             </span>
-            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-ink-primary leading-none">
+            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl tracking-tight text-ink-primary leading-none">
               All Field Activities
             </h1>
             <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
@@ -234,7 +234,7 @@ export const ManagerActivitiesPage: React.FC = () => {
             <div className="p-4 border-2 border-ink-primary bg-white shadow-ticket space-y-3">
               <div className="flex items-center justify-between">
                 <div>
-                  <span className="text-[10px] uppercase text-ink-tertiary block">Current State</span>
+                  <span className="text-[13px] text-ink-tertiary block">Current State</span>
                   <StatusMark status={selectedActivity.status} size="md" />
                 </div>
                 <div className="flex items-center gap-2">
@@ -268,7 +268,7 @@ export const ManagerActivitiesPage: React.FC = () => {
             {/* Enrolled Volunteers List */}
             <div className="space-y-3">
               <div className="flex items-center justify-between border-b-2 border-border pb-2">
-                <span className="font-display text-lg font-black uppercase text-ink-primary">
+                <span className="font-display text-lg font-black text-ink-primary">
                   Enrolled Roster ({roster.length} / {selectedActivity.capacity})
                 </span>
               </div>
@@ -290,7 +290,7 @@ export const ManagerActivitiesPage: React.FC = () => {
                         <span className="font-bold text-ink-primary text-sm block">
                           {profile?.fullName || user?.username || 'Enrolled Volunteer'}
                         </span>
-                        <div className="flex items-center gap-2 text-[11px] text-ink-secondary">
+                        <div className="flex items-center gap-2 text-[13px] text-ink-secondary">
                           <span className="font-mono text-ink-tertiary">
                             {profile?.volunteerNumber || 'VTS-2026'}
                           </span>

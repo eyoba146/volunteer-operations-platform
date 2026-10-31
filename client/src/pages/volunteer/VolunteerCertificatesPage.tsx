@@ -63,11 +63,11 @@ export const VolunteerCertificatesPage: React.FC = () => {
     <div className="space-y-6">
       {/* Header */}
       <div className="border-b-2 border-border pb-5">
-        <span className="font-sans text-xs font-bold text-role-volunteer uppercase tracking-tight block">
+        <span className="font-sans text-xs font-bold text-role-volunteer tracking-tight block">
           Earned Credentials
         </span>
-        <h1 className="font-display text-4xl sm:text-5xl font-black uppercase tracking-tight text-ink-primary leading-none mt-1">
-          Certificates & Qualifications
+        <h1 className="font-display text-4xl sm:text-5xl font-black tracking-tight text-ink-primary leading-none mt-1">
+          Certificates and credentials
         </h1>
         <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
           Verified certificates awarded for membership activation, earned rank milestones, and completed training courses.
@@ -92,15 +92,15 @@ export const VolunteerCertificatesPage: React.FC = () => {
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between border-b-2 border-border pb-3">
-                  <span className="font-mono text-xs font-bold uppercase px-2 py-0.5 bg-canvas border border-ink-primary text-ink-primary">
-                    {cert.kind} qualification
+                  <span className="font-mono text-xs font-bold px-2 py-0.5 bg-canvas border border-ink-primary text-ink-primary">
+                    {cert.kind} certificate
                   </span>
                   <span className="font-mono text-xs text-ink-secondary">
                     {new Date(cert.issuedAt).toLocaleDateString()}
                   </span>
                 </div>
 
-                <h3 className="font-display text-2xl font-black uppercase text-ink-primary leading-tight">
+                <h3 className="font-display text-2xl font-black text-ink-primary leading-tight">
                   {cert.title}
                 </h3>
 
@@ -111,7 +111,7 @@ export const VolunteerCertificatesPage: React.FC = () => {
                 {/* Verification Code Box */}
                 <div className="p-3 bg-canvas border-2 border-ink-primary flex items-center justify-between gap-2">
                   <div className="space-y-0.5">
-                    <span className="font-sans text-[10px] font-bold uppercase text-ink-tertiary block">
+                    <span className="font-sans text-[13px] font-bold text-ink-tertiary block">
                       Verification Reference
                     </span>
                     <span className="font-mono text-xs font-bold text-ink-primary">

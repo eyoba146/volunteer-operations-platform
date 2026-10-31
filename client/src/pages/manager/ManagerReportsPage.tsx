@@ -53,7 +53,7 @@ export const ManagerReportsPage: React.FC = () => {
       'Hawassa Youth Health Outreach,Hawassa,12,11,92%',
       'Adama Youth Mentorship Session,Adama,18,16,89%',
       '',
-      'SECTION 5: SUMMIT CORPS TOP VOLUNTEERS',
+      'SECTION 5: TOP VOLUNTEERS',
       'Rank,Volunteer Name,Verified Hours,Activities Completed,Average Rating',
       '1,Yonas Kebede,192.5 hrs,24,4.9 / 5.0',
       '2,Selam Alemu,168.0 hrs,22,4.9 / 5.0',
@@ -89,14 +89,14 @@ export const ManagerReportsPage: React.FC = () => {
       >
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b-2 border-ink-primary pb-5">
           <div className="space-y-1">
-            <span className="font-sans text-xs font-bold text-role-manager uppercase tracking-tight block">
+            <span className="font-sans text-xs font-bold text-role-manager tracking-tight block">
               Program Intelligence & Analytics
             </span>
-            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-ink-primary leading-none">
-              Service Operations Reports
+            <h1 className="font-display font-bold text-3xl sm:text-4xl tracking-tight text-ink-primary leading-tight">
+              Service operations reports
             </h1>
             <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
-              Topographic elevation models, waypoint funnel conversions, regional footprint, and service hour records.
+              Service activity models, applicant funnel conversions, regional footprint, and service hour records.
             </p>
           </div>
 
@@ -121,7 +121,7 @@ export const ManagerReportsPage: React.FC = () => {
         </div>
       </div>
 
-      {/* REPORT 1: Hours by Period (SVG Elevation Ridgeline Profile) */}
+      {/* REPORT 1: Hours by Period */}
       <div
         className="border-2 border-ink-primary bg-white p-6 sm:p-8 space-y-5 shadow-ticket"
         style={{
@@ -130,24 +130,24 @@ export const ManagerReportsPage: React.FC = () => {
       >
         <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b-2 border-border pb-3">
           <div>
-            <span className="font-sans text-xs font-bold text-role-manager uppercase tracking-tight block">
+            <span className="font-sans text-xs font-bold text-role-manager tracking-tight block">
               Report 1 • Service Trajectory
             </span>
-            <h3 className="font-display text-2xl sm:text-3xl font-black uppercase text-ink-primary">
-              Verified Hours by Period (Elevation Ridgeline Profile)
+            <h3 className="font-display text-xl sm:text-2xl font-bold text-ink-primary">
+              Verified hours by period
             </h3>
           </div>
-          <span className="font-mono text-xs font-bold text-civic-green bg-canvas-subdued border border-border px-2.5 py-1">
+          <span className="font-sans text-xs font-bold text-role-volunteer bg-canvas-subdued border border-[#D5DAE1] px-2.5 py-1 rounded-[4px]">
             Total Logged: 1,033.0 Verified Hours
           </span>
         </div>
 
         <p className="text-xs text-ink-secondary font-sans leading-relaxed">
-          Topographic silhouette representing cumulative service hours ascent across the 2026 operating season.
+          Cumulative service hours logged across the operating periods.
         </p>
 
         {/* Custom SVG Ridgeline Profile */}
-        <div className="border-2 border-ink-primary bg-canvas-subdued p-4 overflow-hidden relative">
+        <div className="border border-[#D5DAE1] bg-canvas-subdued rounded-[8px] p-4 overflow-hidden relative">
           <svg viewBox="0 0 800 240" className="w-full h-48 sm:h-60" preserveAspectRatio="none">
             <defs>
               <linearGradient id="ridgeGradient" x1="0" y1="0" x2="0" y2="1">
@@ -158,13 +158,13 @@ export const ManagerReportsPage: React.FC = () => {
 
             {/* Altitude Contour Grid Lines */}
             <line x1="40" y1="40" x2="760" y2="40" stroke="#CBD5E1" strokeDasharray="3 3" strokeWidth="1" />
-            <text x="765" y="44" fill="#94A3B8" fontSize="10" fontFamily="JetBrains Mono">500h (Summit)</text>
+            <text x="765" y="44" fill="#64748B" fontSize="10">500h (Peak)</text>
 
             <line x1="40" y1="100" x2="760" y2="100" stroke="#CBD5E1" strokeDasharray="3 3" strokeWidth="1" />
-            <text x="765" y="104" fill="#94A3B8" fontSize="10" fontFamily="JetBrains Mono">350h (High Camp)</text>
+            <text x="765" y="104" fill="#64748B" fontSize="10">350h</text>
 
             <line x1="40" y1="160" x2="760" y2="160" stroke="#CBD5E1" strokeDasharray="3 3" strokeWidth="1" />
-            <text x="765" y="164" fill="#94A3B8" fontSize="10" fontFamily="JetBrains Mono">200h (Mid-Ridge)</text>
+            <text x="765" y="164" fill="#64748B" fontSize="10">200h</text>
 
             <line x1="40" y1="210" x2="760" y2="210" stroke="#CBD5E1" strokeWidth="1.5" />
 
@@ -184,7 +184,7 @@ export const ManagerReportsPage: React.FC = () => {
             />
 
             {/* Waypoint Peak Pins */}
-            {/* July Basecamp */}
+            {/* July Start */}
             <circle cx="50" cy="195" r="4.5" fill="#FFFFFF" stroke="#0E6266" strokeWidth="3" />
             <text x="35" y="230" fill="#475569" fontSize="11" fontFamily="JetBrains Mono" fontWeight="bold">JUL (Base)</text>
 
@@ -216,10 +216,10 @@ export const ManagerReportsPage: React.FC = () => {
           }}
         >
           <div className="border-b-2 border-border pb-2">
-            <span className="font-sans text-xs font-bold text-role-manager uppercase tracking-tight block">
+            <span className="font-sans text-xs font-bold text-role-manager tracking-tight block">
               Report 2 • Admissions Pipeline
             </span>
-            <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
+            <h3 className="font-display text-2xl font-black text-ink-primary">
               Application Funnel (Waypoint Route)
             </h3>
           </div>
@@ -230,10 +230,10 @@ export const ManagerReportsPage: React.FC = () => {
 
           <div className="space-y-3 font-mono text-xs pt-2">
             {[
-              { label: 'Waypoint 1: Basecamp (Registered)', count: 48, pct: 100, note: 'Unique account signups', color: 'bg-ink-primary' },
-              { label: 'Waypoint 2: Mid-Ridge (Applied)', count: 40, pct: 83, note: 'Completed intake documents', color: 'bg-role-applicant' },
-              { label: 'Waypoint 3: High Camp (Accepted)', count: 32, pct: 67, note: 'Reviewed by Admissions Desk', color: 'bg-role-teamlead' },
-              { label: 'Waypoint 4: Summit (Activated & Paid)', count: 28, pct: 58, note: 'Confirmed Telebirr & Member badge', color: 'bg-civic-green' },
+              { label: 'Stage 1: Registered accounts', count: 48, pct: 100, note: 'Unique account signups', color: 'bg-ink-primary' },
+              { label: 'Stage 2: Completed applications', count: 40, pct: 83, note: 'Submitted background details', color: 'bg-role-applicant' },
+              { label: 'Stage 3: Accepted candidates', count: 32, pct: 67, note: 'Reviewed by admissions desk', color: 'bg-role-teamlead' },
+              { label: 'Stage 4: Activated members', count: 28, pct: 58, note: 'Confirmed Telebirr & Member badge', color: 'bg-role-volunteer' },
             ].map((wp, idx) => (
               <div key={idx} className="p-3 border-2 border-border bg-canvas-subdued space-y-1.5">
                 <div className="flex items-center justify-between">
@@ -247,7 +247,7 @@ export const ManagerReportsPage: React.FC = () => {
                 <div className="w-full h-3 bg-white border border-border overflow-hidden">
                   <div className={`h-full ${wp.color}`} style={{ width: `${wp.pct}%` }} />
                 </div>
-                <span className="text-[10px] text-ink-tertiary block font-sans">
+                <span className="text-[13px] text-ink-tertiary block font-sans">
                   {wp.note}
                 </span>
               </div>
@@ -255,7 +255,7 @@ export const ManagerReportsPage: React.FC = () => {
           </div>
         </div>
 
-        {/* REPORT 3: Volunteers by Rank & Area (Elevation Distribution Matrix) */}
+        {/* REPORT 3: Volunteers by Rank & Area */}
         <div
           className="border-2 border-ink-primary bg-white p-6 space-y-4 shadow-ticket"
           style={{
@@ -263,10 +263,10 @@ export const ManagerReportsPage: React.FC = () => {
           }}
         >
           <div className="border-b-2 border-border pb-2">
-            <span className="font-sans text-xs font-bold text-role-manager uppercase tracking-tight block">
+            <span className="font-sans text-xs font-bold text-role-manager tracking-tight block">
               Report 3 • Territorial Footprint
             </span>
-            <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
+            <h3 className="font-display text-2xl font-black text-ink-primary">
               Volunteers by Area & Rank Tier
             </h3>
           </div>
@@ -291,7 +291,7 @@ export const ManagerReportsPage: React.FC = () => {
                 <div className="w-full h-2 bg-white border border-border">
                   <div className="h-full bg-role-manager" style={{ width: `${reg.pct}%` }} />
                 </div>
-                <span className="text-[10px] text-ink-tertiary block font-mono">
+                <span className="text-[13px] text-ink-tertiary block font-mono">
                   {reg.ranks}
                 </span>
               </div>
@@ -310,10 +310,10 @@ export const ManagerReportsPage: React.FC = () => {
           }}
         >
           <div className="border-b-2 border-border pb-2">
-            <span className="font-sans text-xs font-bold text-role-manager uppercase tracking-tight block">
+            <span className="font-sans text-xs font-bold text-role-manager tracking-tight block">
               Report 4 • Field Turnout
             </span>
-            <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
+            <h3 className="font-display text-2xl font-black text-ink-primary">
               Activity Attendance (Route Step Graph)
             </h3>
           </div>
@@ -343,19 +343,19 @@ export const ManagerReportsPage: React.FC = () => {
           </div>
         </div>
 
-        {/* REPORT 5: Top Volunteers (Summit Corps Leaderboard) */}
+        {/* REPORT 5: Top Volunteers */}
         <div
           className="border-2 border-ink-primary bg-white p-6 space-y-4 shadow-ticket"
           style={{
             clipPath: 'polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)',
           }}
         >
-          <div className="border-b-2 border-border pb-2">
-            <span className="font-sans text-xs font-bold text-role-manager uppercase tracking-tight block">
-              Report 5 • Altitude Leaderboard
+          <div className="border-b border-[#D5DAE1] pb-2">
+            <span className="font-sans text-xs font-bold text-role-manager block">
+              Report 5 • Top contributors
             </span>
-            <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
-              The Summit Corps (Top Volunteers)
+            <h3 className="font-display text-xl font-bold text-ink-primary">
+              Top volunteers by service hours
             </h3>
           </div>
 
@@ -380,7 +380,7 @@ export const ManagerReportsPage: React.FC = () => {
                     <span className="font-bold text-ink-primary text-sm block">
                       {v.name}
                     </span>
-                    <span className="text-[11px] text-ink-tertiary font-mono">
+                    <span className="text-[13px] text-ink-tertiary font-mono">
                       {v.role} • {v.area}
                     </span>
                   </div>
@@ -390,7 +390,7 @@ export const ManagerReportsPage: React.FC = () => {
                   <span className="text-sm font-bold text-ink-primary block leading-none">
                     {v.hours} hrs
                   </span>
-                  <span className="text-[10px] text-[#784E0B] flex items-center justify-end gap-0.5 pt-0.5">
+                  <span className="text-[13px] text-[#784E0B] flex items-center justify-end gap-0.5 pt-0.5">
                     <Star className="w-3 h-3 fill-amber-500 text-amber-500" weight="fill" />
                     <span>{v.rating} ({v.acts} shifts)</span>
                   </span>

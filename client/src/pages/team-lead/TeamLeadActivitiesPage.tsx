@@ -84,10 +84,10 @@ export const TeamLeadActivitiesPage: React.FC = () => {
       {/* Top Header */}
       <div className="border-b-2 border-border pb-5 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <span className="font-sans text-xs font-bold text-role-teamlead uppercase tracking-tight block">
+          <span className="font-sans text-xs font-bold text-role-teamlead tracking-tight block">
             Field Command Roster
           </span>
-          <h1 className="font-display text-4xl sm:text-5xl font-black uppercase tracking-tight text-ink-primary leading-none mt-1">
+          <h1 className="font-display text-4xl sm:text-5xl font-black tracking-tight text-ink-primary leading-none mt-1">
             Activities Under My Leadership
           </h1>
           <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
@@ -125,13 +125,13 @@ export const TeamLeadActivitiesPage: React.FC = () => {
             >
               <div className="space-y-2.5 flex-1">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="font-mono text-xs font-bold uppercase px-2 py-0.5 bg-canvas border border-ink-primary text-ink-primary">
+                  <span className="font-mono text-xs font-bold px-2 py-0.5 bg-canvas border border-ink-primary text-ink-primary">
                     {act.type.replace('_', ' ')}
                   </span>
                   <StatusMark status={act.status} size="sm" />
                 </div>
 
-                <h3 className="font-display text-2xl sm:text-3xl font-black uppercase text-ink-primary leading-tight">
+                <h3 className="font-display text-2xl sm:text-3xl font-black text-ink-primary leading-tight">
                   {act.title}
                 </h3>
 
@@ -164,7 +164,7 @@ export const TeamLeadActivitiesPage: React.FC = () => {
               {/* Check-In Code Badge & Lead Actions */}
               <div className="shrink-0 flex flex-col sm:flex-row items-end sm:items-center gap-4">
                 <div className="border-2 border-ink-primary bg-canvas p-3 text-center min-w-[120px]">
-                  <span className="font-sans text-[10px] font-bold uppercase text-ink-tertiary block">
+                  <span className="font-sans text-[13px] font-bold text-ink-tertiary block">
                     Session Code
                   </span>
                   <span className="font-mono text-2xl font-black text-ink-primary tracking-widest block">
@@ -246,7 +246,7 @@ export const TeamLeadActivitiesPage: React.FC = () => {
                         <span className="font-sans font-bold text-ink-primary block">
                           Volunteer ID: {enr.userId}
                         </span>
-                        <span className="font-mono text-[11px] text-ink-tertiary block">
+                        <span className="font-mono text-[13px] text-ink-tertiary block">
                           Joined {new Date(enr.joinedAt).toLocaleDateString()}
                         </span>
                       </div>

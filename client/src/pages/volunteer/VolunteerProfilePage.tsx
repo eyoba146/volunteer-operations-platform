@@ -110,10 +110,10 @@ export const VolunteerProfilePage: React.FC = () => {
     <div className="max-w-3xl mx-auto space-y-8">
       {/* Top Header */}
       <div className="border-b-2 border-border pb-5">
-        <span className="font-sans text-xs font-bold text-role-volunteer uppercase tracking-tight block">
+        <span className="font-sans text-xs font-bold text-role-volunteer tracking-tight block">
           Account & Preferences
         </span>
-        <h1 className="font-display text-4xl sm:text-5xl font-black uppercase tracking-tight text-ink-primary leading-none mt-1">
+        <h1 className="font-display text-4xl sm:text-5xl font-black tracking-tight text-ink-primary leading-none mt-1">
           Volunteer Profile & Settings
         </h1>
         <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
@@ -178,7 +178,7 @@ export const VolunteerProfilePage: React.FC = () => {
       {activeTab === 'profile' && (
         <form onSubmit={handleSaveProfile} className="border-2 border-ink-primary bg-white p-6 sm:p-8 space-y-6 shadow-ticket">
           <div className="border-b-2 border-border pb-3">
-            <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
+            <h3 className="font-display text-2xl font-black text-ink-primary">
               Contact & Regional Details
             </h3>
           </div>
@@ -215,7 +215,7 @@ export const VolunteerProfilePage: React.FC = () => {
           </div>
 
           <div className="space-y-1.5 text-left">
-            <label className="block text-xs font-bold uppercase text-ink-primary">
+            <label className="block text-xs font-bold text-ink-primary">
               Volunteer Bio & Experience
             </label>
             <textarea
@@ -235,7 +235,7 @@ export const VolunteerProfilePage: React.FC = () => {
 
           {/* Emergency Contact */}
           <div className="space-y-4 pt-4 border-t-2 border-border">
-            <h4 className="font-display text-xl font-black uppercase text-ink-primary flex items-center gap-2">
+            <h4 className="font-display text-xl font-black text-ink-primary flex items-center gap-2">
               <Heart className="w-5 h-5 text-role-teamlead" weight="fill" />
               <span>Emergency Contact Person</span>
             </h4>
@@ -279,7 +279,7 @@ export const VolunteerProfilePage: React.FC = () => {
       {activeTab === 'notifications' && (
         <form onSubmit={handleSaveNotifications} className="border-2 border-ink-primary bg-white p-6 sm:p-8 space-y-6 shadow-ticket">
           <div className="border-b-2 border-border pb-3">
-            <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
+            <h3 className="font-display text-2xl font-black text-ink-primary">
               Email & Alert Preferences
             </h3>
             <p className="font-sans text-xs text-ink-secondary mt-1">

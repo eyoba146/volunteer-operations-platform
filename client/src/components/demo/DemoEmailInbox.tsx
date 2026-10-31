@@ -70,11 +70,11 @@ export const DemoEmailInbox: React.FC<DemoEmailInboxProps> = ({ isOpen, onClose 
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="font-serif text-lg font-semibold text-ink-primary">
-                  Demo Email Preview Inbox
+                <h3 className="font-display text-lg font-bold text-ink-primary">
+                  Demo email preview inbox
                 </h3>
-                <span className="font-mono text-[11px] px-2 py-0.5 border border-border bg-canvas-inset text-ink-secondary">
-                  Brevo Simulator
+                <span className="font-sans text-xs px-2 py-0.5 rounded-[4px] border border-[#D5DAE1] bg-canvas-subdued text-ink-secondary">
+                  Delivery simulator
                 </span>
               </div>
               <p className="font-sans text-xs text-ink-tertiary">
@@ -114,11 +114,11 @@ export const DemoEmailInbox: React.FC<DemoEmailInboxProps> = ({ isOpen, onClose 
                         : 'hover:bg-canvas-subdued/70'
                     }`}
                   >
-                    <div className="flex items-center justify-between text-[11px] mb-1">
+                    <div className="flex items-center justify-between text-[13px] mb-1">
                       <span className="font-mono text-ink-tertiary truncate max-w-[140px]">
                         {em.to}
                       </span>
-                      <span className="font-mono text-[10px] text-ink-tertiary">
+                      <span className="font-mono text-[13px] text-ink-tertiary">
                         {new Date(em.sentAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </span>
                     </div>
@@ -131,7 +131,7 @@ export const DemoEmailInbox: React.FC<DemoEmailInboxProps> = ({ isOpen, onClose 
                     </h4>
                     {em.code && (
                       <div className="mt-1.5">
-                        <span className="font-mono text-[11px] font-bold px-1.5 py-0.5 bg-civic-goldLight text-[#784E0B] border border-civic-gold/40">
+                        <span className="font-mono text-[13px] font-bold px-1.5 py-0.5 bg-civic-goldLight text-[#784E0B] border border-civic-gold/40">
                           Code: {em.code}
                         </span>
                       </div>
@@ -152,7 +152,7 @@ export const DemoEmailInbox: React.FC<DemoEmailInboxProps> = ({ isOpen, onClose 
                     <h2 className="font-serif text-xl font-bold text-ink-primary leading-tight">
                       {selectedEmail.subject}
                     </h2>
-                    <span className="font-mono text-xs uppercase px-2 py-0.5 border border-border bg-canvas-subdued text-ink-secondary shrink-0">
+                    <span className="font-mono text-xs px-2 py-0.5 border border-border bg-canvas-subdued text-ink-secondary shrink-0">
                       {selectedEmail.category}
                     </span>
                   </div>

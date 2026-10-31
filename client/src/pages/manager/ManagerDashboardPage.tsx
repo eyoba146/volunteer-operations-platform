@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
-import { Application, Promotion, Activity } from '../../types';
+import { Application, Promotion } from '../../types';
 import { Button, StatusMark, Skeleton } from '../../components/ui';
 import { 
   ClipboardText, 
@@ -12,7 +12,6 @@ import {
   ChartLineUp, 
   ArrowRight,
   Sparkle,
-  CheckCircle,
   Eye
 } from '@phosphor-icons/react';
 
@@ -66,140 +65,111 @@ export const ManagerDashboardPage: React.FC = () => {
   return (
     <div className="space-y-8 max-w-5xl mx-auto">
       {/* Editorial Header */}
-      <div className="border-4 border-ink-primary bg-white p-6 md:p-8 space-y-5 shadow-ticket">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b-2 border-ink-primary pb-5">
+      <div className="border border-[#D5DAE1] bg-white rounded-[10px] p-6 sm:p-8 space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-[#D5DAE1] pb-6">
           <div className="space-y-1">
-            <span className="font-sans text-xs font-bold text-role-manager block">
-              Program Operations Desk
+            <span className="text-[13px] font-bold text-role-manager">
+              Operations desk
             </span>
-            <h1 className="font-display font-black text-4xl sm:text-5xl uppercase tracking-tight text-ink-primary leading-none">
-              Admissions & Operations Overview
+            <h1 className="font-display font-bold text-3xl sm:text-4xl tracking-tight text-ink-primary">
+              Candidate intake and field operations
             </h1>
-            <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
-              Review applicant intake, evaluate promotion boards, and supervise fieldwork across 5 regions.
+            <p className="text-sm text-ink-secondary mt-1 max-w-xl leading-relaxed">
+              Review applicant intake, evaluate promotion boards, and supervise field activity rosters across regional teams.
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="shrink-0">
             <Button
               variant="teal"
-              size="sm"
-              leftIcon={<ClipboardText className="w-4 h-4" />}
+              size="md"
+              leftIcon={<ClipboardText className="w-4 h-4" weight="bold" />}
               onClick={() => navigate('/manager/applications')}
             >
-              Application Queue ({stats?.waitingApplications})
-            </Button>
-            <Button
-              variant="secondary"
-              size="sm"
-              leftIcon={<ChartLineUp className="w-4 h-4" />}
-              onClick={() => navigate('/manager/promotions')}
-            >
-              Promotions ({stats?.promotionsWaiting})
-            </Button>
-            <Button
-              variant="secondary"
-              size="sm"
-              leftIcon={<Calendar className="w-4 h-4" />}
-              onClick={() => navigate('/manager/activities')}
-            >
-              All Activities
-            </Button>
-            <Button
-              variant="secondary"
-              size="sm"
-              leftIcon={<Sparkle className="w-4 h-4" />}
-              onClick={() => navigate('/manager/feedback')}
-            >
-              Feedback Inbox
+              Application queue ({stats?.waitingApplications || 0})
             </Button>
           </div>
         </div>
 
-        {/* Operational Dispatch Numbers */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 pt-2 font-sans text-xs">
-          <div className="border-2 border-border bg-canvas-subdued p-4 space-y-1">
-            <span className="text-ink-tertiary font-bold text-[11px] block">Awaiting Review</span>
-            <div className="font-display text-4xl font-black text-role-applicant leading-none">
+        {/* Lead Numeral + Simple Inline List on White (Rule 4: NO 4-box rows) */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pt-1">
+          <div className="flex items-baseline gap-3">
+            <span className="font-display font-black text-5xl sm:text-6xl text-role-applicant leading-none">
               {stats?.waitingApplications || 0}
-            </div>
-            <span className="text-[11px] text-ink-secondary block">
-              New candidates
             </span>
+            <div>
+              <span className="text-base font-bold text-ink-primary block leading-tight">
+                Applications awaiting review
+              </span>
+              <span className="text-[13px] text-ink-secondary">
+                Submitted candidate profiles ready for evaluation
+              </span>
+            </div>
           </div>
 
-          <div className="border-2 border-border bg-canvas-subdued p-4 space-y-1">
-            <span className="text-ink-tertiary font-bold text-[11px] block">Promotions Waiting</span>
-            <div className="font-display text-4xl font-black text-role-teamlead leading-none">
-              {stats?.promotionsWaiting || 0}
+          {/* Simple Inline List with subtle dividers */}
+          <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm pt-2 md:pt-0 border-t md:border-t-0 border-[#D5DAE1]">
+            <div className="space-y-0.5">
+              <span className="text-xs text-ink-secondary block">Promotions waiting</span>
+              <span className="text-xl font-bold text-role-teamlead">
+                {stats?.promotionsWaiting || 0}
+              </span>
             </div>
-            <span className="text-[11px] text-ink-secondary block">
-              Eligible candidates
-            </span>
-          </div>
-
-          <div className="border-2 border-border bg-canvas-subdued p-4 space-y-1">
-            <span className="text-ink-tertiary font-bold text-[11px] block">Activated Members</span>
-            <div className="font-display text-4xl font-black text-role-volunteer leading-none">
-              +{stats?.newVolunteersThisMonth || 0}
+            <div className="w-px h-8 bg-[#D5DAE1] hidden sm:block" />
+            <div className="space-y-0.5">
+              <span className="text-xs text-ink-secondary block">New members</span>
+              <span className="text-xl font-bold text-role-volunteer">
+                +{stats?.newVolunteersThisMonth || 0}
+              </span>
             </div>
-            <span className="text-[11px] text-ink-secondary block">
-              This month
-            </span>
-          </div>
-
-          <div className="border-2 border-border bg-canvas-subdued p-4 space-y-1">
-            <span className="text-ink-tertiary font-bold text-[11px] block">Approved Hours</span>
-            <div className="font-display text-4xl font-black text-ink-primary leading-none">
-              {stats?.approvedHoursThisMonth || 0}
+            <div className="w-px h-8 bg-[#D5DAE1] hidden sm:block" />
+            <div className="space-y-0.5">
+              <span className="text-xs text-ink-secondary block">Approved hours</span>
+              <span className="text-xl font-bold text-ink-primary">
+                {stats?.approvedHoursThisMonth || 0} hrs
+              </span>
             </div>
-            <span className="text-[11px] text-ink-secondary block">
-              Verified service hrs
-            </span>
-          </div>
-
-          <div className="border-2 border-border bg-canvas-subdued p-4 space-y-1 col-span-2 sm:col-span-1">
-            <span className="text-ink-tertiary font-bold text-[11px] block">Open Activities</span>
-            <div className="font-display text-4xl font-black text-ink-primary leading-none">
-              {stats?.upcomingActivities || 0}
+            <div className="w-px h-8 bg-[#D5DAE1] hidden sm:block" />
+            <div className="space-y-0.5">
+              <span className="text-xs text-ink-secondary block">Open activities</span>
+              <span className="text-xl font-bold text-ink-primary">
+                {stats?.upcomingActivities || 0}
+              </span>
             </div>
-            <span className="text-[11px] text-ink-secondary block">
-              Across regions
-            </span>
           </div>
         </div>
       </div>
 
-      {/* Two Column Layout: Urgent Applications & Pending Promotions */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      {/* Two Column Layout: Applications & Pending Promotions */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Applications Waiting */}
-        <div className="border-2 border-ink-primary bg-white p-6 space-y-5 flex flex-col justify-between shadow-ticket">
+        <div className="border border-[#D5DAE1] bg-white rounded-[10px] p-6 space-y-5 flex flex-col justify-between">
           <div className="space-y-4">
-            <div className="flex items-center justify-between border-b border-border pb-3">
+            <div className="flex items-center justify-between border-b border-[#D5DAE1] pb-3">
               <div className="flex items-center gap-2">
                 <ClipboardText className="w-5 h-5 text-ink-primary" weight="bold" />
-                <h3 className="font-display text-xl font-black uppercase text-ink-primary">
-                  Applications Requiring Evaluation
+                <h3 className="font-display text-xl font-bold text-ink-primary">
+                  Applications requiring evaluation
                 </h3>
               </div>
-              <span className="font-mono text-xs text-ink-tertiary font-bold">
+              <span className="text-[13px] text-ink-secondary font-semibold">
                 {pendingApplications.length} unreviewed
               </span>
             </div>
 
             {pendingApplications.length === 0 ? (
-              <p className="text-xs font-sans text-ink-tertiary py-8 text-center">
+              <p className="text-sm font-sans text-ink-secondary py-8 text-center">
                 All submitted applications have been reviewed.
               </p>
             ) : (
-              <div className="divide-y divide-border/60">
+              <div className="divide-y divide-[#D5DAE1]/60">
                 {pendingApplications.map((app) => (
-                  <div key={app.id} className="py-3 flex items-center justify-between gap-3 text-xs">
+                  <div key={app.id} className="py-3 flex items-center justify-between gap-3 text-sm">
                     <div>
-                      <h4 className="font-bold text-ink-primary text-sm">
+                      <h4 className="font-bold text-ink-primary">
                         {app.formData?.fullName || 'Applicant'}
                       </h4>
-                      <span className="text-ink-tertiary text-xs block">
+                      <span className="text-ink-secondary text-[13px] block mt-0.5">
                         {app.formData?.area || 'Addis Ababa'} • Submitted{' '}
                         {app.submittedAt ? new Date(app.submittedAt).toLocaleDateString() : 'recently'}
                       </span>
@@ -218,53 +188,51 @@ export const ManagerDashboardPage: React.FC = () => {
             )}
           </div>
 
-          <div className="pt-4 border-t border-border">
-            <Button
-              variant="teal"
-              size="sm"
-              className="w-full"
-              onClick={() => navigate('/manager/applications')}
-              rightIcon={<ArrowRight className="w-3.5 h-3.5" />}
+          <div className="pt-3 border-t border-[#D5DAE1]">
+            <Link
+              to="/manager/applications"
+              className="text-sm font-bold text-ink-primary hover:underline flex items-center gap-1.5"
             >
-              Open Full Application Queue
-            </Button>
+              <span>View full application queue</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
         </div>
 
         {/* Promotions Waiting Board */}
-        <div className="border-2 border-ink-primary bg-white p-6 space-y-5 flex flex-col justify-between shadow-ticket">
+        <div className="border border-[#D5DAE1] bg-white rounded-[10px] p-6 space-y-5 flex flex-col justify-between">
           <div className="space-y-4">
-            <div className="flex items-center justify-between border-b border-border pb-3">
+            <div className="flex items-center justify-between border-b border-[#D5DAE1] pb-3">
               <div className="flex items-center gap-2">
                 <Sparkle className="w-5 h-5 text-role-teamlead" weight="fill" />
-                <h3 className="font-display text-xl font-black uppercase text-ink-primary">
-                  Promotions Awaiting Approval
+                <h3 className="font-display text-xl font-bold text-ink-primary">
+                  Promotions awaiting approval
                 </h3>
               </div>
-              <span className="font-mono text-xs text-ink-tertiary font-bold">
-                Board Queue
+              <span className="text-[13px] text-ink-secondary font-semibold">
+                Board queue
               </span>
             </div>
 
             {pendingPromotions.length === 0 ? (
-              <p className="text-xs font-sans text-ink-tertiary py-8 text-center">
-                No active promotion recommendations waiting for manager decision.
+              <p className="text-sm font-sans text-ink-secondary py-8 text-center">
+                No active promotion recommendations waiting for decision.
               </p>
             ) : (
-              <div className="divide-y divide-border/60">
+              <div className="divide-y divide-[#D5DAE1]/60">
                 {pendingPromotions.map((promo) => (
-                  <div key={promo.id} className="py-3.5 space-y-1 text-xs">
+                  <div key={promo.id} className="py-3 space-y-1 text-sm">
                     <div className="flex items-center justify-between">
-                      <span className="font-bold text-ink-primary text-sm">
+                      <span className="font-bold text-ink-primary">
                         {promo.userName}
                       </span>
                       <StatusMark status={promo.status} size="sm" />
                     </div>
-                    <p className="text-ink-secondary text-xs">
-                      Nominated for promotion from <strong className="font-mono uppercase">{promo.fromRank.replace('_', ' ')}</strong> to{' '}
-                      <strong className="font-mono uppercase text-role-volunteer font-bold">{promo.toRank.replace('_', ' ')}</strong>.
+                    <p className="text-ink-secondary text-[13px]">
+                      Recommended from <strong>{promo.fromRank.replace('_', ' ')}</strong> to{' '}
+                      <strong className="text-role-volunteer">{promo.toRank.replace('_', ' ')}</strong>
                     </p>
-                    <p className="text-xs text-ink-tertiary italic">
+                    <p className="text-[13px] text-ink-secondary italic">
                       "{promo.note}"
                     </p>
                   </div>
@@ -273,16 +241,14 @@ export const ManagerDashboardPage: React.FC = () => {
             )}
           </div>
 
-          <div className="pt-4 border-t border-border">
-            <Button
-              variant="primary"
-              size="sm"
-              className="w-full"
-              onClick={() => navigate('/manager/promotions')}
-              rightIcon={<ArrowRight className="w-3.5 h-3.5" />}
+          <div className="pt-3 border-t border-[#D5DAE1]">
+            <Link
+              to="/manager/promotions"
+              className="text-sm font-bold text-ink-primary hover:underline flex items-center gap-1.5"
             >
-              Open Promotion Decision Board
-            </Button>
+              <span>Open promotion decision board</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
         </div>
       </div>

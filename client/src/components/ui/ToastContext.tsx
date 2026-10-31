@@ -94,7 +94,7 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
               <div className="shrink-0 mt-0.5">{typeConfig.icon}</div>
               <div className="flex-1 space-y-0.5 text-left">
                 {t.title && (
-                  <h4 className="font-sans text-xs font-semibold uppercase tracking-wider text-ink-primary">
+                  <h4 className="font-sans text-xs font-semibold tracking-wider text-ink-primary">
                     {t.title}
                   </h4>
                 )}

@@ -25,6 +25,7 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Bricolage Grotesque', sans-serif;
     letter-spacing: -0.02em;
+    font-weight: 700;
   }
 
   /* High contrast solid focus outline */
@@ -41,11 +42,11 @@
     background: #E8EBEF;
   }
   ::-webkit-scrollbar-thumb {
-    background: #111111;
-    border-radius: 0px;
+    background: #94A3B8;
+    border-radius: 4px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #374151;
+    background: #64748B;
   }
 }
 

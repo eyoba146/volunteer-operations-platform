@@ -33,10 +33,10 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           <select
             ref={ref}
             id={selectId}
-            className={`w-full bg-white text-ink-primary font-sans text-base rounded-none border-2 border-ink-primary transition-all duration-100 py-2.5 pl-3.5 pr-10 appearance-none ${
+            className={`w-full bg-white text-ink-primary font-sans text-base rounded-[8px] border-[1.5px] border-[#475569] transition-all duration-150 py-2.5 pl-3.5 pr-10 appearance-none ${
               error
-                ? 'border-role-teamlead focus:border-role-teamlead focus:shadow-[3px_3px_0_#D63927]'
-                : 'hover:border-black focus:border-black focus:shadow-[3px_3px_0_#111111]'
+                ? 'border-role-teamlead focus:border-role-teamlead focus:ring-1 focus:ring-role-teamlead'
+                : 'hover:border-ink-primary focus:border-ink-primary focus:ring-1 focus:ring-ink-primary'
             } outline-none disabled:bg-canvas-subdued disabled:cursor-not-allowed ${className}`}
             {...props}
           >
@@ -55,11 +55,11 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
         </div>
 
         {error && (
-          <p className="text-xs text-role-teamlead font-bold mt-1 leading-relaxed">{error}</p>
+          <p className="text-[13px] text-role-teamlead font-bold mt-1 leading-relaxed">{error}</p>
         )}
 
         {!error && hint && (
-          <p className="text-xs text-ink-secondary mt-1 leading-relaxed">{hint}</p>
+          <p className="text-[13px] text-ink-secondary mt-1 leading-relaxed">{hint}</p>
         )}
       </div>
     );

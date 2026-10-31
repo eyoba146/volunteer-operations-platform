@@ -48,7 +48,7 @@ export const AdminActivityHistoryPage: React.FC = () => {
           <span className="font-sans font-bold text-ink-primary block text-xs">
             {entry.actorName}
           </span>
-          <span className="font-mono text-[10px] font-bold px-1.5 py-0.5 bg-canvas-subdued border border-border text-ink-tertiary uppercase inline-block">
+          <span className="font-mono text-[13px] font-bold px-1.5 py-0.5 bg-canvas-subdued border border-border text-ink-tertiary inline-block">
             {entry.actorRole}
           </span>
         </div>
@@ -91,10 +91,10 @@ export const AdminActivityHistoryPage: React.FC = () => {
       >
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b-2 border-ink-primary pb-5">
           <div className="space-y-1">
-            <span className="font-sans text-xs font-bold text-amber-600 uppercase tracking-tight block">
+            <span className="font-sans text-xs font-bold text-amber-600 tracking-tight block">
               Permanent Audit Trail
             </span>
-            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-ink-primary leading-none">
+            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl tracking-tight text-ink-primary leading-none">
               System Activity History
             </h1>
             <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
@@ -103,7 +103,7 @@ export const AdminActivityHistoryPage: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="font-mono text-xs font-bold text-white bg-ink-primary px-3 py-1.5 shadow-sm uppercase">
+            <span className="font-mono text-xs font-bold text-white bg-ink-primary px-3 py-1.5 shadow-sm">
               Total Entries: {filteredLogs.length}
             </span>
           </div>

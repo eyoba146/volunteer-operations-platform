@@ -107,7 +107,7 @@ export const FinanceNeedsReviewPage: React.FC = () => {
           <span className="font-mono text-xs font-bold text-ink-primary block">
             {p.telebirrReference}
           </span>
-          <span className="font-mono text-[10px] text-ink-tertiary block">
+          <span className="font-mono text-[13px] text-ink-tertiary block">
             {new Date(p.createdAt).toLocaleString()}
           </span>
         </div>
@@ -118,7 +118,7 @@ export const FinanceNeedsReviewPage: React.FC = () => {
       cell: (p) => (
         <div className="space-y-0.5 font-sans text-xs">
           <span className="font-semibold text-ink-primary block">{p.payerName || 'Unknown Payer'}</span>
-          <span className="font-mono text-ink-tertiary text-[11px] block">{p.payerPhone || '—'}</span>
+          <span className="font-mono text-ink-tertiary text-[13px] block">{p.payerPhone || '—'}</span>
         </div>
       ),
     },
@@ -129,7 +129,7 @@ export const FinanceNeedsReviewPage: React.FC = () => {
           <span className="text-xs text-civic-rust font-sans font-medium block">
             {p.refundReason || 'Handshake timeout awaiting Finance reconciliation.'}
           </span>
-          <span className="font-mono text-[10px] text-ink-tertiary block">
+          <span className="font-mono text-[13px] text-ink-tertiary block">
             Linked Application: {p.applicationId || 'Unlinked'}
           </span>
         </div>
@@ -181,10 +181,10 @@ export const FinanceNeedsReviewPage: React.FC = () => {
       >
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b-2 border-ink-primary pb-5">
           <div className="space-y-1">
-            <span className="font-sans text-xs font-bold text-ink-primary uppercase tracking-tight block">
+            <span className="font-sans text-xs font-bold text-ink-primary tracking-tight block">
               Settlement Exception Queue
             </span>
-            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-ink-primary leading-none">
+            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl tracking-tight text-ink-primary leading-none">
               Payments Needing Review
             </h1>
             <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
@@ -235,7 +235,7 @@ export const FinanceNeedsReviewPage: React.FC = () => {
 
           {/* Reference Input */}
           <div className="space-y-1">
-            <label className="block text-xs font-bold uppercase tracking-tight text-ink-primary">
+            <label className="block text-xs font-bold tracking-tight text-ink-primary">
               Telebirr Reference Number
             </label>
             <Input
@@ -248,7 +248,7 @@ export const FinanceNeedsReviewPage: React.FC = () => {
           {/* Matching Target Applicant */}
           {actionType === 'match' && (
             <div className="space-y-1">
-              <label className="block text-xs font-bold uppercase tracking-tight text-ink-primary">
+              <label className="block text-xs font-bold tracking-tight text-ink-primary">
                 Match to Applicant Record
               </label>
               <select
@@ -273,7 +273,7 @@ export const FinanceNeedsReviewPage: React.FC = () => {
 
           {/* Mandatory Written Reason */}
           <div className="space-y-1">
-            <label className="block text-xs font-bold uppercase tracking-tight text-ink-primary">
+            <label className="block text-xs font-bold tracking-tight text-ink-primary">
               Mandatory Written Audit Reason
             </label>
             <textarea

@@ -269,7 +269,7 @@ export const ManagerApplicationsPage: React.FC = () => {
           <span className="font-sans font-bold text-ink-primary block">
             {app.formData?.fullName || 'Applicant'}
           </span>
-          <span className="font-mono text-[11px] text-ink-tertiary block">
+          <span className="font-mono text-[13px] text-ink-tertiary block">
             Phone: {app.formData?.phone || '—'}
           </span>
         </div>
@@ -284,12 +284,12 @@ export const ManagerApplicationsPage: React.FC = () => {
           </span>
           <div className="flex flex-wrap gap-1">
             {app.formData?.skills?.slice(0, 3).map((s) => (
-              <span key={s} className="px-1.5 py-0.5 bg-canvas-subdued border border-border text-[11px] font-sans text-ink-primary">
+              <span key={s} className="px-1.5 py-0.5 bg-canvas-subdued border border-border text-[13px] font-sans text-ink-primary">
                 {s}
               </span>
             ))}
             {(app.formData?.skills?.length || 0) > 3 && (
-              <span className="text-[11px] text-ink-tertiary">
+              <span className="text-[13px] text-ink-tertiary">
                 +{(app.formData?.skills?.length || 0) - 3} more
               </span>
             )}
@@ -334,7 +334,7 @@ export const ManagerApplicationsPage: React.FC = () => {
       {/* Header */}
       <div className="border-b-2 border-ink-primary pb-5 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <h1 className="font-display font-black text-4xl sm:text-5xl uppercase tracking-tight text-ink-primary leading-none">
+          <h1 className="font-display font-black text-4xl sm:text-5xl tracking-tight text-ink-primary leading-none">
             Admissions Board
           </h1>
           <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
@@ -444,10 +444,10 @@ export const ManagerApplicationsPage: React.FC = () => {
             {(inspectingApp.formData?.photoUrl || inspectingApp.formData?.idPhotoUrl) && (
               <div className="p-4 border-2 border-ink-primary bg-white space-y-3">
                 <div className="flex items-center justify-between border-b border-border pb-2">
-                  <h4 className="font-display text-lg font-black uppercase text-ink-primary">
+                  <h4 className="font-display text-lg font-black text-ink-primary">
                     Uploaded Verification Images
                   </h4>
-                  <span className="text-[11px] font-bold text-role-manager bg-role-managerLight px-2 py-0.5 border border-role-manager">
+                  <span className="text-[13px] font-bold text-role-manager bg-role-managerLight px-2 py-0.5 border border-role-manager">
                     Admissions Secure View
                   </span>
                 </div>
@@ -455,7 +455,7 @@ export const ManagerApplicationsPage: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {inspectingApp.formData?.photoUrl && (
                     <div className="space-y-1">
-                      <span className="text-[11px] font-bold text-ink-tertiary block">
+                      <span className="text-[13px] font-bold text-ink-tertiary block">
                         Volunteer Profile Photo
                       </span>
                       <div className="w-24 h-24 border border-border bg-canvas-subdued overflow-hidden">
@@ -470,7 +470,7 @@ export const ManagerApplicationsPage: React.FC = () => {
 
                   {inspectingApp.formData?.idPhotoUrl && (
                     <div className="space-y-1">
-                      <span className="text-[11px] font-bold text-ink-tertiary block">
+                      <span className="text-[13px] font-bold text-ink-tertiary block">
                         Kebele / National ID Card
                       </span>
                       <div className="w-36 h-24 border border-border bg-canvas-subdued overflow-hidden">
@@ -490,37 +490,37 @@ export const ManagerApplicationsPage: React.FC = () => {
             <div className="p-4 border-2 border-ink-primary bg-white space-y-3 shadow-sm">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <span className="text-[11px] font-bold text-ink-tertiary block">Mobile Phone</span>
+                  <span className="text-[13px] font-bold text-ink-tertiary block">Mobile Phone</span>
                   <span className="font-mono text-xs font-bold text-ink-primary">{inspectingApp.formData?.phone || '—'}</span>
                 </div>
                 <div>
-                  <span className="text-[11px] font-bold text-ink-tertiary block">Date of Birth</span>
+                  <span className="text-[13px] font-bold text-ink-tertiary block">Date of Birth</span>
                   <span className="font-mono text-xs font-bold text-ink-primary">{inspectingApp.formData?.dateOfBirth || '—'}</span>
                 </div>
               </div>
 
               <div>
-                <span className="text-[11px] font-bold text-ink-tertiary block">Service Region</span>
+                <span className="text-[13px] font-bold text-ink-tertiary block">Service Region</span>
                 <span className="text-xs font-bold text-ink-primary">{inspectingApp.formData?.area || '—'}</span>
               </div>
 
               <div>
-                <span className="text-[11px] font-bold text-ink-tertiary block">Languages</span>
+                <span className="text-[13px] font-bold text-ink-tertiary block">Languages</span>
                 <span className="text-xs text-ink-secondary">{inspectingApp.formData?.languages?.join(', ') || '—'}</span>
               </div>
 
               <div>
-                <span className="text-[11px] font-bold text-ink-tertiary block">Motivation Statement</span>
+                <span className="text-[13px] font-bold text-ink-tertiary block">Motivation Statement</span>
                 <p className="text-xs text-ink-secondary leading-relaxed bg-canvas-subdued p-3 border border-border mt-1 italic">
                   "{inspectingApp.formData?.motivation || 'No motivation statement provided.'}"
                 </p>
               </div>
 
               <div>
-                <span className="text-[11px] font-bold text-ink-tertiary block">Skills & Capacities</span>
+                <span className="text-[13px] font-bold text-ink-tertiary block">Skills & Capacities</span>
                 <div className="flex flex-wrap gap-1 pt-1">
                   {inspectingApp.formData?.skills?.map((s) => (
-                    <span key={s} className="px-2 py-0.5 bg-canvas-subdued border border-border text-[11px] font-sans text-ink-primary">
+                    <span key={s} className="px-2 py-0.5 bg-canvas-subdued border border-border text-[13px] font-sans text-ink-primary">
                       {s}
                     </span>
                   ))}
@@ -529,7 +529,7 @@ export const ManagerApplicationsPage: React.FC = () => {
 
               {inspectingApp.formData?.emergencyContact && (
                 <div className="pt-2 border-t border-border">
-                  <span className="text-[11px] font-bold text-ink-tertiary block">Emergency Contact</span>
+                  <span className="text-[13px] font-bold text-ink-tertiary block">Emergency Contact</span>
                   <span className="text-ink-secondary font-medium">
                     {inspectingApp.formData.emergencyContact.name} ({inspectingApp.formData.emergencyContact.relationship}) •{' '}
                     <span className="font-mono">{inspectingApp.formData.emergencyContact.phone}</span>
@@ -541,10 +541,10 @@ export const ManagerApplicationsPage: React.FC = () => {
             {/* Internal Staff Notes */}
             <div className="p-4 border-2 border-border bg-canvas-subdued space-y-3">
               <div className="flex items-center justify-between border-b border-border pb-2">
-                <h4 className="font-display text-base font-black uppercase text-ink-primary">
+                <h4 className="font-display text-base font-black text-ink-primary">
                   Internal Private Notes
                 </h4>
-                <span className="text-[11px] text-ink-tertiary">
+                <span className="text-[13px] text-ink-tertiary">
                   Visible to Managers only
                 </span>
               </div>
@@ -557,7 +557,7 @@ export const ManagerApplicationsPage: React.FC = () => {
                     <div key={n.id} className="p-2.5 bg-white border border-border space-y-1">
                       <div className="flex items-center justify-between">
                         <span className="font-bold text-ink-primary">{n.authorName}</span>
-                        <span className="font-mono text-[10px] text-ink-tertiary">
+                        <span className="font-mono text-[13px] text-ink-tertiary">
                           {new Date(n.createdAt).toLocaleDateString()}
                         </span>
                       </div>
@@ -588,7 +588,7 @@ export const ManagerApplicationsPage: React.FC = () => {
 
             {/* Decision Actions */}
             <div className="border-4 border-ink-primary bg-white p-5 space-y-4 shadow-ticket">
-              <h4 className="font-display text-xl font-black uppercase text-ink-primary">
+              <h4 className="font-display text-xl font-black text-ink-primary">
                 Admissions Board Action
               </h4>
 

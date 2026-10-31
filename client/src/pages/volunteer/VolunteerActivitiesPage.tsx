@@ -139,10 +139,10 @@ export const VolunteerActivitiesPage: React.FC = () => {
       {/* Top Header Banner */}
       <div className="border-b-2 border-border pb-5 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <span className="font-sans text-xs font-bold text-role-volunteer uppercase tracking-tight block">
+          <span className="font-sans text-xs font-bold text-role-volunteer tracking-tight block">
             Field Roster & Assignments
           </span>
-          <h1 className="font-display text-4xl sm:text-5xl font-black uppercase tracking-tight text-ink-primary leading-none mt-1">
+          <h1 className="font-display text-4xl sm:text-5xl font-black tracking-tight text-ink-primary leading-none mt-1">
             Browse Volunteer Activities
           </h1>
           <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1 max-w-2xl">
@@ -157,7 +157,7 @@ export const VolunteerActivitiesPage: React.FC = () => {
               setViewMode('list');
               setSelectedCalendarDate(null);
             }}
-            className={`flex items-center gap-1.5 px-3 py-1.5 font-sans text-xs font-bold uppercase cursor-pointer transition-colors ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 font-sans text-xs font-bold cursor-pointer transition-colors ${
               viewMode === 'list'
                 ? 'bg-ink-primary text-white'
                 : 'text-ink-secondary hover:text-ink-primary hover:bg-canvas'
@@ -168,7 +168,7 @@ export const VolunteerActivitiesPage: React.FC = () => {
           </button>
           <button
             onClick={() => setViewMode('calendar')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 font-sans text-xs font-bold uppercase cursor-pointer transition-colors ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 font-sans text-xs font-bold cursor-pointer transition-colors ${
               viewMode === 'calendar'
                 ? 'bg-ink-primary text-white'
                 : 'text-ink-secondary hover:text-ink-primary hover:bg-canvas'
@@ -211,7 +211,7 @@ export const VolunteerActivitiesPage: React.FC = () => {
 
         <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-border text-xs">
           <div className="flex items-center gap-3">
-            <span className="font-sans font-bold text-ink-tertiary uppercase">Filter by Rank:</span>
+            <span className="font-sans font-bold text-ink-tertiary">Filter by Rank:</span>
             <div className="flex flex-wrap gap-1.5">
               {RANK_OPTIONS.map((opt) => (
                 <button
@@ -246,7 +246,7 @@ export const VolunteerActivitiesPage: React.FC = () => {
         <div className="border-2 border-ink-primary bg-white p-6 shadow-ticket space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b-2 border-border pb-3">
             <div>
-              <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
+              <h3 className="font-display text-2xl font-black text-ink-primary">
                 Activity Calendar: November 2026
               </h3>
               <p className="font-sans text-xs text-ink-secondary">
@@ -271,7 +271,7 @@ export const VolunteerActivitiesPage: React.FC = () => {
           {/* Calendar Grid */}
           <div className="grid grid-cols-7 gap-2 pt-2">
             {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((d) => (
-              <div key={d} className="text-center font-sans text-xs font-bold uppercase text-ink-tertiary pb-1">
+              <div key={d} className="text-center font-sans text-xs font-bold text-ink-tertiary pb-1">
                 {d}
               </div>
             ))}
@@ -297,7 +297,7 @@ export const VolunteerActivitiesPage: React.FC = () => {
                 >
                   <span className="font-mono text-xs font-bold">{d.dayNumber}</span>
                   {d.hasActivities && (
-                    <div className="flex items-center gap-1 font-mono text-[10px] font-bold text-white bg-role-volunteer px-1.5 py-0.5 self-start">
+                    <div className="flex items-center gap-1 font-mono text-[13px] font-bold text-white bg-role-volunteer px-1.5 py-0.5 self-start">
                       <span>{d.count} session{d.count > 1 ? 's' : ''}</span>
                     </div>
                   )}
@@ -335,7 +335,7 @@ export const VolunteerActivitiesPage: React.FC = () => {
             >
               <div className="space-y-2 flex-1">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="font-mono text-xs font-bold uppercase px-2 py-0.5 bg-canvas border border-ink-primary text-ink-primary">
+                  <span className="font-mono text-xs font-bold px-2 py-0.5 bg-canvas border border-ink-primary text-ink-primary">
                     {act.type.replace('_', ' ')}
                   </span>
                   <StatusMark status={act.status} size="sm" />
@@ -349,7 +349,7 @@ export const VolunteerActivitiesPage: React.FC = () => {
 
                 <Link
                   to={`/volunteer/activities/${act.id}`}
-                  className="font-display text-2xl sm:text-3xl font-black uppercase text-ink-primary hover:text-role-volunteer transition-colors block leading-tight"
+                  className="font-display text-2xl sm:text-3xl font-black text-ink-primary hover:text-role-volunteer transition-colors block leading-tight"
                 >
                   {act.title}
                 </Link>

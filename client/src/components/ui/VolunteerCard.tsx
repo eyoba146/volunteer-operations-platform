@@ -67,19 +67,19 @@ export const VolunteerCard: React.FC<VolunteerCardProps> = ({
       {/* Verification Data Grid */}
       <div className="grid grid-cols-2 gap-3 p-3 bg-canvas-subdued border-2 border-ink-primary text-xs font-sans">
         <div>
-          <span className="text-[11px] text-ink-secondary font-bold block">Pass ID</span>
+          <span className="text-[13px] text-ink-secondary font-bold block">Pass ID</span>
           <span className="font-sans text-xs font-bold text-ink-primary">{profile.volunteerNumber || 'VTS-AA-2026-084'}</span>
         </div>
         <div>
-          <span className="text-[11px] text-ink-secondary font-bold block">Approved Hours</span>
+          <span className="text-[13px] text-ink-secondary font-bold block">Approved Hours</span>
           <span className="font-display text-xl font-black text-ink-primary leading-none">{approvedHours} hrs</span>
         </div>
         <div>
-          <span className="text-[11px] text-ink-secondary font-bold block">Duty Region</span>
+          <span className="text-[13px] text-ink-secondary font-bold block">Duty Region</span>
           <span className="font-bold text-ink-primary truncate block">{profile.area}</span>
         </div>
         <div>
-          <span className="text-[11px] text-ink-secondary font-bold block">Activities</span>
+          <span className="text-[13px] text-ink-secondary font-bold block">Activities</span>
           <span className="font-display text-xl font-black text-ink-primary leading-none">{completedActivities} completed</span>
         </div>
       </div>
@@ -87,7 +87,7 @@ export const VolunteerCard: React.FC<VolunteerCardProps> = ({
       {/* Perforated Stub Bottom */}
       <div className="pt-4 border-t-2 border-dashed border-ink-primary flex items-center justify-between">
         <div className="space-y-0.5">
-          <span className="text-[11px] font-sans text-ink-secondary font-bold block">
+          <span className="text-[13px] font-sans text-ink-secondary font-bold block">
             Scan to Verify on Trail
           </span>
           <span className="font-sans text-xs font-bold text-ink-primary">

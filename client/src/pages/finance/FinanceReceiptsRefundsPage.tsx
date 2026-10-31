@@ -129,7 +129,7 @@ export const FinanceReceiptsRefundsPage: React.FC = () => {
       cell: (p) => (
         <div className="font-sans text-xs">
           <span className="font-semibold text-ink-primary block">{p.payerName || 'Applicant'}</span>
-          <span className="font-mono text-ink-tertiary text-[11px] block">{p.payerPhone || '—'}</span>
+          <span className="font-mono text-ink-tertiary text-[13px] block">{p.payerPhone || '—'}</span>
         </div>
       ),
     },
@@ -224,7 +224,7 @@ export const FinanceReceiptsRefundsPage: React.FC = () => {
       cell: (p) => (
         <div className="font-sans text-xs">
           <span className="font-semibold text-ink-primary block">{p.payerName}</span>
-          <span className="font-mono text-ink-tertiary text-[11px] block">{p.payerPhone}</span>
+          <span className="font-mono text-ink-tertiary text-[13px] block">{p.payerPhone}</span>
         </div>
       ),
     },
@@ -287,10 +287,10 @@ export const FinanceReceiptsRefundsPage: React.FC = () => {
       >
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b-2 border-ink-primary pb-5">
           <div className="space-y-1">
-            <span className="font-sans text-xs font-bold text-ink-primary uppercase tracking-tight block">
+            <span className="font-sans text-xs font-bold text-ink-primary tracking-tight block">
               Official Accounting Ledger
             </span>
-            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-ink-primary leading-none">
+            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl tracking-tight text-ink-primary leading-none">
               Receipts & Refunds
             </h1>
             <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
@@ -313,37 +313,37 @@ export const FinanceReceiptsRefundsPage: React.FC = () => {
         {/* Daily & Monthly Totals Banner */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 font-sans text-xs">
           <div className="p-3 border-2 border-border bg-canvas-subdued space-y-0.5">
-            <span className="text-[10px] text-ink-tertiary uppercase font-mono block">Confirmed Receipts MTD</span>
+            <span className="text-[13px] text-ink-tertiary font-mono block">Confirmed Receipts MTD</span>
             <span className="font-display text-2xl font-black text-civic-green block leading-none">
               ETB {totalReceiptsETB.toLocaleString()}.00
             </span>
-            <span className="text-[11px] text-ink-secondary font-mono">{receipts.length} official receipts</span>
+            <span className="text-[13px] text-ink-secondary font-mono">{receipts.length} official receipts</span>
           </div>
 
           <div className="p-3 border-2 border-border bg-canvas-subdued space-y-0.5">
-            <span className="text-[10px] text-ink-tertiary uppercase font-mono block">Refund Claims Pending</span>
+            <span className="text-[13px] text-ink-tertiary font-mono block">Refund Claims Pending</span>
             <span className={`font-display text-2xl font-black block leading-none ${
               refundRequests.length > 0 ? 'text-[#784E0B]' : 'text-civic-green'
             }`}>
               {refundRequests.length} <span className="text-xs font-mono font-normal text-ink-tertiary">claims</span>
             </span>
-            <span className="text-[11px] text-ink-secondary font-mono">Requires finance approval</span>
+            <span className="text-[13px] text-ink-secondary font-mono">Requires finance approval</span>
           </div>
 
           <div className="p-3 border-2 border-border bg-canvas-subdued space-y-0.5">
-            <span className="text-[10px] text-ink-tertiary uppercase font-mono block">Total Reimbursed</span>
+            <span className="text-[13px] text-ink-tertiary font-mono block">Total Reimbursed</span>
             <span className="font-display text-2xl font-black text-red-600 block leading-none">
               - ETB {totalRefundsETB.toLocaleString()}.00
             </span>
-            <span className="text-[11px] text-ink-secondary font-mono">{refunds.length} processed refunds</span>
+            <span className="text-[13px] text-ink-secondary font-mono">{refunds.length} processed refunds</span>
           </div>
 
           <div className="p-3 border-2 border-border bg-canvas-subdued space-y-0.5">
-            <span className="text-[10px] text-ink-tertiary uppercase font-mono block">Net Retained Fee</span>
+            <span className="text-[13px] text-ink-tertiary font-mono block">Net Retained Fee</span>
             <span className="font-display text-2xl font-black text-ink-primary block leading-none">
               ETB {(totalReceiptsETB - totalRefundsETB).toLocaleString()}.00
             </span>
-            <span className="text-[11px] text-ink-secondary font-mono">Audited merchant balance</span>
+            <span className="text-[13px] text-ink-secondary font-mono">Audited merchant balance</span>
           </div>
         </div>
       </div>
@@ -380,7 +380,7 @@ export const FinanceReceiptsRefundsPage: React.FC = () => {
           </p>
 
           <div className="space-y-1">
-            <label className="block text-xs font-bold uppercase tracking-tight text-ink-primary">
+            <label className="block text-xs font-bold tracking-tight text-ink-primary">
               Mandatory Written Explanation (Audit Requirement)
             </label>
             <textarea
@@ -426,10 +426,10 @@ export const FinanceReceiptsRefundsPage: React.FC = () => {
             <div className="border-4 border-ink-primary bg-white p-6 space-y-4 shadow-ticket">
               <div className="flex items-start justify-between border-b-2 border-ink-primary pb-3">
                 <div>
-                  <h3 className="font-display text-2xl font-black uppercase tracking-tight text-ink-primary">
+                  <h3 className="font-display text-2xl font-black tracking-tight text-ink-primary">
                     VTS Volunteer Program
                   </h3>
-                  <span className="font-mono text-[10px] text-ink-tertiary block">
+                  <span className="font-mono text-[13px] text-ink-tertiary block">
                     Tax Registration Receipt • Ethio Telecom Telebirr
                   </span>
                 </div>
@@ -440,32 +440,32 @@ export const FinanceReceiptsRefundsPage: React.FC = () => {
 
               <div className="grid grid-cols-2 gap-3 font-mono text-xs py-2">
                 <div>
-                  <span className="text-[10px] text-ink-tertiary uppercase block">Receipt Number</span>
+                  <span className="text-[13px] text-ink-tertiary block">Receipt Number</span>
                   <span className="font-bold text-ink-primary">{viewingReceipt.receiptNumber}</span>
                 </div>
                 <div>
-                  <span className="text-[10px] text-ink-tertiary uppercase block">Telebirr Ref</span>
+                  <span className="text-[13px] text-ink-tertiary block">Telebirr Ref</span>
                   <span className="font-bold text-ink-primary">{viewingReceipt.telebirrReference}</span>
                 </div>
                 <div>
-                  <span className="text-[10px] text-ink-tertiary uppercase block">Issued To</span>
+                  <span className="text-[13px] text-ink-tertiary block">Issued To</span>
                   <span className="font-bold text-ink-primary font-sans">{viewingReceipt.payerName}</span>
                 </div>
                 <div>
-                  <span className="text-[10px] text-ink-tertiary uppercase block">Payer Phone</span>
+                  <span className="text-[13px] text-ink-tertiary block">Payer Phone</span>
                   <span className="font-bold text-ink-primary">{viewingReceipt.payerPhone}</span>
                 </div>
                 <div>
-                  <span className="text-[10px] text-ink-tertiary uppercase block">Date Settled</span>
+                  <span className="text-[13px] text-ink-tertiary block">Date Settled</span>
                   <span className="text-ink-secondary">{new Date(viewingReceipt.confirmedAt || viewingReceipt.createdAt).toLocaleDateString()}</span>
                 </div>
                 <div>
-                  <span className="text-[10px] text-ink-tertiary uppercase block">Fee Amount</span>
+                  <span className="text-[13px] text-ink-tertiary block">Fee Amount</span>
                   <span className="font-bold text-civic-green text-sm">ETB {viewingReceipt.amount}.00</span>
                 </div>
               </div>
 
-              <div className="border-t border-border pt-3 text-[10px] text-ink-tertiary text-center font-mono">
+              <div className="border-t border-border pt-3 text-[13px] text-ink-tertiary text-center font-mono">
                 Ethio Telecom Merchant Account: 884120 • Electronic Proof of Volunteer Registration
               </div>
             </div>

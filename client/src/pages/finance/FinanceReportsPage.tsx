@@ -60,10 +60,10 @@ export const FinanceReportsPage: React.FC = () => {
       >
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b-2 border-ink-primary pb-5">
           <div className="space-y-1">
-            <span className="font-sans text-xs font-bold text-ink-primary uppercase tracking-tight block">
+            <span className="font-sans text-xs font-bold text-ink-primary tracking-tight block">
               Telebirr Merchant Reconciliation
             </span>
-            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-ink-primary leading-none">
+            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl tracking-tight text-ink-primary leading-none">
               Financial Settlement Reports
             </h1>
             <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
@@ -101,7 +101,7 @@ export const FinanceReportsPage: React.FC = () => {
           }}
         >
           <div className="border-b-2 border-border pb-2">
-            <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
+            <h3 className="font-display text-2xl font-black text-ink-primary">
               Monthly Registration Revenue (ETB 200.00 / fee)
             </h3>
           </div>
@@ -133,7 +133,7 @@ export const FinanceReportsPage: React.FC = () => {
           }}
         >
           <div className="border-b-2 border-border pb-2">
-            <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
+            <h3 className="font-display text-2xl font-black text-ink-primary">
               Settlement Rail Integrity Breakdown
             </h3>
           </div>

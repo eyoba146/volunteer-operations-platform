@@ -54,7 +54,7 @@ export const FinancePaymentsPage: React.FC = () => {
             {p.telebirrReference}
           </span>
           {p.receiptNumber && (
-            <span className="font-mono text-[11px] text-ink-tertiary block">
+            <span className="font-mono text-[13px] text-ink-tertiary block">
               Receipt: {p.receiptNumber}
             </span>
           )}
@@ -66,7 +66,7 @@ export const FinancePaymentsPage: React.FC = () => {
       cell: (p) => (
         <div className="space-y-0.5 font-sans text-xs">
           <span className="font-semibold text-ink-primary block">{p.payerName || 'Applicant'}</span>
-          <span className="font-mono text-ink-tertiary text-[11px] block">{p.payerPhone || '—'}</span>
+          <span className="font-mono text-ink-tertiary text-[13px] block">{p.payerPhone || '—'}</span>
         </div>
       ),
     },
@@ -110,10 +110,10 @@ export const FinancePaymentsPage: React.FC = () => {
       >
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b-2 border-ink-primary pb-5">
           <div className="space-y-1">
-            <span className="font-sans text-xs font-bold text-ink-primary uppercase tracking-tight block">
+            <span className="font-sans text-xs font-bold text-ink-primary tracking-tight block">
               Ethio Telecom Settlement Records
             </span>
-            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-ink-primary leading-none">
+            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl tracking-tight text-ink-primary leading-none">
               Telebirr Payments Ledger
             </h1>
             <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
@@ -122,7 +122,7 @@ export const FinancePaymentsPage: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="font-mono text-xs font-bold text-white bg-ink-primary px-3 py-1.5 shadow-sm uppercase">
+            <span className="font-mono text-xs font-bold text-white bg-ink-primary px-3 py-1.5 shadow-sm">
               Total Records: {payments.length}
             </span>
           </div>
@@ -173,11 +173,11 @@ export const FinancePaymentsPage: React.FC = () => {
             {/* Amount & Status Card */}
             <div className="p-4 border-2 border-ink-primary bg-white shadow-ticket flex items-center justify-between">
               <div>
-                <span className="text-[10px] uppercase text-ink-tertiary block font-mono">Current Status</span>
+                <span className="text-[13px] text-ink-tertiary block font-mono">Current Status</span>
                 <StatusMark status={inspecting.status} size="md" />
               </div>
               <div className="text-right">
-                <span className="text-[10px] uppercase text-ink-tertiary block font-mono">Settlement Amount</span>
+                <span className="text-[13px] text-ink-tertiary block font-mono">Settlement Amount</span>
                 <span className="font-display text-3xl font-black text-ink-primary block leading-none">
                   ETB {inspecting.amount}.00
                 </span>
@@ -186,7 +186,7 @@ export const FinancePaymentsPage: React.FC = () => {
 
             {/* Visual Settlement Timeline (Trail route step style) */}
             <div className="p-4 border-2 border-ink-primary bg-white shadow-ticket space-y-4">
-              <span className="font-display text-lg font-black uppercase text-ink-primary block border-b-2 border-border pb-2">
+              <span className="font-display text-lg font-black text-ink-primary block border-b-2 border-border pb-2">
                 Settlement Lifecycle Timeline
               </span>
 
@@ -195,8 +195,8 @@ export const FinancePaymentsPage: React.FC = () => {
                 <div className="relative space-y-0.5">
                   <div className="absolute -left-6 top-1 w-3 h-3 rounded-full bg-ink-primary border-2 border-white ring-2 ring-ink-primary" />
                   <div className="flex items-baseline justify-between">
-                    <span className="font-bold text-xs uppercase text-ink-primary">1. Payment Session Initiated</span>
-                    <span className="font-mono text-[10px] text-ink-tertiary">{new Date(inspecting.createdAt).toLocaleTimeString()}</span>
+                    <span className="font-bold text-xs text-ink-primary">1. Payment Session Initiated</span>
+                    <span className="font-mono text-[13px] text-ink-tertiary">{new Date(inspecting.createdAt).toLocaleTimeString()}</span>
                   </div>
                   <p className="text-ink-secondary text-xs">
                     Applicant {inspecting.payerName || 'Candidate'} requested Telebirr prompt for ETB {inspecting.amount}.00 via phone {inspecting.payerPhone || 'recorded'}.
@@ -207,8 +207,8 @@ export const FinancePaymentsPage: React.FC = () => {
                 <div className="relative space-y-0.5">
                   <div className="absolute -left-6 top-1 w-3 h-3 rounded-full bg-ink-primary border-2 border-white ring-2 ring-ink-primary" />
                   <div className="flex items-baseline justify-between">
-                    <span className="font-bold text-xs uppercase text-ink-primary">2. USSD & Handset Prompt Dispatched</span>
-                    <span className="font-mono text-[10px] text-ink-tertiary">Merchant #884120</span>
+                    <span className="font-bold text-xs text-ink-primary">2. USSD & Handset Prompt Dispatched</span>
+                    <span className="font-mono text-[13px] text-ink-tertiary">Merchant #884120</span>
                   </div>
                   <p className="text-ink-secondary text-xs">
                     Ethio Telecom payment rail dispatched interactive PIN confirmation to subscriber wallet.
@@ -221,10 +221,10 @@ export const FinancePaymentsPage: React.FC = () => {
                     inspecting.status === 'confirmed' ? 'bg-civic-green ring-civic-green' : inspecting.status === 'needs_review' ? 'bg-amber-500 ring-amber-500' : 'bg-red-500 ring-red-500'
                   }`} />
                   <div className="flex items-baseline justify-between">
-                    <span className="font-bold text-xs uppercase text-ink-primary">
+                    <span className="font-bold text-xs text-ink-primary">
                       {inspecting.status === 'confirmed' ? '3. Telebirr Reference Confirmed' : inspecting.status === 'needs_review' ? '3. Exception Flagged for Review' : '3. Transaction State'}
                     </span>
-                    <span className="font-mono text-[10px] text-ink-tertiary">
+                    <span className="font-mono text-[13px] text-ink-tertiary">
                       {inspecting.confirmedAt ? new Date(inspecting.confirmedAt).toLocaleTimeString() : 'Pending'}
                     </span>
                   </div>
@@ -239,11 +239,11 @@ export const FinancePaymentsPage: React.FC = () => {
                     inspecting.receiptNumber ? 'bg-civic-green ring-civic-green' : inspecting.refundedAt ? 'bg-red-500 ring-red-500' : 'bg-gray-400 ring-gray-400'
                   }`} />
                   <div className="flex items-baseline justify-between">
-                    <span className="font-bold text-xs uppercase text-ink-primary">
+                    <span className="font-bold text-xs text-ink-primary">
                       {inspecting.receiptNumber ? '4. Official Tax Receipt Issued' : inspecting.refundedAt ? '4. Refund Processed' : '4. Awaiting Resolution'}
                     </span>
                     {inspecting.receiptNumber && (
-                      <span className="font-mono text-[10px] font-bold text-civic-green">{inspecting.receiptNumber}</span>
+                      <span className="font-mono text-[13px] font-bold text-civic-green">{inspecting.receiptNumber}</span>
                     )}
                   </div>
                   <p className="text-ink-secondary text-xs">

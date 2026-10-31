@@ -27,7 +27,7 @@ export const ForgotPasswordPage: React.FC = () => {
   return (
     <div className="max-w-lg mx-auto px-4 sm:px-6 py-12 md:py-16 space-y-8">
       <div className="space-y-2 border-b-2 border-ink-primary pb-6 text-center">
-        <h1 className="font-display font-black text-5xl sm:text-6xl uppercase tracking-tight text-ink-primary leading-none">
+        <h1 className="font-display font-black text-5xl sm:text-6xl tracking-tight text-ink-primary leading-none">
           Recover Password
         </h1>
         <p className="font-sans text-sm sm:text-base text-ink-secondary">
@@ -46,7 +46,7 @@ export const ForgotPasswordPage: React.FC = () => {
             <div className="w-14 h-14 mx-auto bg-green-50 text-role-volunteer border-2 border-role-volunteer flex items-center justify-center">
               <CheckCircle className="w-8 h-8" weight="fill" />
             </div>
-            <h3 className="font-display text-3xl font-black uppercase text-ink-primary">
+            <h3 className="font-display text-3xl font-black text-ink-primary">
               Check Your Email
             </h3>
             <p className="font-sans text-xs sm:text-sm text-ink-secondary leading-relaxed">
@@ -71,7 +71,7 @@ export const ForgotPasswordPage: React.FC = () => {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-1.5">
-              <label className="block font-sans text-xs font-bold uppercase tracking-tight text-ink-primary">
+              <label className="block font-sans text-xs font-bold tracking-tight text-ink-primary">
                 Email Address
               </label>
               <Input

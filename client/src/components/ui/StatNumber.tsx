@@ -24,7 +24,7 @@ export const StatNumber: React.FC<StatNumberProps> = ({
           {number}
         </span>
         {unit && (
-          <span className="font-display text-2xl sm:text-3xl font-bold text-ink-secondary ml-1.5 uppercase">
+          <span className="font-display text-2xl sm:text-3xl font-bold text-ink-secondary ml-1.5">
             {unit}
           </span>
         )}

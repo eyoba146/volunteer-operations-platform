@@ -196,7 +196,7 @@ export const ProfilePhotoModal: React.FC<ProfilePhotoModalProps> = ({ isOpen, on
             ) : (
               <div className="w-full h-full flex flex-col items-center justify-center bg-canvas-inset text-ink-tertiary">
                 <Camera className="w-12 h-12 mb-2" weight="bold" />
-                <span className="text-xs font-bold uppercase tracking-wider">No Photo Chosen</span>
+                <span className="text-xs font-bold tracking-wider">No Photo Chosen</span>
               </div>
             )}
 

@@ -284,7 +284,7 @@ export const ApplicantApplyPage: React.FC = () => {
       <div className="border-b-2 border-ink-primary pb-5 space-y-2">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
           <div>
-            <h1 className="font-display font-black text-4xl sm:text-5xl uppercase tracking-tight text-ink-primary leading-none">
+            <h1 className="font-display font-black text-4xl sm:text-5xl tracking-tight text-ink-primary leading-none">
               Volunteer Application
             </h1>
             <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
@@ -351,7 +351,7 @@ export const ApplicantApplyPage: React.FC = () => {
         {currentStep === 1 && (
           <div className="space-y-5 animate-in fade-in duration-150">
             <div className="border-b border-border pb-3">
-              <h2 className="font-display text-2xl font-black uppercase text-ink-primary">
+              <h2 className="font-display text-2xl font-black text-ink-primary">
                 1. Personal Details & Service Area
               </h2>
               <p className="font-sans text-xs text-ink-secondary">
@@ -434,7 +434,7 @@ export const ApplicantApplyPage: React.FC = () => {
         {currentStep === 2 && (
           <div className="space-y-6 animate-in fade-in duration-150">
             <div className="border-b border-border pb-3">
-              <h2 className="font-display text-2xl font-black uppercase text-ink-primary">
+              <h2 className="font-display text-2xl font-black text-ink-primary">
                 2. Photos & Identification (Optional)
               </h2>
               <p className="font-sans text-xs text-ink-secondary">
@@ -488,7 +488,7 @@ export const ApplicantApplyPage: React.FC = () => {
 
                   {/* Simulator Presets */}
                   <div className="pt-1">
-                    <span className="text-[11px] font-sans text-ink-tertiary block">
+                    <span className="text-[13px] font-sans text-ink-tertiary block">
                       Quick demo portraits:
                     </span>
                     <div className="flex flex-wrap gap-2 pt-1">
@@ -497,7 +497,7 @@ export const ApplicantApplyPage: React.FC = () => {
                           key={p.name}
                           type="button"
                           onClick={() => setPhotoUrl(p.url)}
-                          className="px-2 py-1 text-[11px] border border-border bg-canvas-subdued hover:bg-canvas-raised font-sans text-ink-secondary"
+                          className="px-2 py-1 text-[13px] border border-border bg-canvas-subdued hover:bg-canvas-raised font-sans text-ink-secondary"
                         >
                           Sample {String.fromCharCode(65 + idx)}
                         </button>
@@ -519,7 +519,7 @@ export const ApplicantApplyPage: React.FC = () => {
                     Visible strictly to Program Managers for identity verification. Never shared publicly.
                   </p>
                 </div>
-                <div className="flex items-center gap-1 text-[11px] font-bold text-role-volunteer bg-role-volunteerLight px-2 py-0.5 border border-role-volunteer">
+                <div className="flex items-center gap-1 text-[13px] font-bold text-role-volunteer bg-role-volunteerLight px-2 py-0.5 border border-role-volunteer">
                   <ShieldCheck className="w-3.5 h-3.5" />
                   <span>Private</span>
                 </div>
@@ -564,7 +564,7 @@ export const ApplicantApplyPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setIdPhotoUrl(SAMPLE_ID_PHOTOS[0].url)}
-                      className="px-2 py-1 text-[11px] border border-border bg-canvas-subdued hover:bg-canvas-raised font-sans text-ink-secondary"
+                      className="px-2 py-1 text-[13px] border border-border bg-canvas-subdued hover:bg-canvas-raised font-sans text-ink-secondary"
                     >
                       Use Sample Kebele ID Card
                     </button>
@@ -599,7 +599,7 @@ export const ApplicantApplyPage: React.FC = () => {
         {currentStep === 3 && (
           <div className="space-y-6 animate-in fade-in duration-150">
             <div className="border-b border-border pb-3">
-              <h2 className="font-display text-2xl font-black uppercase text-ink-primary">
+              <h2 className="font-display text-2xl font-black text-ink-primary">
                 3. Skills Offered & Availability
               </h2>
               <p className="font-sans text-xs text-ink-secondary">
@@ -685,7 +685,7 @@ export const ApplicantApplyPage: React.FC = () => {
         {currentStep === 4 && (
           <div className="space-y-6 animate-in fade-in duration-150">
             <div className="border-b border-border pb-3">
-              <h2 className="font-display text-2xl font-black uppercase text-ink-primary">
+              <h2 className="font-display text-2xl font-black text-ink-primary">
                 4. Service Motivation & Emergency Contact
               </h2>
               <p className="font-sans text-xs text-ink-secondary">
@@ -709,7 +709,7 @@ export const ApplicantApplyPage: React.FC = () => {
 
             <div className="space-y-4 pt-3 border-t border-border">
               <div>
-                <h3 className="font-display text-xl font-black uppercase text-ink-primary">
+                <h3 className="font-display text-xl font-black text-ink-primary">
                   Emergency Contact Details
                 </h3>
                 <p className="font-sans text-xs text-ink-secondary">

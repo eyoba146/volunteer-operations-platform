@@ -59,7 +59,7 @@ export function LedgerTable<T>({
             {columns.map((col, idx) => (
               <th
                 key={idx}
-                className={`py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-secondary select-none ${
+                className={`py-3 px-4 text-xs font-semibold tracking-wider text-ink-secondary select-none ${
                   col.align === 'right'
                     ? 'text-right'
                     : col.align === 'center'

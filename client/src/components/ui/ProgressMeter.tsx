@@ -29,7 +29,7 @@ export const ProgressMeter: React.FC<ProgressMeterProps> = ({
     <div className={`space-y-2.5 ${className}`}>
       <div className="flex items-end justify-between">
         <div>
-          <span className="font-sans text-xs font-bold uppercase tracking-tight text-ink-secondary block">
+          <span className="font-sans text-xs font-bold tracking-tight text-ink-secondary block">
             {label}
           </span>
           <div className="flex items-baseline gap-1 mt-0.5">

@@ -1,4 +1,4 @@
-import React, { useState, useId } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import * as api from '../../api';
 import { Input, Button } from '../../components/ui';
@@ -14,7 +14,6 @@ import {
   Check,
   X,
   ArrowRight,
-  ShieldCheck,
 } from '@phosphor-icons/react';
 
 export const RegisterPage: React.FC = () => {
@@ -99,20 +98,20 @@ export const RegisterPage: React.FC = () => {
   }
   const isPhoneValid = phoneValidation.isValid && !phoneError;
 
-  // 5. Password: at least 8 chars with letter and number
+  // 5. Password: 8+ chars, 1 letter, 1 number
   const hasMinLength = password.length >= 8;
   const hasLetter = /[a-zA-Z]/.test(password);
-  const hasNumber = /\d/.test(password);
-  const isPasswordValid = hasMinLength && hasLetter && hasNumber;
+  const hasNumber = /[0-9]/.test(password);
+  const isPasswordSecure = hasMinLength && hasLetter && hasNumber;
   const passwordError =
-    touched.password && !isPasswordValid
-      ? 'Password does not meet all criteria below.'
+    touched.password && !isPasswordSecure
+      ? 'Password must have 8+ characters, at least 1 letter, and 1 number.'
       : undefined;
 
-  // 6. Confirm password
-  const isConfirmValid = confirmPassword.length > 0 && confirmPassword === password;
+  // 6. Confirm Password match
+  const doPasswordsMatch = password === confirmPassword && confirmPassword.length > 0;
   const confirmError =
-    touched.confirmPassword && !isConfirmValid
+    touched.confirmPassword && !doPasswordsMatch
       ? 'Passwords do not match.'
       : undefined;
 
@@ -122,23 +121,25 @@ export const RegisterPage: React.FC = () => {
     isUsernameValid &&
     isEmailValid &&
     isPhoneValid &&
-    isPasswordValid &&
-    isConfirmValid;
+    isPasswordSecure &&
+    doPasswordsMatch;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setServerError('');
 
+    setTouched({
+      firstName: true,
+      lastName: true,
+      username: true,
+      email: true,
+      phone: true,
+      password: true,
+      confirmPassword: true,
+    });
+
     if (!isFormValid) {
-      setTouched({
-        firstName: true,
-        lastName: true,
-        username: true,
-        email: true,
-        phone: true,
-        password: true,
-        confirmPassword: true,
-      });
+      setServerError('Please correct the highlighted fields before submitting.');
       return;
     }
 
@@ -169,30 +170,25 @@ export const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto px-4 sm:px-6 py-10 md:py-14 space-y-8">
+    <div className="max-w-xl mx-auto px-4 sm:px-6 py-10 md:py-14 space-y-6">
       {/* Editorial Header */}
-      <div className="space-y-2 border-b-2 border-ink-primary pb-6 text-center">
-        <div className="inline-block px-3 py-1 bg-role-applicant text-ink-primary font-display font-black text-xs uppercase tracking-wider border-2 border-ink-primary shadow-[2px_2px_0_#111111] mb-2">
-          New Volunteer Pass
+      <div className="space-y-2 border-b border-[#D5DAE1] pb-6 text-center">
+        <div className="inline-block px-3 py-1 bg-canvas-subdued text-ink-primary font-semibold text-xs rounded-[6px] border border-[#D5DAE1] mb-2">
+          New volunteer pass
         </div>
-        <h1 className="font-display font-black text-4xl sm:text-5xl text-ink-primary tracking-tight leading-tight">
-          Join the Volunteer Trail
+        <h1 className="font-display font-bold text-3xl sm:text-4xl text-ink-primary tracking-tight">
+          Join the volunteer trail
         </h1>
-        <p className="font-sans text-base text-ink-secondary max-w-lg mx-auto">
-          Register your official profile to start signing up for community initiatives, logging verified service hours, and earning altitude rank milestones.
+        <p className="font-sans text-base text-ink-secondary max-w-md mx-auto">
+          Create your profile to start enrolling in community activities, logging verified service hours, and earning rank milestones.
         </p>
       </div>
 
-      {/* Ticket Pass Form Container */}
-      <div
-        className="bg-white border-2 border-ink-primary p-6 sm:p-10 shadow-[6px_6px_0_#111111] space-y-6"
-        style={{
-          clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)',
-        }}
-      >
-        <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Form Container */}
+      <div className="bg-white border border-[#D5DAE1] rounded-[10px] p-6 sm:p-8 space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-5">
           {serverError && (
-            <div className="p-4 bg-red-50 border-2 border-role-teamlead text-role-teamlead text-sm font-sans font-bold flex items-start gap-2.5">
+            <div className="p-3.5 bg-red-50 border border-role-teamlead rounded-[8px] text-role-teamlead text-sm font-semibold flex items-start gap-2.5">
               <X className="w-5 h-5 shrink-0 mt-0.5" weight="bold" />
               <span>{serverError}</span>
             </div>
@@ -201,7 +197,7 @@ export const RegisterPage: React.FC = () => {
           {/* First & Last Name */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input
-              label="First Name"
+              label="First name"
               type="text"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
@@ -211,7 +207,7 @@ export const RegisterPage: React.FC = () => {
               required
             />
             <Input
-              label="Last Name"
+              label="Last name"
               type="text"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
@@ -237,7 +233,7 @@ export const RegisterPage: React.FC = () => {
               required
             />
             <Input
-              label="Email Address"
+              label="Email address"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -252,7 +248,7 @@ export const RegisterPage: React.FC = () => {
           {/* Phone Number */}
           <div>
             <Input
-              label="Phone Number"
+              label="Phone number"
               type="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
@@ -297,12 +293,12 @@ export const RegisterPage: React.FC = () => {
 
             <div>
               <Input
-                label="Confirm Password"
+                label="Confirm password"
                 type={showConfirmPassword ? 'text' : 'password'}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 onBlur={() => markTouched('confirmPassword')}
-                placeholder="Re-type your password"
+                placeholder="Re-type password"
                 leftIcon={<Lock className="w-4 h-4 text-ink-secondary" weight="bold" />}
                 rightIcon={
                   <button
@@ -321,34 +317,34 @@ export const RegisterPage: React.FC = () => {
           </div>
 
           {/* Live Password Checklist */}
-          <div className="p-4 bg-canvas-subdued border-2 border-ink-primary space-y-2">
-            <span className="block font-sans text-xs font-bold text-ink-primary tracking-tight">
-              Password Security Checklist
+          <div className="p-4 bg-canvas-subdued border border-[#D5DAE1] rounded-[8px] space-y-2">
+            <span className="block font-sans text-[13px] font-bold text-ink-primary tracking-tight">
+              Password requirements
             </span>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[13px]">
               <div
-                className={`flex items-center gap-1.5 font-bold ${
+                className={`flex items-center gap-1.5 font-semibold ${
                   hasMinLength ? 'text-role-volunteer' : 'text-ink-tertiary'
                 }`}
               >
-                {hasMinLength ? <Check className="w-4 h-4" weight="bold" /> : <div className="w-2 h-2 rounded-none bg-current" />}
-                <span>8+ Characters</span>
+                {hasMinLength ? <Check className="w-4 h-4" weight="bold" /> : <div className="w-1.5 h-1.5 rounded-full bg-current" />}
+                <span>8+ characters</span>
               </div>
               <div
-                className={`flex items-center gap-1.5 font-bold ${
+                className={`flex items-center gap-1.5 font-semibold ${
                   hasLetter ? 'text-role-volunteer' : 'text-ink-tertiary'
                 }`}
               >
-                {hasLetter ? <Check className="w-4 h-4" weight="bold" /> : <div className="w-2 h-2 rounded-none bg-current" />}
-                <span>At Least 1 Letter</span>
+                {hasLetter ? <Check className="w-4 h-4" weight="bold" /> : <div className="w-1.5 h-1.5 rounded-full bg-current" />}
+                <span>At least 1 letter</span>
               </div>
               <div
-                className={`flex items-center gap-1.5 font-bold ${
+                className={`flex items-center gap-1.5 font-semibold ${
                   hasNumber ? 'text-role-volunteer' : 'text-ink-tertiary'
                 }`}
               >
-                {hasNumber ? <Check className="w-4 h-4" weight="bold" /> : <div className="w-2 h-2 rounded-none bg-current" />}
-                <span>At Least 1 Number</span>
+                {hasNumber ? <Check className="w-4 h-4" weight="bold" /> : <div className="w-1.5 h-1.5 rounded-full bg-current" />}
+                <span>At least 1 number</span>
               </div>
             </div>
           </div>
@@ -364,17 +360,17 @@ export const RegisterPage: React.FC = () => {
               disabled={!isFormValid}
               rightIcon={<ArrowRight className="w-5 h-5" weight="bold" />}
             >
-              Create Volunteer Account
+              Create volunteer account
             </Button>
           </div>
         </form>
 
         {/* Footer Link */}
-        <div className="pt-4 border-t-2 border-dashed border-ink-primary flex flex-col sm:flex-row items-center justify-between text-xs text-ink-secondary gap-2">
-          <span>Already registered with VTS?</span>
+        <div className="pt-4 border-t border-[#D5DAE1] flex flex-col sm:flex-row items-center justify-between text-sm text-ink-secondary gap-2">
+          <span>Already registered?</span>
           <Link
             to="/sign-in"
-            className="font-bold text-ink-primary hover:underline border-b-2 border-ink-primary"
+            className="font-semibold text-ink-primary hover:underline"
           >
             Sign in to existing account →
           </Link>

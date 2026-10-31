@@ -81,10 +81,10 @@ export const ManagerFeedbackPage: React.FC = () => {
       >
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b-2 border-ink-primary pb-5">
           <div className="space-y-1">
-            <span className="font-sans text-xs font-bold text-role-manager uppercase tracking-tight block">
+            <span className="font-sans text-xs font-bold text-role-manager tracking-tight block">
               Volunteer Experience & Satisfaction
             </span>
-            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-ink-primary leading-none">
+            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl tracking-tight text-ink-primary leading-none">
               Activity Feedback Inbox
             </h1>
             <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
@@ -93,7 +93,7 @@ export const ManagerFeedbackPage: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="font-mono text-xs font-bold text-white bg-role-manager px-3 py-1.5 shadow-sm uppercase">
+            <span className="font-mono text-xs font-bold text-white bg-role-manager px-3 py-1.5 shadow-sm">
               Unreviewed: {unreviewedCount}
             </span>
           </div>
@@ -102,27 +102,27 @@ export const ManagerFeedbackPage: React.FC = () => {
         {/* Metric Cards */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
           <div className="p-3 border-2 border-border bg-canvas-subdued space-y-0.5">
-            <span className="text-[10px] text-ink-tertiary uppercase font-mono block">Average Rating</span>
+            <span className="text-[13px] text-ink-tertiary font-mono block">Average Rating</span>
             <span className="font-display text-3xl font-black text-[#784E0B] leading-none block">
               {avgScore} <span className="text-xs font-mono font-normal text-ink-tertiary">/ 5.0</span>
             </span>
-            <span className="text-[11px] text-ink-secondary">Overall volunteer sentiment</span>
+            <span className="text-[13px] text-ink-secondary">Overall volunteer sentiment</span>
           </div>
 
           <div className="p-3 border-2 border-border bg-canvas-subdued space-y-0.5">
-            <span className="text-[10px] text-ink-tertiary uppercase font-mono block">Total Debriefs</span>
+            <span className="text-[13px] text-ink-tertiary font-mono block">Total Debriefs</span>
             <span className="font-display text-3xl font-black text-ink-primary leading-none block">
               {feedbackList.length}
             </span>
-            <span className="text-[11px] text-ink-secondary">Post-activity submissions</span>
+            <span className="text-[13px] text-ink-secondary">Post-activity submissions</span>
           </div>
 
           <div className="p-3 border-2 border-border bg-canvas-subdued space-y-0.5 col-span-2 sm:col-span-1">
-            <span className="text-[10px] text-ink-tertiary uppercase font-mono block">Action Required</span>
+            <span className="text-[13px] text-ink-tertiary font-mono block">Action Required</span>
             <span className="font-display text-3xl font-black text-role-applicant leading-none block">
               {unreviewedCount}
             </span>
-            <span className="text-[11px] text-ink-secondary">Awaiting manager review</span>
+            <span className="text-[13px] text-ink-secondary">Awaiting manager review</span>
           </div>
         </div>
 
@@ -171,15 +171,15 @@ export const ManagerFeedbackPage: React.FC = () => {
               <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 border-b-2 border-border pb-3">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="font-display text-xl font-black uppercase text-ink-primary">
+                    <span className="font-display text-xl font-black text-ink-primary">
                       {fb.userName}
                     </span>
                     {fb.userArea && (
-                      <span className="font-mono text-[10px] text-ink-tertiary px-1.5 py-0.5 bg-canvas-subdued border border-border">
+                      <span className="font-mono text-[13px] text-ink-tertiary px-1.5 py-0.5 bg-canvas-subdued border border-border">
                         {fb.userArea}
                       </span>
                     )}
-                    <span className={`font-mono text-[10px] font-bold px-2 py-0.5 uppercase ${
+                    <span className={`font-mono text-[13px] font-bold px-2 py-0.5 uppercase ${
                       fb.status === 'new' ? 'bg-amber-100 text-amber-900 border border-amber-300' : 'bg-canvas-subdued text-ink-tertiary border border-border'
                     }`}>
                       {fb.status === 'new' ? 'Unreviewed' : 'Reviewed'}
@@ -227,7 +227,7 @@ export const ManagerFeedbackPage: React.FC = () => {
                 "{fb.comment}"
               </p>
 
-              <div className="flex items-center justify-between text-[11px] font-mono text-ink-tertiary pt-1">
+              <div className="flex items-center justify-between text-[13px] font-mono text-ink-tertiary pt-1">
                 <span>Submitted: {new Date(fb.submittedAt).toLocaleDateString()}</span>
                 <span>Feedback ID: {fb.id}</span>
               </div>

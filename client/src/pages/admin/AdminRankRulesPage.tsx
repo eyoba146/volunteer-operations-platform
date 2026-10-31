@@ -42,7 +42,7 @@ export const AdminRankRulesPage: React.FC = () => {
     try {
       await api.updateRankRule(rule.rank, rule, user.id, profile?.fullName || user.username);
       toast.success(
-        `Thresholds for ${rule.rank.replace('_', ' ').toUpperCase()} updated! Volunteer progress meters recalculate dynamically.`
+        `Thresholds for ${rule.rank.replace('_', ' ')} updated. Volunteer progress meters recalculate automatically.`
       );
     } catch (err: any) {
       toast.error(err.message || 'Could not save rank rule.');
@@ -80,14 +80,14 @@ export const AdminRankRulesPage: React.FC = () => {
       >
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b-2 border-ink-primary pb-5">
           <div className="space-y-1">
-            <span className="font-sans text-xs font-bold text-amber-600 uppercase tracking-tight block">
+            <span className="font-sans text-xs font-bold text-amber-600 tracking-tight block">
               Merit Ladder Calibration
             </span>
-            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-ink-primary leading-none">
+            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl tracking-tight text-ink-primary leading-none">
               Rank Progression Rules
             </h1>
             <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
-              Configure minimum verified service hours, completed activities, leader ratings, and required qualification courses.
+              Configure minimum verified service hours, completed activities, leader ratings, and required training courses.
             </p>
           </div>
         </div>
@@ -96,7 +96,7 @@ export const AdminRankRulesPage: React.FC = () => {
         <div className="p-3 bg-emerald-50 border-2 border-emerald-300 flex items-center gap-3 text-xs text-emerald-900 font-sans">
           <Lightning className="w-5 h-5 text-emerald-600 shrink-0" weight="fill" />
           <span>
-            <strong>Dynamic Platform Engine:</strong> Any change saved below immediately recalculates volunteer rank progress routes, percentage completion bars, and Manager promotion board eligibility across the entire platform in real time.
+            <strong>Live Rules Engine:</strong> Any change saved below immediately recalculates volunteer rank progress routes, percentage completion bars, and Manager promotion board eligibility across the entire platform in real time.
           </span>
         </div>
       </div>
@@ -113,8 +113,8 @@ export const AdminRankRulesPage: React.FC = () => {
             <div className="flex items-center justify-between border-b-2 border-border pb-3">
               <div className="flex items-center gap-3">
                 <StatusMark status={rule.rank} size="md" />
-                <h3 className="font-display text-2xl font-black uppercase tracking-tight text-ink-primary">
-                  {rule.rank.replace('_', ' ')} Qualification Thresholds
+                <h3 className="font-display text-2xl font-black tracking-tight text-ink-primary">
+                  {rule.rank.replace('_', ' ')} Criteria Thresholds
                 </h3>
               </div>
               <Button
@@ -167,7 +167,7 @@ export const AdminRankRulesPage: React.FC = () => {
 
             <div className="space-y-1">
               <Input
-                label="Mandatory Qualification Course Title"
+                label="Mandatory Training Course Title"
                 value={rule.requiredTraining}
                 onChange={(e) => handleFieldChange(rule.rank, 'requiredTraining', e.target.value)}
                 hint="Must match course certificates issued to volunteers for promotion eligibility."

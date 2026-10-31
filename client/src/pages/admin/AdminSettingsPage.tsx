@@ -266,10 +266,10 @@ export const AdminSettingsPage: React.FC = () => {
       >
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b-2 border-ink-primary pb-5">
           <div className="space-y-1">
-            <span className="font-sans text-xs font-bold text-amber-600 uppercase tracking-tight block">
-              Directorate Configuration Desk
+            <span className="font-sans text-xs font-bold text-amber-600 tracking-tight block">
+              Operations Configuration Desk
             </span>
-            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-ink-primary leading-none">
+            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl tracking-tight text-ink-primary leading-none">
               Program Settings & Templates
             </h1>
             <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
@@ -295,7 +295,7 @@ export const AdminSettingsPage: React.FC = () => {
       {activeTab === 'fees' && (
         <form onSubmit={handleSaveGeneral} className="border-2 border-ink-primary bg-white p-6 sm:p-8 space-y-6 shadow-ticket">
           <div className="border-b-2 border-border pb-2">
-            <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
+            <h3 className="font-display text-2xl font-black text-ink-primary">
               Registration Fee & Merchant Account
             </h3>
             <p className="text-xs text-ink-secondary">
@@ -364,11 +364,11 @@ export const AdminSettingsPage: React.FC = () => {
           {/* Areas Editor */}
           <div className="border-2 border-ink-primary bg-white p-6 sm:p-8 space-y-4 shadow-ticket">
             <div className="border-b-2 border-border pb-2">
-              <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
+              <h3 className="font-display text-2xl font-black text-ink-primary">
                 Operational Regional Areas
               </h3>
               <p className="text-xs text-ink-secondary">
-                Corridors where volunteer activities and regional hubs are deployed.
+                Corridors where volunteer activities and community teams are deployed.
               </p>
             </div>
 
@@ -411,7 +411,7 @@ export const AdminSettingsPage: React.FC = () => {
           {/* Skills Catalog */}
           <div className="border-2 border-ink-primary bg-white p-6 sm:p-8 space-y-4 shadow-ticket">
             <div className="border-b-2 border-border pb-2">
-              <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
+              <h3 className="font-display text-2xl font-black text-ink-primary">
                 Volunteer Skills Catalog
               </h3>
               <p className="text-xs text-ink-secondary">
@@ -472,7 +472,7 @@ export const AdminSettingsPage: React.FC = () => {
       {activeTab === 'certificates' && (
         <form onSubmit={handleSaveCertTemplate} className="border-2 border-ink-primary bg-white p-6 sm:p-8 space-y-6 shadow-ticket">
           <div className="border-b-2 border-border pb-2">
-            <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
+            <h3 className="font-display text-2xl font-black text-ink-primary">
               Official Certificate Template & Signatory
             </h3>
             <p className="text-xs text-ink-secondary">
@@ -489,7 +489,7 @@ export const AdminSettingsPage: React.FC = () => {
           />
 
           <div className="space-y-1.5">
-            <label className="block text-xs font-bold uppercase tracking-tight text-ink-primary">
+            <label className="block text-xs font-bold tracking-tight text-ink-primary">
               Official Endorsement Statement
             </label>
             <textarea
@@ -520,7 +520,7 @@ export const AdminSettingsPage: React.FC = () => {
           {/* Editor Form */}
           <form onSubmit={handleSaveTemplate} className="border-2 border-ink-primary bg-white p-6 space-y-4 shadow-ticket">
             <div className="border-b-2 border-border pb-2">
-              <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
+              <h3 className="font-display text-2xl font-black text-ink-primary">
                 Email Template Editor
               </h3>
               <p className="text-xs text-ink-secondary">
@@ -530,7 +530,7 @@ export const AdminSettingsPage: React.FC = () => {
 
             {/* Template Selector */}
             <div className="space-y-1">
-              <label className="block text-xs font-bold uppercase tracking-tight text-ink-primary">
+              <label className="block text-xs font-bold tracking-tight text-ink-primary">
                 Select Template
               </label>
               <select
@@ -554,7 +554,7 @@ export const AdminSettingsPage: React.FC = () => {
             />
 
             <div className="space-y-1">
-              <label className="block text-xs font-bold uppercase tracking-tight text-ink-primary">
+              <label className="block text-xs font-bold tracking-tight text-ink-primary">
                 Email Body Text
               </label>
               <textarea
@@ -568,10 +568,10 @@ export const AdminSettingsPage: React.FC = () => {
 
             {activeTemplate?.variables && (
               <div className="p-3 bg-canvas-subdued border border-border space-y-1 text-xs">
-                <span className="font-mono text-[10px] uppercase font-bold text-ink-tertiary block">
-                  Available Dynamic Variables:
+                <span className="font-mono text-[13px] font-bold text-ink-tertiary block">
+                  Available Template Variables:
                 </span>
-                <div className="flex flex-wrap gap-1 font-mono text-[10px]">
+                <div className="flex flex-wrap gap-1 font-mono text-[13px]">
                   {activeTemplate.variables.map((v) => (
                     <span key={v} className="bg-white px-1.5 py-0.5 border border-border text-ink-primary">
                       {`{{${v}}}`}
@@ -596,11 +596,11 @@ export const AdminSettingsPage: React.FC = () => {
           {/* Live Interactive Preview Card */}
           <div className="space-y-3">
             <div className="border-b-2 border-ink-primary pb-2 flex items-center justify-between">
-              <h3 className="font-display text-2xl font-black uppercase text-ink-primary flex items-center gap-2">
+              <h3 className="font-display text-2xl font-black text-ink-primary flex items-center gap-2">
                 <Eye className="w-5 h-5 text-role-teamlead" weight="bold" />
                 Live Inbox Preview
               </h3>
-              <span className="font-mono text-[10px] font-bold text-white bg-role-teamlead px-2 py-0.5 uppercase">
+              <span className="font-mono text-[13px] font-bold text-white bg-role-teamlead px-2 py-0.5">
                 Interactive Sample
               </span>
             </div>
@@ -608,11 +608,11 @@ export const AdminSettingsPage: React.FC = () => {
             <div className="border-4 border-ink-primary bg-white shadow-ticket overflow-hidden">
               {/* Mail client mock top rail */}
               <div className="bg-canvas-subdued border-b-2 border-ink-primary p-3 space-y-1 font-mono text-xs">
-                <div className="flex justify-between text-[11px] text-ink-tertiary">
+                <div className="flex justify-between text-[13px] text-ink-tertiary">
                   <span>From: VTS System Notifications &lt;no-reply@vts.et&gt;</span>
                   <span>Just now</span>
                 </div>
-                <div className="text-[11px] text-ink-tertiary">
+                <div className="text-[13px] text-ink-tertiary">
                   To: Dawit Bekele &lt;dawit.bekele@example.et&gt;
                 </div>
                 <div className="font-sans font-bold text-ink-primary text-sm pt-1 border-t border-border mt-1">
@@ -625,7 +625,7 @@ export const AdminSettingsPage: React.FC = () => {
                 {renderPreviewBody()}
               </div>
 
-              <div className="p-3 bg-canvas-subdued border-t border-border text-[10px] text-ink-tertiary font-mono text-center">
+              <div className="p-3 bg-canvas-subdued border-t border-border text-[13px] text-ink-tertiary font-mono text-center">
                 This preview updates in real-time as you type in the editor.
               </div>
             </div>
@@ -637,7 +637,7 @@ export const AdminSettingsPage: React.FC = () => {
       {activeTab === 'demo' && (
         <div className="border-4 border-ink-primary bg-white p-6 sm:p-8 space-y-6 shadow-ticket">
           <div className="border-b-2 border-border pb-2">
-            <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
+            <h3 className="font-display text-2xl font-black text-ink-primary">
               Demo Environment & Reset Tools
             </h3>
             <p className="text-xs text-ink-secondary">

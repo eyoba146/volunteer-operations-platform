@@ -3,7 +3,8 @@ import { useNavigate, useLocation, Link, useSearchParams } from 'react-router-do
 import { useAuth } from '../../context/AuthContext';
 import { Input, Button } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
-import { Key, User as UserIcon, Eye, EyeSlash, ArrowRight, CaretDown, CaretUp, Sparkle } from '@phosphor-icons/react';
+import { Key, User as UserIcon, Eye, EyeSlash, ArrowRight, CaretDown, CaretUp, Sparkle, Envelope } from '@phosphor-icons/react';
+import { DemoEmailInbox } from '../../components/demo/DemoEmailInbox';
 
 const DEMO_PERSONAS = [
   {
@@ -11,49 +12,49 @@ const DEMO_PERSONAS = [
     name: 'Hana Tesfaye',
     username: 'hana.tesfaye',
     stage: 'Accepted • Ready to pay Telebirr fee',
-    color: 'bg-role-applicant text-ink-primary',
+    badgeClass: 'bg-role-applicant text-ink-primary font-bold',
   },
   {
     role: 'Volunteer (Member)',
     name: 'Dawit Bekele',
     username: 'dawit.bekele',
-    stage: 'Active Member • Enrolled in today cleanup',
-    color: 'bg-role-volunteer text-white',
+    stage: 'Active Member • Enrolled in cleanup',
+    badgeClass: 'bg-role-volunteer text-white font-bold',
   },
   {
     role: 'Volunteer (Senior)',
     name: 'Selam Alemu',
     username: 'selam.alemu',
     stage: '168 hrs completed • Promotion pending',
-    color: 'bg-amber-600 text-white',
+    badgeClass: 'bg-amber-700 text-white font-bold',
   },
   {
     role: 'Team Lead',
     name: 'Yonas Kebede',
     username: 'yonas.kebede',
     stage: 'Field Coordinator • Approves hours & rates work',
-    color: 'bg-role-teamlead text-white',
+    badgeClass: 'bg-role-teamlead text-white font-bold',
   },
   {
     role: 'Manager',
     name: 'Marta Girma',
     username: 'marta.girma',
     stage: 'Operations • Reviews applicants & promotions',
-    color: 'bg-role-manager text-white',
+    badgeClass: 'bg-role-manager text-white font-bold',
   },
   {
     role: 'Finance Officer',
     name: 'Abel Hailu',
     username: 'abel.hailu',
     stage: 'Telebirr Audit • 2 flagged payments to review',
-    color: 'bg-role-finance text-role-financeAccent',
+    badgeClass: 'bg-ink-primary text-white font-bold',
   },
   {
     role: 'Super Admin',
     name: 'Ruth Mengistu',
     username: 'ruth.mengistu',
     stage: 'Director • Calibrates fees & rank rules',
-    color: 'bg-role-admin text-white',
+    badgeClass: 'bg-[#202328] text-white font-bold',
   },
 ];
 
@@ -63,6 +64,7 @@ export const SignInPage: React.FC = () => {
   const [password, setPassword] = useState('Demo@1234');
   const [showPassword, setShowPassword] = useState(false);
   const [demoPanelOpen, setDemoPanelOpen] = useState(true);
+  const [emailInboxOpen, setEmailInboxOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -149,96 +151,101 @@ export const SignInPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto px-4 sm:px-6 py-10 md:py-14 space-y-8">
+    <div className="max-w-xl mx-auto px-4 sm:px-6 py-10 md:py-14 space-y-6">
       {/* Editorial Header */}
-      <div className="space-y-2 border-b-2 border-ink-primary pb-6 text-center">
-        <div className="inline-block px-3 py-1 bg-canvas-subdued text-ink-primary font-display font-black text-xs uppercase tracking-wider border-2 border-ink-primary shadow-[2px_2px_0_#111111] mb-2">
-          Operations Access
+      <div className="space-y-2 border-b border-[#D5DAE1] pb-6 text-center">
+        <div className="inline-block px-3 py-1 bg-canvas-subdued text-ink-primary font-semibold text-xs rounded-[6px] border border-[#D5DAE1] mb-2">
+          Operations access
         </div>
-        <h1 className="font-display font-black text-4xl sm:text-5xl text-ink-primary tracking-tight leading-tight">
-          Sign In to Trail
+        <h1 className="font-display font-bold text-3xl sm:text-4xl text-ink-primary tracking-tight">
+          Sign in to your account
         </h1>
-        <p className="font-sans text-base text-ink-secondary max-w-lg mx-auto">
-          Enter your volunteer or staff credentials to access your field initiatives, hours log, and operational consoles.
+        <p className="font-sans text-base text-ink-secondary max-w-md mx-auto">
+          Enter your credentials to access your activities, attendance record, and operations desk.
         </p>
       </div>
 
       {/* Collapsible Demo Evaluator Accounts Panel */}
-      <div className="bg-white border-2 border-ink-primary shadow-[6px_6px_0_#111111] overflow-hidden">
+      <div className="bg-white border border-[#D5DAE1] rounded-[10px] overflow-hidden">
         <button
           type="button"
           onClick={() => setDemoPanelOpen(!demoPanelOpen)}
-          className="w-full px-5 py-3.5 bg-canvas-subdued border-b-2 border-ink-primary flex items-center justify-between font-display text-lg font-black text-ink-primary hover:bg-canvas-inset transition-colors cursor-pointer select-none"
+          className="w-full px-5 py-3.5 bg-canvas-subdued border-b border-[#D5DAE1] flex items-center justify-between font-display text-base font-bold text-ink-primary hover:bg-canvas-inset/50 transition-colors cursor-pointer select-none"
         >
           <div className="flex items-center gap-2">
-            <Sparkle className="w-5 h-5 text-role-applicant" weight="fill" />
-            <span>Demo Accounts • One-Click Fill</span>
-            <span className="font-sans text-xs font-bold px-2 py-0.5 bg-ink-primary text-white ml-2 border border-ink-primary">
+            <Sparkle className="w-4 h-4 text-role-applicant" weight="fill" />
+            <span>Demo evaluator accounts</span>
+            <span className="font-sans text-xs px-2 py-0.5 bg-canvas-inset text-ink-secondary rounded-[4px] border border-[#D5DAE1] ml-1">
               Password: Demo@1234
             </span>
           </div>
-          {demoPanelOpen ? <CaretUp className="w-5 h-5" weight="bold" /> : <CaretDown className="w-5 h-5" weight="bold" />}
+          {demoPanelOpen ? <CaretUp className="w-4 h-4" weight="bold" /> : <CaretDown className="w-4 h-4" weight="bold" />}
         </button>
 
         {demoPanelOpen && (
-          <div className="p-4 bg-white space-y-2 divide-y-2 divide-canvas-subdued">
+          <div className="p-3 bg-white space-y-1.5 divide-y divide-[#D5DAE1]/60">
             {DEMO_PERSONAS.map((p) => (
               <button
                 key={p.username}
                 type="button"
                 onClick={() => handleSelectDemoAccount(p.username)}
-                className={`w-full pt-3 pb-2 text-left flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 hover:bg-canvas-subdued transition-colors cursor-pointer border-2 border-transparent hover:border-ink-primary ${
-                  identifier === p.username ? 'bg-canvas-subdued border-ink-primary font-bold shadow-[2px_2px_0_#111111]' : ''
+                className={`w-full pt-2.5 pb-2 text-left flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-2.5 rounded-[8px] hover:bg-canvas-subdued transition-colors cursor-pointer border ${
+                  identifier === p.username ? 'bg-canvas-subdued border-ink-primary font-semibold' : 'border-transparent'
                 }`}
               >
                 <div className="space-y-0.5">
                   <div className="flex items-center gap-2">
-                    <span className={`text-[11px] font-sans font-bold px-2 py-0.5 border border-ink-primary ${p.color}`}>
+                    <span className={`text-[13px] font-sans px-2 py-0.5 rounded-[4px] ${p.badgeClass}`}>
                       {p.role}
                     </span>
-                    <span className="font-sans text-sm font-bold text-ink-primary">
+                    <span className="font-sans text-sm font-semibold text-ink-primary">
                       {p.name}
                     </span>
                   </div>
-                  <span className="font-sans text-xs text-ink-secondary block">
+                  <span className="font-sans text-[13px] text-ink-secondary block">
                     {p.stage}
                   </span>
                 </div>
-                <div className="font-sans text-xs font-bold text-ink-secondary bg-canvas-inset px-2 py-1 border border-ink-primary/30">
+                <div className="font-sans text-xs text-ink-secondary bg-canvas-inset px-2 py-1 rounded-[4px] border border-[#D5DAE1]">
                   {p.username}
                 </div>
               </button>
             ))}
+
+            {/* Email Inbox simulator trigger on Demo panel */}
+            <div className="pt-3 flex justify-end">
+              <button
+                type="button"
+                onClick={() => setEmailInboxOpen(true)}
+                className="text-xs font-semibold text-ink-secondary hover:text-ink-primary flex items-center gap-1.5 py-1 px-2 rounded-[6px] border border-[#D5DAE1] hover:bg-canvas-subdued cursor-pointer"
+              >
+                <Envelope className="w-3.5 h-3.5 text-role-applicant" weight="bold" />
+                <span>Preview transactional emails</span>
+              </button>
+            </div>
           </div>
         )}
       </div>
 
       {/* Main Sign In Form */}
-      <div
-        className="bg-white border-2 border-ink-primary p-6 sm:p-8 shadow-[6px_6px_0_#111111] space-y-6"
-        style={{
-          clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)',
-        }}
-      >
-        <form onSubmit={handleSubmit} className="space-y-5">
+      <div className="bg-white border border-[#D5DAE1] rounded-[10px] p-6 sm:p-8 space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-4">
           {errorMessage && (
-            <div className="p-4 bg-red-50 border-2 border-role-teamlead text-role-teamlead text-sm font-sans font-bold">
+            <div className="p-3.5 bg-red-50 border border-role-teamlead rounded-[8px] text-role-teamlead text-sm font-semibold">
               {errorMessage}
             </div>
           )}
 
-          <div className="space-y-1.5">
-            <Input
-              label="Username or Email Address"
-              type="text"
-              value={identifier}
-              onChange={(e) => setIdentifier(e.target.value)}
-              placeholder="e.g. hana.tesfaye or hana@example.et"
-              leftIcon={<UserIcon className="w-4 h-4 text-ink-secondary" weight="bold" />}
-              autoComplete="username"
-              required
-            />
-          </div>
+          <Input
+            label="Username or email address"
+            type="text"
+            value={identifier}
+            onChange={(e) => setIdentifier(e.target.value)}
+            placeholder="e.g. hana.tesfaye or hana@example.et"
+            leftIcon={<UserIcon className="w-4 h-4 text-ink-secondary" weight="bold" />}
+            autoComplete="username"
+            required
+          />
 
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
@@ -247,7 +254,7 @@ export const SignInPage: React.FC = () => {
               </label>
               <Link
                 to="/forgot-password"
-                className="font-sans text-xs font-bold text-ink-secondary hover:text-ink-primary hover:underline"
+                className="font-sans text-[13px] text-ink-secondary hover:text-ink-primary hover:underline"
               >
                 Forgot password?
               </Link>
@@ -273,25 +280,32 @@ export const SignInPage: React.FC = () => {
             />
           </div>
 
-          <Button
-            type="submit"
-            variant="primary"
-            size="lg"
-            className="w-full"
-            isLoading={isLoading}
-            rightIcon={<ArrowRight className="w-5 h-5" weight="bold" />}
-          >
-            Sign In to Trail
-          </Button>
+          <div className="pt-2">
+            <Button
+              type="submit"
+              variant="primary"
+              size="lg"
+              className="w-full"
+              isLoading={isLoading}
+              rightIcon={<ArrowRight className="w-5 h-5" weight="bold" />}
+            >
+              Sign in to account
+            </Button>
+          </div>
 
-          <div className="pt-4 text-center text-sm font-sans text-ink-secondary border-t-2 border-dashed border-ink-primary flex flex-col sm:flex-row items-center justify-between gap-2">
+          <div className="pt-4 text-center text-sm font-sans text-ink-secondary border-t border-[#D5DAE1] flex flex-col sm:flex-row items-center justify-between gap-2">
             <span>New volunteer?</span>
-            <Link to="/register" className="font-bold text-ink-primary hover:underline border-b-2 border-ink-primary">
+            <Link to="/register" className="font-semibold text-ink-primary hover:underline">
               Register a new account →
             </Link>
           </div>
         </form>
       </div>
+
+      <DemoEmailInbox
+        isOpen={emailInboxOpen}
+        onClose={() => setEmailInboxOpen(false)}
+      />
     </div>
   );
 };

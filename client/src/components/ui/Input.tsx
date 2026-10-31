@@ -38,12 +38,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           <input
             ref={ref}
             id={inputId}
-            className={`w-full bg-white text-ink-primary font-sans text-base border-2 border-ink-primary rounded-none transition-all duration-100 py-2.5 px-3.5 placeholder:text-ink-tertiary/70 ${
+            className={`w-full bg-white text-ink-primary font-sans text-base border-[1.5px] border-[#475569] rounded-[8px] transition-all duration-150 py-2.5 px-3.5 placeholder:text-ink-tertiary/70 ${
               effectiveLeft ? 'pl-10' : ''
             } ${effectiveRight ? 'pr-10' : ''} ${
               error
-                ? 'border-role-teamlead focus:border-role-teamlead focus:shadow-[3px_3px_0_#D63927]'
-                : 'hover:border-black focus:border-black focus:shadow-[3px_3px_0_#111111]'
+                ? 'border-role-teamlead focus:border-role-teamlead focus:ring-1 focus:ring-role-teamlead'
+                : 'hover:border-ink-primary focus:border-ink-primary focus:ring-1 focus:ring-ink-primary'
             } outline-none disabled:bg-canvas-subdued disabled:cursor-not-allowed ${className}`}
             {...props}
           />
@@ -56,10 +56,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         </div>
 
         {hint && !error && (
-          <p className="text-xs text-ink-secondary font-sans leading-relaxed">{hint}</p>
+          <p className="text-[13px] text-ink-secondary font-sans leading-relaxed">{hint}</p>
         )}
         {error && (
-          <p className="text-xs text-role-teamlead font-sans font-bold leading-relaxed">{error}</p>
+          <p className="text-[13px] text-role-teamlead font-sans font-bold leading-relaxed">{error}</p>
         )}
       </div>
     );

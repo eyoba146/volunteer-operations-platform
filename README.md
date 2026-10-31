@@ -619,3 +619,4 @@ The Trail design system uses bold, rectangular, high-contrast layouts. Surfaces 
 - [ ] Provision Cloudinary signed upload presets for volunteer ID photos and PDF certificate rendering.
 - [ ] Implement Twilio / Ethio Telecom SMS gateway for instant phone OTP verification.
 - [ ] Configure automated background worker for expired payment deadline cancellations.
+

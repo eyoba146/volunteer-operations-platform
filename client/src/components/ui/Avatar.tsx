@@ -76,7 +76,7 @@ export const Avatar: React.FC<AvatarProps> = ({
       {showRankBadge && rank && (
         <span
           title={rank.replace('_', ' ')}
-          className={`absolute -bottom-1 -right-1 w-4 h-4 border-2 border-ink-primary flex items-center justify-center text-[10px] font-display font-black ${
+          className={`absolute -bottom-1 -right-1 w-4 h-4 border-2 border-ink-primary flex items-center justify-center text-[13px] font-display font-black ${
             rank === 'manager'
               ? 'bg-role-manager text-white'
               : rank === 'team_lead'

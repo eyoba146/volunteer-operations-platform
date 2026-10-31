@@ -106,10 +106,10 @@ export const TeamLeadRatingsPage: React.FC = () => {
     <div className="space-y-6 max-w-4xl mx-auto">
       {/* Top Header */}
       <div className="border-b-2 border-border pb-5">
-        <span className="font-sans text-xs font-bold text-role-teamlead uppercase tracking-tight block">
+        <span className="font-sans text-xs font-bold text-role-teamlead tracking-tight block">
           Volunteer Evaluations
         </span>
-        <h1 className="font-display text-4xl sm:text-5xl font-black uppercase tracking-tight text-ink-primary leading-none mt-1">
+        <h1 className="font-display text-4xl sm:text-5xl font-black tracking-tight text-ink-primary leading-none mt-1">
           Rate Volunteer Performance
         </h1>
         <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
@@ -147,7 +147,7 @@ export const TeamLeadRatingsPage: React.FC = () => {
                   <div className="flex items-center gap-3">
                     <UserCircle className="w-10 h-10 text-ink-secondary" />
                     <div>
-                      <h4 className="font-display text-2xl font-black uppercase text-ink-primary leading-tight">
+                      <h4 className="font-display text-2xl font-black text-ink-primary leading-tight">
                         {vol.fullName}
                       </h4>
                       <span className="font-mono text-xs text-ink-secondary">
@@ -185,7 +185,7 @@ export const TeamLeadRatingsPage: React.FC = () => {
                 {/* Optional Note & Submit Row */}
                 <div className="flex flex-col sm:flex-row items-end gap-3 pt-2">
                   <div className="w-full sm:flex-1 space-y-1">
-                    <label className="block text-[11px] font-bold uppercase text-ink-tertiary">
+                    <label className="block text-[13px] font-bold text-ink-tertiary">
                       Performance Feedback (Optional)
                     </label>
                     <input

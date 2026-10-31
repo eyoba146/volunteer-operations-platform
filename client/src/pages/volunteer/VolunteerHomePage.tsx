@@ -14,8 +14,7 @@ import {
   Megaphone, 
   ArrowRight,
   MapPin,
-  CheckCircle,
-  UsersThree
+  CheckCircle
 } from '@phosphor-icons/react';
 
 export const VolunteerHomePage: React.FC = () => {
@@ -70,13 +69,8 @@ export const VolunteerHomePage: React.FC = () => {
   return (
     <div className="space-y-8">
       {/* Volunteer Trail Header */}
-      <div
-        className="border-2 border-ink-primary bg-white p-6 md:p-8 shadow-ticket space-y-4"
-        style={{
-          clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)',
-        }}
-      >
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-border pb-5">
+      <div className="border border-[#D5DAE1] bg-white rounded-[10px] p-6 md:p-8 space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#D5DAE1] pb-5">
           <div className="flex items-center gap-4">
             <Avatar
               name={profile?.fullName || user?.username || 'Volunteer'}
@@ -86,33 +80,33 @@ export const VolunteerHomePage: React.FC = () => {
               showRankBadge
             />
             <div className="space-y-1">
-              <span className="font-sans text-xs font-bold text-role-volunteer uppercase tracking-tight block">
-                Volunteer Elevation Track
+              <span className="text-[13px] font-bold text-role-volunteer">
+                Volunteer trail
               </span>
-              <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-ink-primary leading-none">
+              <h1 className="font-display font-bold text-2xl sm:text-3xl md:text-4xl tracking-tight text-ink-primary leading-tight">
                 Good morning, {profile?.fullName || user?.username}
               </h1>
-              <div className="flex flex-wrap items-center gap-2 pt-1">
+              <div className="flex flex-wrap items-center gap-2 pt-1 text-sm">
                 <StatusMark status={profile?.rank || 'member'} size="sm" />
-                <span className="font-mono text-xs font-bold text-ink-tertiary">
+                <span className="font-semibold text-ink-secondary text-[13px]">
                   ID: {profile?.volunteerNumber || 'VTS-AA-2026'}
                 </span>
-                <span className="text-border">•</span>
-                <span className="font-sans text-xs font-semibold text-ink-secondary">
+                <span className="text-[#D5DAE1]">•</span>
+                <span className="text-[13px] text-ink-secondary">
                   {profile?.area || 'Addis Ababa'}
                 </span>
               </div>
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2.5">
             <Button
               variant="secondary"
               size="md"
               leftIcon={<QrCode className="w-4 h-4" weight="bold" />}
               onClick={() => navigate('/volunteer/check-in')}
             >
-              Check-In Code
+              Check-in code
             </Button>
             <Button
               variant="primary"
@@ -120,43 +114,43 @@ export const VolunteerHomePage: React.FC = () => {
               leftIcon={<IdentificationCard className="w-4 h-4" weight="bold" />}
               onClick={() => navigate('/volunteer/id-card')}
             >
-              My Volunteer Pass
+              Volunteer ID pass
             </Button>
           </div>
         </div>
 
         {/* Quick Rank Progression Strip */}
         {progress && progress.nextRank && (
-          <div className="pt-2 grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+          <div className="pt-1 grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
             <div className="space-y-1">
-              <span className="font-sans text-xs font-bold text-ink-tertiary uppercase block">
-                Next Altitude Station
+              <span className="text-xs font-semibold text-ink-secondary">
+                Next rank
               </span>
-              <h3 className="font-display text-3xl font-black uppercase text-ink-primary">
+              <h3 className="font-display text-2xl font-bold text-ink-primary">
                 {progress.nextRank.replace('_', ' ')}
               </h3>
-              <p className="font-sans text-xs text-ink-secondary">
+              <p className="text-[13px] text-ink-secondary">
                 {progress.isEligible
-                  ? 'All thresholds met! You are eligible for promotion review.'
-                  : `${Math.max(0, progress.targetHours - progress.approvedHours)} hours left to reach next camp.`}
+                  ? 'All requirements met. You are ready for promotion review.'
+                  : `${Math.max(0, progress.targetHours - progress.approvedHours)} hours left to reach next rank.`}
               </p>
             </div>
 
             <div className="md:col-span-2 space-y-3">
               <ProgressMeter
-                label="Approved Service Hours"
+                label="Approved service hours"
                 current={progress.approvedHours}
                 target={progress.targetHours}
                 unit="hrs"
                 color="green"
               />
-              <div className="flex items-center justify-between text-xs">
-                <span className="font-mono text-ink-secondary">
-                  Completed Activities: <strong>{progress.completedActivities} / {progress.targetActivities}</strong>
+              <div className="flex items-center justify-between text-[13px]">
+                <span className="text-ink-secondary">
+                  Completed activities: <strong className="text-ink-primary">{progress.completedActivities} / {progress.targetActivities}</strong>
                 </span>
                 <Link
                   to="/volunteer/rank-progress"
-                  className="font-sans font-semibold text-ink-primary hover:underline flex items-center gap-1"
+                  className="font-semibold text-ink-primary hover:underline flex items-center gap-1"
                 >
                   <span>Detailed breakdown</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -168,20 +162,15 @@ export const VolunteerHomePage: React.FC = () => {
       </div>
 
       {/* Two Column Layout: Next Activity & Community Bulletins */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Next / Featured Activity (Ticket Silhouette) */}
-        <div
-          className="border-2 border-ink-primary bg-white p-6 space-y-5 flex flex-col justify-between shadow-ticket"
-          style={{
-            clipPath: 'polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)',
-          }}
-        >
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Next / Featured Activity */}
+        <div className="border border-[#D5DAE1] bg-white rounded-[10px] p-6 space-y-5 flex flex-col justify-between">
           <div className="space-y-4">
-            <div className="flex items-center justify-between border-b-2 border-border pb-3">
+            <div className="flex items-center justify-between border-b border-[#D5DAE1] pb-3">
               <div className="flex items-center gap-2">
                 <Calendar className="w-5 h-5 text-role-volunteer" weight="bold" />
-                <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
-                  Next Field Activity
+                <h3 className="font-display text-xl font-bold text-ink-primary">
+                  Next field activity
                 </h3>
               </div>
               {nextActivity && <StatusMark status={nextActivity.status} size="sm" />}
@@ -189,14 +178,14 @@ export const VolunteerHomePage: React.FC = () => {
 
             {nextActivity ? (
               <div className="space-y-3">
-                <h4 className="font-display text-2xl font-black uppercase text-ink-primary leading-tight">
+                <h4 className="font-display text-2xl font-bold text-ink-primary leading-tight">
                   {nextActivity.title}
                 </h4>
-                <p className="font-sans text-xs text-ink-secondary leading-relaxed line-clamp-3">
+                <p className="text-sm text-ink-secondary leading-relaxed line-clamp-3">
                   {nextActivity.description}
                 </p>
 
-                <div className="space-y-1.5 pt-2 text-xs font-mono text-ink-secondary">
+                <div className="space-y-1.5 pt-2 text-[13px] text-ink-secondary">
                   <div className="flex items-center gap-2">
                     <Clock className="w-4 h-4 text-ink-tertiary" />
                     <span>
@@ -216,55 +205,56 @@ export const VolunteerHomePage: React.FC = () => {
                 </div>
               </div>
             ) : (
-              <p className="text-xs font-sans text-ink-tertiary">
+              <p className="text-sm text-ink-secondary py-4">
                 You are not currently enrolled in an upcoming activity.
               </p>
             )}
           </div>
 
-          <div className="pt-4 border-t-2 border-dashed border-border flex items-center justify-between">
+          <div className="pt-3 border-t border-[#D5DAE1] flex items-center justify-between">
             <Link
               to={nextActivity ? `/volunteer/activities/${nextActivity.id}` : '/volunteer/activities'}
-              className="font-sans text-xs font-bold text-ink-secondary hover:text-ink-primary"
+              className="text-sm font-bold text-ink-primary hover:underline flex items-center gap-1"
             >
-              View Activity Details &rarr;
+              <span>View activity details</span>
+              <ArrowRight className="w-4 h-4" />
             </Link>
             <Button
-              variant="primary"
+              variant="secondary"
               size="sm"
               leftIcon={<QrCode className="w-4 h-4" weight="bold" />}
               onClick={() => navigate('/volunteer/check-in')}
             >
-              Check In
+              Check in
             </Button>
           </div>
         </div>
 
         {/* Community Announcements */}
-        <div className="border-2 border-ink-primary bg-white p-6 space-y-4 shadow-ticket">
-          <div className="flex items-center justify-between border-b-2 border-border pb-3">
+        <div className="border border-[#D5DAE1] bg-white rounded-[10px] p-6 space-y-4">
+          <div className="flex items-center justify-between border-b border-[#D5DAE1] pb-3">
             <div className="flex items-center gap-2">
               <Megaphone className="w-5 h-5 text-role-teamlead" weight="bold" />
-              <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
-                Trail Notices
+              <h3 className="font-display text-xl font-bold text-ink-primary">
+                Community announcements
               </h3>
             </div>
-            <span className="font-sans text-xs font-bold text-ink-tertiary">
+            <span className="text-xs font-semibold text-ink-secondary">
               Latest updates
             </span>
           </div>
 
-          <div className="space-y-4 divide-y divide-border">
+          <div className="space-y-4 divide-y divide-[#D5DAE1]/60">
             {announcements.map((anc) => (
-              <div key={anc.id} className="pt-3 first:pt-0 space-y-1.5">
-                <div className="flex items-center justify-between text-[11px] text-ink-tertiary font-mono">
-                  <span>From: {anc.authorName} ({anc.authorRole})</span>
+              <div key={anc.id} className="pt-3 first:pt-0 space-y-1">
+                <div className="flex items-center justify-between text-xs text-ink-secondary">
+                  <span>From: {anc.authorName}</span>
                   <span>{new Date(anc.createdAt).toLocaleDateString()}</span>
                 </div>
                 <h4 className="font-sans text-sm font-bold text-ink-primary leading-snug">
                   {anc.title}
                 </h4>
-                <p className="font-sans text-xs text-ink-secondary leading-relaxed line-clamp-2">
+                <p className="text-[13px] text-ink-secondary leading-relaxed line-clamp-2">
                   {anc.body}
                 </p>
               </div>

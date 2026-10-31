@@ -94,10 +94,10 @@ export const ManagerPromotionsPage: React.FC = () => {
       >
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b-2 border-ink-primary pb-5">
           <div className="space-y-1">
-            <span className="font-sans text-xs font-bold text-role-manager uppercase tracking-tight block">
+            <span className="font-sans text-xs font-bold text-role-manager tracking-tight block">
               Merit Advancement Board
             </span>
-            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-ink-primary leading-none">
+            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl tracking-tight text-ink-primary leading-none">
               Volunteer Promotion Board
             </h1>
             <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
@@ -106,7 +106,7 @@ export const ManagerPromotionsPage: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="font-mono text-xs font-bold text-white bg-role-manager px-3 py-1.5 shadow-sm uppercase">
+            <span className="font-mono text-xs font-bold text-white bg-role-manager px-3 py-1.5 shadow-sm">
               Pending Decisions: {promotions.length}
             </span>
           </div>
@@ -132,17 +132,17 @@ export const ManagerPromotionsPage: React.FC = () => {
               <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b-2 border-border pb-5">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="font-sans text-xs font-bold text-role-teamlead uppercase tracking-tight">
+                    <span className="font-sans text-xs font-bold text-role-teamlead tracking-tight">
                       Nominated Candidate
                     </span>
                     <StatusMark status={promo.status} size="sm" />
                   </div>
-                  <h3 className="font-display text-3xl sm:text-4xl font-black uppercase tracking-tight text-ink-primary leading-none">
+                  <h3 className="font-display text-3xl sm:text-4xl font-black tracking-tight text-ink-primary leading-none">
                     {promo.userName}
                   </h3>
                   <p className="font-sans text-xs text-ink-secondary mt-1">
-                    Recommended by <strong className="text-ink-primary font-bold">{promo.recommendedByName || 'Team Lead'}</strong> for elevation to{' '}
-                    <strong className="font-mono uppercase font-bold text-role-teamlead">{promo.toRank.replace('_', ' ')}</strong>.
+                    Recommended by <strong className="text-ink-primary font-bold">{promo.recommendedByName || 'Team Lead'}</strong> for promotion to{' '}
+                    <strong className="font-mono font-bold text-role-teamlead">{promo.toRank.replace('_', ' ')}</strong>.
                   </p>
                 </div>
 
@@ -182,34 +182,34 @@ export const ManagerPromotionsPage: React.FC = () => {
               {/* Verified Evidence Summary */}
               {promo.evidence && (
                 <div className="space-y-3">
-                  <span className="font-sans text-xs font-bold uppercase tracking-tight text-ink-primary block">
+                  <span className="font-sans text-xs font-bold tracking-tight text-ink-primary block">
                     Verified Service Evidence Summary
                   </span>
 
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono text-xs">
                     <div className="p-3 border-2 border-border bg-canvas-subdued space-y-0.5">
-                      <span className="text-[10px] uppercase text-ink-tertiary block">Approved Hours</span>
+                      <span className="text-[13px] text-ink-tertiary block">Approved Hours</span>
                       <span className="font-display text-2xl font-black text-civic-green block leading-none">
                         {promo.evidence.approvedHours} <span className="text-xs font-mono font-normal text-ink-tertiary">hrs</span>
                       </span>
                     </div>
 
                     <div className="p-3 border-2 border-border bg-canvas-subdued space-y-0.5">
-                      <span className="text-[10px] uppercase text-ink-tertiary block">Activities Done</span>
+                      <span className="text-[13px] text-ink-tertiary block">Activities Done</span>
                       <span className="font-display text-2xl font-black text-ink-primary block leading-none">
                         {promo.evidence.completedActivities}
                       </span>
                     </div>
 
                     <div className="p-3 border-2 border-border bg-canvas-subdued space-y-0.5">
-                      <span className="text-[10px] uppercase text-ink-tertiary block">Average Rating</span>
+                      <span className="text-[13px] text-ink-tertiary block">Average Rating</span>
                       <span className="font-display text-2xl font-black text-[#784E0B] block leading-none">
                         {promo.evidence.averageRating} <span className="text-xs font-mono font-normal text-ink-tertiary">/ 5.0</span>
                       </span>
                     </div>
 
                     <div className="p-3 border-2 border-border bg-canvas-subdued space-y-0.5">
-                      <span className="text-[10px] uppercase text-ink-tertiary block">Active Tenure</span>
+                      <span className="text-[13px] text-ink-tertiary block">Active Tenure</span>
                       <span className="font-display text-2xl font-black text-ink-primary block leading-none">
                         {promo.evidence.monthsActive} <span className="text-xs font-mono font-normal text-ink-tertiary">mos</span>
                       </span>
@@ -236,7 +236,7 @@ export const ManagerPromotionsPage: React.FC = () => {
         isOpen={targetPromotion !== null}
         onClose={() => setTargetPromotion(null)}
         title={modalMode === 'approve' ? 'Approve Promotion' : 'Decline Promotion'}
-        subtitle={`Candidate: ${targetPromotion?.userName || ''} elevation to ${targetPromotion?.toRank.replace('_', ' ').toUpperCase() || ''}`}
+        subtitle={`Candidate: ${targetPromotion?.userName || ''} promotion to ${targetPromotion?.toRank.replace('_', ' ') || ''}`}
         mode="modal"
         maxWidth="md"
       >
@@ -248,7 +248,7 @@ export const ManagerPromotionsPage: React.FC = () => {
           </p>
 
           <div className="space-y-1.5">
-            <label className="block text-xs font-bold uppercase tracking-tight text-ink-primary">
+            <label className="block text-xs font-bold tracking-tight text-ink-primary">
               Written Board Minute / Reason
             </label>
             <textarea

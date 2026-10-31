@@ -211,10 +211,10 @@ export const AdminAccountsPage: React.FC = () => {
       >
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b-2 border-ink-primary pb-5">
           <div className="space-y-1">
-            <span className="font-sans text-xs font-bold text-amber-600 uppercase tracking-tight block">
+            <span className="font-sans text-xs font-bold text-amber-600 tracking-tight block">
               Access Control & Permissions
             </span>
-            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-ink-primary leading-none">
+            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl tracking-tight text-ink-primary leading-none">
               User Accounts & Role Permissions
             </h1>
             <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
@@ -337,7 +337,7 @@ export const AdminAccountsPage: React.FC = () => {
           </div>
 
           <div className="space-y-1">
-            <label className="block text-xs font-bold uppercase tracking-tight text-ink-primary">
+            <label className="block text-xs font-bold tracking-tight text-ink-primary">
               Assigned Role
             </label>
             <Select
@@ -353,7 +353,7 @@ export const AdminAccountsPage: React.FC = () => {
             />
           </div>
 
-          <p className="text-ink-tertiary text-[11px] pt-1 font-mono">
+          <p className="text-ink-tertiary text-[13px] pt-1 font-mono">
             Password defaults to <strong>Demo@1234</strong>. Email verification is marked active immediately.
           </p>
 

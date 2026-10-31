@@ -70,10 +70,10 @@ export const VolunteerMyActivitiesPage: React.FC = () => {
     <div className="space-y-6">
       {/* Header */}
       <div className="border-b-2 border-border pb-5">
-        <span className="font-sans text-xs font-bold text-role-volunteer uppercase tracking-tight block">
+        <span className="font-sans text-xs font-bold text-role-volunteer tracking-tight block">
           Personal Assignments
         </span>
-        <h1 className="font-display text-4xl sm:text-5xl font-black uppercase tracking-tight text-ink-primary leading-none mt-1">
+        <h1 className="font-display text-4xl sm:text-5xl font-black tracking-tight text-ink-primary leading-none mt-1">
           My Volunteer Roster
         </h1>
         <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
@@ -123,7 +123,7 @@ export const VolunteerMyActivitiesPage: React.FC = () => {
             >
               <div className="space-y-2 flex-1">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="font-mono text-xs font-bold uppercase px-2 py-0.5 bg-canvas border border-ink-primary text-ink-primary">
+                  <span className="font-mono text-xs font-bold px-2 py-0.5 bg-canvas border border-ink-primary text-ink-primary">
                     {activity.type.replace('_', ' ')}
                   </span>
                   <StatusMark status={enrollment.status as any} size="sm" />
@@ -131,7 +131,7 @@ export const VolunteerMyActivitiesPage: React.FC = () => {
 
                 <Link
                   to={`/volunteer/activities/${activity.id}`}
-                  className="font-display text-2xl sm:text-3xl font-black uppercase text-ink-primary hover:text-role-volunteer transition-colors block leading-tight"
+                  className="font-display text-2xl sm:text-3xl font-black text-ink-primary hover:text-role-volunteer transition-colors block leading-tight"
                 >
                   {activity.title}
                 </Link>

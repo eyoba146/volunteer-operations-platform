@@ -104,7 +104,7 @@ export const ApplicantStatusPage: React.FC = () => {
         <div className="w-16 h-16 mx-auto border-2 border-ink-primary bg-canvas-subdued flex items-center justify-center text-ink-primary">
           <UserCircle className="w-8 h-8" />
         </div>
-        <h2 className="font-display text-3xl font-black uppercase text-ink-primary">
+        <h2 className="font-display text-3xl font-black text-ink-primary">
           Start Your Application
         </h2>
         <p className="font-sans text-xs sm:text-sm text-ink-secondary leading-relaxed">
@@ -194,7 +194,7 @@ export const ApplicantStatusPage: React.FC = () => {
       {/* Header */}
       <div className="border-b-2 border-ink-primary pb-5 flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="font-display font-black text-4xl sm:text-5xl uppercase tracking-tight text-ink-primary leading-none">
+          <h1 className="font-display font-black text-4xl sm:text-5xl tracking-tight text-ink-primary leading-none">
             Application Status
           </h1>
           <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
@@ -223,7 +223,7 @@ export const ApplicantStatusPage: React.FC = () => {
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <span className="font-display text-lg font-black uppercase tracking-wide text-ink-primary px-2.5 py-0.5 bg-role-applicant text-white">
+                <span className="font-display text-lg font-black tracking-wide text-ink-primary px-2.5 py-0.5 bg-role-applicant text-white">
                   Action Required
                 </span>
                 {timeLeft && (
@@ -236,7 +236,7 @@ export const ApplicantStatusPage: React.FC = () => {
                 )}
               </div>
 
-              <h2 className="font-display text-3xl sm:text-4xl font-black uppercase text-ink-primary leading-tight">
+              <h2 className="font-display text-3xl sm:text-4xl font-black text-ink-primary leading-tight">
                 Your Application Has Been Accepted!
               </h2>
 
@@ -274,7 +274,7 @@ export const ApplicantStatusPage: React.FC = () => {
           <div className="flex items-start gap-3">
             <Warning className="w-6 h-6 text-role-applicant shrink-0 mt-0.5" weight="bold" />
             <div className="space-y-2 text-xs font-sans text-ink-primary">
-              <h3 className="font-display text-xl font-black uppercase text-ink-primary">
+              <h3 className="font-display text-xl font-black text-ink-primary">
                 Clarification Requested by Admissions
               </h3>
               <p className="leading-relaxed bg-white p-3 border border-border">
@@ -301,7 +301,7 @@ export const ApplicantStatusPage: React.FC = () => {
           <div className="flex items-start gap-3">
             <XCircle className="w-6 h-6 text-role-teamlead shrink-0 mt-0.5" weight="bold" />
             <div className="space-y-1 text-xs font-sans text-ink-primary">
-              <h3 className="font-display text-xl font-black uppercase text-role-teamlead">
+              <h3 className="font-display text-xl font-black text-role-teamlead">
                 Application Not Accepted at this Time
               </h3>
               <p className="leading-relaxed">
@@ -318,7 +318,7 @@ export const ApplicantStatusPage: React.FC = () => {
       {/* Withdrawn notice */}
       {isWithdrawn && (
         <div className="border-2 border-border bg-canvas-subdued p-6 space-y-2">
-          <h3 className="font-display text-xl font-black uppercase text-ink-secondary">
+          <h3 className="font-display text-xl font-black text-ink-secondary">
             Application Withdrawn
           </h3>
           <p className="text-xs font-sans text-ink-secondary">
@@ -340,7 +340,7 @@ export const ApplicantStatusPage: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Timeline Column */}
         <div className="lg:col-span-2 border-2 border-ink-primary bg-white p-6 md:p-8 space-y-6 shadow-ticket">
-          <h2 className="font-display text-2xl font-black uppercase text-ink-primary border-b border-border pb-3">
+          <h2 className="font-display text-2xl font-black text-ink-primary border-b border-border pb-3">
             Recruitment Milestones
           </h2>
           <Timeline items={timelineItems} />
@@ -349,7 +349,7 @@ export const ApplicantStatusPage: React.FC = () => {
         {/* Application Summary Ticket */}
         <div className="border-2 border-ink-primary bg-white p-6 space-y-5 h-fit shadow-ticket">
           <div className="border-b border-border pb-3 flex items-center justify-between">
-            <h3 className="font-display text-xl font-black uppercase text-ink-primary">
+            <h3 className="font-display text-xl font-black text-ink-primary">
               Submitted Details
             </h3>
             <span className="font-mono text-xs text-ink-tertiary">
@@ -359,7 +359,7 @@ export const ApplicantStatusPage: React.FC = () => {
 
           <div className="space-y-4 text-xs font-sans">
             <div>
-              <span className="text-[11px] font-bold text-ink-tertiary block">
+              <span className="text-[13px] font-bold text-ink-tertiary block">
                 Applicant Name
               </span>
               <span className="text-sm font-bold text-ink-primary">
@@ -368,7 +368,7 @@ export const ApplicantStatusPage: React.FC = () => {
             </div>
 
             <div>
-              <span className="text-[11px] font-bold text-ink-tertiary block">
+              <span className="text-[13px] font-bold text-ink-tertiary block">
                 Mobile Contact
               </span>
               <span className="font-mono text-xs font-semibold text-ink-primary">
@@ -377,7 +377,7 @@ export const ApplicantStatusPage: React.FC = () => {
             </div>
 
             <div>
-              <span className="text-[11px] font-bold text-ink-tertiary block">
+              <span className="text-[13px] font-bold text-ink-tertiary block">
                 Service Region
               </span>
               <span className="font-semibold text-ink-primary">
@@ -386,14 +386,14 @@ export const ApplicantStatusPage: React.FC = () => {
             </div>
 
             <div>
-              <span className="text-[11px] font-bold text-ink-tertiary block">
+              <span className="text-[13px] font-bold text-ink-tertiary block">
                 Skills Offered
               </span>
               <div className="flex flex-wrap gap-1 pt-1">
                 {application.formData?.skills.map((s) => (
                   <span
                     key={s}
-                    className="px-2 py-0.5 bg-canvas-subdued border border-border text-[11px] font-sans text-ink-primary"
+                    className="px-2 py-0.5 bg-canvas-subdued border border-border text-[13px] font-sans text-ink-primary"
                   >
                     {s}
                   </span>
@@ -403,7 +403,7 @@ export const ApplicantStatusPage: React.FC = () => {
 
             {application.formData?.emergencyContact && (
               <div className="pt-2 border-t border-border">
-                <span className="text-[11px] font-bold text-ink-tertiary block">
+                <span className="text-[13px] font-bold text-ink-tertiary block">
                   Emergency Contact
                 </span>
                 <span className="text-ink-secondary font-medium">

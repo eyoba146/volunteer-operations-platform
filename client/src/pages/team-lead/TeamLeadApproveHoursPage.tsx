@@ -144,7 +144,7 @@ export const TeamLeadApproveHoursPage: React.FC = () => {
           <span className="font-sans text-xs font-bold text-ink-primary block">
             {entry.activityTitle}
           </span>
-          <span className="font-mono text-[10px] uppercase font-bold text-ink-tertiary block">
+          <span className="font-mono text-[13px] font-bold text-ink-tertiary block">
             Source: {entry.source === 'manual' ? 'Manual claim' : 'On-site code scan'}
           </span>
           {entry.manualNote && (
@@ -160,7 +160,7 @@ export const TeamLeadApproveHoursPage: React.FC = () => {
       cell: (entry) => (
         <span className="font-mono text-xs font-bold text-ink-primary">
           {Math.round((entry.minutes / 60) * 10) / 10} hrs{' '}
-          <span className="text-[11px] text-ink-tertiary font-normal">({entry.minutes}m)</span>
+          <span className="text-[13px] text-ink-tertiary font-normal">({entry.minutes}m)</span>
         </span>
       ),
     },
@@ -210,10 +210,10 @@ export const TeamLeadApproveHoursPage: React.FC = () => {
       {/* Top Header */}
       <div className="border-b-2 border-border pb-5 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <span className="font-sans text-xs font-bold text-role-teamlead uppercase tracking-tight block">
+          <span className="font-sans text-xs font-bold text-role-teamlead tracking-tight block">
             Attendance Verification Desk
           </span>
-          <h1 className="font-display text-4xl sm:text-5xl font-black uppercase tracking-tight text-ink-primary leading-none mt-1">
+          <h1 className="font-display text-4xl sm:text-5xl font-black tracking-tight text-ink-primary leading-none mt-1">
             Approve Volunteer Hours
           </h1>
           <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
@@ -277,7 +277,7 @@ export const TeamLeadApproveHoursPage: React.FC = () => {
             </div>
 
             <div className="space-y-1.5 text-left">
-              <label className="block text-xs font-bold uppercase text-ink-primary">
+              <label className="block text-xs font-bold text-ink-primary">
                 Mandatory Reason for Decline
               </label>
               <textarea

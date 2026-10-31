@@ -8,7 +8,7 @@ import { ShieldCheck, MagnifyingGlass, CheckCircle, Warning, QrCode } from '@pho
 const SAMPLE_CODES = [
   { code: 'VTS-CERT-8842-ET', label: "Dawit's Membership Certificate" },
   { code: 'VTS-CERT-7731-ET', label: "Selam's Senior Member Certificate" },
-  { code: 'VTS-CERT-9140-ET', label: "Dawit's Training Qualification" },
+  { code: 'VTS-CERT-9140-ET', label: "Dawit's Service Certificate" },
 ];
 
 export const CertificateCheckPage: React.FC = () => {
@@ -51,7 +51,7 @@ export const CertificateCheckPage: React.FC = () => {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 space-y-10">
       {/* Header */}
       <div className="space-y-2 border-b-2 border-ink-primary pb-6 text-center">
-        <h1 className="font-display font-black text-5xl sm:text-6xl uppercase tracking-tight text-ink-primary leading-none">
+        <h1 className="font-display font-black text-5xl sm:text-6xl tracking-tight text-ink-primary leading-none">
           Verify Volunteer Pass
         </h1>
         <p className="font-sans text-sm sm:text-base text-ink-secondary max-w-xl mx-auto">
@@ -68,7 +68,7 @@ export const CertificateCheckPage: React.FC = () => {
       >
         <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row items-end gap-3">
           <div className="flex-1 w-full space-y-1.5">
-            <label className="block font-sans text-xs font-bold uppercase tracking-tight text-ink-primary">
+            <label className="block font-sans text-xs font-bold tracking-tight text-ink-primary">
               Verification Code
             </label>
             <Input
@@ -125,7 +125,7 @@ export const CertificateCheckPage: React.FC = () => {
               <div className="bg-role-volunteer text-white px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b-2 border-ink-primary">
                 <div className="flex items-center gap-2">
                   <CheckCircle className="w-6 h-6 text-white" weight="fill" />
-                  <span className="font-display text-2xl font-black uppercase tracking-tight">
+                  <span className="font-display text-2xl font-black tracking-tight">
                     AUTHENTICATED VOLUNTEER PASS
                   </span>
                 </div>
@@ -137,10 +137,10 @@ export const CertificateCheckPage: React.FC = () => {
               {/* Certificate Pass Body */}
               <div className="p-8 md:p-12 space-y-8">
                 <div className="space-y-3 text-center">
-                  <span className="font-sans text-xs font-bold uppercase tracking-wider text-ink-tertiary">
+                  <span className="font-sans text-xs font-bold tracking-wider text-ink-tertiary">
                     This credential certifies that
                   </span>
-                  <h2 className="font-display font-black text-5xl sm:text-6xl uppercase tracking-tight text-ink-primary leading-none">
+                  <h2 className="font-display font-black text-5xl sm:text-6xl tracking-tight text-ink-primary leading-none">
                     {result.certificate.userName}
                   </h2>
                   <p className="font-sans text-lg font-bold text-role-volunteer">
@@ -185,7 +185,7 @@ export const CertificateCheckPage: React.FC = () => {
                     <span className="text-xs font-sans text-ink-tertiary block">
                       Status
                     </span>
-                    <span className="font-sans text-xs font-bold text-role-volunteer uppercase">
+                    <span className="font-sans text-xs font-bold text-role-volunteer">
                       Active & Good Standing
                     </span>
                   </div>
@@ -211,7 +211,7 @@ export const CertificateCheckPage: React.FC = () => {
               <div className="w-12 h-12 mx-auto bg-red-50 text-role-teamlead border-2 border-role-teamlead flex items-center justify-center">
                 <Warning className="w-6 h-6" weight="bold" />
               </div>
-              <h3 className="font-display text-3xl font-black uppercase text-ink-primary">
+              <h3 className="font-display text-3xl font-black text-ink-primary">
                 Record Not Found
               </h3>
               <p className="font-sans text-sm text-ink-secondary max-w-md mx-auto">

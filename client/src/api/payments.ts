@@ -195,7 +195,7 @@ export async function processTelebirrOutcome(
           category: 'payment',
           sentAt: now,
           read: false,
-          body: `Dear ${activeProfile.fullName},\n\nWe have received your registration fee of ETB 200 via Telebirr (Reference: ${payment.telebirrReference}).\n\nYour receipt number is ${receiptNum}. Your official Volunteer ID is ${volNum}.\n\nYour account is now fully active with Member rank. You can view your volunteer ID card, register for upcoming activities, and start logging service hours.\n\nWarm regards,\nVTS Operations`,
+          body: `Dear ${activeProfile.fullName},\n\nWe have received your registration fee of ETB 200 via Telebirr (Reference: ${payment.telebirrReference}).\n\nYour receipt number is ${receiptNum}. Your Volunteer ID pass number is ${volNum}.\n\nYour account is now fully active with Member rank. You can view your volunteer ID card, register for upcoming activities, and start logging service hours.\n\nWarm regards,\nVTS Operations`,
           actionLabel: 'View Volunteer ID',
           actionUrl: '/volunteer/id-card',
         },

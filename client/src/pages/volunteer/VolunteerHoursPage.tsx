@@ -115,7 +115,7 @@ export const VolunteerHoursPage: React.FC = () => {
               year: 'numeric',
             })}
           </span>
-          <span className="font-mono text-[11px] text-ink-secondary block">
+          <span className="font-mono text-[13px] text-ink-secondary block">
             {new Date(entry.checkIn).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
           </span>
         </div>
@@ -128,7 +128,7 @@ export const VolunteerHoursPage: React.FC = () => {
           <span className="font-sans font-bold text-ink-primary block">
             {entry.activityTitle || 'Community Service Activity'}
           </span>
-          <span className="font-mono text-[10px] uppercase font-bold text-ink-tertiary block">
+          <span className="font-mono text-[13px] font-bold text-ink-tertiary block">
             Source: {entry.source === 'manual' ? 'Manual claim' : 'Session code verified'}
           </span>
           {entry.manualNote && (
@@ -149,7 +149,7 @@ export const VolunteerHoursPage: React.FC = () => {
       cell: (entry) => (
         <span className="font-mono text-xs font-bold text-ink-primary">
           {Math.round((entry.minutes / 60) * 10) / 10} hrs{' '}
-          <span className="text-[11px] text-ink-tertiary font-normal">({entry.minutes}m)</span>
+          <span className="text-[13px] text-ink-tertiary font-normal">({entry.minutes}m)</span>
         </span>
       ),
     },
@@ -174,10 +174,10 @@ export const VolunteerHoursPage: React.FC = () => {
       {/* Top Header */}
       <div className="border-b-2 border-border pb-5 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <span className="font-sans text-xs font-bold text-role-volunteer uppercase tracking-tight block">
+          <span className="font-sans text-xs font-bold text-role-volunteer tracking-tight block">
             Service Record
           </span>
-          <h1 className="font-display text-4xl sm:text-5xl font-black uppercase tracking-tight text-ink-primary leading-none mt-1">
+          <h1 className="font-display text-4xl sm:text-5xl font-black tracking-tight text-ink-primary leading-none mt-1">
             Logged Hours Ledger
           </h1>
           <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
@@ -198,40 +198,40 @@ export const VolunteerHoursPage: React.FC = () => {
       {/* Connected Metric Strip (Never floating 4-cards) */}
       <div className="border-2 border-ink-primary bg-white shadow-ticket grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x-2 divide-ink-primary font-mono">
         <div className="p-5 space-y-1">
-          <span className="text-xs font-bold uppercase text-ink-tertiary block">
+          <span className="text-xs font-bold text-ink-tertiary block">
             Approved Service Hours
           </span>
           <div className="font-display text-4xl sm:text-5xl font-black text-role-volunteer leading-none">
             {Math.round((totalApprovedMinutes / 60) * 10) / 10}{' '}
             <span className="font-mono text-sm font-normal text-ink-secondary">hrs</span>
           </div>
-          <span className="text-[11px] text-ink-secondary block font-sans">
+          <span className="text-[13px] text-ink-secondary block font-sans">
             Counts directly toward rank promotion
           </span>
         </div>
 
         <div className="p-5 space-y-1">
-          <span className="text-xs font-bold uppercase text-ink-tertiary block">
+          <span className="text-xs font-bold text-ink-tertiary block">
             Hours Awaiting Approval
           </span>
           <div className="font-display text-4xl sm:text-5xl font-black text-role-applicant leading-none">
             {Math.round((totalLoggedMinutes / 60) * 10) / 10}{' '}
             <span className="font-mono text-sm font-normal text-ink-secondary">hrs</span>
           </div>
-          <span className="text-[11px] text-ink-secondary block font-sans">
+          <span className="text-[13px] text-ink-secondary block font-sans">
             Submitted to Team Lead for review
           </span>
         </div>
 
         <div className="p-5 space-y-1">
-          <span className="text-xs font-bold uppercase text-ink-tertiary block">
+          <span className="text-xs font-bold text-ink-tertiary block">
             Declined Hours
           </span>
           <div className="font-display text-4xl sm:text-5xl font-black text-ink-primary leading-none">
             {Math.round((totalDeclinedMinutes / 60) * 10) / 10}{' '}
             <span className="font-mono text-sm font-normal text-ink-secondary">hrs</span>
           </div>
-          <span className="text-[11px] text-ink-secondary block font-sans">
+          <span className="text-[13px] text-ink-secondary block font-sans">
             Includes feedback reasons
           </span>
         </div>
@@ -317,7 +317,7 @@ export const VolunteerHoursPage: React.FC = () => {
           </div>
 
           <div className="space-y-1.5 text-left">
-            <label className="block text-xs font-bold uppercase text-ink-primary">
+            <label className="block text-xs font-bold text-ink-primary">
               Explanation for Manual Claim
             </label>
             <textarea
