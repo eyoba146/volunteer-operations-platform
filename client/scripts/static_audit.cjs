@@ -137,3 +137,4 @@ files.forEach((f) => {
 console.log(`=== 5. GRID-COLS-4 CHECK === (${gridCols4Matches.length} matches)`);
 gridCols4Matches.forEach((m) => console.log(`  ${m.file}:${m.line}: ${m.text}`));
 console.log('');
+

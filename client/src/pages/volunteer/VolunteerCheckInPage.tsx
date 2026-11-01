@@ -5,11 +5,11 @@ import * as api from '../../api';
 import { Activity, HoursEntry } from '../../types';
 import { Button, Select, Skeleton } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
-import { 
-  QrCode, 
-  CheckCircle, 
-  Clock, 
-  Warning, 
+import {
+  QrCode,
+  CheckCircle,
+  Clock,
+  Warning,
   ArrowRight,
   Key,
   Camera,
@@ -276,11 +276,10 @@ export const VolunteerCheckInPage: React.FC = () => {
             setMethod('code');
             setErrorMessage('');
           }}
-          className={`flex-1 py-2 rounded-[6px] font-sans text-[13px] font-semibold flex items-center justify-center gap-1.5 cursor-pointer transition-colors ${
-            method === 'code'
+          className={`flex-1 py-2 rounded-[6px] font-sans text-[13px] font-semibold flex items-center justify-center gap-1.5 cursor-pointer transition-colors ${method === 'code'
               ? 'bg-white text-ink-primary shadow-sm border border-[#D5DAE1]'
               : 'text-ink-secondary hover:text-ink-primary'
-          }`}
+            }`}
         >
           <Key className="w-4 h-4" weight="bold" />
           <span>4-Digit short code</span>
@@ -290,11 +289,10 @@ export const VolunteerCheckInPage: React.FC = () => {
             setMethod('qr');
             setErrorMessage('');
           }}
-          className={`flex-1 py-2 rounded-[6px] font-sans text-[13px] font-semibold flex items-center justify-center gap-1.5 cursor-pointer transition-colors ${
-            method === 'qr'
+          className={`flex-1 py-2 rounded-[6px] font-sans text-[13px] font-semibold flex items-center justify-center gap-1.5 cursor-pointer transition-colors ${method === 'qr'
               ? 'bg-white text-ink-primary shadow-sm border border-[#D5DAE1]'
               : 'text-ink-secondary hover:text-ink-primary'
-          }`}
+            }`}
         >
           <QrCode className="w-4 h-4" weight="bold" />
           <span>Scan QR pass</span>

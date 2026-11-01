@@ -4,10 +4,10 @@ import * as api from '../../api';
 import { RankProgressData } from '../../api/promotions';
 import { Button, StatusMark, ProgressMeter, Skeleton, TrailLine } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
-import { 
-  Sparkle, 
-  CheckCircle, 
-  Certificate as CertIcon 
+import {
+  Sparkle,
+  CheckCircle,
+  Certificate as CertIcon
 } from '@phosphor-icons/react';
 
 export const VolunteerRankProgressPage: React.FC = () => {
@@ -250,8 +250,8 @@ export const VolunteerRankProgressPage: React.FC = () => {
                 {progress.nextRank === 'senior_member'
                   ? 'Unlocks priority activity booking, peer mentorship responsibilities, and Senior Member credential.'
                   : progress.nextRank === 'team_lead'
-                  ? 'Unlocks field coordination authority, activity creation, hours approval desk, and volunteer ratings.'
-                  : 'Unlocks program operations, recruitment review, and policy coordination.'}
+                    ? 'Unlocks field coordination authority, activity creation, hours approval desk, and volunteer ratings.'
+                    : 'Unlocks program operations, recruitment review, and policy coordination.'}
               </p>
             </div>
           )}
