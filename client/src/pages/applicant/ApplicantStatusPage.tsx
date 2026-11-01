@@ -220,7 +220,7 @@ export const ApplicantStatusPage: React.FC = () => {
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <span className="font-sans text-[13px] font-bold tracking-tight text-ink-primary px-2.5 py-0.5 bg-role-applicant text-white rounded-[4px]">
+                <span className="font-sans text-[13px] font-bold tracking-tight text-ink-primary px-2.5 py-0.5 bg-role-applicant text-ink-primary font-bold rounded-[4px]">
                   Action required
                 </span>
                 {timeLeft && (

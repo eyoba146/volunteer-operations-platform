@@ -43,6 +43,7 @@ All engineering and design work must strictly comply with these rules.
 - **Inputs & Secondary Controls**: 1.5 px dark slate border (`border-[#475569]`), radius 8 px (`rounded-[8px]`), no hard shadow.
 - **Primary Buttons**: Exactly one black-filled button per visible section (`bg-ink-primary text-white border border-ink-primary rounded-[8px]`).
 - **Secondary Buttons & Links**: Outlined with 1.5 px border or clean text links with an arrow (`→`).
+- **Ripple Effect & No Press Effects**: Every new button-like element must ripple on interaction (expanding wave from click point or center on keyboard, white at 30% for filled buttons, text color at 15% for outlined/text/icon buttons, 550ms fade). All press or push effects (`active:translate`, `active:scale`, `active:shadow-none`) are permanently banned and removed across the entire application. Respects `prefers-reduced-motion`.
 - **Top Navigation Bar**: Clean light white background (`bg-white border-b border-[#D5DAE1]`). Role color indicator appears as a small circle next to user avatar and the active tab underline.
 - **Signature Ticket Passes**: Kept exclusively for tickets, volunteer ID passes, certificates, and receipts: notched corners (`clipPath`), stub dividers, and hard offset shadows (`shadow-[4px_4px_0_#111111]`).
 

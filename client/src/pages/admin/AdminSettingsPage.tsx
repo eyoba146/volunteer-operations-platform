@@ -257,7 +257,7 @@ export const AdminSettingsPage: React.FC = () => {
       <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 space-y-4 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#D5DAE1] pb-4">
           <div className="space-y-1">
-            <span className="font-sans text-[13px] font-semibold text-amber-600 tracking-tight block">
+            <span className="font-sans text-[13px] font-semibold text-amber-800 tracking-tight block">
               Operations desk
             </span>
             <h1 className="font-display font-black text-2xl sm:text-3xl tracking-tight text-ink-primary leading-tight">
@@ -638,7 +638,7 @@ export const AdminSettingsPage: React.FC = () => {
 
           <div className="p-4 bg-amber-50/60 border border-amber-200 rounded-[8px] space-y-2 text-sm">
             <div className="flex items-center gap-2 text-amber-900 font-bold text-sm">
-              <Warning className="w-5 h-5 text-amber-600" weight="fill" />
+              <Warning className="w-5 h-5 text-amber-800" weight="fill" />
               <span>Full demo state reset</span>
             </div>
             <p className="text-amber-800 leading-relaxed text-[13px]">

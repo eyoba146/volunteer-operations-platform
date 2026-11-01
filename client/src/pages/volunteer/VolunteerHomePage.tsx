@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
 import { Activity, Announcement, Enrollment } from '../../types';
+import { formatRank } from '../../utils/format';
 import { RankProgressData } from '../../api/promotions';
 import { Button, StatusMark, ProgressMeter, Skeleton, Avatar } from '../../components/ui';
 import { 
@@ -127,7 +128,7 @@ export const VolunteerHomePage: React.FC = () => {
                 Next rank
               </span>
               <h3 className="font-display text-2xl font-bold text-ink-primary">
-                {progress.nextRank.replace('_', ' ')}
+                {formatRank(progress.nextRank)}
               </h3>
               <p className="text-[13px] text-ink-secondary">
                 {progress.isEligible

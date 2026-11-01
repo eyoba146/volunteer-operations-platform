@@ -40,8 +40,8 @@ import {
   INITIAL_EMAIL_TEMPLATES,
 } from './seedData';
 
-const STORAGE_KEY = 'vts_civic_ledger_storage_v1';
-const CURRENT_USER_KEY = 'vts_civic_current_user_v1';
+const STORAGE_KEY = 'vts_operations_storage_v2';
+const CURRENT_USER_KEY = 'vts_current_user_v2';
 
 export interface VtsDatabaseState {
   users: User[];

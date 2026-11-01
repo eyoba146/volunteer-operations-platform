@@ -37,8 +37,8 @@ export const TicketPass: React.FC<TicketPassProps> = ({
   return (
     <div
       onClick={onClick}
-      className={`relative bg-white border-2 border-ink-primary shadow-[4px_4px_0_#111111] transition-all duration-150 select-none ${
-        onClick ? 'cursor-pointer hover:shadow-[6px_6px_0_#111111] hover:-translate-x-[1px] hover:-translate-y-[1px] active:shadow-none active:translate-x-[3px] active:translate-y-[3px]' : ''
+      className={`relative bg-white border-2 border-ink-primary shadow-[4px_4px_0_#111111] transition-all duration-150 select-none overflow-hidden ${
+        onClick ? 'cursor-pointer hover:shadow-[6px_6px_0_#111111] hover:-translate-x-[1px] hover:-translate-y-[1px]' : ''
       } ${className}`}
       style={{
         clipPath: 'polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)',

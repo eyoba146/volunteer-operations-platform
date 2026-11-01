@@ -62,7 +62,7 @@ export const AdminOverviewPage: React.FC = () => {
       <div className="border border-[#D5DAE1] bg-white rounded-[10px] p-6 sm:p-8 space-y-6 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-[#D5DAE1] pb-6">
           <div className="space-y-1">
-            <span className="text-[13px] font-semibold text-amber-600">
+            <span className="text-[13px] font-semibold text-amber-800">
               Admin home
             </span>
             <h1 className="font-display font-bold text-2xl sm:text-3xl tracking-tight text-ink-primary">

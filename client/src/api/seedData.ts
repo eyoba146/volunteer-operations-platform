@@ -20,6 +20,25 @@ import {
   EmailTemplate
 } from '../types';
 
+// Relative date generator so demo dates never become stale or display past dates for today's activities
+const _now = new Date();
+export const daysAgo = (d: number, hour = 9, min = 0) => {
+  const dt = new Date(_now.getTime() - d * 86400000);
+  dt.setHours(hour, min, 0, 0);
+  return dt.toISOString();
+};
+export const daysAhead = (d: number, hour = 9, min = 0) => {
+  const dt = new Date(_now.getTime() + d * 86400000);
+  dt.setHours(hour, min, 0, 0);
+  return dt.toISOString();
+};
+export const todayAt = (hour = 9, min = 0) => {
+  const dt = new Date(_now);
+  dt.setHours(hour, min, 0, 0);
+  return dt.toISOString();
+};
+
+
 export const INITIAL_RANK_RULES: RankRule[] = [
   {
     rank: 'senior_member',
@@ -74,9 +93,9 @@ export const DEMO_USERS: User[] = [
     passwordHash: 'Demo@1234',
     role: 'applicant',
     accountStatus: 'active',
-    emailVerifiedAt: '2026-10-25T09:15:00Z',
-    createdAt: '2026-10-25T09:00:00Z',
-    lastSignInAt: '2026-10-31T01:30:00Z',
+    emailVerifiedAt: daysAgo(6, 9, 15),
+    createdAt: daysAgo(6, 9, 0),
+    lastSignInAt: todayAt(1, 30),
   },
   {
     id: 'usr-dawit',
@@ -90,7 +109,7 @@ export const DEMO_USERS: User[] = [
     accountStatus: 'active',
     emailVerifiedAt: '2026-08-10T14:20:00Z',
     createdAt: '2026-08-10T14:00:00Z',
-    lastSignInAt: '2026-10-30T16:45:00Z',
+    lastSignInAt: daysAgo(1, 16, 45),
   },
   {
     id: 'usr-selam',
@@ -235,7 +254,7 @@ export const DEMO_PROFILES: VolunteerProfile[] = [
     phone: '+251 94 567 8901',
     dateOfBirth: '1993-11-05',
     area: 'Adama, Oromia',
-    bio: 'Experienced team lead coordinating civic clean-ups and educational drives across Adama and Bishoftu corridors.',
+    bio: 'Experienced team lead coordinating community clean-ups and educational drives across Adama and Bishoftu corridors.',
     skills: ['Team Leadership', 'Field Safety', 'Incident Management', 'Project Planning'],
     availability: ['Weekends', 'Flexible week days'],
     languages: ['Amharic', 'Afaan Oromo', 'English'],
@@ -277,8 +296,8 @@ export const DEMO_PROFILES: VolunteerProfile[] = [
     phone: '+251 92 789 0123',
     dateOfBirth: '1992-05-12',
     area: 'Bole Medhanealem, Addis Ababa',
-    bio: 'Finance Officer in charge of Telebirr reconciliation, registration fee audits, and manual transaction resolution.',
-    skills: ['Financial Audit', 'Telebirr Reconciliation', 'Compliance', 'Reporting'],
+    bio: 'Finance Officer in charge of Telebirr reconciliation, registration fee verification, and manual transaction resolution.',
+    skills: ['Financial Analysis', 'Telebirr Reconciliation', 'Compliance', 'Reporting'],
     availability: ['Full time staff'],
     languages: ['Amharic', 'English'],
     emergencyContact: {
@@ -380,7 +399,7 @@ export const ADDITIONAL_PROFILES: VolunteerProfile[] = ETHIOPIAN_NAMES.map((pers
     phone: `+251 9${(10000000 + num * 23145).toString().slice(0, 8)}`,
     dateOfBirth: `199${(num % 9) + 1}-0${(num % 8) + 1}-1${(num % 9)}`,
     area: person.area,
-    bio: `Active community volunteer serving in ${person.area}. Committed to sustainable local impact and collective civic resilience.`,
+    bio: `Active community volunteer serving in ${person.area}. Committed to sustainable local impact and collective community resilience.`,
     skills: person.skills,
     availability: ['Weekends', 'Public holidays'],
     languages: ['Amharic', 'English'],
@@ -613,7 +632,7 @@ export const SEED_APPLICATIONS: Application[] = [
       area: 'Bishoftu, Oromia',
       skills: ['Environmental Science', 'Outreach'],
       availability: ['Saturday mornings'],
-      motivation: 'Passionate about botanical preservation and civic landscaping.',
+      motivation: 'Passionate about botanical preservation and community landscaping.',
       languages: ['Amharic', 'Afaan Oromo'],
       emergencyContact: {
         name: 'Gudeta Feyisa',
@@ -701,11 +720,11 @@ export const SEED_ACTIVITIES: Activity[] = [
   // Today's activities
   {
     id: 'act-01',
-    title: 'Meskel Square Civic Clean-up & Waste Audit',
+    title: 'Meskel Square Community Clean-up & Waste Sort',
     type: 'field_task',
-    description: 'Quarterly civic beautification, street waste collection and recyclables segregation around Meskel Square and Exhibition Center.',
-    startsAt: '2026-10-31T08:00:00Z',
-    endsAt: '2026-10-31T12:00:00Z',
+    description: 'Quarterly community beautification, street waste collection and recyclables segregation around Meskel Square and Exhibition Center.',
+    startsAt: todayAt(8, 0),
+    endsAt: todayAt(12, 0),
     area: 'Addis Ababa',
     place: 'Meskel Square Plaza, Kirkos',
     capacity: 25,
@@ -721,8 +740,8 @@ export const SEED_ACTIVITIES: Activity[] = [
     title: 'Bole High School Digital Literacy Clinic',
     type: 'project',
     description: 'Weekend workshop mentoring high school students in basic computer skills and safe internet usage.',
-    startsAt: '2026-10-31T13:30:00Z',
-    endsAt: '2026-10-31T17:00:00Z',
+    startsAt: todayAt(13, 30),
+    endsAt: todayAt(17, 0),
     area: 'Addis Ababa',
     place: 'Bole Senior Secondary School',
     capacity: 15,
@@ -739,8 +758,8 @@ export const SEED_ACTIVITIES: Activity[] = [
     title: 'Bishoftu Lake Babogaya Shoreline Tree Planting',
     type: 'field_task',
     description: 'Planting 1,200 indigenous seedling saplings to reinforce shoreline soil conservation around Lake Babogaya.',
-    startsAt: '2026-11-07T08:00:00Z',
-    endsAt: '2026-11-07T13:00:00Z',
+    startsAt: daysAhead(7, 8, 0),
+    endsAt: daysAhead(7, 13, 0),
     area: 'Bishoftu',
     place: 'Lake Babogaya Community Center',
     capacity: 35,
@@ -755,8 +774,8 @@ export const SEED_ACTIVITIES: Activity[] = [
     title: 'Hawassa Tabor Child Nutrition & Health Screening',
     type: 'shift',
     description: 'Assisting public nurses with growth monitoring, health record transcription, and family nutrition pamphlets.',
-    startsAt: '2026-11-08T09:00:00Z',
-    endsAt: '2026-11-08T15:00:00Z',
+    startsAt: daysAhead(8, 9, 0),
+    endsAt: daysAhead(8, 15, 0),
     area: 'Hawassa',
     place: 'Mount Tabor Primary Health Clinic',
     capacity: 12,
@@ -820,7 +839,7 @@ export const SEED_ACTIVITIES: Activity[] = [
     title: 'Team Leadership & Field Coordination (Required for Team Lead)',
     type: 'training',
     description: 'Advanced 6-hour leadership course for Senior Members preparing to lead volunteer squads, handle incident reports, and manage rosters.',
-    startsAt: '2026-11-22T09:00:00Z',
+    startsAt: daysAhead(22, 9, 0),
     endsAt: '2026-11-22T15:00:00Z',
     area: 'Addis Ababa',
     place: 'VTS Training Hall, Kazanchis',
@@ -836,9 +855,9 @@ export const SEED_ACTIVITIES: Activity[] = [
     id: 'act-09',
     title: 'Piassa Heritage Library Book Repair & Archiving',
     type: 'project',
-    description: 'Restoration, gentle binding repair, and digital cataloging of civic historical volumes at the central public library.',
+    description: 'Restoration, gentle binding repair, and digital cataloging of community historical volumes at the central public library.',
     startsAt: '2026-11-28T10:00:00Z',
-    endsAt: '2026-11-28T16:00:00Z',
+    endsAt: daysAhead(28, 16, 0),
     area: 'Addis Ababa',
     place: 'Piassa Municipal Library',
     capacity: 10,
@@ -854,7 +873,7 @@ export const SEED_ACTIVITIES: Activity[] = [
     type: 'field_task',
     description: 'Clearing dry underbrush and reinforcing gravel firebreaks in Yeka forest ahead of the dry season.',
     startsAt: '2026-11-29T08:00:00Z',
-    endsAt: '2026-11-29T13:00:00Z',
+    endsAt: daysAhead(29, 13, 0),
     area: 'Addis Ababa',
     place: 'Yeka Subcity Forest Ranger Outpost',
     capacity: 25,
@@ -870,7 +889,7 @@ export const SEED_ACTIVITIES: Activity[] = [
     title: 'Entoto Park Mountain Trail Restoration',
     type: 'field_task',
     description: 'Pathway leveling, drainage culvert clearance, and sign repair along the eastern ridge trail.',
-    startsAt: '2026-10-24T08:00:00Z',
+    startsAt: daysAgo(7, 8, 0),
     endsAt: '2026-10-24T14:00:00Z',
     area: 'Addis Ababa',
     place: 'Entoto Park Gate 2',
@@ -1320,7 +1339,7 @@ export const SEED_HOURS: HoursEntry[] = [
     userName: 'Dawit Bekele',
     activityId: 'act-11',
     activityTitle: 'Entoto Park Mountain Trail Restoration',
-    checkIn: '2026-10-24T08:00:00Z',
+    checkIn: daysAgo(7, 8, 0),
     checkOut: '2026-10-24T14:00:00Z',
     minutes: 360, // 6 hours
     source: 'checkin',
@@ -1333,7 +1352,7 @@ export const SEED_HOURS: HoursEntry[] = [
     userName: 'Biruk Tadesse',
     activityId: 'act-11',
     activityTitle: 'Entoto Park Mountain Trail Restoration',
-    checkIn: '2026-10-24T08:00:00Z',
+    checkIn: daysAgo(7, 8, 0),
     checkOut: '2026-10-24T13:30:00Z',
     minutes: 330, // 5.5 hours
     source: 'checkin',
@@ -1404,7 +1423,7 @@ export const SEED_HOURS: HoursEntry[] = [
     userName: 'Selam Alemu',
     activityId: 'act-11',
     activityTitle: 'Entoto Park Mountain Trail Restoration',
-    checkIn: '2026-10-24T08:00:00Z',
+    checkIn: daysAgo(7, 8, 0),
     checkOut: '2026-10-24T14:00:00Z',
     minutes: 360,
     source: 'checkin',
@@ -1977,7 +1996,7 @@ export const SEED_PROMOTIONS: Promotion[] = [
     status: 'recommended',
     recommendedBy: 'usr-yonas',
     recommendedByName: 'Yonas Kebede',
-    createdAt: '2026-10-26T14:00:00Z',
+    createdAt: daysAgo(5, 14, 0),
     note: 'Selam has exceeded every threshold: 168 approved hours across 22 activities, maintaining a 4.9 average rating. She demonstrated exceptional field leadership during the Entoto trail restoration.',
     evidence: {
       approvedHours: 168,
@@ -2002,7 +2021,7 @@ export const SEED_PROMOTIONS: Promotion[] = [
     decidedByName: 'Marta Girma',
     decidedAt: '2026-06-15T11:00:00Z',
     createdAt: '2026-06-10T09:00:00Z',
-    note: 'Promoted to Team Lead for the Adama civic corridor.',
+    note: 'Promoted to Team Lead for the Adama community area.',
     evidence: {
       approvedHours: 156,
       completedActivities: 21,
@@ -2022,7 +2041,7 @@ export const SEED_CERTIFICATES: Certificate[] = [
     userName: 'Dawit Bekele',
     volunteerNumber: 'VTS-AA-2026-084',
     kind: 'membership',
-    title: 'Certificate of Civic Membership',
+    title: 'Certificate of Membership',
     issuedAt: '2026-08-14T10:14:00Z',
     verificationCode: 'VTS-CERT-8842-ET',
     issuerName: 'Ruth Mengistu',
@@ -2092,9 +2111,9 @@ export const SEED_ANNOUNCEMENTS: Announcement[] = [
     authorName: 'Ruth Mengistu',
     authorRole: 'System Director',
     audience: 'all',
-    title: 'Welcome to the New Civic Year 2026: Program Priorities & Regional Expansion',
+    title: 'Welcome to the New Volunteering Season: Community Priorities & Expansion',
     body: 'We are proud to announce the launch of our updated Volunteer Tracking System. This year, we are expanding organized field operations into Hawassa, Bishoftu, and Bahir Dar, while reinforcing our transparent service verification standards.',
-    createdAt: '2026-10-25T08:00:00Z',
+    createdAt: daysAgo(6, 8, 0),
     pinned: true,
   },
   {
@@ -2105,7 +2124,7 @@ export const SEED_ANNOUNCEMENTS: Announcement[] = [
     audience: 'all',
     title: 'Upcoming Safety & Field Ethics Workshops for November',
     body: 'Volunteers planning to qualify for Senior Member rank are encouraged to register for the upcoming Community Safety session on November 14. Registration is open on the activities board.',
-    createdAt: '2026-10-29T10:30:00Z',
+    createdAt: daysAgo(2, 10, 30),
   },
   {
     id: 'anc-03',
@@ -2114,8 +2133,8 @@ export const SEED_ANNOUNCEMENTS: Announcement[] = [
     authorRole: 'Team Lead',
     audience: 'team_lead',
     title: 'Field Checklist & Equipment Check for Meskel Square Roster',
-    body: 'All team leads participating in today’s civic cleanup must ensure safety vests and heavy-duty puncture-resistant gloves are checked out from the central logistics van before 8:00 AM.',
-    createdAt: '2026-10-31T06:30:00Z',
+    body: 'All team leads participating in today’s community clean-up must ensure safety vests and heavy-duty puncture-resistant gloves are checked out from the central logistics van before 8:00 AM.',
+    createdAt: todayAt(6, 30),
   },
 ];
 
@@ -2128,7 +2147,7 @@ export const SEED_NOTIFICATIONS: Notification[] = [
     title: 'Application Accepted',
     body: 'Congratulations! Your volunteer application has been approved. Please complete your registration fee payment with Telebirr to activate your membership.',
     readAt: undefined,
-    createdAt: '2026-10-28T15:05:00Z',
+    createdAt: daysAgo(3, 15, 5),
     link: '/applicant/payment',
   },
   // For Dawit Bekele
@@ -2136,9 +2155,9 @@ export const SEED_NOTIFICATIONS: Notification[] = [
     id: 'notif-dawit-1',
     userId: 'usr-dawit',
     title: 'Reminder: Meskel Square Clean-up Today',
-    body: 'You are enrolled in the Meskel Square Civic Clean-up starting today at 8:00 AM. Meet team lead Yonas at the Plaza entrance.',
-    readAt: '2026-10-31T06:45:00Z',
-    createdAt: '2026-10-31T06:00:00Z',
+    body: 'You are enrolled in the Meskel Square Community Clean-up starting today at 8:00 AM. Meet team lead Yonas at the Plaza entrance.',
+    readAt: todayAt(6, 45),
+    createdAt: todayAt(6, 0),
     link: '/volunteer/activities/act-01',
   },
   // For Selam Alemu
@@ -2148,7 +2167,7 @@ export const SEED_NOTIFICATIONS: Notification[] = [
     title: 'Promotion Recommendation Submitted',
     body: 'Team Lead Yonas Kebede has officially recommended your promotion to Team Lead rank.',
     readAt: undefined,
-    createdAt: '2026-10-26T14:15:00Z',
+    createdAt: daysAgo(5, 14, 15),
     link: '/volunteer/rank-progress',
   },
   // For Marta Girma
@@ -2200,7 +2219,7 @@ export const SEED_ACTIVITY_LOG: ActivityLogEntry[] = [
     actorRole: 'Team Lead',
     action: 'Submitted promotion recommendation for Selam Alemu to Team Lead',
     subject: 'Volunteer #usr-selam',
-    createdAt: '2026-10-26T14:00:00Z',
+    createdAt: daysAgo(5, 14, 0),
   },
   {
     id: 'log-04',
@@ -2216,9 +2235,9 @@ export const SEED_ACTIVITY_LOG: ActivityLogEntry[] = [
     actorId: 'usr-ruth',
     actorName: 'Ruth Mengistu',
     actorRole: 'System Director',
-    action: 'Published program-wide announcement for New Civic Year',
+    action: 'Published program-wide announcement for New Volunteering Season',
     subject: 'Announcement #anc-01',
-    createdAt: '2026-10-25T08:00:00Z',
+    createdAt: daysAgo(6, 8, 0),
   },
 ];
 
@@ -2230,7 +2249,7 @@ export const SEED_EMAILS: DemoEmail[] = [
     toName: 'Hana Tesfaye',
     subject: 'Welcome to VTS — Your 6-Digit Email Verification Code',
     category: 'verification',
-    sentAt: '2026-10-25T09:02:00Z',
+    sentAt: daysAgo(6, 9, 2),
     read: true,
     code: '782941',
     body: 'Hello Hana,\n\nThank you for beginning your registration with the Volunteer Tracking System (VTS).\n\nYour 6-digit verification code is: 782941\n\nThis code is valid for 15 minutes. Enter it on the verification screen to activate your account access.\n\nWarm regards,\nVTS Admissions Team',
@@ -2243,9 +2262,9 @@ export const SEED_EMAILS: DemoEmail[] = [
     toName: 'Hana Tesfaye',
     subject: 'Application Accepted — Complete Your Registration Fee with Telebirr',
     category: 'application',
-    sentAt: '2026-10-28T15:02:00Z',
+    sentAt: daysAgo(3, 15, 2),
     read: false,
-    body: 'Dear Hana,\n\nWe are pleased to inform you that your application to join the VTS Volunteer Corps has been accepted.\n\nTo activate your membership and receive your official volunteer credential and activity access, please complete your one-time registration fee of ETB 200 within 7 days.\n\nYou can pay securely via Telebirr directly inside the platform.',
+    body: 'Dear Hana,\n\nWe are pleased to inform you that your application to join the VTS Volunteer Corps has been accepted.\n\nTo activate your membership and receive your volunteer pass and activity access, please complete your one-time registration fee of ETB 200 within 7 days.\n\nYou can pay securely via Telebirr directly inside the platform.',
     actionLabel: 'Pay with Telebirr',
     actionUrl: '/applicant/payment',
   },
@@ -2267,7 +2286,7 @@ export const SEED_EMAILS: DemoEmail[] = [
     toName: 'Selam Alemu',
     subject: 'Promotion Recommended: Team Lead Rank',
     category: 'promotion',
-    sentAt: '2026-10-26T14:05:00Z',
+    sentAt: daysAgo(5, 14, 5),
     read: true,
     body: 'Dear Selam,\n\nYour Team Lead Yonas Kebede has submitted a recommendation for your promotion to Team Lead rank in recognition of your 168 hours of dedicated community service and field leadership.\n\nThe review board will review the recommendation shortly.',
     actionLabel: 'View Rank Progress',
@@ -2277,11 +2296,11 @@ export const SEED_EMAILS: DemoEmail[] = [
     id: 'em-05',
     to: 'dawit.bekele@example.et',
     toName: 'Dawit Bekele',
-    subject: 'Activity Reminder: Meskel Square Civic Clean-up',
+    subject: 'Activity Reminder: Meskel Square Community Clean-up',
     category: 'activity',
-    sentAt: '2026-10-30T18:00:00Z',
+    sentAt: daysAgo(1, 18, 0),
     read: true,
-    body: 'Hello Dawit,\n\nThis is a reminder that the Meskel Square Civic Clean-up begins tomorrow morning at 8:00 AM at the Meskel Square Plaza entrance.\n\nPlease arrive on time to meet team lead Yonas Kebede and collect your safety vest.',
+    body: 'Hello Dawit,\n\nThis is a reminder that the Meskel Square Community Clean-up begins tomorrow morning at 8:00 AM at the Meskel Square Plaza entrance.\n\nPlease arrive on time to meet team lead Yonas Kebede and collect your safety vest.',
     actionLabel: 'View Activity Details',
     actionUrl: '/volunteer/activities/act-01',
   },
@@ -2303,7 +2322,7 @@ export const SEED_FEEDBACK: VolunteerFeedback[] = [
   {
     id: 'fb-02',
     activityId: 'act-01',
-    activityTitle: 'Meskel Square Civic Clean-up',
+    activityTitle: 'Meskel Square Community Clean-up',
     userId: 'usr-selam',
     userName: 'Selam Alemu',
     userArea: 'Bishoftu, Oromia',
@@ -2379,7 +2398,7 @@ VTS Operations Desk`,
 
 We are pleased to inform you that your application to join the VTS Volunteer Corps has been accepted.
 
-To activate your membership and receive your official volunteer credential and activity access, please complete your one-time registration fee of ETB {{amount}} within {{payment_deadline_days}} days.
+To activate your membership and receive your volunteer pass and activity access, please complete your one-time registration fee of ETB {{amount}} within {{payment_deadline_days}} days.
 
 You can pay securely via Telebirr directly inside the platform:
 {{payment_url}}
@@ -2409,14 +2428,14 @@ VTS Operations`,
   {
     id: 'tpl-promotion',
     key: 'promotion_approved',
-    name: 'Promotion Board Elevation & Rank Credential',
+    name: 'Promotion Approval & Rank Badge',
     category: 'promotion',
     subject: 'Promotion Approved — Congratulations on Reaching {{new_rank}}!',
     body: `Dear {{volunteer_name}},
 
 We are proud to share that your promotion to {{new_rank}} has been approved by {{decided_by}} in recognition of your exemplary service and leadership.
 
-Your new rank badge, system permissions, and official certificate are now active on your profile.
+Your new rank badge, system permissions, and verified certificate are now active on your profile.
 
 Certificate verification code: {{certificate_code}}
 

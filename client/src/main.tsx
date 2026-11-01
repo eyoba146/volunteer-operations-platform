@@ -12,6 +12,10 @@ import '@fontsource/hanken-grotesk/700.css';
 
 import './index.css'
 import App from './App.tsx'
+import { initGlobalRipple } from './utils/ripple'
+
+// Initialize delegated Material-style ripple effect across all buttons and interactive controls
+initGlobalRipple();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

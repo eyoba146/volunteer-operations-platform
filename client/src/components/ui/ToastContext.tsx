@@ -69,20 +69,20 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         {toasts.map((t) => {
           const typeConfig = {
             success: {
-              icon: <Check className="w-4 h-4 text-civic-green" weight="bold" />,
-              border: 'border-civic-green',
+              icon: <Check className="w-4 h-4 text-role-volunteer" weight="bold" />,
+              border: 'border-role-volunteer',
             },
             error: {
-              icon: <Warning className="w-4 h-4 text-civic-rust" weight="bold" />,
-              border: 'border-civic-rust',
+              icon: <Warning className="w-4 h-4 text-role-teamlead" weight="bold" />,
+              border: 'border-role-teamlead',
             },
             warning: {
-              icon: <Warning className="w-4 h-4 text-civic-gold" weight="bold" />,
-              border: 'border-civic-gold',
+              icon: <Warning className="w-4 h-4 text-role-applicant" weight="bold" />,
+              border: 'border-role-applicant',
             },
             info: {
-              icon: <Info className="w-4 h-4 text-civic-navy" weight="bold" />,
-              border: 'border-civic-navy',
+              icon: <Info className="w-4 h-4 text-role-manager" weight="bold" />,
+              border: 'border-role-manager',
             },
           }[t.type];
 

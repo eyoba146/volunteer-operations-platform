@@ -281,7 +281,7 @@ export async function decidePromotion(
           category: 'promotion',
           sentAt: now,
           read: false,
-          body: `Dear ${profile?.fullName || user.username},\n\nWe are proud to share that your promotion to ${promo.toRank.replace('_', ' ')} has been approved by ${decidedByName} in recognition of your exemplary service and leadership.\n\nYour new rank badge, permissions, and official certificate are now active on your profile.\n\nWarm regards,\nVTS Leadership Board`,
+          body: `Dear ${profile?.fullName || user.username},\n\nWe are proud to share that your promotion to ${promo.toRank.replace('_', ' ')} has been approved by ${decidedByName} in recognition of your exemplary service and leadership.\n\nYour new rank badge, permissions, and verified certificate are now active on your profile.\n\nWarm regards,\nVTS Leadership Board`,
           actionLabel: 'View Certificate',
           actionUrl: '/volunteer/certificates',
         },
