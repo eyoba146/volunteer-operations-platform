@@ -28,10 +28,10 @@ export const TicketPass: React.FC<TicketPassProps> = ({
   const headerAccent = {
     applicant: 'bg-role-applicant text-ink-primary',
     volunteer: 'bg-role-volunteer text-white',
-    teamlead:  'bg-role-teamlead text-white',
-    manager:   'bg-role-manager text-white',
-    finance:   'bg-role-finance text-role-financeAccent',
-    neutral:   'bg-canvas-subdued text-ink-primary',
+    teamlead: 'bg-role-teamlead text-white',
+    manager: 'bg-role-manager text-white',
+    finance: 'bg-role-finance text-role-financeAccent',
+    neutral: 'bg-canvas-subdued text-ink-primary',
   }[variant];
 
   return (

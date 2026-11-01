@@ -47,3 +47,4 @@ export function formatRole(role?: string): string {
       return role;
   }
 }
+
