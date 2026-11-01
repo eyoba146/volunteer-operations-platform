@@ -14,6 +14,7 @@ import { ForgotPasswordPage } from './pages/public/ForgotPasswordPage';
 import { ResetPasswordPage } from './pages/public/ResetPasswordPage';
 import { CertificateCheckPage } from './pages/public/CertificateCheckPage';
 import { UnauthorizedPage } from './pages/public/UnauthorizedPage';
+import { NotFoundPage } from './pages/public/NotFoundPage';
 
 // Applicant Pages
 import { ApplicantStatusPage } from './pages/applicant/ApplicantStatusPage';
@@ -80,6 +81,7 @@ export const router = createBrowserRouter([
       { path: 'reset-password', element: <PageTransition><ResetPasswordPage /></PageTransition> },
       { path: 'check-certificate', element: <PageTransition><CertificateCheckPage /></PageTransition> },
       { path: 'unauthorized', element: <PageTransition><UnauthorizedPage /></PageTransition> },
+      { path: '404', element: <PageTransition><NotFoundPage /></PageTransition> },
     ],
   },
 
@@ -203,6 +205,6 @@ export const router = createBrowserRouter([
   // Fallback Catch-all
   {
     path: '*',
-    element: <Navigate to="/" replace />,
+    element: <PageTransition><NotFoundPage /></PageTransition>,
   },
 ]);

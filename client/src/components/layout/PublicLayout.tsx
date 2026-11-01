@@ -30,8 +30,8 @@ export const PublicLayout: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-canvas text-ink-primary flex flex-col font-sans selection:bg-role-applicant selection:text-ink-primary">
-      {/* Top Navigation Bar: Light with 1px border */}
-      <header className="sticky top-0 z-40 bg-white border-b border-[#D5DAE1]">
+      {/* Top Navigation Bar: Light with 1px hairline divider */}
+      <header className="sticky top-0 z-40 bg-white border-b border-[#EDEFF2]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           {/* Logo & Brand */}
           <Link to="/" className="flex items-center gap-2.5 sm:gap-3 group select-none shrink-0">
@@ -73,7 +73,7 @@ export const PublicLayout: React.FC = () => {
                 </Button>
                 <button
                   onClick={() => signOut()}
-                  className="p-2 text-ink-secondary hover:text-role-teamlead cursor-pointer rounded-[6px] border border-transparent hover:border-[#D5DAE1]"
+                  className="p-2 text-ink-secondary hover:text-role-teamlead cursor-pointer rounded-[6px] border border-transparent hover:border-[#EDEFF2]"
                   title="Sign out"
                 >
                   <SignOut className="w-5 h-5" />
@@ -104,14 +104,14 @@ export const PublicLayout: React.FC = () => {
       </header>
 
       {/* Main Content Viewport */}
-      <main className="flex-1">
+      <main className="flex-1 bg-white">
         <Outlet />
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-[#D5DAE1] bg-white text-ink-primary py-12">
+      <footer className="border-t border-[#EDEFF2] bg-white text-ink-primary py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-[#D5DAE1] pb-8">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-[#EDEFF2] pb-8">
             <div className="space-y-1">
               <span className="font-display text-2xl font-bold text-ink-primary tracking-tight">
                 Volunteer Tracking System

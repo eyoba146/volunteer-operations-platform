@@ -1,0 +1,10 @@
+{
+  "name": "vts-root",
+  "private": true,
+  "scripts": {
+    "audit": "npm --prefix client run audit",
+    "build": "npm --prefix client run build",
+    "dev": "npm --prefix client run dev"
+  }
+}
+

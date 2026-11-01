@@ -16,4 +16,5 @@ export * from './reports';
 export * from './settings';
 export * from './activityHistory';
 export * from './demoEmails';
+export * from '../utils/phone';
 

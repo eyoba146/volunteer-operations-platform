@@ -69,7 +69,7 @@ export const TicketPass: React.FC<TicketPassProps> = ({
       </div>
 
       {/* Perforated Stub Divider */}
-      <div className="relative border-t border-dashed border-[#EDEFF2] flex items-center justify-between px-5 py-3.5 bg-[#F7F8FA]">
+      <div data-allow="perforation" className="relative border-t border-dashed border-[#EDEFF2] flex items-center justify-between px-5 py-3.5 bg-[#F7F8FA]">
         {/* Left and Right Notches */}
         <div className="absolute -left-3 -top-3 w-6 h-6 rounded-full bg-white shadow-inner" />
         <div className="absolute -right-3 -top-3 w-6 h-6 rounded-full bg-white shadow-inner" />

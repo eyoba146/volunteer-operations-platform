@@ -1,19 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import React, { useState } from 'react';
 import * as api from '../../api';
 import { Certificate } from '../../types';
-import { Input, Button } from '../../components/ui';
-import { MagnifyingGlass, CheckCircle, Warning, QrCode } from '@phosphor-icons/react';
+import { PageShell, Input, Button, Raised, Panel, TopoBackdrop } from '../../components/ui';
+import { ShieldCheck, CheckCircle, Warning, MagnifyingGlass } from '@phosphor-icons/react';
 
 const SAMPLE_CODES = [
-  { code: 'VTS-CERT-8842-ET', label: "Dawit's membership certificate" },
-  { code: 'VTS-CERT-7731-ET', label: "Selam's senior member certificate" },
-  { code: 'VTS-CERT-9140-ET', label: "Dawit's service certificate" },
+  { code: 'VTS-CERT-2026-001', label: 'Biruk Tadesse (Senior Member)' },
+  { code: 'VTS-CERT-2026-002', label: 'Selam Alemu (Community Service)' },
 ];
 
 export const CertificateCheckPage: React.FC = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [code, setCode] = useState(searchParams.get('code') || '');
+  const [code, setCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [searched, setSearched] = useState(false);
   const [result, setResult] = useState<{
@@ -23,24 +20,18 @@ export const CertificateCheckPage: React.FC = () => {
   } | null>(null);
 
   const doVerify = async (codeToVerify: string) => {
-    if (!codeToVerify.trim()) return;
+    const trimmed = codeToVerify.trim();
+    if (!trimmed) return;
+
     setIsLoading(true);
     setSearched(true);
     try {
-      const res = await api.verifyCertificate(codeToVerify);
+      const res = await api.verifyCertificate(trimmed);
       setResult(res);
-      setSearchParams({ code: codeToVerify.trim() });
     } finally {
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    const initCode = searchParams.get('code');
-    if (initCode) {
-      doVerify(initCode);
-    }
-  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,150 +39,154 @@ export const CertificateCheckPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14 space-y-8">
-      {/* Header */}
-      <div className="space-y-2 border-b border-[#D5DAE1] pb-6 text-center">
-        <h1 className="font-display font-bold text-3xl sm:text-5xl tracking-tight text-ink-primary leading-tight">
-          Verify volunteer certificate
-        </h1>
-        <p className="font-sans text-base text-ink-secondary max-w-xl mx-auto">
-          Enter a certificate code to check the authenticity and completed hours of any credential issued by VTS.
-        </p>
-      </div>
-
-      {/* Search Input Box */}
-      <div className="bg-white border border-[#D5DAE1] rounded-[10px] p-6 sm:p-8 space-y-4">
-        <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row items-end gap-3">
-          <div className="flex-1 w-full space-y-1.5">
-            <Input
-              label="Verification code"
-              type="text"
-              value={code}
-              onChange={(e) => setCode(e.target.value.toUpperCase())}
-              placeholder="e.g. VTS-CERT-8842-ET"
-              leftIcon={<QrCode className="w-4 h-4 text-ink-secondary" />}
-              required
-            />
-          </div>
-          <Button
-            type="submit"
-            variant="primary"
-            size="md"
-            isLoading={isLoading}
-            leftIcon={<MagnifyingGlass className="w-4 h-4" weight="bold" />}
-            className="w-full sm:w-auto font-bold"
-          >
-            Verify certificate
-          </Button>
-        </form>
-
-        {/* Quick Demo Test Codes */}
-        <div className="pt-3 border-t border-[#D5DAE1] flex flex-wrap items-center gap-2 text-[13px] font-sans text-ink-secondary">
-          <span className="font-bold text-ink-primary">Quick test codes:</span>
-          {SAMPLE_CODES.map((s) => (
-            <button
-              key={s.code}
-              type="button"
-              onClick={() => {
-                setCode(s.code);
-                doVerify(s.code);
-              }}
-              className="px-2.5 py-1 text-[13px] font-semibold bg-canvas-subdued border border-[#D5DAE1] rounded-[6px] hover:border-ink-primary text-ink-primary transition-colors cursor-pointer"
-            >
-              {s.code}
-            </button>
-          ))}
+    <PageShell page="public/check-certificate" signature="TopoBackdrop">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14 space-y-8">
+        {/* Header */}
+        <div className="space-y-2 border-b border-[#EDEFF2] pb-6 text-center">
+          <h1 className="font-display font-bold text-3xl sm:text-5xl tracking-tight text-ink-primary leading-tight">
+            Verify volunteer certificate
+          </h1>
+          <p className="font-sans text-base text-ink-secondary max-w-xl mx-auto">
+            Confirm the authenticity, service hours, and rank recognition of any certificate issued by the platform.
+          </p>
         </div>
-      </div>
 
-      {/* Result Section */}
-      {searched && !isLoading && result && (
-        <div className="animate-in fade-in duration-200">
-          {result.valid && result.certificate ? (
-            <div className="bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] rounded-[16px] overflow-hidden border-none">
-              {/* Green Header Banner */}
-              <div className="bg-role-volunteer text-white px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-role-volunteer">
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-6 h-6 text-white" weight="fill" />
-                  <span className="font-display text-2xl font-bold tracking-tight">
-                    Authenticated volunteer certificate
-                  </span>
-                </div>
-                <span className="font-sans text-[13px] px-2.5 py-1 bg-ink-primary text-white font-bold rounded-[4px]">
-                  {result.certificate.verificationCode}
-                </span>
+        {/* Search Box */}
+        <Raised className="relative overflow-hidden p-6 sm:p-8 space-y-4">
+          <TopoBackdrop color="#16A34A" opacity={0.04} />
+          <div className="relative z-10 space-y-4">
+            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
+              <div className="flex-1">
+                <Input
+                  type="text"
+                  value={code}
+                  onChange={(e) => setCode(e.target.value.toUpperCase())}
+                  placeholder="e.g. VTS-CERT-2026-001"
+                  leftIcon={<ShieldCheck className="w-5 h-5 text-ink-secondary" weight="bold" />}
+                  required
+                />
               </div>
+              <Button
+                type="submit"
+                variant="primary"
+                size="md"
+                className="shrink-0"
+                isLoading={isLoading}
+                leftIcon={<MagnifyingGlass className="w-4 h-4" weight="bold" />}
+              >
+                Verify certificate
+              </Button>
+            </form>
 
-              {/* Certificate Pass Body */}
-              <div className="p-8 md:p-12 space-y-8">
-                <div className="space-y-3 text-center">
-                  <span className="font-sans text-[13px] font-semibold text-ink-secondary block">
-                    This credential certifies that
-                  </span>
-                  <h2 className="font-display font-black text-4xl sm:text-5xl tracking-tight text-ink-primary leading-none">
-                    {result.certificate.userName}
-                  </h2>
-                  <p className="font-sans text-lg font-bold text-role-volunteer">
-                    {result.certificate.title}
-                  </p>
-                </div>
+            {/* Sample Chips */}
+            <div className="pt-2 flex flex-wrap items-center gap-2 text-sm text-ink-secondary">
+              <span className="font-bold text-ink-primary">Sample verification codes:</span>
+              {SAMPLE_CODES.map((s) => (
+                <button
+                  key={s.code}
+                  type="button"
+                  onClick={() => {
+                    setCode(s.code);
+                    doVerify(s.code);
+                  }}
+                  className="px-3 py-1 text-[13px] font-semibold bg-[#F1F3F6] hover:bg-[#E8EBEF] rounded-[6px] text-ink-primary transition-colors cursor-pointer border-none"
+                >
+                  {s.code}
+                </button>
+              ))}
+            </div>
+          </div>
+        </Raised>
 
-                {/* Ledger-Style Metadata Rows */}
-                <div className="bg-canvas-subdued rounded-[12px] p-4 divide-y divide-[#EDEFF2] border-none">
-                  <div className="py-2.5 flex items-center justify-between text-sm">
-                    <span className="text-ink-secondary font-medium">Volunteer pass ID</span>
-                    <span className="font-bold text-ink-primary">{result.certificate.volunteerNumber}</span>
-                  </div>
-                  <div className="py-2.5 flex items-center justify-between text-sm">
-                    <span className="text-ink-secondary font-medium">Date issued</span>
-                    <span className="font-bold text-ink-primary">
-                      {new Date(result.certificate.issuedAt).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric',
-                      })}
+        {/* Result Section */}
+        {searched && !isLoading && result && (
+          <div className="animate-in fade-in duration-200">
+            {result.valid && result.certificate ? (
+              <Raised padding="none" className="overflow-hidden">
+                {/* Green Header Banner */}
+                <div className="bg-role-volunteer text-white px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="w-6 h-6 text-white" weight="fill" />
+                    <span className="font-display text-2xl font-bold tracking-tight">
+                      Authenticated volunteer certificate
                     </span>
                   </div>
-                  <div className="py-2.5 flex items-center justify-between text-sm">
-                    <span className="text-ink-secondary font-medium">Issued by</span>
-                    <span className="font-bold text-ink-primary">{result.certificate.issuerName}</span>
-                  </div>
-                  <div className="py-2.5 flex items-center justify-between text-sm">
-                    <span className="text-ink-secondary font-medium">Status</span>
-                    <span className="font-bold text-role-volunteer">Active in good standing</span>
-                  </div>
+                  <span className="font-sans text-[13px] px-2.5 py-1 bg-ink-primary text-white font-bold rounded-[4px]">
+                    {result.certificate.verificationCode}
+                  </span>
                 </div>
 
-                {/* Perforated Divider */}
-                <div className="relative border-t border-dashed border-[#EDEFF2] pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <div className="font-sans text-[13px] text-ink-secondary">
-                    Verification signature: <strong className="font-sans text-ink-primary font-bold">{result.certificate.id}</strong>
+                {/* Certificate Pass Body */}
+                <div className="p-8 md:p-12 space-y-8">
+                  <div className="space-y-3 text-center">
+                    <span className="font-sans text-[13px] font-semibold text-ink-secondary block">
+                      This credential certifies that
+                    </span>
+                    <h2 className="font-display font-bold text-4xl sm:text-5xl tracking-tight text-ink-primary leading-none">
+                      {result.certificate.userName}
+                    </h2>
+                    <p className="font-sans text-lg font-bold text-role-volunteer">
+                      {result.certificate.title}
+                    </p>
                   </div>
-                  <div className="flex gap-1.5 items-center">
-                    <span className="w-2 h-6 bg-ink-primary" />
-                    <span className="w-1 h-6 bg-ink-primary" />
-                    <span className="w-3 h-6 bg-ink-primary" />
-                    <span className="w-1 h-6 bg-ink-primary" />
-                    <span className="w-2 h-6 bg-ink-primary" />
+
+                  {/* Ledger-Style Metadata Rows */}
+                  <Panel padding="md" className="divide-y divide-[#EDEFF2]">
+                    <div className="py-2.5 flex items-center justify-between text-sm first:pt-0">
+                      <span className="text-ink-secondary font-medium">Volunteer pass ID</span>
+                      <span className="font-bold text-ink-primary">{result.certificate.volunteerNumber}</span>
+                    </div>
+                    <div className="py-2.5 flex items-center justify-between text-sm">
+                      <span className="text-ink-secondary font-medium">Date issued</span>
+                      <span className="font-bold text-ink-primary">
+                        {new Date(result.certificate.issuedAt).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric',
+                        })}
+                      </span>
+                    </div>
+                    <div className="py-2.5 flex items-center justify-between text-sm">
+                      <span className="text-ink-secondary font-medium">Issued by</span>
+                      <span className="font-bold text-ink-primary">{result.certificate.issuerName}</span>
+                    </div>
+                    <div className="py-2.5 flex items-center justify-between text-sm last:pb-0">
+                      <span className="text-ink-secondary font-medium">Status</span>
+                      <span className="font-bold text-role-volunteer">Active in good standing</span>
+                    </div>
+                  </Panel>
+
+                  {/* Perforated Divider */}
+                  <div data-allow="perforation" className="relative border-t border-dashed border-[#EDEFF2] pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div className="font-sans text-[13px] text-ink-secondary">
+                      Verification signature: <strong className="font-sans text-ink-primary font-bold">{result.certificate.id}</strong>
+                    </div>
+                    <div className="flex gap-1.5 items-center">
+                      <span className="w-2 h-6 bg-ink-primary rounded-[1px]" />
+                      <span className="w-1 h-6 bg-ink-primary rounded-[1px]" />
+                      <span className="w-3 h-6 bg-ink-primary rounded-[1px]" />
+                      <span className="w-1 h-6 bg-ink-primary rounded-[1px]" />
+                      <span className="w-2 h-6 bg-ink-primary rounded-[1px]" />
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          ) : (
-            <div className="bg-white border border-role-teamlead rounded-[10px] p-8 text-center space-y-4">
-              <div className="w-12 h-12 mx-auto bg-red-50 text-role-teamlead border border-role-teamlead rounded-[8px] flex items-center justify-center">
-                <Warning className="w-6 h-6" weight="bold" />
-              </div>
-              <h3 className="font-display text-2xl font-bold text-ink-primary">
-                Record not found
-              </h3>
-              <p className="font-sans text-sm text-ink-secondary max-w-md mx-auto">
-                {result.message || 'No record was found matching that verification code. Please check the digits stamped on your pass.'}
-              </p>
-            </div>
-          )}
-        </div>
-      )}
-    </div>
+              </Raised>
+            ) : (
+              <Raised className="p-8 text-center space-y-4">
+                <div className="w-14 h-14 mx-auto bg-rose-50 text-rose-600 rounded-full flex items-center justify-center">
+                  <Warning className="w-7 h-7" weight="bold" />
+                </div>
+                <h3 className="font-display text-2xl font-bold text-ink-primary">
+                  Record not found
+                </h3>
+                <p className="font-sans text-sm sm:text-base text-ink-secondary max-w-md mx-auto leading-relaxed">
+                  {result.message || 'No record was found matching that verification code. Please check the digits stamped on your pass.'}
+                </p>
+              </Raised>
+            )}
+          </div>
+        )}
+      </div>
+    </PageShell>
   );
 };

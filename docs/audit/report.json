@@ -1,0 +1,65 @@
+[
+  {
+    "role": "public",
+    "name": "home",
+    "path": "/",
+    "pageTag": "public/home",
+    "failures": []
+  },
+  {
+    "role": "public",
+    "name": "sign_in",
+    "path": "/sign-in",
+    "pageTag": "public/sign-in",
+    "failures": []
+  },
+  {
+    "role": "public",
+    "name": "register",
+    "path": "/register",
+    "pageTag": "public/register",
+    "failures": []
+  },
+  {
+    "role": "public",
+    "name": "verify_email",
+    "path": "/verify-email",
+    "pageTag": "public/verify-email",
+    "failures": []
+  },
+  {
+    "role": "public",
+    "name": "forgot_password",
+    "path": "/forgot-password",
+    "pageTag": "public/forgot-password",
+    "failures": []
+  },
+  {
+    "role": "public",
+    "name": "reset_password",
+    "path": "/reset-password",
+    "pageTag": "public/reset-password",
+    "failures": []
+  },
+  {
+    "role": "public",
+    "name": "check_certificate",
+    "path": "/check-certificate",
+    "pageTag": "public/check-certificate",
+    "failures": []
+  },
+  {
+    "role": "public",
+    "name": "unauthorized",
+    "path": "/unauthorized",
+    "pageTag": "public/unauthorized",
+    "failures": []
+  },
+  {
+    "role": "public",
+    "name": "not_found",
+    "path": "/404",
+    "pageTag": "public/404",
+    "failures": []
+  }
+]

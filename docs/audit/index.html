@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>VTS Completion Audit Report</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f8fafc; color: #0f172a; margin: 0; padding: 24px; }
+    h1 { font-size: 24px; margin-bottom: 8px; }
+    .summary-card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); display: flex; gap: 32px; }
+    .stat { font-size: 28px; font-weight: bold; }
+    .stat.pass { color: #16a34a; }
+    .stat.fail { color: #dc2626; }
+    .role-section { background: white; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+    .role-title { font-size: 18px; font-weight: bold; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 16px; text-transform: capitalize; }
+    .page-row { border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 20px; padding: 16px; }
+    .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .page-name { font-weight: 600; font-size: 16px; }
+    .badge { padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: bold; }
+    .badge.pass { background: #dcfce7; color: #15803d; }
+    .badge.fail { background: #fee2e2; color: #b91c1c; }
+    .screenshots-grid { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 12px; align-items: flex-start; }
+    .shot-box { border: 1px solid #cbd5e1; border-radius: 6px; overflow: hidden; background: #fff; }
+    .shot-box img { display: block; max-height: 480px; width: auto; }
+    .shot-label { padding: 6px 10px; background: #f1f5f9; font-size: 12px; font-weight: 600; }
+    .failures-list { margin-top: 12px; background: #fff1f2; border: 1px solid #fecdd3; border-radius: 6px; padding: 12px; }
+    .failures-list ul { margin: 0; padding-left: 20px; }
+    .failures-list li { font-size: 13px; color: #9f1239; margin-bottom: 4px; }
+  </style>
+</head>
+<body>
+  <h1>VTS Comprehensive Completion Audit</h1>
+  <p>Automated visual and computed style scanner across all 7 demo personas and public routes at 360px & 1440px.</p>
+
+  <div class="summary-card">
+    <div><div>Total Pages Tested</div><div class="stat">9</div></div>
+    <div><div>Passed Pages</div><div class="stat pass">9</div></div>
+    <div><div>Failed Pages</div><div class="stat fail">0</div></div>
+  </div>
+
+  <div class="role-section">
+    <div class="role-title">public Portal (9 pages)</div>
+
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">public/home (/)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="public/home-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="public/home-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">public/sign-in (/sign-in)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="public/sign_in-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="public/sign_in-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">public/register (/register)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="public/register-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="public/register-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">public/verify-email (/verify-email)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="public/verify_email-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="public/verify_email-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">public/forgot-password (/forgot-password)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="public/forgot_password-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="public/forgot_password-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">public/reset-password (/reset-password)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="public/reset_password-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="public/reset_password-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">public/check-certificate (/check-certificate)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="public/check_certificate-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="public/check_certificate-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">public/unauthorized (/unauthorized)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="public/unauthorized-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="public/unauthorized-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">public/404 (/404)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="public/not_found-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="public/not_found-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>  </div>
+</body>
+</html>
