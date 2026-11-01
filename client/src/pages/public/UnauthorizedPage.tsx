@@ -36,9 +36,6 @@ export const UnauthorizedPage: React.FC = () => {
         </div>
 
         <div className="space-y-2">
-          <span className="font-sans text-[13px] font-bold tracking-tight text-ink-secondary block">
-            Access notice
-          </span>
           <h1 className="font-display text-2xl font-bold text-ink-primary">
             You do not have access to this page
           </h1>

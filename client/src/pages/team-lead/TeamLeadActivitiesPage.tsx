@@ -82,9 +82,6 @@ export const TeamLeadActivitiesPage: React.FC = () => {
       {/* Top Header */}
       <div className="border-b border-[#D5DAE1] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <span className="font-sans text-[13px] font-semibold text-role-teamlead block">
-            Field command roster
-          </span>
           <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
             Activities under my leadership
           </h1>

@@ -143,9 +143,6 @@ export const ManagerActivitiesPage: React.FC = () => {
       <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 space-y-4 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#D5DAE1] pb-5">
           <div className="space-y-1">
-            <span className="font-sans text-[13px] font-semibold text-role-manager block">
-              Central field coordination
-            </span>
             <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight">
               All field activities
             </h1>

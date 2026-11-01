@@ -91,9 +91,6 @@ export const TeamLeadCreateActivityPage: React.FC = () => {
 
       {/* Header */}
       <div className="border-b border-[#D5DAE1] pb-4">
-        <span className="font-sans text-[13px] font-semibold text-role-teamlead block">
-          Assignment publisher
-        </span>
         <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
           Create volunteer activity
         </h1>

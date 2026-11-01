@@ -194,10 +194,7 @@ export const VolunteerCheckInPage: React.FC = () => {
   if (activeSession) {
     return (
       <div className="max-w-lg mx-auto space-y-6">
-        <div className="border-b border-[#D5DAE1] pb-4 text-center">
-          <span className="font-sans text-[13px] font-semibold text-role-volunteer block">
-            On-site active session
-          </span>
+        <div className="border-b border-[#EDEFF2] pb-4 text-center">
           <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
             Checked in
           </h1>
@@ -257,10 +254,7 @@ export const VolunteerCheckInPage: React.FC = () => {
   return (
     <div className="max-w-xl mx-auto space-y-6">
       {/* Header */}
-      <div className="border-b border-[#D5DAE1] pb-4 text-center">
-        <span className="font-sans text-[13px] font-semibold text-role-volunteer block">
-          On-site attendance
-        </span>
+      <div className="border-b border-[#EDEFF2] pb-4 text-center">
         <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
           Activity check-in
         </h1>

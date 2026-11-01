@@ -102,9 +102,6 @@ export const VolunteerRankProgressPage: React.FC = () => {
       {/* Header */}
       <div className="border-b border-[#D5DAE1] pb-5 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <span className="font-sans text-[13px] font-bold text-role-volunteer tracking-tight block">
-            Rank and advancement
-          </span>
           <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
             Rank progression board
           </h1>

@@ -91,6 +91,16 @@ export const VolunteerHoursPage: React.FC = () => {
     }
   };
 
+  const handleCheckoutDirectly = async (hoursId: string) => {
+    try {
+      await api.checkOut(hoursId);
+      toast.success('Check-out recorded! Your hours are waiting for Team Lead approval.');
+      await loadData();
+    } catch (err: any) {
+      toast.error(err.message || 'Could not record check-out.');
+    }
+  };
+
   const totalApprovedMinutes = hours
     .filter((h) => h.status === 'approved')
     .reduce((sum, h) => sum + h.minutes, 0);
@@ -137,7 +147,7 @@ export const VolunteerHoursPage: React.FC = () => {
             </p>
           )}
           {entry.decisionReason && entry.status === 'declined' && (
-            <div className="p-2 border border-role-teamlead/30 rounded-[6px] bg-role-teamleadLight/20 text-role-teamlead text-[13px] font-sans mt-1">
+            <div className="p-2 rounded-[6px] bg-red-50 text-red-800 text-[13px] font-sans mt-1">
               <strong>Decline reason:</strong> {entry.decisionReason}
             </div>
           )}
@@ -146,12 +156,38 @@ export const VolunteerHoursPage: React.FC = () => {
     },
     {
       header: 'Duration',
-      cell: (entry) => (
-        <span className="font-mono text-[13px] font-semibold text-ink-primary">
-          {Math.round((entry.minutes / 60) * 10) / 10} hrs{' '}
-          <span className="text-[13px] text-ink-tertiary font-normal">({entry.minutes}m)</span>
-        </span>
-      ),
+      cell: (entry) => {
+        if (!entry.checkOut || entry.checkOut === '') {
+          return (
+            <div className="space-y-1">
+              <span className="font-sans text-[13px] font-medium text-amber-800 block">
+                Checked in, not checked out
+              </span>
+              <Button
+                size="sm"
+                variant="secondary"
+                onClick={() => handleCheckoutDirectly(entry.id)}
+              >
+                Check out
+              </Button>
+            </div>
+          );
+        }
+
+        const isQuickLook = entry.manualNote?.includes('Needs a quick look');
+        return (
+          <div className="space-y-0.5">
+            <span className="font-mono text-[13px] font-semibold text-ink-primary">
+              {Math.round((entry.minutes / 60) * 10) / 10} hrs
+            </span>
+            {isQuickLook && (
+              <span className="inline-block px-1.5 py-0.5 text-[11px] font-medium bg-amber-50 text-amber-900 rounded-[4px]">
+                Needs a quick look
+              </span>
+            )}
+          </div>
+        );
+      },
     },
     {
       header: 'Decision status',
@@ -174,9 +210,6 @@ export const VolunteerHoursPage: React.FC = () => {
       {/* Top Header */}
       <div className="border-b border-[#D5DAE1] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <span className="font-sans text-[13px] font-semibold text-role-volunteer block">
-            Service record
-          </span>
           <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
             Logged hours ledger
           </h1>

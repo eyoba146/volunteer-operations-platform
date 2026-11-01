@@ -55,9 +55,6 @@ export const FinanceReportsPage: React.FC = () => {
       <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 space-y-4 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#D5DAE1] pb-4">
           <div className="space-y-1">
-            <span className="font-sans text-[13px] font-semibold text-role-finance tracking-tight block">
-              Telebirr merchant reconciliation
-            </span>
             <h1 className="font-display font-black text-2xl sm:text-3xl tracking-tight text-ink-primary leading-tight">
               Financial settlement reports
             </h1>

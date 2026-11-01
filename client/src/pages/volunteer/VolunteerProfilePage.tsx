@@ -114,9 +114,6 @@ export const VolunteerProfilePage: React.FC = () => {
     <div className="max-w-3xl mx-auto space-y-8">
       {/* Top Header */}
       <div className="border-b border-[#D5DAE1] pb-5">
-        <span className="font-sans text-[13px] font-bold text-role-volunteer tracking-tight block">
-          Account and preferences
-        </span>
         <h1 className="font-display font-bold text-3xl sm:text-4xl tracking-tight text-ink-primary leading-tight mt-1">
           Volunteer profile and settings
         </h1>

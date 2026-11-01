@@ -204,9 +204,6 @@ export const AdminAccountsPage: React.FC = () => {
       <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 space-y-4 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#D5DAE1] pb-4">
           <div className="space-y-1">
-            <span className="font-sans text-[13px] font-semibold text-amber-800 tracking-tight block">
-              Access control and permissions
-            </span>
             <h1 className="font-display font-black text-2xl sm:text-3xl tracking-tight text-ink-primary leading-tight">
               User accounts and role permissions
             </h1>

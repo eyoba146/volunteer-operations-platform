@@ -70,9 +70,6 @@ export const VolunteerMyActivitiesPage: React.FC = () => {
     <div className="space-y-6">
       {/* Header */}
       <div className="border-b border-[#D5DAE1] pb-4">
-        <span className="font-sans text-[13px] font-semibold text-role-volunteer block">
-          Personal assignments
-        </span>
         <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
           My volunteer roster
         </h1>

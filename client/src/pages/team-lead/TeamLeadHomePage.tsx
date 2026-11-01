@@ -70,9 +70,6 @@ export const TeamLeadHomePage: React.FC = () => {
               showRankBadge
             />
             <div className="space-y-1">
-              <span className="text-[13px] font-bold text-role-teamlead">
-                Dispatch desk
-              </span>
               <h1 className="font-display font-bold text-2xl sm:text-3xl md:text-4xl tracking-tight text-ink-primary leading-tight">
                 Welcome, {profile?.fullName || user?.username}
               </h1>

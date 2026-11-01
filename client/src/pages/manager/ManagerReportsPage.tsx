@@ -78,9 +78,6 @@ export const ManagerReportsPage: React.FC = () => {
       <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 space-y-4 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#D5DAE1] pb-5">
           <div className="space-y-1">
-            <span className="font-sans text-[13px] font-semibold text-role-manager block">
-              Program intelligence & analytics
-            </span>
             <h1 className="font-display font-bold text-3xl sm:text-4xl tracking-tight text-ink-primary leading-tight">
               Service operations reports
             </h1>

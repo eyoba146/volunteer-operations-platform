@@ -55,9 +55,6 @@ export const VolunteerCertificatesPage: React.FC = () => {
     <div className="space-y-6">
       {/* Header */}
       <div className="border-b border-[#D5DAE1] pb-5">
-        <span className="font-sans text-[13px] font-bold text-role-volunteer tracking-tight block">
-          Earned credentials
-        </span>
         <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
           Certificates and credentials
         </h1>

@@ -840,7 +840,7 @@ export const SEED_ACTIVITIES: Activity[] = [
     type: 'training',
     description: 'Advanced 6-hour leadership course for Senior Members preparing to lead volunteer squads, handle incident reports, and manage rosters.',
     startsAt: daysAhead(22, 9, 0),
-    endsAt: '2026-11-22T15:00:00Z',
+    endsAt: daysAhead(22, 15, 0),
     area: 'Addis Ababa',
     place: 'VTS Training Hall, Kazanchis',
     capacity: 20,
@@ -856,7 +856,7 @@ export const SEED_ACTIVITIES: Activity[] = [
     title: 'Piassa Heritage Library Book Repair & Archiving',
     type: 'project',
     description: 'Restoration, gentle binding repair, and digital cataloging of community historical volumes at the central public library.',
-    startsAt: '2026-11-28T10:00:00Z',
+    startsAt: daysAhead(28, 10, 0),
     endsAt: daysAhead(28, 16, 0),
     area: 'Addis Ababa',
     place: 'Piassa Municipal Library',
@@ -872,7 +872,7 @@ export const SEED_ACTIVITIES: Activity[] = [
     title: 'Yeka Forest Firebreak Maintenance & Trail Clearing',
     type: 'field_task',
     description: 'Clearing dry underbrush and reinforcing gravel firebreaks in Yeka forest ahead of the dry season.',
-    startsAt: '2026-11-29T08:00:00Z',
+    startsAt: daysAhead(29, 8, 0),
     endsAt: daysAhead(29, 13, 0),
     area: 'Addis Ababa',
     place: 'Yeka Subcity Forest Ranger Outpost',
@@ -889,8 +889,8 @@ export const SEED_ACTIVITIES: Activity[] = [
     title: 'Entoto Park Mountain Trail Restoration',
     type: 'field_task',
     description: 'Pathway leveling, drainage culvert clearance, and sign repair along the eastern ridge trail.',
-    startsAt: daysAgo(7, 8, 0),
-    endsAt: '2026-10-24T14:00:00Z',
+    startsAt: '2026-10-25T08:00:00Z',
+    endsAt: '2026-10-25T13:30:00Z',
     area: 'Addis Ababa',
     place: 'Entoto Park Gate 2',
     capacity: 20,
@@ -1339,12 +1339,12 @@ export const SEED_HOURS: HoursEntry[] = [
     userName: 'Dawit Bekele',
     activityId: 'act-11',
     activityTitle: 'Entoto Park Mountain Trail Restoration',
-    checkIn: daysAgo(7, 8, 0),
-    checkOut: '2026-10-24T14:00:00Z',
-    minutes: 360, // 6 hours
+    checkIn: '2026-10-25T08:00:00Z',
+    checkOut: '2026-10-25T13:30:00Z',
+    minutes: 330, // 5.5 hours
     source: 'checkin',
     status: 'logged',
-    createdAt: '2026-10-24T14:05:00Z',
+    createdAt: '2026-10-25T13:35:00Z',
   },
   {
     id: 'hrs-pen-02',
@@ -1352,12 +1352,12 @@ export const SEED_HOURS: HoursEntry[] = [
     userName: 'Biruk Tadesse',
     activityId: 'act-11',
     activityTitle: 'Entoto Park Mountain Trail Restoration',
-    checkIn: daysAgo(7, 8, 0),
-    checkOut: '2026-10-24T13:30:00Z',
+    checkIn: '2026-10-25T08:00:00Z',
+    checkOut: '2026-10-25T13:30:00Z',
     minutes: 330, // 5.5 hours
     source: 'checkin',
     status: 'logged',
-    createdAt: '2026-10-24T13:35:00Z',
+    createdAt: '2026-10-25T13:35:00Z',
   },
   {
     id: 'hrs-pen-03',
@@ -1365,13 +1365,13 @@ export const SEED_HOURS: HoursEntry[] = [
     userName: 'Almaz Fikre',
     activityId: 'act-11',
     activityTitle: 'Entoto Park Mountain Trail Restoration',
-    checkIn: '2026-10-24T08:15:00Z',
-    checkOut: '2026-10-24T14:00:00Z',
-    minutes: 345, // 5.75 hours
+    checkIn: '2026-10-25T08:15:00Z',
+    checkOut: '2026-10-25T13:30:00Z',
+    minutes: 315, // 5.25 hours
     source: 'manual',
     status: 'logged',
     manualNote: 'Battery died during check-in scan; team lead Yonas confirmed arrival on site at 8:15 AM.',
-    createdAt: '2026-10-24T16:00:00Z',
+    createdAt: '2026-10-25T16:00:00Z',
   },
   // Approved hours for Dawit Bekele (accumulated ~32 approved hours)
   {
@@ -1423,13 +1423,13 @@ export const SEED_HOURS: HoursEntry[] = [
     userName: 'Selam Alemu',
     activityId: 'act-11',
     activityTitle: 'Entoto Park Mountain Trail Restoration',
-    checkIn: daysAgo(7, 8, 0),
-    checkOut: '2026-10-24T14:00:00Z',
-    minutes: 360,
+    checkIn: '2026-10-25T08:00:00Z',
+    checkOut: '2026-10-25T13:30:00Z',
+    minutes: 330,
     source: 'checkin',
     status: 'approved',
     decidedBy: 'usr-yonas',
-    createdAt: '2026-10-24T14:10:00Z',
+    createdAt: '2026-10-25T14:10:00Z',
   },
   {
     id: 'hrs-selam-02',
@@ -1465,13 +1465,13 @@ export const SEED_HOURS: HoursEntry[] = [
     userName: 'Selam Alemu',
     activityId: 'act-22',
     activityTitle: 'Hawassa Youth Green Belt Initiative',
-    checkIn: '2026-10-01T09:00:00Z',
-    checkOut: '2026-10-01T17:00:00Z',
-    minutes: 480, // 8 hrs
+    checkIn: '2026-10-01T08:00:00Z',
+    checkOut: '2026-10-01T13:00:00Z',
+    minutes: 300, // 5 hrs
     source: 'checkin',
     status: 'approved',
     decidedBy: 'usr-yonas',
-    createdAt: '2026-10-01T17:30:00Z',
+    createdAt: '2026-10-01T13:30:00Z',
   },
   {
     id: 'hrs-selam-05',
@@ -1479,13 +1479,13 @@ export const SEED_HOURS: HoursEntry[] = [
     userName: 'Selam Alemu',
     activityId: 'act-23',
     activityTitle: 'Bishoftu Lake Shore Conservation',
-    checkIn: '2026-09-24T08:00:00Z',
-    checkOut: '2026-09-24T16:00:00Z',
-    minutes: 480, // 8 hrs
+    checkIn: '2026-09-24T09:00:00Z',
+    checkOut: '2026-09-24T15:00:00Z',
+    minutes: 360, // 6 hrs
     source: 'checkin',
     status: 'approved',
     decidedBy: 'usr-yonas',
-    createdAt: '2026-09-24T16:15:00Z',
+    createdAt: '2026-09-24T15:15:00Z',
   },
   {
     id: 'hrs-selam-06',
@@ -1493,13 +1493,13 @@ export const SEED_HOURS: HoursEntry[] = [
     userName: 'Selam Alemu',
     activityId: 'act-24',
     activityTitle: 'Addis Greening Seedling Nursery Shift',
-    checkIn: '2026-08-25T08:00:00Z',
-    checkOut: '2026-08-25T16:00:00Z',
-    minutes: 480, // 8 hrs
+    checkIn: '2026-08-25T08:30:00Z',
+    checkOut: '2026-08-25T13:30:00Z',
+    minutes: 300, // 5 hrs
     source: 'checkin',
     status: 'approved',
     decidedBy: 'usr-yonas',
-    createdAt: '2026-08-25T16:20:00Z',
+    createdAt: '2026-08-25T13:40:00Z',
   },
   {
     id: 'hrs-selam-07',
@@ -1577,13 +1577,13 @@ export const SEED_HOURS: HoursEntry[] = [
     userName: 'Selam Alemu',
     activityId: 'act-07',
     activityTitle: 'Adama Food Pantry Distribution Shift',
-    checkIn: '2026-06-20T08:00:00Z',
-    checkOut: '2026-06-20T16:00:00Z',
-    minutes: 480, // 8 hrs
+    checkIn: '2026-06-20T07:30:00Z',
+    checkOut: '2026-06-20T12:30:00Z',
+    minutes: 300, // 5 hrs
     source: 'checkin',
     status: 'approved',
     decidedBy: 'usr-yonas',
-    createdAt: '2026-06-20T16:30:00Z',
+    createdAt: '2026-06-20T12:45:00Z',
   },
   {
     id: 'hrs-selam-13',
@@ -1592,12 +1592,12 @@ export const SEED_HOURS: HoursEntry[] = [
     activityId: 'act-08',
     activityTitle: 'Hawassa Referral Hospital Information Desk',
     checkIn: '2026-06-11T09:00:00Z',
-    checkOut: '2026-06-11T16:00:00Z',
-    minutes: 420, // 7 hrs
+    checkOut: '2026-06-11T15:00:00Z',
+    minutes: 360, // 6 hrs
     source: 'checkin',
     status: 'approved',
     decidedBy: 'usr-yonas',
-    createdAt: '2026-06-11T16:10:00Z',
+    createdAt: '2026-06-11T15:15:00Z',
   },
   {
     id: 'hrs-selam-14',
@@ -1605,13 +1605,13 @@ export const SEED_HOURS: HoursEntry[] = [
     userName: 'Selam Alemu',
     activityId: 'act-09',
     activityTitle: 'Bahir Dar Youth Digital Literacy Bootcamp',
-    checkIn: '2026-05-29T09:00:00Z',
-    checkOut: '2026-05-29T17:00:00Z',
-    minutes: 480, // 8 hrs
+    checkIn: '2026-05-29T10:00:00Z',
+    checkOut: '2026-05-29T16:00:00Z',
+    minutes: 360, // 6 hrs
     source: 'checkin',
     status: 'approved',
     decidedBy: 'usr-yonas',
-    createdAt: '2026-05-29T17:15:00Z',
+    createdAt: '2026-05-29T16:15:00Z',
   },
   {
     id: 'hrs-selam-15',
@@ -1620,12 +1620,12 @@ export const SEED_HOURS: HoursEntry[] = [
     activityId: 'act-10',
     activityTitle: 'Entoto Park Visitor Guidance & Safety Patrol',
     checkIn: '2026-05-18T08:00:00Z',
-    checkOut: '2026-05-18T16:00:00Z',
-    minutes: 480, // 8 hrs
+    checkOut: '2026-05-18T13:00:00Z',
+    minutes: 300, // 5 hrs
     source: 'checkin',
     status: 'approved',
     decidedBy: 'usr-yonas',
-    createdAt: '2026-05-18T16:20:00Z',
+    createdAt: '2026-05-18T13:20:00Z',
   },
   {
     id: 'hrs-selam-16',
@@ -1633,13 +1633,13 @@ export const SEED_HOURS: HoursEntry[] = [
     userName: 'Selam Alemu',
     activityId: 'act-16',
     activityTitle: 'Piassa Historical Heritage Walking Tour Marshalling',
-    checkIn: '2026-05-05T08:30:00Z',
-    checkOut: '2026-05-05T16:30:00Z',
-    minutes: 480, // 8 hrs
+    checkIn: '2026-05-05T08:00:00Z',
+    checkOut: '2026-05-05T13:00:00Z',
+    minutes: 300, // 5 hrs
     source: 'checkin',
     status: 'approved',
     decidedBy: 'usr-yonas',
-    createdAt: '2026-05-05T16:45:00Z',
+    createdAt: '2026-05-05T13:15:00Z',
   },
   {
     id: 'hrs-selam-17',
@@ -1647,13 +1647,13 @@ export const SEED_HOURS: HoursEntry[] = [
     userName: 'Selam Alemu',
     activityId: 'act-17',
     activityTitle: 'Bishoftu Community Library Books Cataloging',
-    checkIn: '2026-04-22T08:00:00Z',
-    checkOut: '2026-04-22T16:00:00Z',
-    minutes: 480, // 8 hrs
+    checkIn: '2026-04-22T09:00:00Z',
+    checkOut: '2026-04-22T15:00:00Z',
+    minutes: 360, // 6 hrs
     source: 'checkin',
     status: 'approved',
     decidedBy: 'usr-yonas',
-    createdAt: '2026-04-22T16:10:00Z',
+    createdAt: '2026-04-22T15:10:00Z',
   },
   {
     id: 'hrs-selam-18',
@@ -1661,13 +1661,13 @@ export const SEED_HOURS: HoursEntry[] = [
     userName: 'Selam Alemu',
     activityId: 'act-18',
     activityTitle: 'Hawassa Women Craft Collective Logistics Support',
-    checkIn: '2026-04-12T09:00:00Z',
-    checkOut: '2026-04-12T17:00:00Z',
-    minutes: 480, // 8 hrs
+    checkIn: '2026-04-12T08:30:00Z',
+    checkOut: '2026-04-12T14:30:00Z',
+    minutes: 360, // 6 hrs
     source: 'checkin',
     status: 'approved',
     decidedBy: 'usr-yonas',
-    createdAt: '2026-04-12T17:30:00Z',
+    createdAt: '2026-04-12T14:40:00Z',
   },
   {
     id: 'hrs-selam-19',
@@ -1676,12 +1676,12 @@ export const SEED_HOURS: HoursEntry[] = [
     activityId: 'act-19',
     activityTitle: 'Bahir Dar Public Park Playground Restoration',
     checkIn: '2026-03-30T09:00:00Z',
-    checkOut: '2026-03-30T17:00:00Z',
-    minutes: 480, // 8 hrs
+    checkOut: '2026-03-30T15:00:00Z',
+    minutes: 360, // 6 hrs
     source: 'checkin',
     status: 'approved',
     decidedBy: 'usr-yonas',
-    createdAt: '2026-03-30T17:15:00Z',
+    createdAt: '2026-03-30T15:15:00Z',
   },
   {
     id: 'hrs-selam-20',
@@ -1689,9 +1689,9 @@ export const SEED_HOURS: HoursEntry[] = [
     userName: 'Selam Alemu',
     activityId: 'act-20',
     activityTitle: 'Adama Blood Bank Mobile Unit Logistics',
-    checkIn: '2026-03-24T08:00:00Z',
+    checkIn: '2026-03-24T09:00:00Z',
     checkOut: '2026-03-24T16:00:00Z',
-    minutes: 480, // 8 hrs
+    minutes: 420, // 7 hrs
     source: 'checkin',
     status: 'approved',
     decidedBy: 'usr-yonas',
@@ -1703,13 +1703,13 @@ export const SEED_HOURS: HoursEntry[] = [
     userName: 'Selam Alemu',
     activityId: 'act-21',
     activityTitle: 'Kazanchis Community Drainage Clearance',
-    checkIn: '2026-03-18T08:30:00Z',
-    checkOut: '2026-03-18T16:00:00Z',
-    minutes: 450, // 7.5 hrs
+    checkIn: '2026-03-18T10:00:00Z',
+    checkOut: '2026-03-18T14:00:00Z',
+    minutes: 240, // 4 hrs
     source: 'checkin',
     status: 'approved',
     decidedBy: 'usr-yonas',
-    createdAt: '2026-03-18T16:15:00Z',
+    createdAt: '2026-03-18T14:15:00Z',
   },
   {
     id: 'hrs-selam-22',
@@ -1717,13 +1717,13 @@ export const SEED_HOURS: HoursEntry[] = [
     userName: 'Selam Alemu',
     activityId: 'act-14',
     activityTitle: 'Team Leadership & Field Coordination Workshop',
-    checkIn: '2026-08-22T08:30:00Z',
-    checkOut: '2026-08-22T17:00:00Z',
-    minutes: 510, // 8.5 hrs
+    checkIn: '2026-08-22T09:00:00Z',
+    checkOut: '2026-08-22T13:00:00Z',
+    minutes: 240, // 4 hrs
     source: 'checkin',
     status: 'approved',
     decidedBy: 'usr-yonas',
-    createdAt: '2026-08-22T17:10:00Z',
+    createdAt: '2026-08-22T13:10:00Z',
   },
   // Declined hours entry with reason
   {

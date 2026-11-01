@@ -157,28 +157,45 @@ export const TeamLeadApproveHoursPage: React.FC = () => {
     },
     {
       header: 'Duration',
-      cell: (entry) => (
-        <span className="font-mono text-[13px] font-semibold text-ink-primary">
-          {Math.round((entry.minutes / 60) * 10) / 10} hrs{' '}
-          <span className="text-[13px] text-ink-tertiary font-normal">({entry.minutes}m)</span>
-        </span>
-      ),
+      cell: (entry) => {
+        if (!entry.checkOut || entry.checkOut === '') {
+          return (
+            <span className="font-sans text-[13px] font-medium text-amber-800 block">
+              Checked in, not checked out
+            </span>
+          );
+        }
+
+        const isQuickLook = entry.manualNote?.includes('Needs a quick look');
+        return (
+          <div className="space-y-0.5">
+            <span className="font-mono text-[13px] font-semibold text-ink-primary">
+              {Math.round((entry.minutes / 60) * 10) / 10} hrs
+            </span>
+            {isQuickLook && (
+              <span className="inline-block px-1.5 py-0.5 text-[11px] font-medium bg-amber-50 text-amber-900 rounded-[4px]">
+                Needs a quick look
+              </span>
+            )}
+          </div>
+        );
+      },
     },
     {
       header: 'Review actions',
       cell: (entry) => (
         <div className="flex items-center gap-2">
           <Button
-            variant="primary"
+            variant="secondary"
             size="sm"
-            leftIcon={<Check className="w-3.5 h-3.5" weight="bold" />}
+            leftIcon={<Check className="w-3.5 h-3.5 text-role-volunteer" weight="bold" />}
             onClick={() => handleApproveSingle(entry.id)}
             disabled={isProcessing}
           >
             Approve
           </Button>
           <Button
-            variant="secondary"
+            variant="ghost"
             size="sm"
             leftIcon={<X className="w-3.5 h-3.5" weight="bold" />}
             onClick={() => {
@@ -210,9 +227,6 @@ export const TeamLeadApproveHoursPage: React.FC = () => {
       {/* Top Header */}
       <div className="border-b border-[#D5DAE1] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <span className="font-sans text-[13px] font-semibold text-role-teamlead block">
-            Attendance verification desk
-          </span>
           <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
             Approve volunteer hours
           </h1>

@@ -81,9 +81,6 @@ export const VolunteerHomePage: React.FC = () => {
               showRankBadge
             />
             <div className="space-y-1">
-              <span className="text-[13px] font-bold text-role-volunteer">
-                Volunteer trail
-              </span>
               <h1 className="font-display font-bold text-2xl sm:text-3xl md:text-4xl tracking-tight text-ink-primary leading-tight">
                 Good morning, {profile?.fullName || user?.username}
               </h1>

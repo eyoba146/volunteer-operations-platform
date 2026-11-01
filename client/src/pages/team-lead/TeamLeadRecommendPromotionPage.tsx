@@ -86,9 +86,6 @@ export const TeamLeadRecommendPromotionPage: React.FC = () => {
     <div className="max-w-2xl mx-auto space-y-6">
       {/* Header */}
       <div className="border-b border-[#D5DAE1] pb-4">
-        <span className="font-sans text-[13px] font-semibold text-role-teamlead block">
-          Advancement nominations
-        </span>
         <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
           Recommend volunteer for promotion
         </h1>
