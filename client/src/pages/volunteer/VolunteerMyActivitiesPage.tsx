@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
 import { Activity, Enrollment } from '../../types';
-import { Tabs, StatusMark, Button, Skeleton, EmptyState, TicketCard } from '../../components/ui';
+import { Tabs, StatusMark, Button, Skeleton, EmptyState, TicketCard, PageShell } from '../../components/ui';
 import { Calendar as CalendarIcon, Clock, MapPin, QrCode, ArrowRight } from '@phosphor-icons/react';
 
 export const VolunteerMyActivitiesPage: React.FC = () => {
@@ -34,11 +34,13 @@ export const VolunteerMyActivitiesPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="space-y-6">
-        <Skeleton variant="text" className="h-8 w-1/3" />
-        <Skeleton variant="rect" className="h-28 rounded-[10px]" />
-        <Skeleton variant="rect" className="h-28 rounded-[10px]" />
-      </div>
+      <PageShell page="volunteer/my-activities" signature="TicketCard">
+        <div className="space-y-6">
+          <Skeleton variant="text" className="h-8 w-1/3" />
+          <Skeleton variant="rect" className="h-28 rounded-[10px]" />
+          <Skeleton variant="rect" className="h-28 rounded-[10px]" />
+        </div>
+      </PageShell>
     );
   }
 
@@ -67,9 +69,10 @@ export const VolunteerMyActivitiesPage: React.FC = () => {
     activeTab === 'upcoming' ? upcoming : activeTab === 'waiting' ? waiting : past;
 
   return (
+    <PageShell page="volunteer/my-activities" signature="TicketCard">
     <div className="space-y-6">
       {/* Header */}
-      <div className="border-b border-[#D5DAE1] pb-4">
+      <div className="border-b border-[#EDEFF2] pb-4">
         <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
           My volunteer roster
         </h1>
@@ -138,5 +141,6 @@ export const VolunteerMyActivitiesPage: React.FC = () => {
         </div>
       )}
     </div>
+    </PageShell>
   );
 };

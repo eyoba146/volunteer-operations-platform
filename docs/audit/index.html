@@ -32,76 +32,242 @@
   <p>Automated visual and computed style scanner across all 7 demo personas and public routes at 360px & 1440px.</p>
 
   <div class="summary-card">
-    <div><div>Total Pages Tested</div><div class="stat">4</div></div>
-    <div><div>Passed Pages</div><div class="stat pass">4</div></div>
-    <div><div>Failed Pages</div><div class="stat fail">0</div></div>
+    <div><div>Total Pages Tested</div><div class="stat">10</div></div>
+    <div><div>Passed Pages</div><div class="stat pass">0</div></div>
+    <div><div>Failed Pages</div><div class="stat fail">10</div></div>
   </div>
 
   <div class="role-section">
-    <div class="role-title">applicant Portal (4 pages)</div>
+    <div class="role-title">volunteer Portal (10 pages)</div>
 
     <div class="page-row">
       <div class="page-header">
-        <div class="page-name">applicant/status (/applicant/status)</div>
-        <div class="badge pass">PASS</div>
+        <div class="page-name">volunteer/home (/volunteer/home)</div>
+        <div class="badge fail">FAIL (7)</div>
       </div>
       <div class="screenshots-grid">
         <div class="shot-box">
           <div class="shot-label">Desktop (1440px)</div>
-          <img src="applicant/status-1440.png" alt="Desktop screenshot">
+          <img src="volunteer/home-1440.png" alt="Desktop screenshot">
         </div>
         <div class="shot-box">
           <div class="shot-label">Mobile (360px)</div>
-          <img src="applicant/status-360.png" alt="Mobile screenshot">
+          <img src="volunteer/home-360.png" alt="Mobile screenshot">
         </div>
+      </div>
+
+      <div class="failures-list">
+        <strong>Detected Failures:</strong>
+        <ul>
+<li><strong>[12. Missing tags]</strong> body: Page root is missing data-page attribute</li><li><strong>[5. Tiny text]</strong> div.relative.z-10 > div.flex.items-center > div.relative.inline-block > span.absolute.-bottom-0.5: Font size 10px is below 13px threshold</li><li><strong>[5. Tiny text]</strong> div.space-y-3 > div.group.relative > div.relative.shrink-0 > span.font-mono.text-[12px]: Font size 12px is below 13px threshold</li><li><strong>[5. Tiny text]</strong> div.flex-1.p-5 > div.space-y-2 > div.flex.flex-wrap > span.font-mono.text-[12px]: Font size 12px is below 13px threshold</li><li><strong>[5. Tiny text]</strong> div.grid.grid-cols-1 > div.rounded-[16px].bg-[#F7F8FA] > div.flex.items-center > span.font-mono.text-[12px]: Font size 12px is below 13px threshold</li><li><strong>[5. Tiny text]</strong> div.space-y-3 > div.rounded-[12px].bg-white > div.flex.items-center > span.font-semibold.text-role-volunteer: Font size 12px is below 13px threshold</li><li><strong>[5. Tiny text]</strong> div.space-y-3 > div.rounded-[12px].bg-white > div.flex.items-center > span.font-mono.text-ink-tertiary: Font size 12px is below 13px threshold</li>
+        </ul>
       </div>
     </div>
     <div class="page-row">
       <div class="page-header">
-        <div class="page-name">applicant/apply (/applicant/apply)</div>
-        <div class="badge pass">PASS</div>
+        <div class="page-name">volunteer/activities (/volunteer/activities)</div>
+        <div class="badge fail">FAIL (5)</div>
       </div>
       <div class="screenshots-grid">
         <div class="shot-box">
           <div class="shot-label">Desktop (1440px)</div>
-          <img src="applicant/apply-1440.png" alt="Desktop screenshot">
+          <img src="volunteer/activities-1440.png" alt="Desktop screenshot">
         </div>
         <div class="shot-box">
           <div class="shot-label">Mobile (360px)</div>
-          <img src="applicant/apply-360.png" alt="Mobile screenshot">
+          <img src="volunteer/activities-360.png" alt="Mobile screenshot">
         </div>
+      </div>
+
+      <div class="failures-list">
+        <strong>Detected Failures:</strong>
+        <ul>
+<li><strong>[12. Missing tags]</strong> body: Page root is missing data-page attribute</li><li><strong>[5. Tiny text]</strong> div.space-y-3 > div.group.relative > div.relative.shrink-0 > span.font-mono.text-[12px]: Font size 12px is below 13px threshold</li><li><strong>[5. Tiny text]</strong> div.flex-1.p-5 > div.space-y-2 > div.flex.flex-wrap > span.font-mono.text-[12px]: Font size 12px is below 13px threshold</li><li><strong>[5. Tiny text]</strong> div.flex-1.p-5 > div.space-y-2 > div.flex.flex-wrap > span.font-sans.text-[12px]: Font size 12px is below 13px threshold</li><li><strong>[5. Tiny text]</strong> div.space-y-2 > div.flex.flex-wrap > span.font-mono.text-[12px] > span: Font size 12px is below 13px threshold</li>
+        </ul>
       </div>
     </div>
     <div class="page-row">
       <div class="page-header">
-        <div class="page-name">applicant/payment (/applicant/payment)</div>
-        <div class="badge pass">PASS</div>
+        <div class="page-name">volunteer/activity-detail (/volunteer/activities/act-01)</div>
+        <div class="badge fail">FAIL (1)</div>
       </div>
       <div class="screenshots-grid">
         <div class="shot-box">
           <div class="shot-label">Desktop (1440px)</div>
-          <img src="applicant/payment-1440.png" alt="Desktop screenshot">
+          <img src="volunteer/activity_detail-1440.png" alt="Desktop screenshot">
         </div>
         <div class="shot-box">
           <div class="shot-label">Mobile (360px)</div>
-          <img src="applicant/payment-360.png" alt="Mobile screenshot">
+          <img src="volunteer/activity_detail-360.png" alt="Mobile screenshot">
         </div>
+      </div>
+
+      <div class="failures-list">
+        <strong>Detected Failures:</strong>
+        <ul>
+<li><strong>[12. Missing tags]</strong> body: Page root is missing data-page attribute</li>
+        </ul>
       </div>
     </div>
     <div class="page-row">
       <div class="page-header">
-        <div class="page-name">applicant/notifications (/applicant/notifications)</div>
-        <div class="badge pass">PASS</div>
+        <div class="page-name">volunteer/my-activities (/volunteer/my-activities)</div>
+        <div class="badge fail">FAIL (4)</div>
       </div>
       <div class="screenshots-grid">
         <div class="shot-box">
           <div class="shot-label">Desktop (1440px)</div>
-          <img src="applicant/notifications-1440.png" alt="Desktop screenshot">
+          <img src="volunteer/my_activities-1440.png" alt="Desktop screenshot">
         </div>
         <div class="shot-box">
           <div class="shot-label">Mobile (360px)</div>
-          <img src="applicant/notifications-360.png" alt="Mobile screenshot">
+          <img src="volunteer/my_activities-360.png" alt="Mobile screenshot">
         </div>
+      </div>
+
+      <div class="failures-list">
+        <strong>Detected Failures:</strong>
+        <ul>
+<li><strong>[12. Missing tags]</strong> body: Page root is missing data-page attribute</li><li><strong>[5. Tiny text]</strong> div.space-y-4 > div.group.relative > div.relative.shrink-0 > span.font-mono.text-[12px]: Font size 12px is below 13px threshold</li><li><strong>[5. Tiny text]</strong> div.flex-1.p-5 > div.space-y-2 > div.flex.flex-wrap > span.font-mono.text-[12px]: Font size 12px is below 13px threshold</li><li><strong>[5. Tiny text]</strong> div.flex-1.p-5 > div.space-y-2 > div.flex.flex-wrap > span.font-sans.text-[12px]: Font size 12px is below 13px threshold</li>
+        </ul>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">volunteer/check-in (/volunteer/check-in)</div>
+        <div class="badge fail">FAIL (2)</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="volunteer/check_in-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="volunteer/check_in-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+
+      <div class="failures-list">
+        <strong>Detected Failures:</strong>
+        <ul>
+<li><strong>[12. Missing tags]</strong> body: Page root is missing data-page attribute</li><li><strong>[2. Hard shadows]</strong> main.flex-1.w-full > div.w-full > div.max-w-lg.mx-auto > div.border.border-[#D5DAE1]: Zero-blur offset shadow detected: rgb(17, 17, 17) 1px 1px 0px</li>
+        </ul>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">volunteer/hours (/volunteer/hours)</div>
+        <div class="badge fail">FAIL (1)</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="volunteer/hours-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="volunteer/hours-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+
+      <div class="failures-list">
+        <strong>Detected Failures:</strong>
+        <ul>
+<li><strong>[12. Missing tags]</strong> body: Page root is missing data-page attribute</li>
+        </ul>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">volunteer/rank-progress (/volunteer/rank-progress)</div>
+        <div class="badge fail">FAIL (1)</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="volunteer/rank_progress-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="volunteer/rank_progress-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+
+      <div class="failures-list">
+        <strong>Detected Failures:</strong>
+        <ul>
+<li><strong>[12. Missing tags]</strong> body: Page root is missing data-page attribute</li>
+        </ul>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">volunteer/certificates (/volunteer/certificates)</div>
+        <div class="badge fail">FAIL (1)</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="volunteer/certificates-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="volunteer/certificates-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+
+      <div class="failures-list">
+        <strong>Detected Failures:</strong>
+        <ul>
+<li><strong>[12. Missing tags]</strong> body: Page root is missing data-page attribute</li>
+        </ul>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">volunteer/id-card (/volunteer/id-card)</div>
+        <div class="badge fail">FAIL (2)</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="volunteer/id_card-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="volunteer/id_card-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+
+      <div class="failures-list">
+        <strong>Detected Failures:</strong>
+        <ul>
+<li><strong>[12. Missing tags]</strong> body: Page root is missing data-page attribute</li><li><strong>[5. Tiny text]</strong> div.relative.z-10 > div.flex.items-center > div.relative.inline-block > span.absolute.-bottom-0.5: Font size 10px is below 13px threshold</li>
+        </ul>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">volunteer/profile (/volunteer/profile)</div>
+        <div class="badge fail">FAIL (2)</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="volunteer/profile-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="volunteer/profile-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+
+      <div class="failures-list">
+        <strong>Detected Failures:</strong>
+        <ul>
+<li><strong>[12. Missing tags]</strong> body: Page root is missing data-page attribute</li><li><strong>[5. Tiny text]</strong> div.border.border-[#D5DAE1] > div.flex.flex-col > div.relative.inline-block > span.absolute.-bottom-0.5: Font size 10px is below 13px threshold</li>
+        </ul>
       </div>
     </div>  </div>
 </body>

@@ -53,13 +53,13 @@ export const TicketCard: React.FC<TicketCardProps> = ({
         <div className="hidden md:block absolute -top-3 -right-3 w-6 h-6 rounded-full bg-white z-10" />
         <div className="hidden md:block absolute -bottom-3 -right-3 w-6 h-6 rounded-full bg-white z-10" />
 
-        <span className="font-mono text-[12px] font-bold text-role-volunteer tracking-wider block">
+        <span className="font-mono text-[13px] font-bold text-role-volunteer tracking-wider block">
           {monthStr}
         </span>
         <span className="font-display font-black text-4xl text-ink-primary leading-none my-1">
           {dayNum}
         </span>
-        <span className="font-mono text-[12px] text-ink-secondary">
+        <span className="font-mono text-[13px] text-ink-secondary">
           {timeStr}
         </span>
       </div>
@@ -69,17 +69,17 @@ export const TicketCard: React.FC<TicketCardProps> = ({
         <div className="space-y-2">
           {/* Metadata Badges */}
           <div className="flex flex-wrap items-center gap-2">
-            <span className="font-mono text-[12px] font-medium px-2 py-0.5 bg-[#F1F3F6] rounded-[4px] text-ink-primary capitalize">
+            <span className="font-mono text-[13px] font-medium px-2 py-0.5 bg-[#F1F3F6] rounded-[4px] text-ink-primary capitalize">
               {activity.type.replace('_', ' ')}
             </span>
             <StatusMark status={activity.status} size="sm" />
             {enrolledStatus && (
-              <span className="font-sans text-[12px] font-semibold px-2 py-0.5 bg-emerald-50 text-emerald-800 rounded-[4px]">
+              <span className="font-sans text-[13px] font-semibold px-2 py-0.5 bg-emerald-50 text-emerald-800 rounded-[4px]">
                 {enrolledStatus}
               </span>
             )}
             {activity.minRank && (
-              <span className="font-mono text-[12px] text-ink-tertiary flex items-center gap-1">
+              <span className="font-mono text-[13px] text-ink-tertiary flex items-center gap-1">
                 <ShieldCheck className="w-3.5 h-3.5 text-role-volunteer" weight="bold" />
                 <span>{activity.minRank.replace('_', ' ')} required</span>
               </span>

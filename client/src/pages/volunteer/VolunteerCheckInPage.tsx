@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
 import { Activity, HoursEntry } from '../../types';
-import { Button, Select, Skeleton } from '../../components/ui';
+import { Button, Select, Skeleton, PageShell, Raised, Panel } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
 import {
   QrCode,
@@ -117,17 +117,20 @@ export const VolunteerCheckInPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="space-y-6 max-w-lg mx-auto">
-        <Skeleton variant="text" className="h-8 w-1/3" />
-        <Skeleton variant="rect" className="h-64 rounded-[10px]" />
-      </div>
+      <PageShell page="volunteer/check-in" signature="none:check-in-station">
+        <div className="space-y-6 max-w-lg mx-auto">
+          <Skeleton variant="text" className="h-8 w-1/3" />
+          <Skeleton variant="rect" className="h-64 rounded-[16px]" />
+        </div>
+      </PageShell>
     );
   }
 
   // CHECKOUT COMPLETE CONFIRMATION TICKET
   if (checkoutComplete) {
     return (
-      <div className="max-w-md mx-auto border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 text-center space-y-6 shadow-sm">
+      <PageShell page="volunteer/check-in" signature="none:check-in-station">
+      <Raised className="max-w-md mx-auto p-6 sm:p-8 text-center space-y-6">
         <div className="w-16 h-16 mx-auto bg-role-volunteer text-white flex items-center justify-center rounded-[8px]">
           <CheckCircle className="w-10 h-10" weight="fill" />
         </div>
@@ -144,7 +147,7 @@ export const VolunteerCheckInPage: React.FC = () => {
           </p>
         </div>
 
-        <div className="border border-[#D5DAE1] rounded-[8px] bg-canvas-subdued/30 p-4 font-mono text-[13px] text-left space-y-2">
+        <div className="border-none rounded-[8px] bg-canvas-subdued/30 p-4 font-mono text-[13px] text-left space-y-2">
           <div className="flex justify-between">
             <span className="text-ink-secondary">Logged duration:</span>
             <span className="font-semibold text-ink-primary">
@@ -163,7 +166,7 @@ export const VolunteerCheckInPage: React.FC = () => {
               {new Date(checkoutComplete.checkOut).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </span>
           </div>
-          <div className="flex justify-between border-t border-[#D5DAE1] pt-2">
+          <div className="flex justify-between border-t border-[#EDEFF2] pt-2">
             <span className="text-ink-secondary">Review status:</span>
             <span className="font-semibold text-role-applicant">Logged • Awaiting lead decision</span>
           </div>
@@ -186,13 +189,15 @@ export const VolunteerCheckInPage: React.FC = () => {
             Check in to another activity
           </Button>
         </div>
-      </div>
+      </Raised>
+    </PageShell>
     );
   }
 
   // ACTIVE CHECK-IN SESSION (VOLUNTEER IS CURRENTLY ON-SITE)
   if (activeSession) {
     return (
+      <PageShell page="volunteer/check-in" signature="none:check-in-station">
       <div className="max-w-lg mx-auto space-y-6">
         <div className="border-b border-[#EDEFF2] pb-4 text-center">
           <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
@@ -200,8 +205,8 @@ export const VolunteerCheckInPage: React.FC = () => {
           </h1>
         </div>
 
-        <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 shadow-sm space-y-5">
-          <div className="flex items-center justify-between border-b border-[#D5DAE1] pb-3">
+        <Raised className="p-6 sm:p-8 space-y-5">
+          <div className="flex items-center justify-between border-b border-[#EDEFF2] pb-3">
             <div className="flex items-center gap-2">
               <span className="w-3 h-3 bg-role-volunteer rounded-full animate-ping" />
               <span className="font-sans text-[13px] font-semibold text-role-volunteer">
@@ -222,7 +227,7 @@ export const VolunteerCheckInPage: React.FC = () => {
             </p>
           </div>
 
-          <div className="border border-[#D5DAE1] rounded-[8px] bg-canvas-subdued/30 p-4 font-mono text-[13px] space-y-1.5">
+          <div className="border-none rounded-[8px] bg-canvas-subdued/30 p-4 font-mono text-[13px] space-y-1.5">
             <div className="flex justify-between">
               <span className="text-ink-secondary">Volunteer:</span>
               <span className="font-semibold text-ink-primary">{activeSession.userName}</span>
@@ -245,13 +250,15 @@ export const VolunteerCheckInPage: React.FC = () => {
               Check out now & record hours
             </Button>
           </div>
-        </div>
+        </Raised>
       </div>
+    </PageShell>
     );
   }
 
   // CHECK-IN FORM (ENTER SHORT CODE OR SCAN QR)
   return (
+    <PageShell page="volunteer/check-in" signature="none:check-in-station">
     <div className="max-w-xl mx-auto space-y-6">
       {/* Header */}
       <div className="border-b border-[#EDEFF2] pb-4 text-center">
@@ -264,14 +271,14 @@ export const VolunteerCheckInPage: React.FC = () => {
       </div>
 
       {/* Mode Switcher */}
-      <div className="flex border border-[#D5DAE1] rounded-[8px] bg-canvas-subdued/40 p-1">
+      <div className="flex rounded-[10px] bg-[#F1F3F6] p-1 border-none">
         <button
           onClick={() => {
             setMethod('code');
             setErrorMessage('');
           }}
           className={`flex-1 py-2 rounded-[6px] font-sans text-[13px] font-semibold flex items-center justify-center gap-1.5 cursor-pointer transition-colors ${method === 'code'
-              ? 'bg-white text-ink-primary shadow-sm border border-[#D5DAE1]'
+              ? 'bg-white text-ink-primary shadow-[0_1px_2px_rgba(16,24,40,0.06)] border-none'
               : 'text-ink-secondary hover:text-ink-primary'
             }`}
         >
@@ -284,7 +291,7 @@ export const VolunteerCheckInPage: React.FC = () => {
             setErrorMessage('');
           }}
           className={`flex-1 py-2 rounded-[6px] font-sans text-[13px] font-semibold flex items-center justify-center gap-1.5 cursor-pointer transition-colors ${method === 'qr'
-              ? 'bg-white text-ink-primary shadow-sm border border-[#D5DAE1]'
+              ? 'bg-white text-ink-primary shadow-[0_1px_2px_rgba(16,24,40,0.06)] border-none'
               : 'text-ink-secondary hover:text-ink-primary'
             }`}
         >
@@ -294,7 +301,7 @@ export const VolunteerCheckInPage: React.FC = () => {
       </div>
 
       {/* Main Check-In Box */}
-      <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 shadow-sm space-y-6">
+      <Raised className="p-6 sm:p-8 space-y-6">
         {errorMessage && (
           <div className="p-3 border border-role-teamlead/30 rounded-[8px] bg-role-teamleadLight/20 text-role-teamlead text-[13px] font-sans font-medium flex items-center gap-2">
             <Warning className="w-4 h-4 shrink-0" weight="bold" />
@@ -341,7 +348,7 @@ export const VolunteerCheckInPage: React.FC = () => {
                 value={inputCode}
                 onChange={(e) => setInputCode(e.target.value.replace(/\D/g, ''))}
                 placeholder="e.g. 5291"
-                className="w-full text-center font-mono text-3xl font-bold tracking-[0.5em] p-3 border-[1.5px] border-[#475569] rounded-[8px] bg-white text-ink-primary focus:outline-none focus:ring-2 focus:ring-role-volunteer"
+                className="w-full text-center font-mono text-3xl font-bold tracking-[0.5em] p-3 border border-[#CBD2DA] rounded-[8px] bg-white text-ink-primary focus:outline-none focus:ring-2 focus:ring-role-volunteer"
                 required
               />
               <span className="font-sans text-[13px] text-ink-secondary block text-center">
@@ -403,7 +410,8 @@ export const VolunteerCheckInPage: React.FC = () => {
             </Button>
           </div>
         )}
-      </div>
+      </Raised>
     </div>
+    </PageShell>
   );
 };

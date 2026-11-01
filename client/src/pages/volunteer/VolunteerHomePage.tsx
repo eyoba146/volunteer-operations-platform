@@ -5,7 +5,7 @@ import * as api from '../../api';
 import { Activity, Announcement, Enrollment } from '../../types';
 import { formatRank } from '../../utils/format';
 import { RankProgressData } from '../../api/promotions';
-import { Button, StatusMark, ProgressMeter, Skeleton, Avatar, TopoBackdrop, TrailMeter, TicketCard } from '../../components/ui';
+import { Button, StatusMark, ProgressMeter, Skeleton, Avatar, TopoBackdrop, TrailMeter, TicketCard, PageShell } from '../../components/ui';
 import { 
   Calendar, 
   Clock, 
@@ -56,18 +56,21 @@ export const VolunteerHomePage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="space-y-6">
-        <Skeleton variant="text" className="h-8 w-1/3" />
-        <Skeleton variant="rect" className="h-44" />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Skeleton variant="rect" className="h-64" />
-          <Skeleton variant="rect" className="h-64" />
+      <PageShell page="volunteer/home" signature="TrailMeter, TicketCard, TopoBackdrop">
+        <div className="space-y-6">
+          <Skeleton variant="text" className="h-8 w-1/3" />
+          <Skeleton variant="rect" className="h-44" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Skeleton variant="rect" className="h-64" />
+            <Skeleton variant="rect" className="h-64" />
+          </div>
         </div>
-      </div>
+      </PageShell>
     );
   }
 
   return (
+    <PageShell page="volunteer/home" signature="TrailMeter, TicketCard, TopoBackdrop">
     <div className="space-y-8">
       {/* Volunteer Trail Header with TopoBackdrop and TrailMeter */}
       <div className="relative rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] overflow-hidden p-6 md:p-8 space-y-6">
@@ -187,7 +190,7 @@ export const VolunteerHomePage: React.FC = () => {
                 Program announcements
               </h3>
             </div>
-            <span className="font-mono text-[12px] text-ink-tertiary">
+            <span className="font-mono text-[13px] text-ink-tertiary">
               {announcements.length} notice{announcements.length !== 1 ? 's' : ''}
             </span>
           </div>
@@ -198,7 +201,7 @@ export const VolunteerHomePage: React.FC = () => {
                 key={ann.id}
                 className="rounded-[12px] bg-white p-4 shadow-[0_1px_2px_rgba(16,24,40,0.04)] space-y-1.5"
               >
-                <div className="flex items-center justify-between text-[12px]">
+                <div className="flex items-center justify-between text-[13px]">
                   <span className="font-semibold text-role-volunteer">
                     {ann.authorName}
                   </span>
@@ -218,5 +221,7 @@ export const VolunteerHomePage: React.FC = () => {
         </div>
       </div>
     </div>
+    </PageShell>
+  );
   );
 };

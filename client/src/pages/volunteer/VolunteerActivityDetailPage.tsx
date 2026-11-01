@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
 import { Activity, Enrollment } from '../../types';
-import { Button, StatusMark, Skeleton, EmptyState, TopoBackdrop } from '../../components/ui';
+import { Button, StatusMark, Skeleton, EmptyState, TopoBackdrop, PageShell } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
 import { 
   Calendar as CalendarIcon, 
@@ -97,26 +97,31 @@ export const VolunteerActivityDetailPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="space-y-6 max-w-4xl mx-auto">
-        <Skeleton variant="text" className="h-8 w-1/3" />
-        <Skeleton variant="rect" className="h-96 rounded-[10px]" />
-      </div>
+      <PageShell page="volunteer/activity-detail" signature="TopoBackdrop">
+        <div className="space-y-6 max-w-4xl mx-auto">
+          <Skeleton variant="text" className="h-8 w-1/3" />
+          <Skeleton variant="rect" className="h-96 rounded-[10px]" />
+        </div>
+      </PageShell>
     );
   }
 
   if (!activity) {
     return (
-      <EmptyState
-        icon={<Warning className="w-8 h-8 text-role-teamlead" weight="bold" />}
-        title="Activity could not be found"
-        description="The activity you are looking for may have been rescheduled or removed."
-        actionLabel="Return to activities"
-        onAction={() => navigate('/volunteer/activities')}
-      />
+      <PageShell page="volunteer/activity-detail" signature="TopoBackdrop">
+        <EmptyState
+          icon={<Warning className="w-8 h-8 text-role-teamlead" weight="bold" />}
+          title="Activity could not be found"
+          description="The activity you are looking for may have been rescheduled or removed."
+          actionLabel="Return to activities"
+          onAction={() => navigate('/volunteer/activities')}
+        />
+      </PageShell>
     );
   }
 
   return (
+    <PageShell page="volunteer/activity-detail" signature="TopoBackdrop">
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Back button */}
       <button
@@ -311,5 +316,6 @@ export const VolunteerActivityDetailPage: React.FC = () => {
         </div>
       </div>
     </div>
+    </PageShell>
   );
 };

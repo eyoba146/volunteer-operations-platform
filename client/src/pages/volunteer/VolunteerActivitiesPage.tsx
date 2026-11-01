@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import * as api from '../../api';
 import { useAuth } from '../../context/AuthContext';
 import { Activity, ActivityType } from '../../types';
-import { Input, Select, Button, StatusMark, Skeleton, EmptyState, TicketCard } from '../../components/ui';
+import { Input, Select, Button, StatusMark, Skeleton, EmptyState, TicketCard, PageShell } from '../../components/ui';
 import { 
   Calendar as CalendarIcon, 
   MapPin, 
@@ -195,6 +195,7 @@ export const VolunteerActivitiesPage: React.FC = () => {
   };
 
   return (
+    <PageShell page="volunteer/activities" signature="TicketCard">
     <div className="space-y-6">
       {/* Top Header Banner */}
       <div className="border-b border-[#EDEFF2] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
@@ -503,6 +504,7 @@ export const VolunteerActivitiesPage: React.FC = () => {
         </div>
       )}
     </div>
+    </PageShell>
   );
 
   function renderActivityCard(act: Activity) {

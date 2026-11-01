@@ -1,30 +1,212 @@
 [
   {
-    "role": "applicant",
-    "name": "status",
-    "path": "/applicant/status",
-    "pageTag": "applicant/status",
-    "failures": []
+    "role": "volunteer",
+    "name": "home",
+    "path": "/volunteer/home",
+    "pageTag": "volunteer/home",
+    "failures": [
+      {
+        "rule": "12. Missing tags",
+        "selector": "body",
+        "detail": "Page root is missing data-page attribute"
+      },
+      {
+        "rule": "5. Tiny text",
+        "selector": "div.relative.z-10 > div.flex.items-center > div.relative.inline-block > span.absolute.-bottom-0.5",
+        "detail": "Font size 10px is below 13px threshold"
+      },
+      {
+        "rule": "5. Tiny text",
+        "selector": "div.space-y-3 > div.group.relative > div.relative.shrink-0 > span.font-mono.text-[12px]",
+        "detail": "Font size 12px is below 13px threshold"
+      },
+      {
+        "rule": "5. Tiny text",
+        "selector": "div.flex-1.p-5 > div.space-y-2 > div.flex.flex-wrap > span.font-mono.text-[12px]",
+        "detail": "Font size 12px is below 13px threshold"
+      },
+      {
+        "rule": "5. Tiny text",
+        "selector": "div.grid.grid-cols-1 > div.rounded-[16px].bg-[#F7F8FA] > div.flex.items-center > span.font-mono.text-[12px]",
+        "detail": "Font size 12px is below 13px threshold"
+      },
+      {
+        "rule": "5. Tiny text",
+        "selector": "div.space-y-3 > div.rounded-[12px].bg-white > div.flex.items-center > span.font-semibold.text-role-volunteer",
+        "detail": "Font size 12px is below 13px threshold"
+      },
+      {
+        "rule": "5. Tiny text",
+        "selector": "div.space-y-3 > div.rounded-[12px].bg-white > div.flex.items-center > span.font-mono.text-ink-tertiary",
+        "detail": "Font size 12px is below 13px threshold"
+      }
+    ]
   },
   {
-    "role": "applicant",
-    "name": "apply",
-    "path": "/applicant/apply",
-    "pageTag": "applicant/apply",
-    "failures": []
+    "role": "volunteer",
+    "name": "activities",
+    "path": "/volunteer/activities",
+    "pageTag": "volunteer/activities",
+    "failures": [
+      {
+        "rule": "12. Missing tags",
+        "selector": "body",
+        "detail": "Page root is missing data-page attribute"
+      },
+      {
+        "rule": "5. Tiny text",
+        "selector": "div.space-y-3 > div.group.relative > div.relative.shrink-0 > span.font-mono.text-[12px]",
+        "detail": "Font size 12px is below 13px threshold"
+      },
+      {
+        "rule": "5. Tiny text",
+        "selector": "div.flex-1.p-5 > div.space-y-2 > div.flex.flex-wrap > span.font-mono.text-[12px]",
+        "detail": "Font size 12px is below 13px threshold"
+      },
+      {
+        "rule": "5. Tiny text",
+        "selector": "div.flex-1.p-5 > div.space-y-2 > div.flex.flex-wrap > span.font-sans.text-[12px]",
+        "detail": "Font size 12px is below 13px threshold"
+      },
+      {
+        "rule": "5. Tiny text",
+        "selector": "div.space-y-2 > div.flex.flex-wrap > span.font-mono.text-[12px] > span",
+        "detail": "Font size 12px is below 13px threshold"
+      }
+    ]
   },
   {
-    "role": "applicant",
-    "name": "payment",
-    "path": "/applicant/payment",
-    "pageTag": "applicant/payment",
-    "failures": []
+    "role": "volunteer",
+    "name": "activity_detail",
+    "path": "/volunteer/activities/act-01",
+    "pageTag": "volunteer/activity-detail",
+    "failures": [
+      {
+        "rule": "12. Missing tags",
+        "selector": "body",
+        "detail": "Page root is missing data-page attribute"
+      }
+    ]
   },
   {
-    "role": "applicant",
-    "name": "notifications",
-    "path": "/applicant/notifications",
-    "pageTag": "applicant/notifications",
-    "failures": []
+    "role": "volunteer",
+    "name": "my_activities",
+    "path": "/volunteer/my-activities",
+    "pageTag": "volunteer/my-activities",
+    "failures": [
+      {
+        "rule": "12. Missing tags",
+        "selector": "body",
+        "detail": "Page root is missing data-page attribute"
+      },
+      {
+        "rule": "5. Tiny text",
+        "selector": "div.space-y-4 > div.group.relative > div.relative.shrink-0 > span.font-mono.text-[12px]",
+        "detail": "Font size 12px is below 13px threshold"
+      },
+      {
+        "rule": "5. Tiny text",
+        "selector": "div.flex-1.p-5 > div.space-y-2 > div.flex.flex-wrap > span.font-mono.text-[12px]",
+        "detail": "Font size 12px is below 13px threshold"
+      },
+      {
+        "rule": "5. Tiny text",
+        "selector": "div.flex-1.p-5 > div.space-y-2 > div.flex.flex-wrap > span.font-sans.text-[12px]",
+        "detail": "Font size 12px is below 13px threshold"
+      }
+    ]
+  },
+  {
+    "role": "volunteer",
+    "name": "check_in",
+    "path": "/volunteer/check-in",
+    "pageTag": "volunteer/check-in",
+    "failures": [
+      {
+        "rule": "12. Missing tags",
+        "selector": "body",
+        "detail": "Page root is missing data-page attribute"
+      },
+      {
+        "rule": "2. Hard shadows",
+        "selector": "main.flex-1.w-full > div.w-full > div.max-w-lg.mx-auto > div.border.border-[#D5DAE1]",
+        "detail": "Zero-blur offset shadow detected: rgb(17, 17, 17) 1px 1px 0px"
+      }
+    ]
+  },
+  {
+    "role": "volunteer",
+    "name": "hours",
+    "path": "/volunteer/hours",
+    "pageTag": "volunteer/hours",
+    "failures": [
+      {
+        "rule": "12. Missing tags",
+        "selector": "body",
+        "detail": "Page root is missing data-page attribute"
+      }
+    ]
+  },
+  {
+    "role": "volunteer",
+    "name": "rank_progress",
+    "path": "/volunteer/rank-progress",
+    "pageTag": "volunteer/rank-progress",
+    "failures": [
+      {
+        "rule": "12. Missing tags",
+        "selector": "body",
+        "detail": "Page root is missing data-page attribute"
+      }
+    ]
+  },
+  {
+    "role": "volunteer",
+    "name": "certificates",
+    "path": "/volunteer/certificates",
+    "pageTag": "volunteer/certificates",
+    "failures": [
+      {
+        "rule": "12. Missing tags",
+        "selector": "body",
+        "detail": "Page root is missing data-page attribute"
+      }
+    ]
+  },
+  {
+    "role": "volunteer",
+    "name": "id_card",
+    "path": "/volunteer/id-card",
+    "pageTag": "volunteer/id-card",
+    "failures": [
+      {
+        "rule": "12. Missing tags",
+        "selector": "body",
+        "detail": "Page root is missing data-page attribute"
+      },
+      {
+        "rule": "5. Tiny text",
+        "selector": "div.relative.z-10 > div.flex.items-center > div.relative.inline-block > span.absolute.-bottom-0.5",
+        "detail": "Font size 10px is below 13px threshold"
+      }
+    ]
+  },
+  {
+    "role": "volunteer",
+    "name": "profile",
+    "path": "/volunteer/profile",
+    "pageTag": "volunteer/profile",
+    "failures": [
+      {
+        "rule": "12. Missing tags",
+        "selector": "body",
+        "detail": "Page root is missing data-page attribute"
+      },
+      {
+        "rule": "5. Tiny text",
+        "selector": "div.border.border-[#D5DAE1] > div.flex.flex-col > div.relative.inline-block > span.absolute.-bottom-0.5",
+        "detail": "Font size 10px is below 13px threshold"
+      }
+    ]
   }
 ]

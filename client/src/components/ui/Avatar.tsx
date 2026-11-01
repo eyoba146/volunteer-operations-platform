@@ -76,18 +76,16 @@ export const Avatar: React.FC<AvatarProps> = ({
       {showRankBadge && rank && (
         <span
           title={rank.replace('_', ' ')}
-          className={`absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full ring-2 ring-white flex items-center justify-center text-[10px] font-display font-black ${
+          className={`absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full ring-2 ring-white ${
             rank === 'manager'
-              ? 'bg-role-manager text-white'
+              ? 'bg-role-manager'
               : rank === 'team_lead'
-              ? 'bg-role-teamlead text-white'
+              ? 'bg-role-teamlead'
               : rank === 'senior_member'
-              ? 'bg-role-applicant text-ink-primary'
-              : 'bg-role-volunteer text-white'
+              ? 'bg-role-applicant'
+              : 'bg-role-volunteer'
           }`}
-        >
-          {rank === 'manager' ? 'M' : rank === 'team_lead' ? 'L' : rank === 'senior_member' ? 'S' : 'V'}
-        </span>
+        />
       )}
     </div>
   );
