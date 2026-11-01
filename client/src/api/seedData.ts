@@ -1522,12 +1522,12 @@ export const SEED_HOURS: HoursEntry[] = [
     activityId: 'act-02',
     activityTitle: 'Bole Community Literacy Workshop',
     checkIn: '2026-08-05T09:00:00Z',
-    checkOut: '2026-08-05T17:00:00Z',
-    minutes: 480, // 8 hrs
+    checkOut: '2026-08-05T13:30:00Z',
+    minutes: 270, // 4.5 hrs (capped at activity duration + 1 hr)
     source: 'checkin',
     status: 'approved',
     decidedBy: 'usr-yonas',
-    createdAt: '2026-08-05T17:30:00Z',
+    createdAt: '2026-08-05T13:35:00Z',
   },
   {
     id: 'hrs-selam-09',
@@ -1536,12 +1536,12 @@ export const SEED_HOURS: HoursEntry[] = [
     activityId: 'act-04',
     activityTitle: 'Bishoftu Clean Water Facility Rehabilitation',
     checkIn: '2026-07-28T08:00:00Z',
-    checkOut: '2026-07-28T17:00:00Z',
-    minutes: 540, // 9 hrs
+    checkOut: '2026-07-28T15:00:00Z',
+    minutes: 420, // 7 hrs (capped at activity duration + 1 hr)
     source: 'checkin',
     status: 'approved',
     decidedBy: 'usr-yonas',
-    createdAt: '2026-07-28T17:15:00Z',
+    createdAt: '2026-07-28T15:15:00Z',
   },
   {
     id: 'hrs-selam-10',
@@ -1550,12 +1550,12 @@ export const SEED_HOURS: HoursEntry[] = [
     activityId: 'act-05',
     activityTitle: 'Bahir Dar Lake Tana Shoreline Clean-up',
     checkIn: '2026-07-15T08:00:00Z',
-    checkOut: '2026-07-15T16:00:00Z',
-    minutes: 480, // 8 hrs
+    checkOut: '2026-07-15T13:00:00Z',
+    minutes: 300, // 5 hrs (capped at activity duration + 1 hr)
     source: 'checkin',
     status: 'approved',
     decidedBy: 'usr-yonas',
-    createdAt: '2026-07-15T16:20:00Z',
+    createdAt: '2026-07-15T13:20:00Z',
   },
   {
     id: 'hrs-selam-11',
@@ -2111,8 +2111,8 @@ export const SEED_ANNOUNCEMENTS: Announcement[] = [
     authorName: 'Ruth Mengistu',
     authorRole: 'System Director',
     audience: 'all',
-    title: 'Welcome to the New Volunteering Season: Community Priorities & Expansion',
-    body: 'We are proud to announce the launch of our updated Volunteer Tracking System. This year, we are expanding organized field operations into Hawassa, Bishoftu, and Bahir Dar, while reinforcing our transparent service verification standards.',
+    title: 'A new season starts, and here is what is next',
+    body: 'Welcome to the new volunteering season. We are opening field activities across our community areas and keeping our service records simple, accurate and open to everyone.',
     createdAt: daysAgo(6, 8, 0),
     pinned: true,
   },

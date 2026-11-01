@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
 import { Application, Payment } from '../../types';
-import { Button, StatusMark, Timeline, TimelineItem, Skeleton, SheetModal } from '../../components/ui';
+import { Button, StatusMark, Timeline, TimelineItem, Skeleton, SheetModal, TopoBackdrop, TrailMeter, ApplicantStage } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
 import { 
   Money, 
@@ -129,6 +129,16 @@ export const ApplicantStatusPage: React.FC = () => {
   const isWithdrawn = application.status === 'withdrawn';
   const isRejected = application.status === 'rejected';
 
+  // Map to ApplicantStage for TrailMeter
+  let applicantStage: ApplicantStage = 'applied';
+  if (isPaid || user?.role === 'volunteer') {
+    applicantStage = 'member';
+  } else if (isAccepted) {
+    applicantStage = 'accepted';
+  } else if (isInReview) {
+    applicantStage = 'reviewed';
+  }
+
   const timelineItems: TimelineItem[] = [
     {
       id: 'step-1',
@@ -189,7 +199,7 @@ export const ApplicantStatusPage: React.FC = () => {
   return (
     <div className="space-y-8 max-w-4xl mx-auto">
       {/* Header */}
-      <div className="border-b border-[#D5DAE1] pb-5 flex flex-wrap items-center justify-between gap-4">
+      <div className="border-b border-[#EDEFF2] pb-5 flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="font-display font-bold text-3xl sm:text-4xl tracking-tight text-ink-primary leading-tight">
             Application status
@@ -211,6 +221,35 @@ export const ApplicantStatusPage: React.FC = () => {
               Withdraw
             </Button>
           )}
+        </div>
+      </div>
+
+      {/* Applicant Trail Route Progress Signature */}
+      <div className="rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 sm:p-8 space-y-4 relative overflow-hidden border-none">
+        <TopoBackdrop color="#D97706" opacity={0.06} />
+        <div className="relative z-10">
+          <div className="flex items-center justify-between border-b border-[#EDEFF2] pb-4">
+            <div>
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-ink-primary">
+                Your journey to membership
+              </h2>
+              <p className="font-sans text-sm text-ink-secondary mt-0.5">
+                Follow your milestones from submission to active Member rank.
+              </p>
+            </div>
+            <span className="font-sans text-[13px] font-semibold text-role-applicant bg-[#FEF3C7] px-2.5 py-1 rounded-[6px]">
+              {applicantStage === 'member' ? 'Member pass active' : 'Step ' + (['applied', 'reviewed', 'accepted', 'paid', 'member'].indexOf(applicantStage) + 1) + ' of 5'}
+            </span>
+          </div>
+
+          <TrailMeter
+            mode="applicant"
+            applicantStage={applicantStage}
+            avatarUrl={user?.avatarUrl}
+            userName={application.formData?.fullName || user?.username}
+            variant="full"
+            className="pt-10 pb-4"
+          />
         </div>
       </div>
 

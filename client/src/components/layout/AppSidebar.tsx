@@ -26,6 +26,7 @@ import {
   Star,
 } from '@phosphor-icons/react';
 import { Avatar } from '../ui/Avatar';
+import { TrailMeter } from '../signature';
 import { formatRank, formatRole } from '../../utils/format';
 import { User, VolunteerProfile } from '../../types';
 
@@ -406,6 +407,17 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
             <Envelope className="w-4 h-4 text-ink-secondary" weight="bold" />
             {!effectiveCollapsed && <span>Preview emails</span>}
           </button>
+        )}
+
+        {/* Compact Trail Progress for Volunteer and Team Lead */}
+        {!effectiveCollapsed && (user.role === 'volunteer' || user.role === 'team_lead') && (
+          <div className="bg-white p-3 rounded-[12px] shadow-[0_1px_2px_rgba(16,24,40,0.04)]">
+            <TrailMeter
+              variant="compact"
+              currentHours={user.role === 'team_lead' ? 120 : (profile?.rank === 'senior_member' ? 52.5 : 16.5)}
+              currentRank={profile?.rank || 'member'}
+            />
+          </div>
         )}
 
         {/* User Profile Block */}

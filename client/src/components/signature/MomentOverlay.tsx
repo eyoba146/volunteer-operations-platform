@@ -3,11 +3,13 @@ import { Check, Confetti, Sparkle, ShieldCheck, ArrowRight, X } from '@phosphor-
 import { Button } from '../ui/Button';
 
 export interface MomentOverlayProps {
-  isOpen: boolean;
-  onClose: () => void;
+  isOpen?: boolean;
+  show?: boolean;
+  onClose?: () => void;
+  onDismiss?: () => void;
   title: string;
   subtitle?: string;
-  type?: 'payment_success' | 'hours_approved' | 'promotion_approved';
+  type?: 'payment_success' | 'hours_approved' | 'promotion_approved' | 'payment' | 'hours' | 'promotion';
   primaryActionLabel?: string;
   onPrimaryAction?: () => void;
   detailsSlot?: React.ReactNode;
@@ -15,7 +17,9 @@ export interface MomentOverlayProps {
 
 export const MomentOverlay: React.FC<MomentOverlayProps> = ({
   isOpen,
+  show,
   onClose,
+  onDismiss,
   title,
   subtitle,
   type = 'payment_success',
@@ -23,17 +27,20 @@ export const MomentOverlay: React.FC<MomentOverlayProps> = ({
   onPrimaryAction,
   detailsSlot,
 }) => {
+  const isVisible = show ?? isOpen ?? false;
+  const handleClose = onDismiss || onClose || (() => {});
+
   // ESC key to dismiss
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isVisible) return;
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') handleClose();
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
+  }, [isVisible, handleClose]);
 
-  if (!isOpen) return null;
+  if (!isVisible) return null;
 
   const renderIcon = () => {
     switch (type) {
@@ -64,7 +71,7 @@ export const MomentOverlay: React.FC<MomentOverlayProps> = ({
       role="dialog"
       aria-modal="true"
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink-primary/40 backdrop-blur-sm animate-in fade-in duration-200"
-      onClick={onClose}
+      onClick={handleClose}
     >
       <div
         onClick={(e) => e.stopPropagation()}
@@ -72,7 +79,7 @@ export const MomentOverlay: React.FC<MomentOverlayProps> = ({
       >
         {/* Dismiss Button */}
         <button
-          onClick={onClose}
+          onClick={handleClose}
           aria-label="Close dialog"
           className="absolute top-4 right-4 p-2 text-ink-tertiary hover:text-ink-primary rounded-full hover:bg-[#F1F3F6] transition-colors cursor-pointer"
         >
@@ -111,7 +118,7 @@ export const MomentOverlay: React.FC<MomentOverlayProps> = ({
             className="w-full justify-center"
             onClick={() => {
               if (onPrimaryAction) onPrimaryAction();
-              onClose();
+              handleClose();
             }}
           >
             {primaryActionLabel}

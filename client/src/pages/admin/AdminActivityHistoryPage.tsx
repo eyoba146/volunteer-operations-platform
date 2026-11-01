@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as api from '../../api';
 import { ActivityLogEntry } from '../../types';
-import { LedgerTable, LedgerColumn, Input, Select, Skeleton } from '../../components/ui';
+import { LedgerTable, LedgerColumn, Input, Select, Skeleton, JourneyLog, JourneyItem } from '../../components/ui';
 import { MagnifyingGlass, ArrowLeft } from '@phosphor-icons/react';
 
 export const AdminActivityHistoryPage: React.FC = () => {
@@ -10,6 +10,7 @@ export const AdminActivityHistoryPage: React.FC = () => {
   const [search, setSearch] = useState('');
   const [roleFilter, setRoleFilter] = useState('all');
   const [isLoading, setIsLoading] = useState(true);
+  const [viewMode, setViewMode] = useState<'log' | 'table'>('log');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -48,7 +49,7 @@ export const AdminActivityHistoryPage: React.FC = () => {
           <span className="font-sans font-semibold text-ink-primary block text-[13px]">
             {entry.actorName}
           </span>
-          <span className="font-mono text-[13px] font-medium px-1.5 py-0.5 bg-canvas-subdued border border-[#D5DAE1] rounded-[4px] text-ink-secondary inline-block">
+          <span className="font-mono text-[13px] font-medium px-1.5 py-0.5 bg-canvas-subdued border-[#EDEFF2] rounded-[4px] text-ink-secondary inline-block">
             {entry.actorRole}
           </span>
         </div>
@@ -65,7 +66,7 @@ export const AdminActivityHistoryPage: React.FC = () => {
     {
       header: 'Subject / Entity',
       cell: (entry) => (
-        <span className="font-mono text-[13px] text-ink-secondary bg-canvas-subdued/40 px-2 py-0.5 border border-[#D5DAE1] rounded-[4px] inline-block">
+        <span className="font-mono text-[13px] text-ink-secondary bg-canvas-subdued/40 px-2 py-0.5 border-[#EDEFF2] rounded-[4px] inline-block">
           {entry.subject}
         </span>
       ),
@@ -83,8 +84,8 @@ export const AdminActivityHistoryPage: React.FC = () => {
       </button>
 
       {/* Header Card */}
-      <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 space-y-4 shadow-sm">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#D5DAE1] pb-4">
+      <div className="rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 sm:p-8 space-y-4 border-none">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#EDEFF2] pb-4">
           <div className="space-y-1">
             <h1 className="font-display font-black text-2xl sm:text-3xl tracking-tight text-ink-primary leading-tight">
               System activity history
@@ -95,7 +96,7 @@ export const AdminActivityHistoryPage: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="font-mono text-[13px] font-medium text-ink-primary bg-canvas-subdued border border-[#D5DAE1] px-3 py-1.5 rounded-[8px]">
+            <span className="font-mono text-[13px] font-medium text-ink-primary bg-canvas-subdued border-[#EDEFF2] px-3 py-1.5 rounded-[8px]">
               Total entries: {filteredLogs.length}
             </span>
           </div>
@@ -125,14 +126,61 @@ export const AdminActivityHistoryPage: React.FC = () => {
             ]}
           />
         </div>
+        <div className="flex items-center gap-2 pt-2 border-t border-[#EDEFF2]">
+          <span className="text-[13px] font-sans text-ink-secondary mr-2">Layout:</span>
+          <button
+            type="button"
+            onClick={() => setViewMode('log')}
+            className={`px-3 py-1.5 text-[13px] font-semibold rounded-[6px] transition-colors cursor-pointer ${
+              viewMode === 'log'
+                ? 'bg-role-admin text-white'
+                : 'bg-[#F7F8FA] text-ink-secondary hover:text-ink-primary'
+            }`}
+          >
+            Journey timeline
+          </button>
+          <button
+            type="button"
+            onClick={() => setViewMode('table')}
+            className={`px-3 py-1.5 text-[13px] font-semibold rounded-[6px] transition-colors cursor-pointer ${
+              viewMode === 'table'
+                ? 'bg-role-admin text-white'
+                : 'bg-[#F7F8FA] text-ink-secondary hover:text-ink-primary'
+            }`}
+          >
+            Ledger table
+          </button>
+        </div>
       </div>
 
-      <LedgerTable
+      {viewMode === 'log' ? (
+        <JourneyLog
+          items={filteredLogs.map((l) => ({
+            id: l.id,
+            date: l.createdAt,
+            title: l.action,
+            subtitle: `Subject: ${l.subject}`,
+            leadValue: l.actorName,
+            status: 'approved',
+            statusLabel: l.actorRole,
+            details: {
+              fields: [
+                { label: 'Actor role', value: l.actorRole },
+                { label: 'Entity affected', value: l.subject },
+                { label: 'Exact timestamp', value: new Date(l.createdAt).toLocaleString() },
+              ],
+            },
+          }))}
+          leadSummary={`${filteredLogs.length} operations recorded along the administrative trail`}
+        />
+      ) : (
+        <LedgerTable
         data={filteredLogs}
         columns={columns}
         keyExtractor={(entry) => entry.id}
         isLoading={isLoading}
-      />
+        />
+      )}
     </div>
   );
 };

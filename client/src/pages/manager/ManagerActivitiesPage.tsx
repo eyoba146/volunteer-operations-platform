@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as api from '../../api';
 import { Activity, ActivityStatus, Enrollment, User, VolunteerProfile } from '../../types';
-import { LedgerTable, LedgerColumn, Input, Select, Button, StatusMark, SheetModal } from '../../components/ui';
+import { LedgerTable, LedgerColumn, Input, Select, Button, StatusMark, SheetModal, TicketCard } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
 import { 
   Plus, 
@@ -21,6 +21,7 @@ export const ManagerActivitiesPage: React.FC = () => {
   const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
   const [roster, setRoster] = useState<Array<{ enrollment: Enrollment; profile?: VolunteerProfile; user?: User }>>([]);
   const [isLoadingRoster, setIsLoadingRoster] = useState(false);
+  const [viewMode, setViewMode] = useState<'tickets' | 'table'>('tickets');
 
   const navigate = useNavigate();
   const toast = useToast();
@@ -110,7 +111,7 @@ export const ManagerActivitiesPage: React.FC = () => {
     {
       header: 'Check-in code',
       cell: (act) => (
-        <span className="font-mono text-[13px] font-semibold px-2 py-0.5 bg-canvas-subdued/50 border border-[#D5DAE1] rounded-[4px] text-ink-primary">
+        <span className="font-mono text-[13px] font-semibold px-2 py-0.5 bg-canvas-subdued/50 border-[#EDEFF2] rounded-[4px] text-ink-primary">
           {act.checkInCode}
         </span>
       ),
@@ -140,8 +141,8 @@ export const ManagerActivitiesPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Editorial Header */}
-      <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 space-y-4 shadow-sm">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#D5DAE1] pb-5">
+      <div className="rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 sm:p-8 space-y-4 border-none">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#EDEFF2] pb-5">
           <div className="space-y-1">
             <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight">
               All field activities
@@ -153,7 +154,7 @@ export const ManagerActivitiesPage: React.FC = () => {
 
           <div className="flex items-center gap-2">
             <Button
-              variant="teal"
+              variant="primary"
               size="sm"
               leftIcon={<Plus className="w-4 h-4" weight="bold" />}
               onClick={() => navigate('/team-lead/create-activity')}
@@ -200,7 +201,7 @@ export const ManagerActivitiesPage: React.FC = () => {
       </div>
 
       {/* Ledger Table */}
-      <div className="border border-[#D5DAE1] rounded-[10px] bg-white shadow-sm overflow-hidden">
+      <div className="border-[#EDEFF2] rounded-[10px] bg-white shadow-sm overflow-hidden">
         <LedgerTable
           data={activities}
           columns={columns}
@@ -219,7 +220,7 @@ export const ManagerActivitiesPage: React.FC = () => {
         {selectedActivity && (
           <div className="space-y-6 text-left font-sans text-[13px]">
             {/* Status & Control Banner */}
-            <div className="p-4 border border-[#D5DAE1] rounded-[8px] bg-white space-y-3">
+            <div className="p-4 border-[#EDEFF2] rounded-[8px] bg-white space-y-3">
               <div className="flex items-center justify-between">
                 <div>
                   <span className="text-[13px] text-ink-tertiary block">Current state</span>
@@ -255,7 +256,7 @@ export const ManagerActivitiesPage: React.FC = () => {
 
             {/* Enrolled Volunteers List */}
             <div className="space-y-3">
-              <div className="flex items-center justify-between border-b border-[#D5DAE1] pb-2">
+              <div className="flex items-center justify-between border-b border-[#EDEFF2] pb-2">
                 <span className="font-display text-base font-bold text-ink-primary">
                   Enrolled roster ({roster.length} / {selectedActivity.capacity})
                 </span>
@@ -271,7 +272,7 @@ export const ManagerActivitiesPage: React.FC = () => {
                   No volunteers currently enrolled for this shift.
                 </p>
               ) : (
-                <div className="divide-y divide-[#D5DAE1] border border-[#D5DAE1] rounded-[8px] bg-white overflow-hidden">
+                <div className="divide-y divide-[#D5DAE1] border-[#EDEFF2] rounded-[8px] bg-white overflow-hidden">
                   {roster.map(({ enrollment, profile, user }) => (
                     <div key={enrollment.id} className="p-3 flex items-center justify-between gap-3">
                       <div>

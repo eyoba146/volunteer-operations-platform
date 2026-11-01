@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
 import { HoursEntry } from '../../types';
-import { LedgerTable, LedgerColumn, Button, SheetModal, Skeleton, EmptyState } from '../../components/ui';
+import { LedgerTable, LedgerColumn, Button, SheetModal, Skeleton, EmptyState, MomentOverlay } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
 import { Check, CheckCircle, X, Clock, Warning } from '@phosphor-icons/react';
 
@@ -17,6 +17,8 @@ export const TeamLeadApproveHoursPage: React.FC = () => {
   const [declineTarget, setDeclineTarget] = useState<HoursEntry | null>(null);
   const [declineReason, setDeclineReason] = useState('');
   const [declineError, setDeclineError] = useState('');
+  const [showMoment, setShowMoment] = useState(false);
+  const [momentText, setMomentText] = useState('');
 
   const toast = useToast();
 
@@ -57,6 +59,8 @@ export const TeamLeadApproveHoursPage: React.FC = () => {
     setIsProcessing(true);
     try {
       await api.approveHours(hoursId, user.id);
+      setMomentText('1 volunteer service session verified');
+      setShowMoment(true);
       toast.success('Hours approved and added to volunteer service record.');
       await loadData();
     } catch (err: any) {
@@ -71,6 +75,8 @@ export const TeamLeadApproveHoursPage: React.FC = () => {
     setIsProcessing(true);
     try {
       await api.bulkApproveHours(selectedIds, user.id);
+      setMomentText(`${selectedIds.length} volunteer service sessions verified`);
+      setShowMoment(true);
       toast.success(`Successfully approved ${selectedIds.length} volunteer service records.`);
       await loadData();
     } catch (err: any) {
@@ -145,7 +151,7 @@ export const TeamLeadApproveHoursPage: React.FC = () => {
             {entry.activityTitle}
           </span>
           <span className="font-mono text-[13px] font-medium text-ink-tertiary block">
-            Source: {entry.source === 'manual' ? 'Manual claim' : 'On-site code scan'}
+            {entry.source === 'manual' ? 'Self-reported manual claim' : 'Checked in with the activity code'}
           </span>
           {entry.manualNote && (
             <p className="text-[13px] text-ink-secondary italic max-w-md bg-canvas-subdued/30 p-2 border border-[#D5DAE1] rounded-[6px]">
@@ -224,8 +230,17 @@ export const TeamLeadApproveHoursPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      <MomentOverlay
+        show={showMoment}
+        onDismiss={() => setShowMoment(false)}
+        type="hours"
+        title="Hours approved!"
+        subtitle={`${momentText || 'Service hours verified'} and credited toward trail advancement.`}
+        primaryActionLabel="Continue reviewing →"
+        onPrimaryAction={() => setShowMoment(false)}
+      />
       {/* Top Header */}
-      <div className="border-b border-[#D5DAE1] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div className="border-b border-[#EDEFF2] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
           <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
             Approve volunteer hours
@@ -287,7 +302,7 @@ export const TeamLeadApproveHoursPage: React.FC = () => {
             <div className="border border-[#D5DAE1] rounded-[8px] bg-canvas-subdued/30 p-3 font-mono text-[13px] space-y-1">
               <div>Claim duration: <strong>{Math.round((declineTarget.minutes / 60) * 10) / 10} hours</strong></div>
               <div>Date: {new Date(declineTarget.checkIn).toLocaleDateString()}</div>
-              <div>Source: {declineTarget.source === 'manual' ? 'Manual submission' : 'Session check-in'}</div>
+              <div>Check-in: {declineTarget.source === 'manual' ? 'Self-reported manual claim' : 'Checked in with the activity code'}</div>
             </div>
 
             <div className="space-y-1.5 text-left">

@@ -31,3 +31,4 @@ if (hoursMatch) {
     console.log(`${id} (${user}): act=${actId}, status=${status}, mins=${mins} (${Math.round(mins/60*10)/10}h), checkIn=${checkIn}, checkOut=${checkOut}`);
   });
 }
+

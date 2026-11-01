@@ -46,3 +46,4 @@ for (const [name, count] of Object.entries(counts)) {
 }
 console.log('----------------------------------------------------');
 console.log(`TOTAL DETECTED OCCURRENCES : ${total}`);
+

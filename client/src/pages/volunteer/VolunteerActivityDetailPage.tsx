@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
 import { Activity, Enrollment } from '../../types';
-import { Button, StatusMark, Skeleton, EmptyState } from '../../components/ui';
+import { Button, StatusMark, Skeleton, EmptyState, TopoBackdrop } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
 import { 
   Calendar as CalendarIcon, 
@@ -127,12 +127,14 @@ export const VolunteerActivityDetailPage: React.FC = () => {
         <span>Back to all activities</span>
       </button>
 
-      {/* Main Card */}
-      <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 shadow-sm space-y-6">
+      {/* Main Hero Card with TopoBackdrop */}
+      <div className="relative rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] overflow-hidden p-6 sm:p-8 space-y-6 border-none">
+        <TopoBackdrop color="#15803D" opacity={0.06} />
+
         {/* Header Section */}
-        <div className="space-y-4 border-b border-[#D5DAE1] pb-6">
+        <div className="relative z-10 space-y-4 border-b border-[#EDEFF2] pb-6">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="font-mono text-[13px] font-medium px-2.5 py-0.5 bg-canvas-subdued/50 border border-[#D5DAE1] rounded-[4px] text-ink-primary">
+            <span className="font-mono text-[13px] font-medium px-2.5 py-0.5 bg-[#F1F3F6] rounded-[4px] text-ink-primary">
               {activity.type.replace('_', ' ')}
             </span>
             <StatusMark status={activity.status} size="sm" />
@@ -166,7 +168,7 @@ export const VolunteerActivityDetailPage: React.FC = () => {
         </div>
 
         {/* Operational Attributes Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 p-4 border border-[#D5DAE1] rounded-[8px] bg-canvas-subdued/30 font-sans text-[13px]">
+        <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 p-4 rounded-[12px] bg-[#F7F8FA] font-sans text-[13px] border-none">
           <div className="space-y-1">
             <span className="font-sans text-[13px] font-semibold text-ink-tertiary block">
               Schedule & timing
@@ -233,7 +235,7 @@ export const VolunteerActivityDetailPage: React.FC = () => {
               {activity.skills.map((skill, i) => (
                 <span
                   key={i}
-                  className="px-3 py-1 bg-white border border-[#D5DAE1] rounded-[6px] font-sans text-[13px] font-medium text-ink-primary flex items-center gap-1.5"
+                  className="px-3 py-1 bg-[#F7F8FA] rounded-[6px] font-sans text-[13px] font-medium text-ink-primary flex items-center gap-1.5 border-none"
                 >
                   <Tag className="w-3.5 h-3.5 text-role-volunteer" weight="bold" />
                   <span>{skill}</span>
@@ -244,7 +246,7 @@ export const VolunteerActivityDetailPage: React.FC = () => {
         )}
 
         {/* Action Panel */}
-        <div className="pt-6 border-t border-[#D5DAE1] flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="pt-6 border-t border-[#EDEFF2] flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="text-[13px] text-ink-secondary">
             {isJoined ? (
               <p className="text-role-volunteer font-semibold">

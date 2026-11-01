@@ -3,6 +3,7 @@ import { VolunteerProfile, Rank } from '../../types';
 import { Avatar } from './Avatar';
 import { StatusMark } from './StatusMark';
 import { QrCode, CheckCircle } from '@phosphor-icons/react';
+import { TopoBackdrop } from '../signature/TopoBackdrop';
 
 interface VolunteerCardProps {
   profile: VolunteerProfile;
@@ -22,10 +23,13 @@ export const VolunteerCard: React.FC<VolunteerCardProps> = ({
 
   return (
     <div
-      className={`relative max-w-sm w-full bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] rounded-[16px] p-6 sm:p-7 space-y-5 text-left select-none ${className}`}
+      className={`relative max-w-sm w-full bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] rounded-[16px] p-6 sm:p-7 space-y-5 text-left select-none overflow-hidden border-none ${className}`}
       id="printable-volunteer-id-card"
     >
-      {/* Top Header */}
+      <TopoBackdrop color="#16A34A" opacity={0.07} />
+
+      <div className="relative z-10 space-y-5">
+        {/* Top Header */}
       <div className="flex items-start justify-between border-b border-[#EDEFF2] pb-4">
         <div>
           <span className="font-display text-2xl font-bold text-ink-primary tracking-tight block">
@@ -81,18 +85,19 @@ export const VolunteerCard: React.FC<VolunteerCardProps> = ({
         </div>
       </div>
 
-      {/* Perforated Stub Bottom */}
-      <div className="pt-4 border-t border-dashed border-[#EDEFF2] flex items-center justify-between">
-        <div className="space-y-0.5">
-          <span className="text-[13px] font-sans text-ink-secondary font-medium block">
-            Scan to verify on trail
-          </span>
-          <span className="font-sans text-[13px] font-bold text-ink-primary">
-            {profile.volunteerNumber || 'VTS-AA-2026-084'}
-          </span>
-        </div>
-        <div className="w-12 h-12 p-1.5 bg-[#F7F8FA] rounded-[10px] flex items-center justify-center">
-          <QrCode className="w-full h-full text-ink-primary" weight="bold" />
+        {/* Perforated Stub Bottom */}
+        <div className="pt-4 border-t border-dashed border-[#EDEFF2] flex items-center justify-between">
+          <div className="space-y-0.5">
+            <span className="text-[13px] font-sans text-ink-secondary font-medium block">
+              Scan to verify on trail
+            </span>
+            <span className="font-sans text-[13px] font-bold text-ink-primary">
+              {profile.volunteerNumber || 'VTS-AA-2026-084'}
+            </span>
+          </div>
+          <div className="w-12 h-12 p-1.5 bg-[#F7F8FA] rounded-[10px] flex items-center justify-center">
+            <QrCode className="w-full h-full text-ink-primary" weight="bold" />
+          </div>
         </div>
       </div>
     </div>

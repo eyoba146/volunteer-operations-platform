@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import * as api from '../../api';
 import { useAuth } from '../../context/AuthContext';
 import { Activity, ActivityType } from '../../types';
-import { Input, Select, Button, StatusMark, Skeleton, EmptyState } from '../../components/ui';
+import { Input, Select, Button, StatusMark, Skeleton, EmptyState, TicketCard } from '../../components/ui';
 import { 
   Calendar as CalendarIcon, 
   MapPin, 
@@ -506,74 +506,13 @@ export const VolunteerActivitiesPage: React.FC = () => {
   );
 
   function renderActivityCard(act: Activity) {
+    const isEnrolled = userEnrollments.includes(act.id);
     return (
-      <div
+      <TicketCard
         key={act.id}
-        className="rounded-[16px] bg-white p-5 sm:p-6 shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] transition-transform hover:-translate-y-0.5 flex flex-col md:flex-row md:items-center justify-between gap-6"
-      >
-        <div className="space-y-2 flex-1">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="font-mono text-[13px] font-medium px-2 py-0.5 bg-[#F1F3F6] rounded-[4px] text-ink-primary">
-              {act.type.replace('_', ' ')}
-            </span>
-            <StatusMark status={act.status} size="sm" />
-            {act.minRank && (
-              <span className="font-mono text-[13px] text-ink-tertiary flex items-center gap-1">
-                <ShieldCheck className="w-3.5 h-3.5 text-role-volunteer" weight="bold" />
-                <span>{act.minRank.replace('_', ' ')} required</span>
-              </span>
-            )}
-          </div>
-
-          <Link
-            to={`/volunteer/activities/${act.id}`}
-            className="font-display text-xl sm:text-2xl font-bold text-ink-primary hover:text-role-volunteer transition-colors block leading-tight"
-          >
-            {act.title}
-          </Link>
-
-          <p className="font-sans text-[13px] sm:text-sm text-ink-secondary line-clamp-2 max-w-3xl leading-relaxed">
-            {act.description}
-          </p>
-
-          <div className="flex flex-wrap items-center gap-4 text-[13px] font-mono text-ink-secondary pt-1">
-            <span className="flex items-center gap-1.5">
-              <Clock className="w-4 h-4 text-ink-tertiary" />
-              <span>
-                {new Date(act.startsAt).toLocaleString('en-US', {
-                  weekday: 'short',
-                  month: 'short',
-                  day: 'numeric',
-                  hour: '2-digit',
-                  minute: '2-digit',
-                })}
-              </span>
-            </span>
-
-            <span className="flex items-center gap-1.5">
-              <MapPin className="w-4 h-4 text-ink-tertiary" />
-              <span>{act.place}, {act.area}</span>
-            </span>
-
-            <span className="flex items-center gap-1.5">
-              <UsersThree className="w-4 h-4 text-ink-tertiary" />
-              <span>Capacity: <strong>{act.capacity} volunteers</strong></span>
-            </span>
-          </div>
-        </div>
-
-        {/* Action Button: tonal secondary */}
-        <div className="shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-[#EDEFF2] flex items-center justify-end">
-          <Button
-            variant="secondary"
-            size="md"
-            rightIcon={<ArrowRight className="w-4 h-4" weight="bold" />}
-            onClick={() => navigate(`/volunteer/activities/${act.id}`)}
-          >
-            View details & join
-          </Button>
-        </div>
-      </div>
+        activity={act}
+        enrolledStatus={isEnrolled ? 'Enrolled' : undefined}
+      />
     );
   }
 };

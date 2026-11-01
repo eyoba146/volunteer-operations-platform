@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import * as api from '../../api';
 import { Payment, PaymentStatus } from '../../types';
-import { LedgerTable, LedgerColumn, Input, Select, Button, StatusMark, SheetModal } from '../../components/ui';
+import { LedgerTable, LedgerColumn, Input, Select, Button, StatusMark, SheetModal, JourneyLog, JourneyItem, TopoBackdrop } from '../../components/ui';
 import { 
   MagnifyingGlass, 
   Eye, 
@@ -13,6 +13,7 @@ export const FinancePaymentsPage: React.FC = () => {
   const [search, setSearch] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [inspecting, setInspecting] = useState<Payment | null>(null);
+  const [viewMode, setViewMode] = useState<'table' | 'log'>('log');
 
   useEffect(() => {
     const load = async () => {
@@ -95,8 +96,9 @@ export const FinancePaymentsPage: React.FC = () => {
   return (
     <div className="space-y-6 text-left">
       {/* Top Header Card */}
-      <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 space-y-4 shadow-sm">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#D5DAE1] pb-4">
+      <div className="relative overflow-hidden rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 space-y-4 border-none">
+        <TopoBackdrop color="#059669" opacity={0.06} />
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#EDEFF2] pb-4">
           <div className="space-y-1">
             <h1 className="font-display font-black text-2xl sm:text-3xl tracking-tight text-ink-primary leading-tight">
               Telebirr payments ledger
@@ -107,7 +109,7 @@ export const FinancePaymentsPage: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="font-mono text-[13px] font-medium text-ink-primary bg-canvas-subdued border border-[#D5DAE1] px-3 py-1.5 rounded-[8px]">
+            <span className="font-mono text-[13px] font-medium text-ink-primary bg-canvas-subdued border-[#EDEFF2] px-3 py-1.5 rounded-[8px]">
               Total records: {payments.length}
             </span>
           </div>
@@ -156,7 +158,7 @@ export const FinancePaymentsPage: React.FC = () => {
         {inspecting && (
           <div className="space-y-6 text-left font-sans text-sm">
             {/* Amount & Status Card */}
-            <div className="p-4 border border-[#D5DAE1] rounded-[10px] bg-white shadow-sm flex items-center justify-between">
+            <div className="p-4 rounded-[16px] bg-white shadow-xs border-none bg-white shadow-sm flex items-center justify-between">
               <div>
                 <span className="text-[13px] text-ink-tertiary block font-mono">Current status</span>
                 <StatusMark status={inspecting.status} size="md" />
@@ -170,8 +172,8 @@ export const FinancePaymentsPage: React.FC = () => {
             </div>
 
             {/* Visual Settlement Timeline (Trail route step style) */}
-            <div className="p-4 border border-[#D5DAE1] rounded-[10px] bg-white shadow-sm space-y-4">
-              <span className="font-display text-lg font-bold text-ink-primary block border-b border-[#D5DAE1] pb-2">
+            <div className="p-4 rounded-[16px] bg-white shadow-xs border-none bg-white shadow-sm space-y-4">
+              <span className="font-display text-lg font-bold text-ink-primary block border-b border-[#EDEFF2] pb-2">
                 Settlement lifecycle timeline
               </span>
 
@@ -243,16 +245,16 @@ export const FinancePaymentsPage: React.FC = () => {
             </div>
 
             {/* Payer Meta Information */}
-            <div className="p-4 border border-[#D5DAE1] rounded-[10px] bg-canvas-subdued/40 space-y-2.5 font-mono text-[13px]">
-              <div className="flex justify-between border-b border-[#D5DAE1] pb-1.5">
+            <div className="p-4 rounded-[16px] bg-white shadow-xs border-none bg-canvas-subdued/40 space-y-2.5 font-mono text-[13px]">
+              <div className="flex justify-between border-b border-[#EDEFF2] pb-1.5">
                 <span className="text-ink-tertiary">Payer name:</span>
                 <span className="font-bold text-ink-primary font-sans">{inspecting.payerName || 'Applicant'}</span>
               </div>
-              <div className="flex justify-between border-b border-[#D5DAE1] pb-1.5">
+              <div className="flex justify-between border-b border-[#EDEFF2] pb-1.5">
                 <span className="text-ink-tertiary">Payer phone:</span>
                 <span className="font-bold text-ink-primary">{inspecting.payerPhone || '—'}</span>
               </div>
-              <div className="flex justify-between border-b border-[#D5DAE1] pb-1.5">
+              <div className="flex justify-between border-b border-[#EDEFF2] pb-1.5">
                 <span className="text-ink-tertiary">Telebirr reference:</span>
                 <span className="font-bold text-ink-primary">{inspecting.telebirrReference}</span>
               </div>

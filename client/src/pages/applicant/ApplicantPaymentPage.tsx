@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
 import { Application, Payment, VolunteerProfile } from '../../types';
-import { Button, StatusMark, VolunteerCard, Skeleton, Input } from '../../components/ui';
+import { Button, StatusMark, VolunteerCard, Skeleton, Input, TopoBackdrop, MomentOverlay } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
 import { 
   Money, 
@@ -27,6 +27,7 @@ export const ApplicantPaymentPage: React.FC = () => {
   const [phone, setPhone] = useState(user?.phone || '+251 91 234 5678');
   const [simulationState, setSimulationState] = useState<'idle' | 'waiting' | 'success' | 'delay' | 'failed' | 'duplicate'>('idle');
   const [timeLeft, setTimeLeft] = useState<{ days: number; hours: number; minutes: number } | null>(null);
+  const [showMoment, setShowMoment] = useState(false);
 
   const navigate = useNavigate();
   const toast = useToast();
@@ -104,6 +105,7 @@ export const ApplicantPaymentPage: React.FC = () => {
         setPayment(updated);
         await refreshUser();
         setSimulationState('success');
+        setShowMoment(true);
         toast.success('Telebirr payment confirmed! Your member pass is active.');
       } else if (outcome === 'delay') {
         const updated = await api.processTelebirrOutcome(payment.id, 'delay');
@@ -160,25 +162,41 @@ export const ApplicantPaymentPage: React.FC = () => {
     return (
       <div className="max-w-3xl mx-auto space-y-8 animate-in fade-in duration-300">
         {/* Celebration Banner */}
-        <div className="border border-role-volunteer bg-role-volunteerLight rounded-[10px] p-8 text-center space-y-3">
-          <div className="w-16 h-16 mx-auto bg-role-volunteer text-white rounded-full flex items-center justify-center">
-            <CheckCircle className="w-10 h-10" weight="fill" />
-          </div>
-          <h1 className="font-display font-bold text-3xl sm:text-4xl text-ink-primary tracking-tight">
-            Welcome to the trail!
-          </h1>
-          <p className="font-sans text-base text-ink-secondary max-w-lg mx-auto leading-relaxed">
-            Your registration fee of <strong className="font-bold text-ink-primary">ETB 200.00</strong> has been confirmed. You are now an active <strong className="text-role-volunteer">Member</strong> of the Volunteer Tracking System.
-          </p>
-          <div className="pt-2 flex flex-wrap justify-center gap-3">
-            <Button
-              variant="primary"
-              size="lg"
-              onClick={() => navigate('/volunteer/home')}
-              rightIcon={<ArrowRight className="w-5 h-5" />}
-            >
-              Open my volunteer space
-            </Button>
+        <MomentOverlay
+          show={showMoment}
+          onDismiss={() => setShowMoment(false)}
+          type="payment"
+          title="Welcome to the trail!"
+          subtitle="Your registration fee is confirmed. You are now an active Member."
+          primaryActionLabel="Explore activities →"
+          onPrimaryAction={() => {
+            setShowMoment(false);
+            navigate('/volunteer/activities');
+          }}
+        />
+
+        <div className="relative overflow-hidden rounded-[16px] bg-[#F7F8FA] p-8 text-center space-y-3 border-none">
+          <TopoBackdrop color="#16A34A" opacity={0.08} />
+          <div className="relative z-10 space-y-3">
+            <div className="w-16 h-16 mx-auto bg-role-volunteer text-white rounded-full flex items-center justify-center">
+              <CheckCircle className="w-10 h-10" weight="fill" />
+            </div>
+            <h1 className="font-display font-bold text-3xl sm:text-4xl text-ink-primary tracking-tight">
+              Welcome to the trail!
+            </h1>
+            <p className="font-sans text-base text-ink-secondary max-w-lg mx-auto leading-relaxed">
+              Your registration fee of <strong className="font-bold text-ink-primary">ETB 200.00</strong> has been confirmed. You are now an active <strong className="text-role-volunteer">Member</strong> of the Volunteer Tracking System.
+            </p>
+            <div className="pt-2 flex flex-wrap justify-center gap-3">
+              <Button
+                variant="primary"
+                size="lg"
+                onClick={() => navigate('/volunteer/home')}
+                rightIcon={<ArrowRight className="w-5 h-5" />}
+              >
+                Open my volunteer space
+              </Button>
+            </div>
           </div>
         </div>
 
@@ -186,7 +204,7 @@ export const ApplicantPaymentPage: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
           {/* Left: Volunteer ID Card */}
           <div className="space-y-3">
-            <div className="flex items-center justify-between border-b border-[#D5DAE1] pb-2">
+            <div className="flex items-center justify-between border-b border-[#EDEFF2] pb-2">
               <h2 className="font-display text-2xl font-bold text-ink-primary">
                 Your volunteer pass
               </h2>
@@ -203,7 +221,7 @@ export const ApplicantPaymentPage: React.FC = () => {
           </div>
 
           {/* Right: Payment Receipt Pass */}
-          <div className="bg-white p-6 md:p-8 space-y-5 shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] rounded-[16px] text-left">
+          <div className="relative overflow-hidden bg-white p-6 md:p-8 space-y-5 shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] rounded-[16px] text-left border-none">
             <div className="flex items-center justify-between border-b border-[#EDEFF2] pb-3">
               <div>
                 <span className="font-display text-2xl font-bold text-ink-primary block leading-none">
@@ -264,7 +282,7 @@ export const ApplicantPaymentPage: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       {/* Header */}
-      <div className="border-b border-[#D5DAE1] pb-5 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div className="border-b border-[#EDEFF2] pb-5 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
           <h1 className="font-display font-bold text-3xl sm:text-4xl tracking-tight text-ink-primary leading-tight">
             Registration fee payment
@@ -286,8 +304,8 @@ export const ApplicantPaymentPage: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
         {/* Left Column: What It Covers */}
         <div className="md:col-span-2 space-y-5">
-          <div className="border border-[#D5DAE1] bg-white rounded-[10px] p-6 space-y-5">
-            <div className="border-b border-[#D5DAE1] pb-3">
+          <div className="rounded-[16px] bg-[#F7F8FA] p-6 space-y-5 border-none">
+            <div className="border-b border-[#EDEFF2] pb-3">
               <span className="font-sans text-[13px] font-bold text-role-applicant block">
                 One-time activation fee
               </span>
@@ -303,7 +321,7 @@ export const ApplicantPaymentPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="space-y-2 pt-3 border-t border-[#D5DAE1] text-sm font-sans text-ink-secondary leading-relaxed">
+            <div className="space-y-2 pt-3 border-t border-[#EDEFF2] text-sm font-sans text-ink-secondary leading-relaxed">
               <span className="font-bold text-ink-primary block">What this covers:</span>
               <ul className="space-y-1.5 list-disc list-inside">
                 <li>Volunteer ID pass with verifiable QR code</li>
@@ -322,9 +340,9 @@ export const ApplicantPaymentPage: React.FC = () => {
 
         {/* Right Column: Telebirr Payment Rail */}
         <div className="md:col-span-3 space-y-6">
-          <div className="border border-[#D5DAE1] bg-white rounded-[10px] p-6 md:p-8 space-y-6">
+          <div className="rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 md:p-8 space-y-6 border-none">
             {/* Telebirr Brand Header */}
-            <div className="flex items-center justify-between border-b border-[#D5DAE1] pb-4">
+            <div className="flex items-center justify-between border-b border-[#EDEFF2] pb-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-[8px] bg-role-applicant text-white flex items-center justify-center font-display text-2xl font-black">
                   tb
@@ -466,7 +484,7 @@ export const ApplicantPaymentPage: React.FC = () => {
 
                 {/* Telebirr Edge Case Simulation Control Panel */}
                 <div className="p-5 border border-[#D5DAE1] rounded-[8px] bg-canvas-subdued text-left space-y-4">
-                  <div className="flex items-center justify-between border-b border-[#D5DAE1] pb-2">
+                  <div className="flex items-center justify-between border-b border-[#EDEFF2] pb-2">
                     <span className="font-display text-lg font-bold text-ink-primary">
                       Demo Telebirr gateway controls
                     </span>

@@ -53,7 +53,7 @@ export const TicketCard: React.FC<TicketCardProps> = ({
         <div className="hidden md:block absolute -top-3 -right-3 w-6 h-6 rounded-full bg-white z-10" />
         <div className="hidden md:block absolute -bottom-3 -right-3 w-6 h-6 rounded-full bg-white z-10" />
 
-        <span className="font-mono text-[12px] font-bold text-role-volunteer uppercase tracking-wider block">
+        <span className="font-mono text-[12px] font-bold text-role-volunteer tracking-wider block">
           {monthStr}
         </span>
         <span className="font-display font-black text-4xl text-ink-primary leading-none my-1">

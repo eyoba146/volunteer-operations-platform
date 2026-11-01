@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
 import { Promotion } from '../../types';
-import { Button, StatusMark, SheetModal, Skeleton, EmptyState } from '../../components/ui';
+import { Button, StatusMark, SheetModal, Skeleton, EmptyState, MomentOverlay, TopoBackdrop } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
 import { 
   Check, 
@@ -21,6 +21,9 @@ export const ManagerPromotionsPage: React.FC = () => {
   const [targetPromotion, setTargetPromotion] = useState<Promotion | null>(null);
   const [decisionNote, setDecisionNote] = useState('');
   const [modalMode, setModalMode] = useState<'approve' | 'decline'>('approve');
+  const [showMoment, setShowMoment] = useState(false);
+  const [approvedCandidate, setApprovedCandidate] = useState('');
+  const [promotedRank, setPromotedRank] = useState('');
 
   const toast = useToast();
 
@@ -52,6 +55,11 @@ export const ManagerPromotionsPage: React.FC = () => {
         profile?.fullName || user.username
       );
 
+      if (modalMode === 'approve') {
+        setApprovedCandidate(targetPromotion.userName || 'Volunteer');
+        setPromotedRank(targetPromotion.toRank ? targetPromotion.toRank.replace('_', ' ') : 'next rank');
+        setShowMoment(true);
+      }
       toast.success(
         modalMode === 'approve'
           ? `Promotion approved! ${targetPromotion.userName} is advanced to ${targetPromotion.toRank.replace('_', ' ')}. Certificate generated.`
@@ -79,9 +87,19 @@ export const ManagerPromotionsPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      <MomentOverlay
+        show={showMoment}
+        onDismiss={() => setShowMoment(false)}
+        type="promotion"
+        title="Promotion approved!"
+        subtitle={`${approvedCandidate} advanced to ${promotedRank}. Digital certificate issued.`}
+        primaryActionLabel="Continue review →"
+        onPrimaryAction={() => setShowMoment(false)}
+      />
       {/* Editorial Header */}
-      <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 space-y-4 shadow-sm">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#D5DAE1] pb-5">
+      <div className="relative overflow-hidden rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 sm:p-8 space-y-4 border-none">
+        <TopoBackdrop color="#2563EB" opacity={0.06} />
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#EDEFF2] pb-5">
           <div className="space-y-1">
             <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight">
               Volunteer promotion board
@@ -110,9 +128,9 @@ export const ManagerPromotionsPage: React.FC = () => {
           {promotions.map((promo) => (
             <div
               key={promo.id}
-              className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 space-y-6 shadow-sm"
+              className="rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] border-none bg-white p-6 sm:p-8 space-y-6 shadow-sm"
             >
-              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-[#D5DAE1] pb-5">
+              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-[#EDEFF2] pb-5">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-sans text-[13px] font-semibold text-role-teamlead">
@@ -251,7 +269,7 @@ export const ManagerPromotionsPage: React.FC = () => {
             />
           </div>
 
-          <div className="pt-3 border-t border-[#D5DAE1] flex items-center justify-end gap-3">
+          <div className="pt-3 border-t border-[#EDEFF2] flex items-center justify-end gap-3">
             <Button
               type="button"
               variant="secondary"

@@ -6,15 +6,18 @@ export interface JourneyLogDetail {
   value: React.ReactNode;
 }
 
+export type JourneyItem = JourneyLogItem;
+
 export interface JourneyLogItem {
   id: string;
   date: string;
   title: string;
   subtitle?: string;
-  status: 'approved' | 'logged' | 'needs_review' | 'declined' | 'confirmed' | 'failed' | string;
+  status: 'approved' | 'logged' | 'needs_review' | 'declined' | 'confirmed' | 'failed' | 'review' | string;
   statusLabel?: string;
-  primaryNumeral: string;
-  details?: JourneyLogDetail[];
+  primaryNumeral?: string;
+  leadValue?: string;
+  details?: JourneyLogDetail[] | { fields?: Array<{ label: string; value: React.ReactNode }>; notes?: string };
   actionSlot?: React.ReactNode;
 }
 
@@ -26,7 +29,7 @@ export interface JourneyLogLeadSummary {
 
 export interface JourneyLogProps {
   items: JourneyLogItem[];
-  leadSummary?: JourneyLogLeadSummary;
+  leadSummary?: JourneyLogLeadSummary | string;
   className?: string;
 }
 
@@ -98,19 +101,25 @@ export const JourneyLog: React.FC<JourneyLogProps> = ({
     <div className={`space-y-6 ${className}`}>
       {/* Editorial Lead Summary (Replaces 3 equal stat boxes with 1 large lead numeral) */}
       {leadSummary && (
-        <div className="rounded-[16px] bg-[#F7F8FA] p-6 sm:p-8 flex flex-col sm:flex-row sm:items-baseline gap-4 sm:gap-6 border-none">
-          <div className="flex items-baseline gap-2">
-            <span className="font-display font-black text-5xl sm:text-6xl text-ink-primary tracking-tight leading-none">
-              {leadSummary.leadNumeral}
-            </span>
-            <span className="font-sans text-lg font-semibold text-ink-secondary">
-              {leadSummary.label}
-            </span>
+        typeof leadSummary === 'string' ? (
+          <div className="rounded-[16px] bg-[#F7F8FA] p-5 sm:p-6 border-none font-sans text-sm text-ink-secondary">
+            {leadSummary}
           </div>
-          <div className="font-sans text-[14px] text-ink-secondary border-t sm:border-t-0 sm:border-l border-[#EDEFF2] pt-3 sm:pt-0 sm:pl-6 leading-relaxed">
-            {leadSummary.inlineSentence}
+        ) : (
+          <div className="rounded-[16px] bg-[#F7F8FA] p-6 sm:p-8 flex flex-col sm:flex-row sm:items-baseline gap-4 sm:gap-6 border-none">
+            <div className="flex items-baseline gap-2">
+              <span className="font-display font-black text-5xl sm:text-6xl text-ink-primary tracking-tight leading-none">
+                {leadSummary.leadNumeral}
+              </span>
+              <span className="font-sans text-lg font-semibold text-ink-secondary">
+                {leadSummary.label}
+              </span>
+            </div>
+            <div className="font-sans text-[14px] text-ink-secondary border-t sm:border-t-0 sm:border-l border-[#EDEFF2] pt-3 sm:pt-0 sm:pl-6 leading-relaxed">
+              {leadSummary.inlineSentence}
+            </div>
           </div>
-        </div>
+        )
       )}
 
       {/* Vertical Spine Chronological Feed */}
@@ -119,7 +128,7 @@ export const JourneyLog: React.FC<JourneyLogProps> = ({
           <div key={monthLabel} className="space-y-3">
             {/* Month Separator Label */}
             <div className="flex items-center gap-3">
-              <span className="font-sans font-bold text-[13px] text-ink-secondary tracking-wide uppercase">
+              <span className="font-sans font-bold text-[13px] text-ink-secondary">
                 {monthLabel}
               </span>
               <div className="flex-1 h-px bg-[#EDEFF2]" />
@@ -178,7 +187,7 @@ export const JourneyLog: React.FC<JourneyLogProps> = ({
                       {/* Right Numerals and Caret */}
                       <div className="shrink-0 flex items-center gap-3 text-right">
                         <span className="font-mono font-bold text-lg sm:text-xl text-ink-primary">
-                          {item.primaryNumeral}
+                          {item.primaryNumeral || item.leadValue || ''}
                         </span>
                         <div className="text-ink-tertiary">
                           {isExpanded ? (
@@ -193,9 +202,15 @@ export const JourneyLog: React.FC<JourneyLogProps> = ({
                     {/* Expanded Story Details */}
                     {isExpanded && (
                       <div className="border-t border-[#EDEFF2] bg-[#F7F8FA] p-4 sm:p-5 space-y-3 animate-in fade-in duration-150">
-                        {item.details && item.details.length > 0 && (
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[13px] font-sans">
-                            {item.details.map((d, idx) => (
+                        {(() => {
+                          const detailsList: JourneyLogDetail[] = Array.isArray(item.details)
+                            ? item.details
+                            : item.details?.fields
+                            ? item.details.fields
+                            : [];
+                          return detailsList.length > 0 ? (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[13px] font-sans">
+                              {detailsList.map((d, idx) => (
                               <div key={idx} className="space-y-0.5">
                                 <span className="text-ink-tertiary block font-medium">
                                   {d.label}
@@ -205,8 +220,9 @@ export const JourneyLog: React.FC<JourneyLogProps> = ({
                                 </div>
                               </div>
                             ))}
-                          </div>
-                        )}
+                            </div>
+                          ) : null;
+                        })()}
 
                         {item.actionSlot && (
                           <div className="pt-2 flex justify-end">

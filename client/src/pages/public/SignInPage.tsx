@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Link, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { Input, Button } from '../../components/ui';
+import { Input, Button, TopoBackdrop } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
 import { Key, User as UserIcon, Eye, EyeSlash, ArrowRight, CaretDown, CaretUp, Sparkle, Envelope } from '@phosphor-icons/react';
 import { DemoEmailInbox } from '../../components/demo/DemoEmailInbox';
@@ -153,10 +153,8 @@ export const SignInPage: React.FC = () => {
   return (
     <div className="max-w-xl mx-auto px-4 sm:px-6 py-10 md:py-14 space-y-6">
       {/* Editorial Header */}
-      <div className="space-y-2 border-b border-[#D5DAE1] pb-6 text-center">
-        <div className="inline-block px-3 py-1 bg-canvas-subdued text-ink-primary font-semibold text-[13px] rounded-[6px] border border-[#D5DAE1] mb-2">
-          Operations access
-        </div>
+      <div className="space-y-2 border-b border-[#EDEFF2] pb-6 text-center">
+        
         <h1 className="font-display font-bold text-3xl sm:text-4xl text-ink-primary tracking-tight">
           Sign in to your account
         </h1>
@@ -166,11 +164,11 @@ export const SignInPage: React.FC = () => {
       </div>
 
       {/* Collapsible Demo Evaluator Accounts Panel */}
-      <div className="bg-white border border-[#D5DAE1] rounded-[10px] overflow-hidden">
+      <div className="rounded-[16px] bg-[#F7F8FA] overflow-hidden border-none">
         <button
           type="button"
           onClick={() => setDemoPanelOpen(!demoPanelOpen)}
-          className="w-full px-5 py-3.5 bg-canvas-subdued border-b border-[#D5DAE1] flex items-center justify-between font-display text-base font-bold text-ink-primary hover:bg-canvas-inset/50 transition-colors cursor-pointer select-none"
+          className="w-full px-5 py-3.5 bg-canvas-subdued border-b border-[#EDEFF2] flex items-center justify-between font-display text-base font-bold text-ink-primary hover:bg-canvas-inset/50 transition-colors cursor-pointer select-none"
         >
           <div className="flex items-center gap-2">
             <Sparkle className="w-4 h-4 text-role-applicant" weight="fill" />
@@ -183,7 +181,7 @@ export const SignInPage: React.FC = () => {
         </button>
 
         {demoPanelOpen && (
-          <div className="p-3 bg-white space-y-1.5 divide-y divide-[#D5DAE1]/60">
+          <div className="p-3 bg-white space-y-1.5 divide-y divide-[#EDEFF2]">
             {DEMO_PERSONAS.map((p) => (
               <button
                 key={p.username}
@@ -228,7 +226,9 @@ export const SignInPage: React.FC = () => {
       </div>
 
       {/* Main Sign In Form */}
-      <div className="bg-white border border-[#D5DAE1] rounded-[10px] p-6 sm:p-8 space-y-5">
+      <div className="relative overflow-hidden rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 sm:p-8 space-y-5 border-none">
+        <TopoBackdrop color="#16A34A" opacity={0.05} />
+        <div className="relative z-10 space-y-4">
         <form onSubmit={handleSubmit} className="space-y-4">
           {errorMessage && (
             <div className="p-3.5 bg-red-50 border border-role-teamlead rounded-[8px] text-role-teamlead text-sm font-semibold">
@@ -300,6 +300,7 @@ export const SignInPage: React.FC = () => {
             </Link>
           </div>
         </form>
+        </div>
       </div>
 
       <DemoEmailInbox

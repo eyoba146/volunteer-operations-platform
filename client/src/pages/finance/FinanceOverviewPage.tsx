@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import * as api from '../../api';
 import { Payment } from '../../types';
-import { Button, StatusMark, Skeleton } from '../../components/ui';
+import { Button, StatusMark, Skeleton, TopoBackdrop } from '../../components/ui';
 import { 
   Money, 
   ArrowsClockwise, 
@@ -61,8 +61,9 @@ export const FinanceOverviewPage: React.FC = () => {
   return (
     <div className="space-y-8 text-left">
       {/* Editorial Header */}
-      <div className="border border-[#D5DAE1] bg-white rounded-[10px] p-6 sm:p-8 space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-[#D5DAE1] pb-6">
+      <div className="relative overflow-hidden rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 sm:p-8 space-y-6 border-none">
+        <TopoBackdrop color="#059669" opacity={0.06} />
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-[#EDEFF2] pb-6">
           <div className="space-y-1">
             <h1 className="font-display font-bold text-3xl sm:text-4xl tracking-tight text-ink-primary">
               Telebirr settlements and payment ledger
@@ -108,7 +109,7 @@ export const FinanceOverviewPage: React.FC = () => {
                 ETB {stats?.todayETB.toLocaleString() || '0'}.00
               </span>
             </div>
-            <div className="w-px h-8 bg-[#D5DAE1] hidden sm:block" />
+            <div className="w-px h-8 bg-[#EDEFF2] hidden sm:block" />
             <div className="space-y-0.5">
               <span className="text-[13px] text-ink-secondary block">Review cases</span>
               <span className={`text-xl font-bold ${
@@ -117,7 +118,7 @@ export const FinanceOverviewPage: React.FC = () => {
                 {stats?.needsReviewCount || 0}
               </span>
             </div>
-            <div className="w-px h-8 bg-[#D5DAE1] hidden sm:block" />
+            <div className="w-px h-8 bg-[#EDEFF2] hidden sm:block" />
             <div className="space-y-0.5">
               <span className="text-[13px] text-ink-secondary block">Refund reversals</span>
               <span className="text-xl font-bold text-ink-primary">
@@ -131,9 +132,9 @@ export const FinanceOverviewPage: React.FC = () => {
       {/* Two Column Layout: Recent Transactions & Gateway Status */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Recent Transactions Feed */}
-        <div className="lg:col-span-7 border border-[#D5DAE1] bg-white rounded-[10px] p-6 space-y-4 flex flex-col justify-between">
+        <div className="lg:col-span-7 rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] border-none p-6 space-y-4 flex flex-col justify-between">
           <div className="space-y-4">
-            <div className="flex items-center justify-between border-b border-[#D5DAE1] pb-3">
+            <div className="flex items-center justify-between border-b border-[#EDEFF2] pb-3">
               <div className="flex items-center gap-2">
                 <Clock className="w-5 h-5 text-ink-primary" weight="bold" />
                 <h3 className="font-display text-xl font-bold text-ink-primary">
@@ -145,7 +146,7 @@ export const FinanceOverviewPage: React.FC = () => {
               </span>
             </div>
 
-            <div className="divide-y divide-[#D5DAE1]/60">
+            <div className="divide-y divide-[#EDEFF2]">
               {recentPayments.map((p) => (
                 <div key={p.id} className="py-3 flex items-center justify-between gap-3 text-sm">
                   <div className="space-y-0.5">
@@ -173,7 +174,7 @@ export const FinanceOverviewPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="pt-3 border-t border-[#D5DAE1]">
+          <div className="pt-3 border-t border-[#EDEFF2]">
             <Link
               to="/finance/payments"
               className="text-sm font-bold text-ink-primary hover:underline flex items-center gap-1.5"
@@ -185,9 +186,9 @@ export const FinanceOverviewPage: React.FC = () => {
         </div>
 
         {/* Merchant Settlement Gateway Status */}
-        <div className="lg:col-span-5 border border-[#D5DAE1] bg-white rounded-[10px] p-6 space-y-4 flex flex-col justify-between">
+        <div className="lg:col-span-5 rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] border-none p-6 space-y-4 flex flex-col justify-between">
           <div className="space-y-4">
-            <div className="flex items-center justify-between border-b border-[#D5DAE1] pb-3">
+            <div className="flex items-center justify-between border-b border-[#EDEFF2] pb-3">
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-5 h-5 text-role-volunteer" weight="fill" />
                 <h3 className="font-display text-xl font-bold text-ink-primary">
@@ -213,7 +214,7 @@ export const FinanceOverviewPage: React.FC = () => {
                   <span className="font-semibold text-ink-primary block text-[13px]">Telebirr shortcode</span>
                   <span className="text-ink-secondary text-[13px]">Direct pay code</span>
                 </div>
-                <span className="font-semibold bg-white px-2 py-0.5 rounded-[4px] border border-[#D5DAE1] text-ink-primary text-[13px]">
+                <span className="font-semibold bg-white px-2 py-0.5 rounded-[4px] border-[#EDEFF2] text-ink-primary text-[13px]">
                   884120
                 </span>
               </div>
@@ -240,7 +241,7 @@ export const FinanceOverviewPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="pt-3 border-t border-[#D5DAE1]">
+          <div className="pt-3 border-t border-[#EDEFF2]">
             <Link
               to="/finance/needs-review"
               className="text-sm font-bold text-ink-primary hover:underline flex items-center gap-1.5"

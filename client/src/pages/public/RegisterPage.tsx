@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import * as api from '../../api';
-import { Input, Button } from '../../components/ui';
+import { Input, Button, TopoBackdrop } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
 import { validateAndNormalizeEthiopianPhone } from '../../utils/phone';
 import {
@@ -172,7 +172,7 @@ export const RegisterPage: React.FC = () => {
   return (
     <div className="max-w-xl mx-auto px-4 sm:px-6 py-10 md:py-14 space-y-6">
       {/* Editorial Header */}
-      <div className="space-y-2 border-b border-[#D5DAE1] pb-6 text-center">
+      <div className="space-y-2 border-b border-[#EDEFF2] pb-6 text-center">
         <div className="inline-block px-3 py-1 bg-canvas-subdued text-ink-primary font-semibold text-[13px] rounded-[6px] border border-[#D5DAE1] mb-2">
           New volunteer pass
         </div>

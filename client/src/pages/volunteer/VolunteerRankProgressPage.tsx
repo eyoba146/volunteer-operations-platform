@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
 import { RankProgressData } from '../../api/promotions';
-import { Button, StatusMark, ProgressMeter, Skeleton, TrailLine } from '../../components/ui';
+import { Button, StatusMark, ProgressMeter, Skeleton, TrailLine, TopoBackdrop, TrailMeter } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
 import {
   Sparkle,
@@ -100,7 +100,7 @@ export const VolunteerRankProgressPage: React.FC = () => {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="border-b border-[#D5DAE1] pb-5 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div className="border-b border-[#EDEFF2] pb-5 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
           <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
             Rank progression board
@@ -116,34 +116,34 @@ export const VolunteerRankProgressPage: React.FC = () => {
       </div>
 
       {/* THE SIGNATURE TRAIL ROUTE LINE */}
-      <div className="border border-[#D5DAE1] bg-white rounded-[10px] p-6 sm:p-8 space-y-3">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#D5DAE1] pb-3">
+      <div className="relative rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] overflow-hidden p-6 sm:p-8 space-y-4 border-none">
+        <TopoBackdrop color="#15803D" opacity={0.06} />
+
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#EDEFF2] pb-3">
           <div className="space-y-0.5">
-            <span className="font-sans text-[13px] font-bold text-role-volunteer tracking-tight block">
-              Active trail route
-            </span>
             <h3 className="font-display text-2xl font-bold text-ink-primary">
               Rank progression trail
             </h3>
           </div>
-          <div className="flex items-center gap-2 font-sans text-sm font-semibold bg-canvas-subdued px-3 py-1 rounded-[6px] border border-[#D5DAE1]">
+          <div className="flex items-center gap-2 font-sans text-sm font-semibold bg-[#F1F3F6] px-3 py-1 rounded-[6px]">
             <span className="text-ink-secondary">Current progress:</span>
             <span className="text-role-volunteer font-bold">{progress.approvedHours} verified hours</span>
           </div>
         </div>
 
-        {/* Trail Route SVG animation */}
-        <TrailLine
-          waypoints={waypoints}
-          currentWaypointIndex={currentWaypointIndex}
-          strokeColor="#1E824C"
-          className="pt-2"
-        />
+        {/* TrailMeter Continuous Route */}
+        <div className="relative z-10 pt-2">
+          <TrailMeter
+            variant="full"
+            currentHours={progress.approvedHours}
+            currentRank={progress.currentRank}
+          />
+        </div>
       </div>
 
       {/* Promotion Status Banners */}
       {progress.promotionStatus === 'recommended' && (
-        <div className="border border-role-applicant bg-role-applicantLight rounded-[10px] p-6 space-y-3">
+        <div className="rounded-[16px] bg-[#FFFBEB] border-none p-6 space-y-3">
           <div className="flex items-start gap-3">
             <Sparkle className="w-6 h-6 text-role-applicant shrink-0 mt-0.5" weight="fill" />
             <div className="space-y-1">
@@ -166,7 +166,7 @@ export const VolunteerRankProgressPage: React.FC = () => {
       )}
 
       {progress.promotionStatus === 'eligible' && (
-        <div className="border border-role-volunteer bg-role-volunteerLight rounded-[10px] p-6 space-y-3">
+        <div className="rounded-[16px] bg-[#ECFDF5] border-none p-6 space-y-3">
           <div className="flex flex-col flex-wrap sm:flex-row sm:items-center justify-between gap-4">
             <div className="space-y-1">
               <span className="font-sans text-[13px] font-bold text-role-volunteer block">
@@ -195,12 +195,12 @@ export const VolunteerRankProgressPage: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Column: Current Station & Unlocked Privileges */}
         <div className="space-y-6">
-          <div className="border border-[#D5DAE1] bg-white rounded-[10px] p-6 space-y-4">
+          <div className="rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] border-none p-6 space-y-4">
             <span className="font-sans text-[13px] font-bold text-ink-secondary block">
               Current rank standing
             </span>
 
-            <div className="flex items-center gap-3 border-b border-[#D5DAE1] pb-4">
+            <div className="flex items-center gap-3 border-b border-[#EDEFF2] pb-4">
               <div className="w-12 h-12 bg-role-volunteer text-white rounded-[8px] flex items-center justify-center font-display text-2xl font-bold">
                 {progress.currentRank === 'senior_member' ? 'SM' : progress.currentRank === 'team_lead' ? 'TL' : 'M'}
               </div>
@@ -214,7 +214,7 @@ export const VolunteerRankProgressPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="space-y-2.5 text-sm font-sans text-ink-secondary divide-y divide-[#D5DAE1]/50">
+            <div className="space-y-2.5 text-sm font-sans text-ink-secondary divide-y divide-[#EDEFF2]">
               <div className="flex justify-between pt-1">
                 <span>Total approved hours:</span>
                 <strong className="text-ink-primary">{progress.approvedHours} hrs</strong>
@@ -236,7 +236,7 @@ export const VolunteerRankProgressPage: React.FC = () => {
 
           {/* Next Rank Info */}
           {progress.nextRank && (
-            <div className="border border-[#D5DAE1] bg-canvas-subdued/50 rounded-[10px] p-6 space-y-3">
+            <div className="rounded-[16px] bg-[#F7F8FA] border-none p-6 space-y-3">
               <span className="font-sans text-[13px] font-bold text-ink-secondary block">
                 Target rank
               </span>
@@ -255,8 +255,8 @@ export const VolunteerRankProgressPage: React.FC = () => {
         </div>
 
         {/* Right Column: 5 Requirement Meters */}
-        <div className="lg:col-span-2 border border-[#D5DAE1] bg-white rounded-[10px] p-6 sm:p-8 space-y-6">
-          <div className="border-b border-[#D5DAE1] pb-3 flex items-center justify-between">
+        <div className="lg:col-span-2 rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] border-none p-6 sm:p-8 space-y-6">
+          <div className="border-b border-[#EDEFF2] pb-3 flex items-center justify-between">
             <h2 className="font-display text-2xl font-bold text-ink-primary">
               Rank criteria: {progress.nextRank?.replace('_', ' ') || 'Next rank'}
             </h2>
@@ -331,7 +331,7 @@ export const VolunteerRankProgressPage: React.FC = () => {
             </div>
 
             {/* 5. Required Training Session */}
-            <div className="space-y-2 pt-2 border-t border-[#D5DAE1]">
+            <div className="space-y-2 pt-2 border-t border-[#EDEFF2]">
               <div className="flex items-center justify-between text-sm">
                 <span className="font-sans font-bold text-ink-primary">
                   5. Orientation and training
@@ -340,7 +340,7 @@ export const VolunteerRankProgressPage: React.FC = () => {
                   {progress.requiredTraining}
                 </span>
               </div>
-              <div className="p-4 border border-[#D5DAE1] rounded-[8px] bg-canvas-subdued flex items-center justify-between text-sm font-sans">
+              <div className="p-4 rounded-[12px] bg-[#F7F8FA] border-none flex items-center justify-between text-sm font-sans">
                 <div className="flex items-center gap-2.5">
                   <CertIcon className="w-5 h-5 text-role-volunteer" weight="bold" />
                   <span className="font-bold text-ink-primary">{progress.requiredTraining}</span>

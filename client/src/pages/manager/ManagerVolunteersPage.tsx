@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import * as api from '../../api';
 import { User, VolunteerProfile, RankHistoryMilestone } from '../../types';
-import { LedgerTable, LedgerColumn, Input, Select, Button, StatusMark, SheetModal, Avatar } from '../../components/ui';
+import { LedgerTable, LedgerColumn, Input, Select, Button, StatusMark, SheetModal, Avatar, TrailMeter, JourneyLog, JourneyItem } from '../../components/ui';
 import { MagnifyingGlass, Eye, ChartLineUp, Phone, EnvelopeSimple } from '@phosphor-icons/react';
 
 export const ManagerVolunteersPage: React.FC = () => {
@@ -163,8 +163,8 @@ export const ManagerVolunteersPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Top Header */}
-      <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 space-y-4 shadow-sm">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#D5DAE1] pb-5">
+      <div className="rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] border-none bg-white p-6 sm:p-8 space-y-4 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#EDEFF2] pb-5">
           <div className="space-y-1">
             <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight">
               Volunteer directory & records
@@ -218,7 +218,7 @@ export const ManagerVolunteersPage: React.FC = () => {
       </div>
 
       {/* Ledger Table */}
-      <div className="border border-[#D5DAE1] rounded-[10px] bg-white shadow-sm overflow-hidden">
+      <div className="rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] border-none bg-white shadow-sm overflow-hidden">
         <LedgerTable
           data={volunteers}
           columns={columns}
@@ -237,7 +237,7 @@ export const ManagerVolunteersPage: React.FC = () => {
         {inspecting && (
           <div className="space-y-6 text-left font-sans text-[13px]">
             {/* Header Badge */}
-            <div className="flex items-center gap-4 p-4 border border-[#D5DAE1] rounded-[8px] bg-white shadow-sm">
+            <div className="flex items-center gap-4 p-4 rounded-[12px] bg-white shadow-xs border-none bg-white shadow-sm">
               <Avatar
                 name={inspecting.profile.fullName}
                 photoUrl={inspecting.profile.photoUrl}
@@ -259,7 +259,7 @@ export const ManagerVolunteersPage: React.FC = () => {
             </div>
 
             {/* Performance Metric Strip */}
-            <div className="border border-[#D5DAE1] rounded-[8px] bg-white divide-x divide-[#D5DAE1] grid grid-cols-3 overflow-hidden">
+            <div className="rounded-[12px] bg-white shadow-xs border-none bg-white divide-x divide-[#D5DAE1] grid grid-cols-3 overflow-hidden">
               <div className="p-3 text-center space-y-0.5">
                 <span className="text-[13px] font-medium text-ink-tertiary block">Approved hours</span>
                 <span className="font-display text-2xl font-bold text-ink-primary block leading-none">
@@ -283,52 +283,44 @@ export const ManagerVolunteersPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Permanent Rank History Trail */}
-            <div className="p-4 border border-[#D5DAE1] rounded-[8px] bg-white space-y-3">
-              <div className="flex items-center gap-2 border-b border-[#D5DAE1] pb-2">
-                <ChartLineUp className="w-4 h-4 text-role-manager" weight="bold" />
-                <h4 className="font-display text-base font-bold tracking-tight text-ink-primary">
-                  Promotion & rank advancement trail
-                </h4>
-              </div>
+            {/* Permanent Rank History Trail Signature */}
+            <div className="p-4 rounded-[14px] bg-[#F7F8FA] space-y-2 border-none">
+              <span className="font-sans font-bold text-ink-primary text-sm block">
+                Rank advancement trail
+              </span>
+              <TrailMeter
+                currentHours={volunteerStats.hours}
+                currentRank={inspecting.profile.rank as any}
+                variant="compact"
+              />
+            </div>
 
-              <div className="relative pl-6 space-y-4 before:content-[''] before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-[#EDEFF2]">
-                {rankHistory.map((m, idx) => (
-                  <div key={idx} className="relative space-y-1">
-                    {/* Milestone Node */}
-                    <div className="absolute -left-6 top-1 w-3 h-3 rounded-full bg-role-manager ring-2 ring-white" />
-
-                    <div className="flex items-baseline justify-between gap-2">
-                      <span className="font-bold text-ink-primary text-[13px] font-display">
-                        {m.rankTitle || m.rank.replace('_', ' ')}
-                      </span>
-                      <span className="font-mono text-[13px] text-ink-tertiary">
-                        {m.achievedAt}
-                      </span>
-                    </div>
-
-                    <p className="text-[13px] text-ink-secondary">
-                      {m.note || 'Milestone verified and recorded.'}
-                    </p>
-
-                    <div className="flex flex-wrap items-center gap-2 font-mono text-[13px] text-ink-tertiary pt-0.5">
-                      {m.hoursRecorded !== undefined && (
-                        <span>Hours: <strong>{m.hoursRecorded} hrs</strong></span>
-                      )}
-                      {m.approvedBy && (
-                        <span>• Evaluated by: <strong>{m.approvedBy}</strong></span>
-                      )}
-                      {m.certificateCode && (
-                        <span>• Certificate: <strong>{m.certificateCode}</strong></span>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
+            <div className="space-y-3">
+              <span className="font-display font-bold text-ink-primary text-base block">
+                Milestone history
+              </span>
+              <JourneyLog
+                items={rankHistory.map((m, idx) => ({
+                  id: m.certificateCode || String(idx),
+                  date: m.achievedAt,
+                  title: m.rankTitle || m.rank.replace('_', ' '),
+                  subtitle: m.note || 'Milestone achieved along the trail.',
+                  status: 'approved',
+                  statusLabel: 'Verified',
+                  leadValue: m.hoursRecorded !== undefined ? `${m.hoursRecorded} hrs` : undefined,
+                  details: {
+                    fields: [
+                      ...(m.approvedBy ? [{ label: 'Approved by', value: m.approvedBy }] : []),
+                      ...(m.certificateCode ? [{ label: 'Certificate code', value: m.certificateCode }] : []),
+                    ],
+                  },
+                }))}
+                leadSummary={`${volunteerStats.hours} total approved hours on the trail`}
+              />
             </div>
 
             {/* Contact Information */}
-            <div className="p-4 border border-[#D5DAE1] rounded-[8px] bg-canvas-subdued/30 space-y-3">
+            <div className="p-4 rounded-[12px] bg-white shadow-xs border-none bg-canvas-subdued/30 space-y-3">
               <span className="font-semibold text-[13px] text-ink-primary block">
                 Contact details & area
               </span>
@@ -349,7 +341,7 @@ export const ManagerVolunteersPage: React.FC = () => {
             </div>
 
             {/* Bio & Background */}
-            <div className="p-4 border border-[#D5DAE1] rounded-[8px] bg-canvas-subdued/30 space-y-1.5">
+            <div className="p-4 rounded-[12px] bg-white shadow-xs border-none bg-canvas-subdued/30 space-y-1.5">
               <span className="font-semibold text-[13px] text-ink-primary block">
                 Bio & motivation
               </span>
@@ -359,7 +351,7 @@ export const ManagerVolunteersPage: React.FC = () => {
             </div>
 
             {/* Skills Catalog */}
-            <div className="p-4 border border-[#D5DAE1] rounded-[8px] bg-canvas-subdued/30 space-y-2">
+            <div className="p-4 rounded-[12px] bg-white shadow-xs border-none bg-canvas-subdued/30 space-y-2">
               <span className="font-semibold text-[13px] text-ink-primary block">
                 Verified skills
               </span>
@@ -374,7 +366,7 @@ export const ManagerVolunteersPage: React.FC = () => {
 
             {/* Emergency Contact */}
             {inspecting.profile.emergencyContact && (
-              <div className="p-4 border border-[#D5DAE1] rounded-[8px] bg-canvas-subdued/30 space-y-1">
+              <div className="p-4 rounded-[12px] bg-white shadow-xs border-none bg-canvas-subdued/30 space-y-1">
                 <span className="font-semibold text-[13px] text-ink-primary block">
                   Emergency contact
                 </span>

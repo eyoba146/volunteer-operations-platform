@@ -22,3 +22,4 @@ const newLines = lines.map(line => {
 
 fs.writeFileSync(auditPath, newLines.join('\n'), 'utf8');
 console.log('Successfully updated docs/PAGE_AUDIT.md with Surface and Signature columns');
+

@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
 import { Activity, Enrollment } from '../../types';
-import { Tabs, StatusMark, Button, Skeleton, EmptyState } from '../../components/ui';
+import { Tabs, StatusMark, Button, Skeleton, EmptyState, TicketCard } from '../../components/ui';
 import { Calendar as CalendarIcon, Clock, MapPin, QrCode, ArrowRight } from '@phosphor-icons/react';
 
 export const VolunteerMyActivitiesPage: React.FC = () => {
@@ -111,66 +111,29 @@ export const VolunteerMyActivitiesPage: React.FC = () => {
       ) : (
         <div className="space-y-4">
           {currentList.map(({ activity, enrollment }) => (
-            <div
+            <TicketCard
               key={enrollment.id}
-              className="border border-[#D5DAE1] rounded-[10px] bg-white p-5 sm:p-6 shadow-sm hover:border-ink-secondary transition-colors flex flex-col md:flex-row md:items-center justify-between gap-6"
-            >
-              <div className="space-y-2 flex-1">
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="font-mono text-[13px] font-medium px-2 py-0.5 bg-canvas-subdued/50 border border-[#D5DAE1] rounded-[4px] text-ink-primary">
-                    {activity.type.replace('_', ' ')}
-                  </span>
-                  <StatusMark status={enrollment.status as any} size="sm" />
-                </div>
-
-                <Link
-                  to={`/volunteer/activities/${activity.id}`}
-                  className="font-display text-xl sm:text-2xl font-bold text-ink-primary hover:text-role-volunteer transition-colors block leading-tight"
-                >
-                  {activity.title}
-                </Link>
-
-                <div className="flex flex-wrap items-center gap-4 text-[13px] font-mono text-ink-secondary pt-1">
-                  <span className="flex items-center gap-1.5">
-                    <Clock className="w-4 h-4 text-ink-tertiary" />
-                    <span>
-                      {new Date(activity.startsAt).toLocaleString('en-US', {
-                        weekday: 'short',
-                        month: 'short',
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                      })}
-                    </span>
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <MapPin className="w-4 h-4 text-ink-tertiary" />
-                    <span>{activity.place}, {activity.area}</span>
-                  </span>
-                </div>
-              </div>
-
-              <div className="shrink-0 flex items-center gap-3 self-end md:self-center">
-                {enrollment.status === 'joined' && (
+              activity={activity}
+              enrolledStatus={
+                enrollment.status === 'joined'
+                  ? 'Enrolled'
+                  : enrollment.status === 'waiting'
+                  ? 'Waiting list'
+                  : 'Attended'
+              }
+              actionSlot={
+                enrollment.status === 'joined' ? (
                   <Button
-                    variant="primary"
-                    size="md"
-                    leftIcon={<QrCode className="w-4 h-4" weight="bold" />}
+                    variant="secondary"
+                    size="sm"
+                    leftIcon={<QrCode className="w-3.5 h-3.5 text-role-volunteer" weight="bold" />}
                     onClick={() => navigate('/volunteer/check-in')}
                   >
-                    Check in
+                    Check-in code
                   </Button>
-                )}
-                <Button
-                  variant="secondary"
-                  size="md"
-                  rightIcon={<ArrowRight className="w-4 h-4" weight="bold" />}
-                  onClick={() => navigate(`/volunteer/activities/${activity.id}`)}
-                >
-                  View details
-                </Button>
-              </div>
-            </div>
+                ) : undefined
+              }
+            />
           ))}
         </div>
       )}

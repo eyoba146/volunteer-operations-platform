@@ -16,3 +16,5 @@ export * from './TrailLine';
 export * from './TicketPass';
 export * from './StatNumber';
 export * from './ProfilePhotoModal';
+export * from '../signature';
+

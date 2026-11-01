@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
 import { Activity, Enrollment } from '../../types';
-import { Button, StatusMark, Skeleton, EmptyState, SheetModal } from '../../components/ui';
+import { Button, StatusMark, Skeleton, EmptyState, SheetModal, TicketCard } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
 import { 
   Plus, 
@@ -80,7 +80,7 @@ export const TeamLeadActivitiesPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Top Header */}
-      <div className="border-b border-[#D5DAE1] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div className="border-b border-[#EDEFF2] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
           <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
             Activities under my leadership
@@ -111,83 +111,52 @@ export const TeamLeadActivitiesPage: React.FC = () => {
       ) : (
         <div className="space-y-4">
           {activities.map((act) => (
-            <div
+            <TicketCard
               key={act.id}
-              className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 shadow-sm hover:border-ink-secondary transition-colors flex flex-col md:flex-row md:items-center justify-between gap-6"
-            >
-              <div className="space-y-2.5 flex-1">
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="font-mono text-[13px] font-medium px-2 py-0.5 bg-canvas-subdued/50 border border-[#D5DAE1] rounded-[4px] text-ink-primary">
-                    {act.type.replace('_', ' ')}
-                  </span>
-                  <StatusMark status={act.status} size="sm" />
-                </div>
-
-                <h3 className="font-display text-xl sm:text-2xl font-bold text-ink-primary leading-tight">
-                  {act.title}
-                </h3>
-
-                <p className="font-sans text-[13px] sm:text-sm text-ink-secondary line-clamp-2 max-w-2xl leading-relaxed">
-                  {act.description}
-                </p>
-
-                <div className="flex flex-wrap items-center gap-4 text-[13px] font-mono text-ink-secondary pt-1">
-                  <span className="flex items-center gap-1.5">
-                    <Clock className="w-4 h-4 text-ink-tertiary" />
-                    <span>
-                      {new Date(act.startsAt).toLocaleDateString()} (
-                      {new Date(act.startsAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} -{' '}
-                      {new Date(act.endsAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })})
+              activity={act}
+              onClick={() => handleOpenRoster(act)}
+              actionSlot={
+                <div className="flex flex-col sm:flex-row items-end sm:items-center gap-3">
+                  <div className="bg-[#F7F8FA] rounded-[10px] p-2.5 text-center min-w-[100px]">
+                    <span className="font-sans text-[12px] font-medium text-ink-tertiary block">
+                      Session code
                     </span>
-                  </span>
+                    <span className="font-mono text-xl font-bold text-ink-primary tracking-widest block">
+                      {act.checkInCode}
+                    </span>
+                  </div>
 
-                  <span className="flex items-center gap-1.5">
-                    <MapPin className="w-4 h-4 text-ink-tertiary" />
-                    <span>{act.place}, {act.area}</span>
-                  </span>
-
-                  <span className="flex items-center gap-1.5">
-                    <UsersThree className="w-4 h-4 text-ink-tertiary" />
-                    <span>Capacity: <strong>{act.capacity} volunteers</strong></span>
-                  </span>
-                </div>
-              </div>
-
-              {/* Check-In Code Badge & Lead Actions */}
-              <div className="shrink-0 flex flex-col sm:flex-row items-end sm:items-center gap-4">
-                <div className="border border-[#D5DAE1] rounded-[8px] bg-canvas-subdued/30 p-3 text-center min-w-[120px]">
-                  <span className="font-sans text-[13px] font-semibold text-ink-tertiary block">
-                    Session code
-                  </span>
-                  <span className="font-mono text-2xl font-bold text-ink-primary tracking-widest block">
-                    {act.checkInCode}
-                  </span>
-                </div>
-
-                <div className="flex flex-col gap-2 w-full sm:w-auto">
-                  <Button
-                    variant="primary"
-                    size="sm"
-                    leftIcon={<UsersThree className="w-4 h-4" weight="bold" />}
-                    onClick={() => handleOpenRoster(act)}
-                  >
-                    View roster
-                  </Button>
-
-                  {act.status !== 'completed' && (
+                  <div className="flex sm:flex-col gap-2 w-full sm:w-auto">
                     <Button
                       variant="secondary"
                       size="sm"
-                      leftIcon={<CheckCircle className="w-4 h-4" weight="bold" />}
-                      onClick={() => handleMarkComplete(act.id)}
-                      isLoading={isUpdating}
+                      leftIcon={<UsersThree className="w-4 h-4" weight="bold" />}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleOpenRoster(act);
+                      }}
                     >
-                      Mark complete
+                      View roster
                     </Button>
-                  )}
+
+                    {act.status !== 'completed' && (
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        leftIcon={<CheckCircle className="w-4 h-4" weight="bold" />}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleMarkComplete(act.id);
+                        }}
+                        isLoading={isUpdating}
+                      >
+                        Mark complete
+                      </Button>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </div>
+              }
+            />
           ))}
         </div>
       )}

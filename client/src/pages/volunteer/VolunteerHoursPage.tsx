@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
 import { HoursEntry, Activity } from '../../types';
-import { LedgerTable, LedgerColumn, Button, StatusMark, SheetModal, Input, Select, Skeleton, EmptyState } from '../../components/ui';
+import { LedgerTable, LedgerColumn, Button, StatusMark, SheetModal, Input, Select, Skeleton, EmptyState, JourneyLog, JourneyLogItem } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
 import { Clock, Plus, Warning } from '@phosphor-icons/react';
 
@@ -139,7 +139,7 @@ export const VolunteerHoursPage: React.FC = () => {
             {entry.activityTitle || 'Community service activity'}
           </span>
           <span className="font-mono text-[13px] text-ink-tertiary block">
-            Source: {entry.source === 'manual' ? 'Manual claim' : 'Session code verified'}
+            {entry.source === 'manual' ? 'Self-reported manual claim' : 'Checked in with the activity code'}
           </span>
           {entry.manualNote && (
             <p className="text-[13px] text-ink-secondary italic pt-0.5 max-w-md">
@@ -190,17 +190,76 @@ export const VolunteerHoursPage: React.FC = () => {
       },
     },
     {
-      header: 'Decision status',
+      header: 'Status',
       cell: (entry) => <StatusMark status={entry.status} size="sm" />,
     },
   ];
+
+  const journeyItems: JourneyLogItem[] = hours.map((h) => {
+    const isQuickLook = h.manualNote?.includes('Needs a quick look');
+    const isOpen = !h.checkOut || h.checkOut === '';
+
+    return {
+      id: h.id,
+      date: h.checkIn,
+      title: h.activityTitle || 'Community service activity',
+      subtitle: h.source === 'manual' ? 'Manual claim' : 'Checked in with the activity code',
+      status: isOpen ? 'logged' : isQuickLook ? 'needs_review' : h.status,
+      statusLabel: isOpen
+        ? 'Checked in, not checked out'
+        : isQuickLook
+        ? 'Needs a quick look'
+        : h.status === 'approved'
+        ? 'Approved'
+        : h.status === 'logged'
+        ? 'Waiting for approval'
+        : 'Declined',
+      primaryNumeral: isOpen ? 'Open' : `+${Math.round((h.minutes / 60) * 10) / 10} hrs`,
+      details: [
+        {
+          label: 'Session record',
+          value: `${new Date(h.checkIn).toLocaleDateString('en-US', {
+            weekday: 'short',
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+          })} • ${new Date(h.checkIn).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`,
+        },
+        {
+          label: 'Check-in verification',
+          value: h.source === 'manual' ? 'Manual claim' : 'Checked in with the activity code',
+        },
+        ...(h.manualNote
+          ? [{ label: 'Notes', value: h.manualNote }]
+          : []),
+        ...(h.decisionReason
+          ? [{ label: 'Review decision', value: h.decisionReason }]
+          : []),
+      ],
+      actionSlot: isOpen ? (
+        <Button
+          size="sm"
+          variant="secondary"
+          onClick={() => handleCheckoutDirectly(h.id)}
+        >
+          Check out now
+        </Button>
+      ) : undefined,
+    };
+  });
+
+  const leadSummary = {
+    leadNumeral: `${Math.round((totalApprovedMinutes / 60) * 10) / 10} hrs`,
+    label: 'approved service hours',
+    inlineSentence: `${Math.round((totalLoggedMinutes / 60) * 10) / 10} hours waiting for approval, ${Math.round((totalDeclinedMinutes / 60) * 10) / 10} hours declined. Counts toward your next rank.`,
+  };
 
   if (isLoading) {
     return (
       <div className="space-y-6">
         <Skeleton variant="text" className="h-8 w-1/3" />
-        <Skeleton variant="rect" className="h-24 rounded-[10px]" />
-        <Skeleton variant="rect" className="h-64 rounded-[10px]" />
+        <Skeleton variant="rect" className="h-24 rounded-[16px]" />
+        <Skeleton variant="rect" className="h-64 rounded-[16px]" />
       </div>
     );
   }
@@ -208,13 +267,13 @@ export const VolunteerHoursPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Top Header */}
-      <div className="border-b border-[#D5DAE1] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div className="border-b border-[#EDEFF2] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
           <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
-            Logged hours ledger
+            Your hours
           </h1>
           <p className="font-sans text-[13px] sm:text-sm text-ink-secondary mt-1">
-            Complete record of your volunteer hours, attendance check-ins, and manual claims.
+            Complete record of your service hours, check-ins, and manual claims.
           </p>
         </div>
 
@@ -228,49 +287,7 @@ export const VolunteerHoursPage: React.FC = () => {
         </Button>
       </div>
 
-      {/* Connected Metric Strip */}
-      <div className="border border-[#D5DAE1] rounded-[10px] bg-white shadow-sm grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-[#D5DAE1] font-mono">
-        <div className="p-5 space-y-1">
-          <span className="text-[13px] font-medium text-ink-tertiary block">
-            Approved service hours
-          </span>
-          <div className="font-display text-3xl sm:text-4xl font-bold text-role-volunteer leading-none">
-            {Math.round((totalApprovedMinutes / 60) * 10) / 10}{' '}
-            <span className="font-mono text-sm font-normal text-ink-secondary">hrs</span>
-          </div>
-          <span className="text-[13px] text-ink-secondary block font-sans">
-            Counts directly toward rank promotion
-          </span>
-        </div>
-
-        <div className="p-5 space-y-1">
-          <span className="text-[13px] font-medium text-ink-tertiary block">
-            Hours awaiting approval
-          </span>
-          <div className="font-display text-3xl sm:text-4xl font-bold text-role-applicant leading-none">
-            {Math.round((totalLoggedMinutes / 60) * 10) / 10}{' '}
-            <span className="font-mono text-sm font-normal text-ink-secondary">hrs</span>
-          </div>
-          <span className="text-[13px] text-ink-secondary block font-sans">
-            Submitted to Team Lead for review
-          </span>
-        </div>
-
-        <div className="p-5 space-y-1">
-          <span className="text-[13px] font-medium text-ink-tertiary block">
-            Declined hours
-          </span>
-          <div className="font-display text-3xl sm:text-4xl font-bold text-ink-primary leading-none">
-            {Math.round((totalDeclinedMinutes / 60) * 10) / 10}{' '}
-            <span className="font-mono text-sm font-normal text-ink-secondary">hrs</span>
-          </div>
-          <span className="text-[13px] text-ink-secondary block font-sans">
-            Includes feedback reasons
-          </span>
-        </div>
-      </div>
-
-      {/* Ledger Table */}
+      {/* Signature JourneyLog Component */}
       {hours.length === 0 ? (
         <EmptyState
           icon={<Clock className="w-8 h-8 text-ink-secondary" weight="bold" />}
@@ -280,13 +297,7 @@ export const VolunteerHoursPage: React.FC = () => {
           onAction={() => setIsModalOpen(true)}
         />
       ) : (
-        <div className="border border-[#D5DAE1] rounded-[10px] bg-white shadow-sm overflow-hidden">
-          <LedgerTable
-            columns={columns}
-            data={hours}
-            keyExtractor={(h) => h.id}
-          />
-        </div>
+        <JourneyLog items={journeyItems} leadSummary={leadSummary} />
       )}
 
       {/* Manual Missed Hours Modal Sheet */}

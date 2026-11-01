@@ -1,71 +1,106 @@
 import React, { useState } from 'react';
 import { ShieldCheck, Star, Sparkle, Trophy } from '@phosphor-icons/react';
 
+export type ApplicantStage = 'applied' | 'reviewed' | 'accepted' | 'paid' | 'member';
+
 export interface TrailMeterProps {
-  currentHours: number;
+  currentHours?: number;
   currentRank?: 'member' | 'senior_member' | 'team_lead' | 'manager';
   avatarUrl?: string;
   userName?: string;
   variant?: 'full' | 'compact' | 'summit';
   className?: string;
+  mode?: 'rank' | 'applicant';
+  applicantStage?: ApplicantStage;
 }
 
 interface Station {
-  id: 'member' | 'senior_member' | 'team_lead' | 'manager';
+  id: string;
   title: string;
   hours: number;
   perks: string;
 }
 
-const STATIONS: Station[] = [
+const RANK_STATIONS: Station[] = [
   { id: 'member', title: 'Member', hours: 0, perks: 'Access to community volunteer activities & digital ID pass' },
   { id: 'senior_member', title: 'Senior Member', hours: 40, perks: 'Eligible for complex projects & specialized field tasks' },
   { id: 'team_lead', title: 'Team Lead', hours: 100, perks: 'Lead squads, verify roster attendance & approve service hours' },
   { id: 'manager', title: 'Manager', hours: 250, perks: 'Full operations desk, review applications & manage territory' },
 ];
 
+const APPLICANT_STATIONS: Station[] = [
+  { id: 'applied', title: 'Applied', hours: 0, perks: 'Application form and background submitted' },
+  { id: 'reviewed', title: 'Reviewed', hours: 1, perks: 'Admissions team evaluates regional volunteer intake' },
+  { id: 'accepted', title: 'Accepted', hours: 2, perks: 'Offer letter issued; Telebirr activation unlocked' },
+  { id: 'paid', title: 'Paid', hours: 3, perks: 'ETB 200 fee verified and receipt confirmed' },
+  { id: 'member', title: 'Member', hours: 4, perks: 'Volunteer ID pass active; open activities accessible' },
+];
+
 export const TrailMeter: React.FC<TrailMeterProps> = ({
-  currentHours,
+  currentHours = 0,
   currentRank = 'member',
   avatarUrl,
   userName = 'Volunteer',
   variant = 'full',
   className = '',
+  mode = 'rank',
+  applicantStage = 'applied',
 }) => {
   const [activeTooltip, setActiveTooltip] = useState<Station | null>(null);
 
-  // Maximum scale is 250 hrs
+  const isApplicant = mode === 'applicant';
+  const stations = isApplicant ? APPLICANT_STATIONS : RANK_STATIONS;
+
+  // Applicant progress calculation
+  const applicantIndex = APPLICANT_STATIONS.findIndex((s) => s.id === applicantStage);
+  const applicantPct = applicantIndex >= 0 ? (applicantIndex / (APPLICANT_STATIONS.length - 1)) * 100 : 0;
+
+  // Maximum scale is 250 hrs for rank
   const maxHours = 250;
   const clampedHours = Math.min(Math.max(currentHours, 0), maxHours);
 
   // Station positions on a 0..100 percentage scale
   // Member: 0%, Senior Member: 30%, Team Lead: 65%, Manager: 100%
   const getStationPercent = (h: number) => {
+    if (isApplicant) {
+      return (h / (APPLICANT_STATIONS.length - 1)) * 100;
+    }
     if (h <= 0) return 0;
     if (h <= 40) return (h / 40) * 30;
     if (h <= 100) return 30 + ((h - 40) / 60) * 35;
     return 65 + ((h - 100) / 150) * 35;
   };
 
-  const progressPercent = getStationPercent(clampedHours);
+  const progressPercent = isApplicant ? applicantPct : getStationPercent(clampedHours);
 
   // Determine next milestone
   let nextStation: Station | null = null;
   let hoursNeeded = 0;
-  if (clampedHours < 40) {
-    nextStation = STATIONS[1];
-    hoursNeeded = Math.round((40 - clampedHours) * 10) / 10;
-  } else if (clampedHours < 100) {
-    nextStation = STATIONS[2];
-    hoursNeeded = Math.round((100 - clampedHours) * 10) / 10;
-  } else if (clampedHours < 250) {
-    nextStation = STATIONS[3];
-    hoursNeeded = Math.round((250 - clampedHours) * 10) / 10;
-  }
+  let calloutText = '';
 
-  const calloutText = nextStation
-    ? `${hoursNeeded} hrs to ${nextStation.title}`
-    : 'Trail summit reached';
+  if (isApplicant) {
+    const nextIdx = Math.min(applicantIndex + 1, APPLICANT_STATIONS.length - 1);
+    nextStation = APPLICANT_STATIONS[nextIdx];
+    if (applicantStage === 'applied') calloutText = 'Application in admissions review';
+    else if (applicantStage === 'reviewed') calloutText = 'Reviewed • Decision pending';
+    else if (applicantStage === 'accepted') calloutText = 'Accepted • Ready for Telebirr';
+    else if (applicantStage === 'paid') calloutText = 'Payment verified • Pass ready';
+    else calloutText = 'Member of the trail';
+  } else {
+    if (clampedHours < 40) {
+      nextStation = RANK_STATIONS[1];
+      hoursNeeded = Math.round((40 - clampedHours) * 10) / 10;
+    } else if (clampedHours < 100) {
+      nextStation = RANK_STATIONS[2];
+      hoursNeeded = Math.round((100 - clampedHours) * 10) / 10;
+    } else if (clampedHours < 250) {
+      nextStation = RANK_STATIONS[3];
+      hoursNeeded = Math.round((250 - clampedHours) * 10) / 10;
+    }
+    calloutText = nextStation
+      ? `${hoursNeeded} hrs to ${nextStation.title}`
+      : 'Trail summit reached';
+  }
 
   // Compact single-line variant (used in sidebar footer or small panels)
   if (variant === 'compact') {
@@ -76,7 +111,7 @@ export const TrailMeter: React.FC<TrailMeterProps> = ({
             {calloutText}
           </span>
           <span className="font-mono text-ink-secondary shrink-0">
-            {clampedHours}h / 250h
+            {isApplicant ? `${applicantIndex + 1} / 5` : `${clampedHours}h / 250h`}
           </span>
         </div>
 
@@ -89,17 +124,16 @@ export const TrailMeter: React.FC<TrailMeterProps> = ({
         </div>
 
         <div className="flex justify-between items-center text-[11px] font-mono text-ink-tertiary">
-          <span>0h (Member)</span>
-          <span>40h</span>
-          <span>100h</span>
-          <span>250h (Manager)</span>
+          {stations.map((s) => (
+            <span key={s.id}>{s.title}</span>
+          ))}
         </div>
       </div>
     );
   }
 
   // Summit celebration variant
-  if (variant === 'summit' || currentRank === 'manager' || clampedHours >= 250) {
+  if (!isApplicant && (variant === 'summit' || currentRank === 'manager' || clampedHours >= 250)) {
     return (
       <div className={`p-6 rounded-[16px] bg-[#F7F8FA] flex flex-col sm:flex-row items-center gap-6 ${className}`}>
         <div className="w-16 h-16 rounded-full bg-emerald-100 text-role-volunteer flex items-center justify-center shrink-0 shadow-sm">
@@ -139,11 +173,11 @@ export const TrailMeter: React.FC<TrailMeterProps> = ({
           style={{ width: `${progressPercent}%` }}
         />
 
-        {/* 4 Rank Stations */}
-        {STATIONS.map((station) => {
-          const stPct = getStationPercent(station.hours);
-          const isReached = clampedHours >= station.hours;
-          const isNext = nextStation?.id === station.id;
+        {/* Stations */}
+        {stations.map((station, idx) => {
+          const stPct = isApplicant ? (idx / (stations.length - 1)) * 100 : getStationPercent(station.hours);
+          const isReached = isApplicant ? idx <= applicantIndex : clampedHours >= station.hours;
+          const isNext = isApplicant ? idx === applicantIndex + 1 : nextStation?.id === station.id;
 
           return (
             <div
@@ -164,10 +198,11 @@ export const TrailMeter: React.FC<TrailMeterProps> = ({
                     : 'bg-white text-ink-tertiary border-2 border-[#CBD2DA]'
                 }`}
               >
-                {station.id === 'member' && <span className="w-2 h-2 rounded-full bg-current" />}
-                {station.id === 'senior_member' && <Star className="w-3 h-3" weight="fill" />}
-                {station.id === 'team_lead' && <ShieldCheck className="w-3.5 h-3.5" weight="fill" />}
-                {station.id === 'manager' && <Sparkle className="w-3 h-3" weight="fill" />}
+                {!isApplicant && station.id === 'member' && <span className="w-2 h-2 rounded-full bg-current" />}
+                {!isApplicant && station.id === 'senior_member' && <Star className="w-3 h-3" weight="fill" />}
+                {!isApplicant && station.id === 'team_lead' && <ShieldCheck className="w-3.5 h-3.5" weight="fill" />}
+                {!isApplicant && station.id === 'manager' && <Sparkle className="w-3.5 h-3.5" weight="fill" />}
+                {isApplicant && <span className="w-2 h-2 rounded-full bg-current" />}
               </div>
 
               {/* Station Label */}
@@ -180,14 +215,14 @@ export const TrailMeter: React.FC<TrailMeterProps> = ({
                   {station.title}
                 </span>
                 <span className="block font-mono text-[11px] text-ink-tertiary">
-                  {station.hours}h
+                  {isApplicant ? `Step ${idx + 1}` : `${station.hours}h`}
                 </span>
               </div>
             </div>
           );
         })}
 
-        {/* Volunteer Progress Pin & Callout Pill */}
+        {/* Progress Pin & Callout Pill */}
         <div
           className="absolute -translate-x-1/2 -top-10 flex flex-col items-center pointer-events-none transition-all duration-500 z-10"
           style={{ left: `${progressPercent}%` }}
@@ -215,7 +250,7 @@ export const TrailMeter: React.FC<TrailMeterProps> = ({
               {activeTooltip.title}
             </span>
             <span className="font-mono text-[12px] text-role-volunteer font-semibold">
-              {activeTooltip.hours} service hours
+              {isApplicant ? `Waypoint ${activeTooltip.hours + 1}` : `${activeTooltip.hours} service hours`}
             </span>
           </div>
           <p className="font-sans text-[12px] text-ink-secondary leading-normal">
