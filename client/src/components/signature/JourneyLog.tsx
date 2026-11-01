@@ -70,7 +70,7 @@ export const JourneyLog: React.FC<JourneyLogProps> = ({
       case 'logged':
       case 'waiting':
         return (
-          <div className="w-5 h-5 rounded-full bg-white border-2 border-slate-400 flex items-center justify-center ring-4 ring-white">
+          <div className="w-5 h-5 rounded-full bg-white border border-slate-300 flex items-center justify-center ring-4 ring-white">
             <div className="w-1.5 h-1.5 rounded-full bg-slate-500" />
           </div>
         );
@@ -163,11 +163,11 @@ export const JourneyLog: React.FC<JourneyLogProps> = ({
                     >
                       <div className="min-w-0 space-y-1">
                         <div className="flex items-center gap-2">
-                          <span className="font-mono text-[12px] text-ink-tertiary">
+                          <span className="font-mono text-[13px] text-ink-tertiary">
                             {dateFormatted}
                           </span>
                           {item.statusLabel && (
-                            <span className="font-sans text-[11px] font-semibold px-2 py-0.5 bg-[#F1F3F6] text-ink-secondary rounded-full">
+                            <span className="font-sans text-[13px] font-semibold px-2 py-0.5 bg-[#F1F3F6] text-ink-secondary rounded-full">
                               {item.statusLabel}
                             </span>
                           )}

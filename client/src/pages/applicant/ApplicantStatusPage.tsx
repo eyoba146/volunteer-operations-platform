@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
 import { Application, Payment } from '../../types';
-import { Button, StatusMark, Timeline, TimelineItem, Skeleton, SheetModal, TopoBackdrop, TrailMeter, ApplicantStage } from '../../components/ui';
+import { PageShell, Button, StatusMark, Timeline, TimelineItem, Skeleton, SheetModal, TopoBackdrop, TrailMeter, ApplicantStage, Raised, Panel } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
 import { 
   Money, 
@@ -88,36 +88,40 @@ export const ApplicantStatusPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="space-y-6 max-w-3xl mx-auto">
-        <Skeleton variant="text" className="h-10 w-1/3" />
-        <Skeleton variant="rect" className="h-48" />
-        <Skeleton variant="rect" className="h-64" />
-      </div>
+      <PageShell page="applicant/status" signature="TrailMeter, TopoBackdrop">
+        <div className="space-y-6 max-w-3xl mx-auto">
+          <Skeleton variant="text" className="h-10 w-1/3" />
+          <Skeleton variant="rect" className="h-48" />
+          <Skeleton variant="rect" className="h-64" />
+        </div>
+      </PageShell>
     );
   }
 
   if (!application) {
     return (
-      <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-8 md:p-12 text-center space-y-4 max-w-lg mx-auto">
-        <div className="w-14 h-14 mx-auto border border-[#D5DAE1] rounded-[8px] bg-canvas-subdued flex items-center justify-center text-ink-primary">
-          <UserCircle className="w-8 h-8" />
-        </div>
-        <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink-primary">
-          Start your application
-        </h2>
-        <p className="font-sans text-sm text-ink-secondary leading-relaxed">
-          Your account is active. To become an active volunteer, please complete the enrollment form detailing your skills, region, and availability.
-        </p>
-        <div className="pt-2">
-          <Button
-            variant="primary"
-            onClick={() => navigate('/applicant/apply')}
-            rightIcon={<ArrowRight className="w-4 h-4" />}
-          >
-            Start application form
-          </Button>
-        </div>
-      </div>
+      <PageShell page="applicant/status" signature="TrailMeter, TopoBackdrop">
+        <Raised className="p-8 md:p-12 text-center space-y-4 max-w-lg mx-auto">
+          <div className="w-14 h-14 mx-auto rounded-[8px] bg-canvas-subdued flex items-center justify-center text-ink-primary">
+            <UserCircle className="w-8 h-8" />
+          </div>
+          <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink-primary">
+            Start your application
+          </h2>
+          <p className="font-sans text-sm text-ink-secondary leading-relaxed">
+            Your account is active. To become an active volunteer, please complete the enrollment form detailing your skills, region, and availability.
+          </p>
+          <div className="pt-2">
+            <Button
+              variant="primary"
+              onClick={() => navigate('/applicant/apply')}
+              rightIcon={<ArrowRight className="w-4 h-4" />}
+            >
+              Start application form
+            </Button>
+          </div>
+        </Raised>
+      </PageShell>
     );
   }
 
@@ -197,6 +201,7 @@ export const ApplicantStatusPage: React.FC = () => {
   ];
 
   return (
+    <PageShell page="applicant/status" signature="TrailMeter, TopoBackdrop">
     <div className="space-y-8 max-w-4xl mx-auto">
       {/* Header */}
       <div className="border-b border-[#EDEFF2] pb-5 flex flex-wrap items-center justify-between gap-4">
@@ -375,16 +380,16 @@ export const ApplicantStatusPage: React.FC = () => {
       {/* Two-Track Layout: Timeline & Details */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Timeline Column */}
-        <div className="lg:col-span-2 border border-[#D5DAE1] bg-white rounded-[10px] p-6 md:p-8 space-y-6">
-          <h2 className="font-display text-2xl font-bold text-ink-primary border-b border-[#D5DAE1] pb-3">
+        <Raised className="lg:col-span-2 space-y-6">
+          <h2 className="font-display text-2xl font-bold text-ink-primary border-b border-[#EDEFF2] pb-3">
             Recruitment milestones
           </h2>
           <Timeline items={timelineItems} />
-        </div>
+        </Raised>
 
         {/* Application Summary Card */}
-        <div className="border border-[#D5DAE1] bg-white rounded-[10px] p-6 space-y-5 h-fit">
-          <div className="border-b border-[#D5DAE1] pb-3 flex items-center justify-between">
+        <Panel className="space-y-5 h-fit">
+          <div className="border-b border-[#EDEFF2] pb-3 flex items-center justify-between">
             <h3 className="font-display text-xl font-bold text-ink-primary">
               Submitted details
             </h3>
@@ -429,7 +434,7 @@ export const ApplicantStatusPage: React.FC = () => {
                 {application.formData?.skills.map((s) => (
                   <span
                     key={s}
-                    className="px-2 py-0.5 bg-canvas-subdued border border-[#D5DAE1] rounded-[4px] text-[13px] font-sans text-ink-primary"
+                    className="px-2.5 py-1 bg-white rounded-[6px] text-[13px] font-sans text-ink-primary shadow-none border-none"
                   >
                     {s}
                   </span>
@@ -438,7 +443,7 @@ export const ApplicantStatusPage: React.FC = () => {
             </div>
 
             {application.formData?.emergencyContact && (
-              <div className="pt-2 border-t border-[#D5DAE1]">
+              <div className="pt-2 border-t border-[#EDEFF2]">
                 <span className="text-[13px] font-bold text-ink-secondary block">
                   Emergency contact
                 </span>
@@ -448,7 +453,7 @@ export const ApplicantStatusPage: React.FC = () => {
               </div>
             )}
 
-            <div className="pt-2 border-t border-[#D5DAE1]">
+            <div className="pt-2 border-t border-[#EDEFF2]">
               <Button
                 variant="secondary"
                 size="sm"
@@ -459,7 +464,7 @@ export const ApplicantStatusPage: React.FC = () => {
               </Button>
             </div>
           </div>
-        </div>
+        </Panel>
       </div>
 
       {/* Withdraw Confirmation Modal */}
@@ -479,7 +484,7 @@ export const ApplicantStatusPage: React.FC = () => {
             Are you sure you want to withdraw?
           </div>
 
-          <div className="pt-3 flex items-center justify-end gap-2 border-t border-[#D5DAE1]">
+          <div className="pt-3 flex items-center justify-end gap-2 border-t border-[#EDEFF2]">
             <Button
               variant="secondary"
               size="sm"
@@ -499,5 +504,6 @@ export const ApplicantStatusPage: React.FC = () => {
         </div>
       </SheetModal>
     </div>
+    </PageShell>
   );
 };

@@ -341,9 +341,8 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                       return active
                         ? {
                             backgroundColor: `${roleMeta.color}14`,
-                            borderLeft: `3px solid ${roleMeta.color}`,
                           }
-                        : { borderLeft: '3px solid transparent' };
+                        : {};
                     }}
                   >
                     <span className="shrink-0">{item.icon}</span>
@@ -356,7 +355,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                     {item.badgeCount !== undefined && item.badgeCount > 0 && (
                       !effectiveCollapsed ? (
                         <span
-                          className={`font-mono text-[12px] font-bold px-2 py-0.5 rounded-full ${
+                          className={`font-mono text-[13px] font-bold px-2 py-0.5 rounded-full ${
                             item.badgeVariant === 'teamlead'
                               ? 'bg-role-teamlead text-white'
                               : item.badgeVariant === 'manager'
@@ -452,7 +451,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                 <span className="font-semibold text-ink-primary block text-[13px] truncate leading-tight">
                   {displayName}
                 </span>
-                <span className="text-[12px] text-ink-secondary block truncate">
+                <span className="text-[13px] text-ink-secondary block truncate">
                   {profile?.rank ? formatRank(profile.rank) : formatRole(user.role)}
                 </span>
               </div>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
 import { Notification } from '../../types';
-import { EmptyState, Skeleton, Button, JourneyLog, JourneyItem } from '../../components/ui';
+import { EmptyState, Skeleton, Button, JourneyLog, JourneyItem, PageShell, PageHeader } from '../../components/ui';
 import { Bell, ArrowRight } from '@phosphor-icons/react';
 import { useNavigate } from 'react-router-dom';
 
@@ -37,11 +37,13 @@ export const ApplicantNotificationsPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="space-y-4 max-w-3xl mx-auto">
-        <Skeleton variant="text" className="h-10 w-1/3" />
-        <Skeleton variant="row" />
-        <Skeleton variant="row" />
-      </div>
+      <PageShell page="applicant/notifications" signature="JourneyLog">
+        <div className="space-y-4 max-w-3xl mx-auto">
+          <Skeleton variant="text" className="h-10 w-1/3" />
+          <Skeleton variant="row" />
+          <Skeleton variant="row" />
+        </div>
+      </PageShell>
     );
   }
 
@@ -63,38 +65,35 @@ export const ApplicantNotificationsPage: React.FC = () => {
   }));
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between border-b border-[#EDEFF2] pb-5 gap-3">
-        <div>
-          <h1 className="font-display font-bold text-3xl sm:text-4xl tracking-tight text-ink-primary leading-tight">
-            Notifications
-          </h1>
-          <p className="font-sans text-sm text-ink-secondary mt-1">
-            Application review alerts, admissions notices, and payment updates.
-          </p>
-        </div>
-        {notifications.length > 0 && (
-          <Button variant="secondary" size="sm" onClick={handleMarkAllRead}>
-            Mark all as read
-          </Button>
+    <PageShell page="applicant/notifications" signature="JourneyLog">
+      <div className="max-w-3xl mx-auto space-y-6">
+        <PageHeader
+          title="Notifications"
+          description="Application review alerts, admissions notices, and payment updates."
+          action={
+            notifications.length > 0 ? (
+              <Button variant="secondary" size="sm" onClick={handleMarkAllRead}>
+                Mark all as read
+              </Button>
+            ) : undefined
+          }
+        />
+
+        {notifications.length === 0 ? (
+          <EmptyState
+            icon={<Bell className="w-8 h-8" />}
+            title="No alerts right now"
+            description="When your application status changes or admissions sends you a message, you will receive updates here."
+            actionLabel="View application status"
+            onAction={() => navigate('/applicant/status')}
+          />
+        ) : (
+          <JourneyLog
+            items={journeyItems}
+            leadSummary={`${notifications.length} notices recorded along your admissions trail.`}
+          />
         )}
       </div>
-
-      {notifications.length === 0 ? (
-        <EmptyState
-          icon={<Bell className="w-8 h-8" />}
-          title="No alerts right now"
-          description="When your application status changes or admissions sends you a message, you will receive updates here."
-          actionLabel="View application status"
-          onAction={() => navigate('/applicant/status')}
-        />
-      ) : (
-        <JourneyLog
-          items={journeyItems}
-          leadSummary={`${notifications.length} notices recorded along your admissions trail.`}
-        />
-      )}
-    </div>
+    </PageShell>
   );
 };

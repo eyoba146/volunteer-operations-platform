@@ -18,7 +18,7 @@ export const Timeline: React.FC<TimelineProps> = ({ items, className = '' }) => 
   return (
     <div className={`relative pl-4 space-y-6 ${className}`}>
       {/* Vertical connecting rule */}
-      <div className="absolute left-[7px] top-2 bottom-2 w-[1.5px] bg-[#D5DAE1]" />
+      <div className="absolute left-[7px] top-2 bottom-2 w-[1.5px] bg-[#EDEFF2]" />
 
       {items.map((item, index) => {
         const isCurrent = item.status === 'current';
@@ -26,14 +26,14 @@ export const Timeline: React.FC<TimelineProps> = ({ items, className = '' }) => 
 
         return (
           <div key={item.id || index} className="relative flex items-start gap-3.5 group">
-            {/* Square Node */}
+            {/* Clean Rounded Node */}
             <div
-              className={`relative z-10 w-3.5 h-3.5 shrink-0 mt-1 rounded-[3px] border ${
+              className={`relative z-10 w-3.5 h-3.5 shrink-0 mt-1 rounded-full border-none ${
                 isCompleted
-                  ? 'border-role-volunteer bg-role-volunteer'
+                  ? 'bg-role-volunteer'
                   : isCurrent
-                  ? 'border-ink-primary bg-white ring-2 ring-ink-primary/20'
-                  : 'border-[#D5DAE1] bg-canvas-subdued'
+                  ? 'bg-role-applicant ring-4 ring-role-applicant/20'
+                  : 'bg-slate-300'
               }`}
             />
 

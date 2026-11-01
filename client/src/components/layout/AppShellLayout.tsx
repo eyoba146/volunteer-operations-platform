@@ -452,7 +452,7 @@ export const AppShellLayout: React.FC = () => {
               }`}
             >
               {item.icon}
-              <span className="text-[12px] font-sans tracking-tight">{item.label}</span>
+              <span className="text-[13px] font-sans tracking-tight">{item.label}</span>
             </button>
           );
         })}
@@ -464,7 +464,7 @@ export const AppShellLayout: React.FC = () => {
           aria-label="More navigation options"
         >
           <DotsThreeOutline className="w-5 h-5" weight="bold" />
-          <span className="text-[12px] font-sans tracking-tight">More</span>
+          <span className="text-[13px] font-sans tracking-tight">More</span>
         </button>
       </div>
 

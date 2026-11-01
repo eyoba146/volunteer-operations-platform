@@ -106,7 +106,7 @@ export const TrailMeter: React.FC<TrailMeterProps> = ({
   if (variant === 'compact') {
     return (
       <div className={`space-y-2 select-none ${className}`}>
-        <div className="flex items-center justify-between text-[12px] font-sans">
+        <div className="flex items-center justify-between text-[13px] font-sans">
           <span className="font-semibold text-ink-primary truncate">
             {calloutText}
           </span>
@@ -123,7 +123,7 @@ export const TrailMeter: React.FC<TrailMeterProps> = ({
           />
         </div>
 
-        <div className="flex justify-between items-center text-[11px] font-mono text-ink-tertiary">
+        <div className="flex justify-between items-center text-[13px] font-mono text-ink-tertiary">
           {stations.map((s) => (
             <span key={s.id}>{s.title}</span>
           ))}
@@ -136,7 +136,7 @@ export const TrailMeter: React.FC<TrailMeterProps> = ({
   if (!isApplicant && (variant === 'summit' || currentRank === 'manager' || clampedHours >= 250)) {
     return (
       <div className={`p-6 rounded-[16px] bg-[#F7F8FA] flex flex-col sm:flex-row items-center gap-6 ${className}`}>
-        <div className="w-16 h-16 rounded-full bg-emerald-100 text-role-volunteer flex items-center justify-center shrink-0 shadow-sm">
+        <div className="w-16 h-16 rounded-full bg-emerald-100 text-role-volunteer flex items-center justify-center shrink-0">
           <Trophy className="w-8 h-8" weight="fill" />
         </div>
         <div className="space-y-1 text-center sm:text-left flex-1">
@@ -165,7 +165,7 @@ export const TrailMeter: React.FC<TrailMeterProps> = ({
       {/* Route SVG Canvas */}
       <div className="relative w-full h-12 flex items-center">
         {/* Background track (dashed upcoming) */}
-        <div className="absolute left-0 right-0 h-1 border-b-2 border-dashed border-[#CBD2DA]" />
+        <div className="absolute left-0 right-0 h-1 border-b border-dashed border-[#CBD2DA]" />
 
         {/* Completed solid path */}
         <div
@@ -192,10 +192,10 @@ export const TrailMeter: React.FC<TrailMeterProps> = ({
               <div
                 className={`w-6 h-6 rounded-full flex items-center justify-center transition-all ${
                   isReached
-                    ? 'bg-role-volunteer text-white ring-4 ring-emerald-50 shadow-sm'
+                    ? 'bg-role-volunteer text-white border-none'
                     : isNext
-                    ? 'bg-white text-role-volunteer border-2 border-role-volunteer ring-4 ring-emerald-50/50'
-                    : 'bg-white text-ink-tertiary border-2 border-[#CBD2DA]'
+                    ? 'bg-emerald-100 text-role-volunteer border-none'
+                    : 'bg-[#E5E8EB] text-ink-tertiary border-none'
                 }`}
               >
                 {!isApplicant && station.id === 'member' && <span className="w-2 h-2 rounded-full bg-current" />}
@@ -214,7 +214,7 @@ export const TrailMeter: React.FC<TrailMeterProps> = ({
                 >
                   {station.title}
                 </span>
-                <span className="block font-mono text-[11px] text-ink-tertiary">
+                <span className="block font-mono text-[13px] text-ink-tertiary">
                   {isApplicant ? `Step ${idx + 1}` : `${station.hours}h`}
                 </span>
               </div>
@@ -228,7 +228,7 @@ export const TrailMeter: React.FC<TrailMeterProps> = ({
           style={{ left: `${progressPercent}%` }}
         >
           {/* Callout Pill */}
-          <div className="bg-ink-primary text-white px-2.5 py-1 rounded-[6px] text-[12px] font-sans font-semibold shadow-md whitespace-nowrap flex items-center gap-1.5">
+          <div className="bg-ink-primary text-white px-2.5 py-1 rounded-[6px] text-[13px] font-sans font-semibold shadow-[0_2px_8px_rgba(0,0,0,0.15)] whitespace-nowrap flex items-center gap-1.5">
             {avatarUrl ? (
               <img src={avatarUrl} alt="" className="w-3.5 h-3.5 rounded-full object-cover" />
             ) : (
@@ -249,11 +249,11 @@ export const TrailMeter: React.FC<TrailMeterProps> = ({
             <span className="font-display font-bold text-ink-primary text-[14px]">
               {activeTooltip.title}
             </span>
-            <span className="font-mono text-[12px] text-role-volunteer font-semibold">
+            <span className="font-mono text-[13px] text-role-volunteer font-semibold">
               {isApplicant ? `Waypoint ${activeTooltip.hours + 1}` : `${activeTooltip.hours} service hours`}
             </span>
           </div>
-          <p className="font-sans text-[12px] text-ink-secondary leading-normal">
+          <p className="font-sans text-[13px] text-ink-secondary leading-normal">
             {activeTooltip.perks}
           </p>
         </div>
