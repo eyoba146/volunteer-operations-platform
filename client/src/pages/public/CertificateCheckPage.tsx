@@ -108,14 +108,9 @@ export const CertificateCheckPage: React.FC = () => {
       {searched && !isLoading && result && (
         <div className="animate-in fade-in duration-200">
           {result.valid && result.certificate ? (
-            <div
-              className="bg-white border-2 border-ink-primary shadow-[6px_6px_0_#111111] overflow-hidden"
-              style={{
-                clipPath: 'polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 0 100%)',
-              }}
-            >
+            <div className="bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] rounded-[16px] overflow-hidden border-none">
               {/* Green Header Banner */}
-              <div className="bg-role-volunteer text-white px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b-2 border-ink-primary">
+              <div className="bg-role-volunteer text-white px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-role-volunteer">
                 <div className="flex items-center gap-2">
                   <CheckCircle className="w-6 h-6 text-white" weight="fill" />
                   <span className="font-display text-2xl font-bold tracking-tight">
@@ -142,7 +137,7 @@ export const CertificateCheckPage: React.FC = () => {
                 </div>
 
                 {/* Ledger-Style Metadata Rows */}
-                <div className="bg-canvas-subdued border border-[#D5DAE1] rounded-[8px] p-4 divide-y divide-[#D5DAE1]">
+                <div className="bg-canvas-subdued rounded-[12px] p-4 divide-y divide-[#EDEFF2] border-none">
                   <div className="py-2.5 flex items-center justify-between text-sm">
                     <span className="text-ink-secondary font-medium">Volunteer pass ID</span>
                     <span className="font-bold text-ink-primary">{result.certificate.volunteerNumber}</span>
@@ -168,7 +163,7 @@ export const CertificateCheckPage: React.FC = () => {
                 </div>
 
                 {/* Perforated Divider */}
-                <div className="relative border-t-2 border-dashed border-[#D5DAE1] pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="relative border-t border-dashed border-[#EDEFF2] pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
                   <div className="font-sans text-[13px] text-ink-secondary">
                     Verification signature: <strong className="font-sans text-ink-primary font-bold">{result.certificate.id}</strong>
                   </div>

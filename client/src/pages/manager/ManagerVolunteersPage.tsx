@@ -295,11 +295,11 @@ export const ManagerVolunteersPage: React.FC = () => {
                 </h4>
               </div>
 
-              <div className="relative pl-6 space-y-4 before:content-[''] before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-[#D5DAE1]">
+              <div className="relative pl-6 space-y-4 before:content-[''] before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-[#EDEFF2]">
                 {rankHistory.map((m, idx) => (
                   <div key={idx} className="relative space-y-1">
                     {/* Milestone Node */}
-                    <div className="absolute -left-6 top-1 w-3 h-3 rounded-full bg-role-manager border-2 border-white ring-2 ring-role-manager" />
+                    <div className="absolute -left-6 top-1 w-3 h-3 rounded-full bg-role-manager ring-2 ring-white" />
 
                     <div className="flex items-baseline justify-between gap-2">
                       <span className="font-bold text-ink-primary text-[13px] font-display">

@@ -257,12 +257,12 @@ export const AppShellLayout: React.FC = () => {
   const mobileDockItems = getMobileDockItems();
 
   return (
-    <div className="min-h-screen bg-canvas text-ink-primary font-sans flex flex-col">
-      {/* DESKTOP FIXED SIDEBAR (1024px and up) */}
+    <div className="min-h-screen bg-white text-ink-primary font-sans flex flex-col">
+      {/* DESKTOP FIXED SIDEBAR (1024px and up): Tone #F7F8FA, no right border */}
       <div
         className={`hidden lg:block fixed top-0 left-0 bottom-0 z-30 ${
           isCollapsed ? 'w-[72px]' : 'w-[264px]'
-        } transition-[width] duration-200 ease-in-out border-r border-[#D5DAE1]`}
+        } transition-[width] duration-200 ease-in-out bg-[#F7F8FA]`}
       >
         <AppSidebar
           user={user}
@@ -276,8 +276,8 @@ export const AppShellLayout: React.FC = () => {
         />
       </div>
 
-      {/* TABLET RAIL (768px to 1023px): Starts as 72px rail, expands as overlay on tap */}
-      <div className="hidden md:block lg:hidden fixed top-0 left-0 bottom-0 z-30 w-[72px] border-r border-[#D5DAE1]">
+      {/* TABLET RAIL (768px to 1023px): Starts as 72px rail in #F7F8FA, no border */}
+      <div className="hidden md:block lg:hidden fixed top-0 left-0 bottom-0 z-30 w-[72px] bg-[#F7F8FA]">
         <AppSidebar
           user={user}
           profile={profile}
@@ -297,7 +297,7 @@ export const AppShellLayout: React.FC = () => {
             className="fixed inset-0 bg-black/40 backdrop-blur-xs transition-opacity"
             onClick={() => setTabletOverlayOpen(false)}
           />
-          <div className="fixed top-0 left-0 bottom-0 z-50 w-[264px] bg-white shadow-2xl animate-in slide-in-from-left duration-200">
+          <div className="fixed top-0 left-0 bottom-0 z-50 w-[264px] bg-[#F7F8FA] shadow-[0_1px_3px_rgba(16,24,40,0.08),0_16px_36px_-4px_rgba(16,24,40,0.14)] animate-in slide-in-from-left duration-200">
             <AppSidebar
               user={user}
               profile={profile}
@@ -313,12 +313,12 @@ export const AppShellLayout: React.FC = () => {
         </div>
       )}
 
-      {/* PHONE TOP HEADER (under 768px): Hamburger, Brand & Profile */}
-      <header className="md:hidden sticky top-0 z-40 bg-white border-b border-[#D5DAE1] px-4 h-14 flex items-center justify-between select-none">
+      {/* PHONE TOP HEADER (under 768px): Brand & Profile */}
+      <header className="md:hidden sticky top-0 z-40 bg-white border-b border-[#EDEFF2] px-4 h-14 flex items-center justify-between select-none">
         <div className="flex items-center gap-3">
           <button
             onClick={() => setMobileDrawerOpen(true)}
-            className="min-h-[44px] min-w-[44px] -ml-2 flex items-center justify-center text-ink-primary hover:bg-canvas-subdued rounded-[6px] transition-colors cursor-pointer"
+            className="min-h-[44px] min-w-[44px] -ml-2 flex items-center justify-center text-ink-primary hover:bg-[#F1F3F6] rounded-[8px] transition-colors cursor-pointer"
             aria-label="Open navigation menu"
           >
             <List className="w-6 h-6" weight="bold" />
@@ -339,7 +339,7 @@ export const AppShellLayout: React.FC = () => {
           {user.role === 'admin' && (
             <button
               onClick={() => setEmailInboxOpen(true)}
-              className="p-2 min-h-[44px] min-w-[44px] flex items-center justify-center text-ink-secondary hover:text-ink-primary rounded-[6px]"
+              className="p-2 min-h-[44px] min-w-[44px] flex items-center justify-center text-ink-secondary hover:text-ink-primary rounded-[8px]"
               title="Preview emails"
             >
               <Bell className="w-5 h-5" weight="bold" />
@@ -348,7 +348,7 @@ export const AppShellLayout: React.FC = () => {
 
           <button
             onClick={() => setPhotoModalOpen(true)}
-            className="min-h-[44px] flex items-center gap-2 p-1 rounded-[6px] hover:bg-canvas-subdued cursor-pointer"
+            className="min-h-[44px] flex items-center gap-2 p-1 rounded-[8px] hover:bg-[#F1F3F6] cursor-pointer"
           >
             <span
               className="w-2 h-2 rounded-full"
@@ -369,11 +369,11 @@ export const AppShellLayout: React.FC = () => {
             onClick={() => setMobileDrawerOpen(false)}
             aria-hidden="true"
           />
-          <div className="fixed top-0 left-0 bottom-0 z-50 w-[280px] max-w-[85vw] bg-white shadow-2xl flex flex-col animate-in slide-in-from-left duration-200">
+          <div className="fixed top-0 left-0 bottom-0 z-50 w-[280px] max-w-[85vw] bg-[#F7F8FA] shadow-[0_1px_3px_rgba(16,24,40,0.08),0_16px_36px_-4px_rgba(16,24,40,0.14)] flex flex-col animate-in slide-in-from-left duration-200">
             <div className="absolute top-3 right-3 z-10">
               <button
                 onClick={() => setMobileDrawerOpen(false)}
-                className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-[6px] text-ink-tertiary hover:text-ink-primary hover:bg-canvas-subdued transition-colors cursor-pointer"
+                className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-[8px] text-ink-tertiary hover:text-ink-primary hover:bg-[#F1F3F6] transition-colors cursor-pointer"
                 aria-label="Close navigation menu"
               >
                 <X className="w-5 h-5" weight="bold" />
@@ -402,7 +402,7 @@ export const AppShellLayout: React.FC = () => {
         } md:pl-[72px]`}
       >
         {/* SLIM PAGE HEADER: Breadcrumb, Title & Quick Actions */}
-        <div className="hidden md:block sticky top-0 z-20 bg-white border-b border-[#D5DAE1] px-6 lg:px-8 py-3 select-none">
+        <div className="hidden md:block sticky top-0 z-20 bg-white border-b border-[#EDEFF2] px-6 lg:px-8 py-3 select-none">
           <div className="flex items-center justify-between gap-4">
             {/* Breadcrumb & Section indicator */}
             <div className="flex items-center gap-2 text-[13px] text-ink-secondary truncate">
@@ -420,7 +420,7 @@ export const AppShellLayout: React.FC = () => {
               {user.role === 'admin' && (
                 <button
                   onClick={() => setEmailInboxOpen(true)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[6px] border border-[#D5DAE1] bg-canvas-subdued/50 hover:bg-canvas-subdued text-[13px] font-semibold text-ink-primary transition-colors cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] bg-[#F1F3F6] hover:bg-[#E8EBEF] text-[13px] font-semibold text-ink-primary transition-colors cursor-pointer"
                   title="Preview transactional emails"
                 >
                   <Bell className="w-4 h-4 text-ink-secondary" weight="bold" />
@@ -431,23 +431,23 @@ export const AppShellLayout: React.FC = () => {
           </div>
         </div>
 
-        {/* Content Outlet */}
-        <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-28 md:pb-12 min-w-0">
+        {/* Content Outlet: pure white page canvas */}
+        <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-28 md:pb-12 min-w-0">
           <Outlet />
         </main>
       </div>
 
       {/* PHONE FLOATING BOTTOM DOCK (< 768px): 4 primary destinations + More button */}
-      <div className="md:hidden fixed bottom-3 left-3 right-3 z-40 bg-white border border-[#D5DAE1] rounded-[12px] p-1.5 flex items-center justify-around shadow-xl">
+      <div className="md:hidden fixed bottom-3 left-3 right-3 z-40 bg-white/95 backdrop-blur-md border border-[#EDEFF2] rounded-[16px] p-1.5 flex items-center justify-around shadow-[0_1px_3px_rgba(16,24,40,0.08),0_12px_32px_-4px_rgba(16,24,40,0.12)]">
         {mobileDockItems.map((item) => {
           const isActive = location.pathname === item.to || location.pathname.startsWith(item.to + '/');
           return (
             <button
               key={item.to}
               onClick={() => navigate(item.to)}
-              className={`flex-1 min-h-[44px] flex flex-col items-center justify-center gap-0.5 rounded-[8px] cursor-pointer transition-colors ${
+              className={`flex-1 min-h-[44px] flex flex-col items-center justify-center gap-0.5 rounded-[10px] cursor-pointer transition-colors ${
                 isActive
-                  ? 'text-ink-primary font-bold bg-canvas-subdued'
+                  ? 'text-ink-primary font-bold bg-[#F1F3F6]'
                   : 'text-ink-secondary hover:text-ink-primary'
               }`}
             >
@@ -460,7 +460,7 @@ export const AppShellLayout: React.FC = () => {
         {/* More button */}
         <button
           onClick={() => setMobileDrawerOpen(true)}
-          className="flex-1 min-h-[44px] flex flex-col items-center justify-center gap-0.5 rounded-[8px] text-ink-secondary hover:text-ink-primary cursor-pointer transition-colors"
+          className="flex-1 min-h-[44px] flex flex-col items-center justify-center gap-0.5 rounded-[10px] text-ink-secondary hover:text-ink-primary cursor-pointer transition-colors"
           aria-label="More navigation options"
         >
           <DotsThreeOutline className="w-5 h-5" weight="bold" />

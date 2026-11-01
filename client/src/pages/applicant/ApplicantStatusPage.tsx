@@ -216,7 +216,7 @@ export const ApplicantStatusPage: React.FC = () => {
 
       {/* Urgent Payment Callout if Accepted */}
       {isAccepted && !isPaid && (
-        <div className="border-2 border-role-applicant bg-role-applicantLight rounded-[10px] p-6 md:p-8 space-y-4">
+        <div className="bg-role-applicantLight rounded-[16px] p-6 md:p-8 space-y-4">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div className="space-y-2">
               <div className="flex items-center gap-2">

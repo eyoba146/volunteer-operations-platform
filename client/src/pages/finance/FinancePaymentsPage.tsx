@@ -178,10 +178,10 @@ export const FinancePaymentsPage: React.FC = () => {
                 Settlement lifecycle timeline
               </span>
 
-              <div className="relative pl-6 space-y-5 before:content-[''] before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-[#D5DAE1]">
+              <div className="relative pl-6 space-y-5 before:content-[''] before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-[#EDEFF2]">
                 {/* Step 1: Session Dispatched */}
                 <div className="relative space-y-0.5">
-                  <div className="absolute -left-6 top-1 w-3 h-3 rounded-full bg-ink-primary border-2 border-white ring-2 ring-ink-primary" />
+                  <div className="absolute -left-6 top-1 w-3 h-3 rounded-full bg-ink-primary ring-2 ring-white" />
                   <div className="flex items-baseline justify-between">
                     <span className="font-semibold text-[13px] text-ink-primary">1. Payment session initiated</span>
                     <span className="font-mono text-[13px] text-ink-tertiary">{new Date(inspecting.createdAt).toLocaleTimeString()}</span>
@@ -193,7 +193,7 @@ export const FinancePaymentsPage: React.FC = () => {
 
                 {/* Step 2: Telebirr Gateway Request */}
                 <div className="relative space-y-0.5">
-                  <div className="absolute -left-6 top-1 w-3 h-3 rounded-full bg-ink-primary border-2 border-white ring-2 ring-ink-primary" />
+                  <div className="absolute -left-6 top-1 w-3 h-3 rounded-full bg-ink-primary ring-2 ring-white" />
                   <div className="flex items-baseline justify-between">
                     <span className="font-semibold text-[13px] text-ink-primary">2. Phone prompt dispatched</span>
                     <span className="font-mono text-[13px] text-ink-tertiary">Merchant #884120</span>
@@ -205,8 +205,8 @@ export const FinancePaymentsPage: React.FC = () => {
 
                 {/* Step 3: Transaction Outcome */}
                 <div className="relative space-y-0.5">
-                  <div className={`absolute -left-6 top-1 w-3 h-3 rounded-full border-2 border-white ring-2 ${
-                    inspecting.status === 'confirmed' ? 'bg-role-volunteer ring-role-volunteer' : inspecting.status === 'needs_review' ? 'bg-role-applicant ring-role-applicant' : 'bg-red-500 ring-red-500'
+                  <div className={`absolute -left-6 top-1 w-3 h-3 rounded-full ring-2 ring-white ${
+                    inspecting.status === 'confirmed' ? 'bg-role-volunteer' : inspecting.status === 'needs_review' ? 'bg-role-applicant' : 'bg-red-500'
                   }`} />
                   <div className="flex items-baseline justify-between">
                     <span className="font-semibold text-[13px] text-ink-primary">
@@ -223,8 +223,8 @@ export const FinancePaymentsPage: React.FC = () => {
 
                 {/* Step 4: Final Settlement / Receipt */}
                 <div className="relative space-y-0.5">
-                  <div className={`absolute -left-6 top-1 w-3 h-3 rounded-full border-2 border-white ring-2 ${
-                    inspecting.receiptNumber ? 'bg-role-volunteer ring-role-volunteer' : inspecting.refundedAt ? 'bg-red-500 ring-red-500' : 'bg-gray-400 ring-gray-400'
+                  <div className={`absolute -left-6 top-1 w-3 h-3 rounded-full ring-2 ring-white ${
+                    inspecting.receiptNumber ? 'bg-role-volunteer' : inspecting.refundedAt ? 'bg-red-500' : 'bg-[#CBD2DA]'
                   }`} />
                   <div className="flex items-baseline justify-between">
                     <span className="font-semibold text-[13px] text-ink-primary">

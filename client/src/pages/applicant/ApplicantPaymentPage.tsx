@@ -202,9 +202,9 @@ export const ApplicantPaymentPage: React.FC = () => {
             />
           </div>
 
-          {/* Right: Payment Receipt Pass (Physical metaphor allowed hard shadow) */}
-          <div className="border-2 border-ink-primary bg-white p-6 md:p-8 space-y-5 shadow-[4px_4px_0_#111111] text-left">
-            <div className="flex items-center justify-between border-b-2 border-ink-primary pb-3">
+          {/* Right: Payment Receipt Pass */}
+          <div className="bg-white p-6 md:p-8 space-y-5 shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] rounded-[16px] text-left">
+            <div className="flex items-center justify-between border-b border-[#EDEFF2] pb-3">
               <div>
                 <span className="font-display text-2xl font-bold text-ink-primary block leading-none">
                   Payment receipt
@@ -216,24 +216,24 @@ export const ApplicantPaymentPage: React.FC = () => {
               <Receipt className="w-8 h-8 text-ink-primary" />
             </div>
 
-            <div className="space-y-3 font-sans text-sm border-b border-[#D5DAE1] pb-4">
-              <div className="flex justify-between py-1 border-b border-dashed border-[#D5DAE1]">
+            <div className="space-y-3 font-sans text-sm border-b border-[#EDEFF2] pb-4">
+              <div className="flex justify-between py-1 border-b border-dashed border-[#EDEFF2]">
                 <span className="text-ink-secondary">Receipt number:</span>
                 <span className="font-bold text-ink-primary">{payment?.receiptNumber || 'REC-2026-98124'}</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-dashed border-[#D5DAE1]">
+              <div className="flex justify-between py-1 border-b border-dashed border-[#EDEFF2]">
                 <span className="text-ink-secondary">Telebirr reference:</span>
                 <span className="text-ink-primary font-bold">{payment?.telebirrReference || 'TB-2026-918204'}</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-dashed border-[#D5DAE1]">
+              <div className="flex justify-between py-1 border-b border-dashed border-[#EDEFF2]">
                 <span className="text-ink-secondary">Payer name:</span>
                 <span className="text-ink-primary font-medium">{payment?.payerName || activeProfile.fullName}</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-dashed border-[#D5DAE1]">
+              <div className="flex justify-between py-1 border-b border-dashed border-[#EDEFF2]">
                 <span className="text-ink-secondary">Payer mobile:</span>
                 <span className="text-ink-primary font-medium">{payment?.payerPhone || phone}</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-dashed border-[#D5DAE1]">
+              <div className="flex justify-between py-1 border-b border-dashed border-[#EDEFF2]">
                 <span className="text-ink-secondary">Amount paid:</span>
                 <span className="font-bold text-ink-primary">ETB 200.00</span>
               </div>

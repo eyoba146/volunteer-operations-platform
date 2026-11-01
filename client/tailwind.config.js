@@ -8,38 +8,42 @@ export default {
     extend: {
       colors: {
         canvas: {
-          DEFAULT: '#F4F5F7', // Cool off-white
-          subdued: '#E8EBEF', // Clean light gray
-          raised:  '#FFFFFF', // Pure crisp white
-          inset:   '#DEE2E6', // Tactile cool inset
-          dark:    '#111315', // Pure carbon
+          DEFAULT: '#FFFFFF', // Pure crisp white page canvas
+          subdued: '#F1F3F6', // Tonal panel & button fill
+          panel:   '#F7F8FA', // Panel tier background (#F7F8FA)
+          sidebar: '#F7F8FA', // Sidebar tone (#F7F8FA)
+          raised:  '#FFFFFF', // Raised tier card surface
+          inset:   '#F1F3F6',
+          dark:    '#111315',
         },
         ink: {
-          primary:   '#111111', // High-contrast deep carbon
+          primary:   '#111111', // Deep carbon text
           secondary: '#374151', // Clean neutral slate (meets 4.5:1 on light backgrounds)
-          tertiary:  '#4B5563', // Muted metadata (WCAG AA compliant >= 4.5:1 on white)
+          tertiary:  '#64748B', // Muted slate-500
           inverted:  '#FFFFFF',
         },
         border: {
-          DEFAULT: '#D5DAE1', // Soft slate border for standard cards and panels
-          subdued: '#E2E8F0', // Soft secondary separator
-          strong:  '#111111', // Near-black for signatures and primary outlines
-          input:   '#475569', // 1.5px dark slate input border
+          DEFAULT: '#EDEFF2', // Hairline divider only
+          subdued: '#EDEFF2', // Hairline list row separator
+          divider: '#EDEFF2', // Hairline divider
+          input:   '#CBD2DA', // 1px input/select border
+          strong:  'transparent', // No dark outlines
         },
-        // Role Dominant Fields
+        // Role Dominant Fields & Tonal Tints (4% - 6%)
         role: {
-          applicant:       '#E58B05', // Saffron
-          applicantLight:  '#FEF5E7',
-          volunteer:       '#1E824C', // Grass Green
-          volunteerLight:  '#EAF5EE',
-          teamlead:        '#D63927', // Tomato Red
-          teamleadLight:   '#FDECE9',
-          manager:         '#0E6266', // Deep Teal
-          managerLight:    '#E5F2F2',
-          finance:         '#111315', // Deep Ink
-          financeAccent:   '#784E0B', // High-contrast amber/gold for light surfaces
-          admin:           '#202328', // Charcoal
-          adminLight:      '#E9EBEF',
+          applicant:       '#E58B05',
+          applicantLight:  '#FEF7ED', // 5% tint
+          volunteer:       '#1E824C',
+          volunteerLight:  '#F0FDF4', // 5% tint
+          teamlead:        '#D63927',
+          teamleadLight:   '#FEF2F2', // 5% tint
+          manager:         '#0E6266',
+          managerLight:    '#F0FDFA', // 5% tint
+          finance:         '#111315',
+          financeLight:    '#F8FAFC',
+          financeAccent:   '#784E0B',
+          admin:           '#202328',
+          adminLight:      '#F8FAFC',
         },
         // Telebirr brand accent
         telebirr: {
@@ -50,28 +54,32 @@ export default {
       fontFamily: {
         display: ['"Bricolage Grotesque"', 'sans-serif'],
         sans: ['"Hanken Grotesk"', 'sans-serif'],
-        mono: ['"Hanken Grotesk"', 'sans-serif'], // Replace monospace with clean sans
+        mono: ['"Hanken Grotesk"', 'sans-serif'],
       },
       borderRadius: {
         none: '0px',
-        sm: '4px',
-        DEFAULT: '8px',
-        md: '8px',
-        lg: '10px',
-        card: '10px',
+        sm: '6px',
+        DEFAULT: '16px',
+        md: '12px',
+        lg: '16px',
+        panel: '16px',
+        card: '16px',
+        raised: '16px',
         input: '8px',
         button: '8px',
-        'ticket': '4px',
-        'ticket-lg': '6px',
+        ticket: '16px',
+        'ticket-lg': '16px',
       },
       boxShadow: {
-        'none': '0 0 0 transparent',
-        'sm': '1px 1px 0 #111111',
-        'ticket': '4px 4px 0 #111111',
-        'pass': '4px 4px 0 #111111',
-        'receipt': '4px 4px 0 #111111',
-        'id-card': '4px 4px 0 #111111',
-        'modal': '8px 8px 0 #111111',
+        none: '0 0 0 transparent',
+        soft: '0 1px 2px rgba(16,24,40,0.05), 0 8px 24px -12px rgba(16,24,40,0.10)',
+        raised: '0 1px 2px rgba(16,24,40,0.05), 0 8px 24px -12px rgba(16,24,40,0.10)',
+        ticket: '0 1px 2px rgba(16,24,40,0.05), 0 8px 24px -12px rgba(16,24,40,0.10)',
+        pass: '0 1px 2px rgba(16,24,40,0.05), 0 8px 24px -12px rgba(16,24,40,0.10)',
+        receipt: '0 1px 2px rgba(16,24,40,0.05), 0 8px 24px -12px rgba(16,24,40,0.10)',
+        'id-card': '0 1px 2px rgba(16,24,40,0.05), 0 8px 24px -12px rgba(16,24,40,0.10)',
+        modal: '0 1px 3px rgba(16,24,40,0.08), 0 16px 36px -4px rgba(16,24,40,0.14)',
+        floating: '0 1px 3px rgba(16,24,40,0.08), 0 16px 36px -4px rgba(16,24,40,0.14)',
       },
     },
   },

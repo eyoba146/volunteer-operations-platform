@@ -1,90 +1,55 @@
-# VTS Permanent Build Rules: "The Trail" (Phase 5 Polish)
+# VTS Permanent Build Rules: "The Trail" (Surface Reset & Signature Edition)
 **Permanent Architectural & Aesthetic Constraints for Volunteer Tracking System**
 
-All engineering and design work must strictly comply with these rules.
+All engineering and design work must strictly comply with these rules. The surface and signature rules below take absolute precedence over any older guidelines.
 
 ---
 
-## 1. Absolute Banned Patterns (Never Use These)
+## 1. Absolute Surface & Structure Rules (Part 0 Reset)
 
-1. **No Cream, Parchment or Beige Backgrounds**: The neutral ground is a clean, cool off-white (`#F4F5F7`), never antiqued beige or yellowed paper.
-2. **No Serif Headlines**: Headlines must NEVER use serifs (no Fraunces, Georgia, Times). Headlines use **Bricolage Grotesque** at bold weights (700/800).
-3. **No Monospace or Techy Fonts**: REMOVED every monospace and condensed tech font. Tabular data, codes, and labels use clean, confident grotesque type (**Hanken Grotesk**).
-4. **No Uppercase Headlines, Card Titles, Buttons, or Eyebrow Badges**: Sentence-case everywhere. Never place tiny uppercase monospace badges above headings.
-5. **No Four Identical Boxes in a Row**: Never show four identical boxes or cards in a row. Use interactive timelines, rich lead detail cards, lead numerals with inline lists, and varied-width scrolling strips.
-6. **No Multiple Black Buttons Per Section**: Maximum ONE black-filled button per visible section. All secondary buttons are outlined or text links with an arrow (`→`).
-7. **No Large Black Fields or Dark Top Bars**: Top navigation is light white with a 1 px border. Role indicators appear as small color markers next to avatars and active tab underlines.
-8. **No Hard Offset Shadows Except on Ticket Passes**: Hard offset shadows (`4px 4px 0 #111111`) are strictly limited to signature ticket passes (volunteer ID pass, certificate, receipt, activity tickets). Standard cards and panels use soft slate borders and no hard shadow.
-9. **No Soft Blurred Shadows, Glowing Blobs, or Glassmorphism**: Backgrounds are solid, flat colour blocks and bands.
-10. **No Emojis Anywhere**: Zero emojis in UI text, seed data, notification banners, toasts, empty states, or source code.
-11. **No Made-Up Benefits or Perks**: Never invent benefits not in `docs/REQUIREMENTS.md` (e.g. Duty Insurance Coverage). Use only real verified criteria.
-12. **No Mountain / Extreme Elevation Jargon**: Avoid "Altitude Stations", "Elevation 60m", "Basecamp", "Summit". Use clear plain terms: "Starting rank", "Ranks and verified milestones", "Manager".
-13. **No Lucide, Feather, or Heroicons**: Use **Phosphor Icons** (`@phosphor-icons/react`) exclusively in bold weight.
-14. **No Developer or Vendor Jargon in Interface**:
-    - NEVER use: *API, token, encrypted, secured, migration, webhook, null, undefined, 401, 500, OTP, Brevo, institutional, system of record, governance bureau, Directorate*.
-    - The client is a private volunteer company, not a government agency.
-    - Vendor names are internal only; email simulation is labeled **"Preview Emails"** and lives only inside Super Admin demo tools and on the sign-in demo panel.
-
----
-
-## 2. Typography Rules
-
-- **Headlines**: **Bricolage Grotesque** (`@fontsource/bricolage-grotesque`), Bold/ExtraBold (700/800). Tight tracking, sentence case. Card titles 20 to 24 px.
-- **Numerals**: Rendered large and punchy in **Bricolage Grotesque** (`font-display font-black`).
-- **Body Text**: **Hanken Grotesk** (`@fontsource/hanken-grotesk`), weights 400, 500, 600, 700. Body text 16 px (`text-base`) with generous line height (`leading-relaxed` / 1.6). Secondary text 14 px (`text-sm`). Nothing below 13 px (`text-[13px]`).
-- **Contrast**: Strict WCAG AA compliance (minimum 4.5:1 for normal text, 3:1 for large text). Zero text-contrast failures in any state.
-- **Labels**: Sentence-case only, bold sans-serif (`text-sm font-bold text-ink-primary`).
+1. **Pure White Page Canvas**: The main page canvas is pure white (`#FFFFFF`). No grey page backgrounds anywhere.
+2. **Sidebar Tone Separation**: The sidebar uses a very light tint (`#F7F8FA`) with no right border, so sidebar and content separate cleanly by tone rather than lines.
+3. **Three Surface Tiers Only**:
+   - **Panel Tier**: `#F7F8FA` fill, no border, 16 px radius (`rounded-[16px]`), for grouped content.
+   - **Raised Tier**: White with a very soft shadow (`0 1px 2px rgba(16,24,40,0.05), 0 8px 24px -12px rgba(16,24,40,0.10)`), no border, 16 px radius (`rounded-[16px]`). Used ONLY for the page's main hero card, tickets/passes, and floating elements (menus, dialogs, drawers, sticky bars).
+   - **Plain Tier**: No container. Heading and content sit directly on the white canvas, with 40 to 56 px of vertical space between sections.
+4. **No Boxes Inside Boxes**: Never put a bordered or filled box inside another box. Inside a card or panel, separate parts using generous whitespace or a hairline divider (`#EDEFF2`).
+5. **Borders None by Default**:
+   - Strictly forbidden: Any dark, black, or slate-800/900 border, any `border-2`, any bottom-only or right-only border, and any zero-blur offset shadow (`shadow-[4px_4px_0_#111111]`).
+   - Allowed exceptions only:
+     - Text inputs and selects: 1 px border in `#CBD2DA` with a 2 px focus ring in the role brand colour.
+     - Ticket perforations: 1 px dashed hairline in `#EDEFF2`.
+     - List row dividers: 1 px hairline in `#EDEFF2`.
+6. **Button Hierarchy**:
+   - At most **one filled primary button** per visible section (`bg-ink-primary text-white border-none rounded-[8px]`).
+   - Secondary buttons: Tonal fill (`#F1F3F6`, no border, dark text `text-ink-primary`, hover `#E8EBEF`).
+   - Tertiary buttons: Clean text links with an arrow (`→`).
+   - Row-level actions (Check in, View details, Join): Tonal buttons or text links, never black and never outlined.
+   - Every button-like element triggers a Material-style circular ripple expanding from the click coordinates (or center for keyboard). 0 press/push translations or scale effects.
+7. **Hero Cards**: Main hero cards receive a subtle 4% to 6% tint of the role colour with a `TopoBackdrop` contour pattern, never plain grey.
+8. **Tabs & Segmented Controls**: Clean underline tabs (2 px indicator line in the role colour, no grey container).
+9. **Table Headers**: Plain 14 px medium sentence-case slate-500 text with a hairline divider (`#EDEFF2`) below; zero grey bands.
+10. **Stat Figures**: Large bold numerals on white canvas or panels; zero stat boxes.
 
 ---
 
-## 3. Borders, Depth & Structure
+## 2. Five Shared Signature Components
 
-- **Regular Cards and Panels**: Pure white background (`#FFFFFF`), 1 px border in soft slate (`#D5DAE1`), radius 10 px (`rounded-[10px]`), no hard shadow.
-- **Inputs & Secondary Controls**: 1.5 px dark slate border (`border-[#475569]`), radius 8 px (`rounded-[8px]`), no hard shadow.
-- **Primary Buttons**: Exactly one black-filled button per visible section (`bg-ink-primary text-white border border-ink-primary rounded-[8px]`).
-- **Secondary Buttons & Links**: Outlined with 1.5 px border or clean text links with an arrow (`→`).
-- **Ripple Effect & No Press Effects**: Every new button-like element must ripple on interaction (expanding wave from click point or center on keyboard, white at 30% for filled buttons, text color at 15% for outlined/text/icon buttons, 550ms fade). All press or push effects (`active:translate`, `active:scale`, `active:shadow-none`) are permanently banned and removed across the entire application. Respects `prefers-reduced-motion`.
-- **Top Navigation Bar**: Clean light white background (`bg-white border-b border-[#D5DAE1]`). Role color indicator appears as a small circle next to user avatar and the active tab underline.
-- **Signature Ticket Passes**: Kept exclusively for tickets, volunteer ID passes, certificates, and receipts: notched corners (`clipPath`), stub dividers, and hard offset shadows (`shadow-[4px_4px_0_#111111]`).
+1. **TopoBackdrop**: Subtle static SVG contour pattern generated from noise at 6% to 9% opacity in the role accent colour. Never a gradient.
+2. **TrailMeter**: Replaces every rank progress bar. Continuous SVG route with the 4 ranks as waypoints (Member, Senior Member, Team Lead, Manager). Solid line for completed segments, dashed for upcoming. Real avatar marker with distance callout ("43.5 hours to Senior Member"). Variants: full (hero & rank page), compact (sidebar footer for Volunteer & Team Lead), summit (Manager).
+3. **TicketCard**: Used for every activity everywhere. Notched ticket silhouette with side cutouts, dashed perforation, Raised tier soft shadow, no border. Left stub: big day number, small month, time. Body: title, place, spots-left meter. Status: dot plus plain words. Next activity is a larger featured ticket.
+4. **JourneyLog**: Replaces the Logged hours table and any date-based ledger. Vertical spine with status dots (filled=approved, hollow=waiting, amber=needs attention, crossed=declined). Month markers, large hour/amount numerals on the right, expandable detail drawer.
+5. **MomentOverlay**: Celebratory moments under 2.5 seconds, skippable, reduced-motion safe, never confetti. Payment success, hours approved, promotion approved.
 
 ---
 
-## 4. Role Colour Fields
+## 3. Typography & Copy Standards
 
-Every user role has its identifiable accent marker and palette:
-
-| Role | Accent Colour | Hex Code | High-Contrast Pairing |
-| :--- | :--- | :--- | :--- |
-| **Applicant** | **Saffron** | `#E58B05` | Near-Black (`#111111`) & White |
-| **Volunteer** | **Grass Green** | `#1E824C` | White & Slate (`#111111`) |
-| **Team Lead** | **Tomato Red** | `#D63927` | White & Black |
-| **Manager** | **Deep Teal** | `#0E6266` | White & Pale Seafoam |
-| **Finance** | **Deep Ink** | `#111315` | Amber / Electric Lime (`#784E0B`) |
-| **Super Admin** | **Charcoal** | `#202328` | Amber Alert (`#D97706`) |
-
-Canvas: Cool off-white (`#F4F5F7`). Cards: Pure crisp white (`#FFFFFF`). Primary ink: High-contrast near-black (`#111111`).
-
----
-
-## 5. Plain Language Dictionary
-
-| Instead of Developer / Institutional / Banned Jargon | Always Say |
-| :--- | :--- |
-| *Civic Service Register of Ethiopia* | **Volunteer Tracking System (VTS)** |
-| *Program Operations Directorate / Directorate* | **Operations Desk** |
-| *System Administration* | **Admin home** |
-| *Go to Workspace* | **Open my space** |
-| *Official Volunteer ID Pass* | **Volunteer ID pass** |
-| *System audit trails / Audit log* | **Activity history** |
-| *Dynamic rank qualification rules* | **Rank rules** |
-| *Qualification requirements* | **Rank criteria / Training requirements** |
-| *Regional hubs* | **Community areas** |
-| *Altitude Stations / Elevation 60m / Basecamp / Summit* | **Starting rank / Stages of advancement / Manager** |
-| *Duty Insurance Coverage* | **[Omitted - not in requirements]** |
-| *Authenticate / Authorization* | **Sign in** |
-| *Initiate payment transaction* | **Pay with Telebirr** |
-| *Brevo Simulator* | **Preview Emails (admin & sign-in demo panel only)** |
-| *OTP* | **6-digit code** |
-| *Reset token* | **Recovery code** |
-| *404 / 500 / Null error* | **We could not find that page / Something went wrong** |
-| *Threshold requirements met* | **Ready for promotion** |
+1. **Headlines**: **Bricolage Grotesque** (`@fontsource/bricolage-grotesque`), Bold (700). Sentence case always.
+2. **Body & Controls**: **Hanken Grotesk** (`@fontsource/hanken-grotesk`), 16 px (`text-base`) for body, 14 px (`text-sm`) for secondary, minimum 13 px.
+3. **No Eyebrow Labels**: Remove all small uppercase or monospace badges above titles. Page headers consist strictly of: title, at most one short plain sentence, and one primary action.
+4. **No Vendor or Internal Jargon**: Never use *API, token, encrypted, Brevo, institutional, system of record, governance bureau, Directorate*.
+5. **Strict WCAG AA Contrast**: Zero contrast failures in any state.
+6. **No Emojis Anywhere**: Use **Phosphor Icons** (`@phosphor-icons/react`) exclusively in bold weight.
+7. **Status Terms**: Waiting for approval, Approved, Needs a quick look, Declined.
+8. **Rank Names**: Always capitalized: `Member`, `Senior Member`, `Team Lead`, `Manager`.

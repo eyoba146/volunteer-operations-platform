@@ -249,12 +249,12 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
 
   return (
     <aside
-      className={`h-full bg-white flex flex-col justify-between select-none ${
+      className={`h-full bg-[#F7F8FA] flex flex-col justify-between select-none ${
         effectiveCollapsed ? 'w-[72px]' : 'w-[264px]'
       } transition-[width] duration-200 ease-in-out`}
     >
       {/* Top Header Section */}
-      <div className="shrink-0 p-4 border-b border-[#D5DAE1]">
+      <div className="shrink-0 p-4 border-b border-[#EDEFF2]">
         <div className="flex items-center justify-between">
           <button
             onClick={() => {
@@ -266,17 +266,12 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
             <span className="font-display font-black text-2xl tracking-tight text-ink-primary group-hover:opacity-80 transition-opacity">
               VTS
             </span>
-            {!effectiveCollapsed && (
-              <span className="text-[13px] font-mono text-ink-tertiary">
-                v2.0
-              </span>
-            )}
           </button>
 
           {!isMobileDrawer && (
             <button
               onClick={onToggleCollapse}
-              className="p-1.5 rounded-[6px] text-ink-tertiary hover:text-ink-primary hover:bg-canvas-subdued transition-colors cursor-pointer"
+              className="p-1.5 rounded-[8px] text-ink-tertiary hover:text-ink-primary hover:bg-[#F1F3F6] transition-colors cursor-pointer"
               title={effectiveCollapsed ? 'Expand sidebar' : 'Collapse sidebar to rail'}
               aria-label={effectiveCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
             >
@@ -287,7 +282,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
 
         {/* Role Marker Block */}
         {!effectiveCollapsed ? (
-          <div className="mt-3 flex items-center gap-2 px-2.5 py-1.5 rounded-[6px] bg-canvas-subdued/60 border border-[#D5DAE1] text-[13px]">
+          <div className="mt-3 flex items-center gap-2 px-3 py-2 rounded-[10px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.04)] text-[13px]">
             <span
               className="w-2.5 h-2.5 rounded-full shrink-0"
               style={{ backgroundColor: roleMeta.color }}
@@ -395,7 +390,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
       </nav>
 
       {/* Sidebar Footer Section */}
-      <div className="shrink-0 p-3 border-t border-[#D5DAE1] space-y-2 bg-canvas-subdued/30">
+      <div className="shrink-0 p-3 border-t border-[#EDEFF2] space-y-2 bg-[#F7F8FA]">
         {/* Admin Preview Emails shortcut */}
         {user.role === 'admin' && onOpenEmailInbox && (
           <button
@@ -403,7 +398,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
               onOpenEmailInbox();
               onCloseMobileDrawer?.();
             }}
-            className={`w-full flex items-center min-h-[44px] rounded-[6px] border border-[#D5DAE1] bg-white text-ink-primary text-[13px] font-semibold hover:bg-canvas-subdued transition-colors cursor-pointer ${
+            className={`w-full flex items-center min-h-[44px] rounded-[10px] bg-white text-ink-primary text-[13px] font-semibold hover:bg-[#F1F3F6] shadow-[0_1px_2px_rgba(16,24,40,0.04)] transition-colors cursor-pointer ${
               effectiveCollapsed ? 'justify-center p-2' : 'gap-2.5 px-3 py-2'
             }`}
             title="Preview transactional emails"
@@ -415,7 +410,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
 
         {/* User Profile Block */}
         <div
-          className={`flex items-center rounded-[6px] border border-[#D5DAE1] bg-white p-2 ${
+          className={`flex items-center rounded-[12px] bg-white p-2 shadow-[0_1px_2px_rgba(16,24,40,0.04)] ${
             effectiveCollapsed ? 'justify-center' : 'justify-between'
           }`}
         >
@@ -435,7 +430,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                 size="sm"
               />
               <span
-                className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-white"
+                className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full ring-2 ring-white"
                 style={{ backgroundColor: roleMeta.color }}
               />
             </div>
@@ -458,7 +453,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                 onSignOut();
                 onCloseMobileDrawer?.();
               }}
-              className="p-1.5 text-ink-tertiary hover:text-red-600 rounded-[4px] hover:bg-canvas-subdued transition-colors cursor-pointer shrink-0"
+              className="p-1.5 text-ink-tertiary hover:text-red-600 rounded-[6px] hover:bg-[#F1F3F6] transition-colors cursor-pointer shrink-0"
               title="Sign out"
               aria-label="Sign out"
             >
@@ -471,7 +466,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
         {effectiveCollapsed && (
           <button
             onClick={onSignOut}
-            className="w-full flex items-center justify-center min-h-[44px] rounded-[6px] text-ink-secondary hover:text-red-600 hover:bg-canvas-subdued transition-colors cursor-pointer"
+            className="w-full flex items-center justify-center min-h-[44px] rounded-[8px] text-ink-secondary hover:text-red-600 hover:bg-[#F1F3F6] transition-colors cursor-pointer"
             title="Sign out"
             aria-label="Sign out"
           >

@@ -420,9 +420,9 @@ export const FinanceReceiptsRefundsPage: React.FC = () => {
       >
         {viewingReceipt && (
           <div className="space-y-5 text-left font-sans text-sm p-2">
-            {/* Physical Ticket Pass for Printable Receipt */}
-            <div className="border border-ink-primary rounded-[10px] bg-white p-6 space-y-4 shadow-[4px_4px_0_#111111]">
-              <div className="flex items-start justify-between border-b border-[#D5DAE1] pb-3">
+            {/* Printable Receipt Card */}
+            <div className="rounded-[16px] bg-white p-6 space-y-4 shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] border-none">
+              <div className="flex items-start justify-between border-b border-[#EDEFF2] pb-3">
                 <div>
                   <h3 className="font-display text-xl font-black tracking-tight text-ink-primary">
                     VTS volunteer program

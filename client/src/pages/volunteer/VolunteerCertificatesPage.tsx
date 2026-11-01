@@ -77,14 +77,11 @@ export const VolunteerCertificatesPage: React.FC = () => {
           {certificates.map((cert) => (
             <div
               key={cert.id}
-              className="border-2 border-ink-primary bg-white p-6 shadow-[4px_4px_0_#111111] space-y-5 flex flex-col justify-between relative overflow-hidden"
-              style={{
-                clipPath: 'polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)',
-              }}
+              className="bg-white p-6 shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] rounded-[16px] space-y-5 flex flex-col justify-between relative overflow-hidden border-none"
             >
               <div className="space-y-3">
-                <div className="flex items-center justify-between border-b border-[#D5DAE1] pb-3">
-                  <span className="font-sans text-[13px] font-bold px-2 py-0.5 bg-canvas-subdued border border-[#D5DAE1] rounded-[4px] text-ink-primary">
+                <div className="flex items-center justify-between border-b border-[#EDEFF2] pb-3">
+                  <span className="font-sans text-[13px] font-bold px-2 py-0.5 bg-canvas-subdued rounded-[4px] text-ink-primary">
                     {cert.kind} certificate
                   </span>
                   <span className="font-sans text-[13px] text-ink-secondary">

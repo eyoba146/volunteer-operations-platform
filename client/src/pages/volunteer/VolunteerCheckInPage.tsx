@@ -372,11 +372,13 @@ export const VolunteerCheckInPage: React.FC = () => {
         {method === 'qr' && (
           <div className="space-y-5 text-center">
             {/* Viewfinder Reticle */}
-            <div className="relative w-64 h-64 mx-auto border-2 border-dashed border-[#D5DAE1] rounded-[10px] bg-canvas-subdued/20 flex flex-col items-center justify-center p-4 overflow-hidden">
-              <div className="absolute top-2 left-2 w-6 h-6 border-t-2 border-l-2 border-role-volunteer" />
-              <div className="absolute top-2 right-2 w-6 h-6 border-t-2 border-r-2 border-role-volunteer" />
-              <div className="absolute bottom-2 left-2 w-6 h-6 border-b-2 border-l-2 border-role-volunteer" />
-              <div className="absolute bottom-2 right-2 w-6 h-6 border-b-2 border-r-2 border-role-volunteer" />
+            <div className="relative w-64 h-64 mx-auto border border-dashed border-[#CBD2DA] rounded-[16px] bg-canvas-subdued/20 flex flex-col items-center justify-center p-4 overflow-hidden">
+              <svg className="absolute inset-0 w-full h-full pointer-events-none p-3" viewBox="0 0 100 100" fill="none" stroke="currentColor">
+                <path d="M 5 20 V 5 H 20" strokeWidth="2.5" className="text-role-volunteer" strokeLinecap="round" />
+                <path d="M 80 5 H 95 V 20" strokeWidth="2.5" className="text-role-volunteer" strokeLinecap="round" />
+                <path d="M 5 80 V 95 H 20" strokeWidth="2.5" className="text-role-volunteer" strokeLinecap="round" />
+                <path d="M 80 95 H 95 V 80" strokeWidth="2.5" className="text-role-volunteer" strokeLinecap="round" />
+              </svg>
 
               {isScanning ? (
                 <div className="space-y-2">

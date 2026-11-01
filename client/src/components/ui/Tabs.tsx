@@ -10,6 +10,7 @@ interface TabsProps {
   tabs: TabItem[];
   activeTab: string;
   onChange: (tabId: string) => void;
+  accentColor?: string;
   className?: string;
 }
 
@@ -17,11 +18,12 @@ export const Tabs: React.FC<TabsProps> = ({
   tabs,
   activeTab,
   onChange,
+  accentColor = '#111111',
   className = '',
 }) => {
   return (
     <div
-      className={`flex items-center gap-1.5 p-1.5 bg-canvas-subdued border border-[#D5DAE1] rounded-[10px] overflow-x-auto no-scrollbar ${className}`}
+      className={`flex items-center gap-6 border-b border-[#EDEFF2] overflow-x-auto no-scrollbar select-none ${className}`}
       role="tablist"
     >
       {tabs.map((tab) => {
@@ -32,10 +34,10 @@ export const Tabs: React.FC<TabsProps> = ({
             role="tab"
             aria-selected={isActive}
             onClick={() => onChange(tab.id)}
-            className={`flex items-center gap-2 px-4 py-2 text-sm font-bold tracking-tight transition-all duration-150 whitespace-nowrap cursor-pointer rounded-[8px] select-none ${
+            className={`relative flex items-center gap-2 py-3 px-1 text-sm font-sans tracking-tight transition-colors whitespace-nowrap cursor-pointer ${
               isActive
-                ? 'bg-white border border-[#D5DAE1] text-ink-primary shadow-sm font-bold'
-                : 'border border-transparent text-ink-secondary hover:text-ink-primary hover:bg-white/60'
+                ? 'font-bold text-ink-primary'
+                : 'font-medium text-ink-secondary hover:text-ink-primary'
             }`}
           >
             <span>{tab.label}</span>
@@ -44,11 +46,18 @@ export const Tabs: React.FC<TabsProps> = ({
                 className={`text-[13px] px-2 py-0.5 rounded-full font-bold leading-none ${
                   isActive
                     ? 'bg-ink-primary text-white'
-                    : 'bg-canvas-subdued text-ink-secondary border border-[#D5DAE1]'
+                    : 'bg-[#F1F3F6] text-ink-secondary'
                 }`}
               >
                 {tab.count}
               </span>
+            )}
+            {/* 2px Underline indicator */}
+            {isActive && (
+              <span
+                className="absolute bottom-0 left-0 right-0 h-[2px] rounded-full"
+                style={{ backgroundColor: accentColor }}
+              />
             )}
           </button>
         );

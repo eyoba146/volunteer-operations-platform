@@ -38,13 +38,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           <input
             ref={ref}
             id={inputId}
-            className={`w-full bg-white text-ink-primary font-sans text-base border-[1.5px] border-[#475569] rounded-[8px] transition-all duration-150 py-2.5 px-3.5 placeholder:text-ink-tertiary/70 ${
+            className={`w-full bg-white text-ink-primary font-sans text-base border border-[#CBD2DA] rounded-[8px] transition-all duration-150 py-2.5 px-3.5 placeholder:text-ink-tertiary/70 ${
               effectiveLeft ? 'pl-10' : ''
             } ${effectiveRight ? 'pr-10' : ''} ${
               error
-                ? 'border-role-teamlead focus:border-role-teamlead focus:ring-1 focus:ring-role-teamlead'
-                : 'hover:border-ink-primary focus:border-ink-primary focus:ring-1 focus:ring-ink-primary'
-            } outline-none disabled:bg-canvas-subdued disabled:cursor-not-allowed ${className}`}
+                ? 'border-role-teamlead focus:border-role-teamlead focus:ring-2 focus:ring-role-teamlead/20'
+                : 'hover:border-[#94A3B8] focus:border-role-volunteer focus:ring-2 focus:ring-role-volunteer/20'
+            } outline-none disabled:bg-[#F1F3F6] disabled:cursor-not-allowed ${className}`}
             {...props}
           />
 

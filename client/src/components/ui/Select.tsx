@@ -33,11 +33,11 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           <select
             ref={ref}
             id={selectId}
-            className={`w-full bg-white text-ink-primary font-sans text-base rounded-[8px] border-[1.5px] border-[#475569] transition-all duration-150 py-2.5 pl-3.5 pr-10 appearance-none ${
+            className={`w-full bg-white text-ink-primary font-sans text-base rounded-[8px] border border-[#CBD2DA] transition-all duration-150 py-2.5 pl-3.5 pr-10 appearance-none ${
               error
-                ? 'border-role-teamlead focus:border-role-teamlead focus:ring-1 focus:ring-role-teamlead'
-                : 'hover:border-ink-primary focus:border-ink-primary focus:ring-1 focus:ring-ink-primary'
-            } outline-none disabled:bg-canvas-subdued disabled:cursor-not-allowed ${className}`}
+                ? 'border-role-teamlead focus:border-role-teamlead focus:ring-2 focus:ring-role-teamlead/20'
+                : 'hover:border-[#94A3B8] focus:border-role-volunteer focus:ring-2 focus:ring-role-volunteer/20'
+            } outline-none disabled:bg-[#F1F3F6] disabled:cursor-not-allowed ${className}`}
             {...props}
           >
             {options

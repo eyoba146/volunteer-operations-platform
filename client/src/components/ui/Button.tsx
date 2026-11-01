@@ -32,23 +32,23 @@ export const Button: React.FC<ButtonProps> = ({
 
   const variantStyles = {
     primary:
-      'bg-ink-primary text-white border border-ink-primary rounded-[8px] hover:bg-[#202328] shadow-none',
+      'bg-ink-primary text-white border-none rounded-[8px] hover:bg-[#202328] shadow-none',
     secondary:
-      'bg-white text-ink-primary border-[1.5px] border-[#374151] rounded-[8px] hover:bg-canvas-subdued shadow-none',
+      'bg-[#F1F3F6] text-ink-primary border-none rounded-[8px] hover:bg-[#E8EBEF] shadow-none',
     saffron:
-      'bg-role-applicant text-ink-primary border border-ink-primary rounded-[8px] hover:bg-[#d67e00] shadow-none',
+      'bg-role-applicant text-ink-primary border-none rounded-[8px] hover:bg-[#d67e00] shadow-none',
     grass:
-      'bg-role-volunteer text-white border border-ink-primary rounded-[8px] hover:bg-[#16693d] shadow-none',
+      'bg-role-volunteer text-white border-none rounded-[8px] hover:bg-[#16693d] shadow-none',
     tomato:
-      'bg-role-teamlead text-white border border-ink-primary rounded-[8px] hover:bg-[#b82e1e] shadow-none',
+      'bg-role-teamlead text-white border-none rounded-[8px] hover:bg-[#b82e1e] shadow-none',
     teal:
-      'bg-role-manager text-white border border-ink-primary rounded-[8px] hover:bg-[#09474a] shadow-none',
+      'bg-role-manager text-white border-none rounded-[8px] hover:bg-[#09474a] shadow-none',
     telebirr:
-      'bg-[#E58B05] text-ink-primary border border-ink-primary rounded-[8px] hover:bg-[#cf7b02] shadow-none',
+      'bg-[#E58B05] text-ink-primary border-none rounded-[8px] hover:bg-[#cf7b02] shadow-none',
     danger:
-      'bg-role-teamlead text-white border border-ink-primary rounded-[8px] hover:bg-[#b82e1e] shadow-none',
+      'bg-role-teamlead text-white border-none rounded-[8px] hover:bg-[#b82e1e] shadow-none',
     ghost:
-      'bg-transparent text-ink-secondary border border-transparent rounded-[8px] hover:bg-canvas-subdued hover:text-ink-primary shadow-none',
+      'bg-transparent text-ink-secondary border-none rounded-[8px] hover:bg-[#F1F3F6] hover:text-ink-primary shadow-none',
     link:
       'bg-transparent text-ink-primary hover:underline p-0 min-h-0 border-none shadow-none rounded-none',
   }[variant];
