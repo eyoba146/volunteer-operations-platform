@@ -54,7 +54,7 @@ export const VolunteerCertificatesPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="border-b border-[#EDEFF2] pb-5">
+      <div className="pb-5">
         <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
           Certificates and credentials
         </h1>
@@ -74,13 +74,13 @@ export const VolunteerCertificatesPage: React.FC = () => {
           {certificates.map((cert) => (
             <div
               key={cert.id}
-              className="relative overflow-hidden bg-white p-6 shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] rounded-[16px] space-y-5 flex flex-col justify-between border-none"
+              className="relative overflow-hidden bg-white p-6 shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] rounded-[16px] space-y-5 flex flex-col justify-between"
             >
               <TopoBackdrop color="#16A34A" opacity={0.06} />
 
               <div className="relative z-10 space-y-5 flex flex-col justify-between h-full">
                 <div className="space-y-3">
-                  <div className="flex items-center justify-between border-b border-[#EDEFF2] pb-3">
+                  <div className="flex items-center justify-between pb-3">
                     <span className="font-sans text-[13px] font-bold px-2 py-0.5 bg-[#F7F8FA] rounded-[4px] text-ink-primary">
                       {cert.kind} certificate
                     </span>
@@ -98,7 +98,7 @@ export const VolunteerCertificatesPage: React.FC = () => {
                   </p>
 
                   {/* Verification Code Box */}
-                  <div className="p-3 bg-[#F7F8FA] rounded-[10px] flex items-center justify-between gap-2 border-none">
+                  <div className="p-3 bg-[#F7F8FA] rounded-[10px] flex items-center justify-between gap-2">
                     <div className="space-y-0.5">
                       <span className="font-sans text-[13px] font-bold text-ink-secondary block">
                         Verification reference
@@ -109,7 +109,7 @@ export const VolunteerCertificatesPage: React.FC = () => {
                     </div>
                     <button
                       onClick={() => copyCode(cert.verificationCode)}
-                      className="p-1.5 text-ink-secondary hover:text-ink-primary rounded-[6px] bg-white shadow-xs hover:bg-[#F7F8FA] transition-colors cursor-pointer border-none"
+                      className="p-1.5 text-ink-secondary hover:text-ink-primary rounded-[6px] bg-white shadow-xs hover:bg-[#F7F8FA] transition-colors cursor-pointer"
                       title="Copy verification code"
                     >
                       {copiedCode === cert.verificationCode ? (
@@ -122,7 +122,7 @@ export const VolunteerCertificatesPage: React.FC = () => {
                 </div>
 
                 {/* Actions */}
-                <div className="pt-4 border-t-2 border-dashed border-[#EDEFF2] flex items-center justify-between text-sm">
+                <div className="pt-4 flex items-center justify-between text-sm">
                   <Link
                     to={`/check-certificate?code=${cert.verificationCode}`}
                     className="font-sans font-bold text-ink-primary hover:text-role-volunteer flex items-center gap-1.5"

@@ -113,7 +113,7 @@ export const VolunteerProfilePage: React.FC = () => {
   return (
     <div className="max-w-3xl mx-auto space-y-8">
       {/* Top Header */}
-      <div className="border-b border-[#D5DAE1] pb-5">
+      <div className="pb-5">
         <h1 className="font-display font-bold text-3xl sm:text-4xl tracking-tight text-ink-primary leading-tight mt-1">
           Volunteer profile and settings
         </h1>
@@ -123,7 +123,7 @@ export const VolunteerProfilePage: React.FC = () => {
       </div>
 
       {/* Profile Overview Card */}
-      <div className="border border-[#D5DAE1] bg-white rounded-[10px] p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6">
+      <div className="bg-white rounded-[10px] p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6">
         <div className="flex flex-col items-center gap-3 shrink-0">
           <Avatar
             name={profile.fullName}
@@ -172,8 +172,8 @@ export const VolunteerProfilePage: React.FC = () => {
 
       {/* TAB 1: PROFILE DETAILS FORM */}
       {activeTab === 'profile' && (
-        <form onSubmit={handleSaveProfile} className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 space-y-6">
-          <div className="border-b border-[#D5DAE1] pb-3">
+        <form onSubmit={handleSaveProfile} className="rounded-[10px] bg-white p-6 sm:p-8 space-y-6">
+          <div className="pb-3">
             <h3 className="font-display text-xl font-bold text-ink-primary">
               Contact and community area details
             </h3>
@@ -218,7 +218,7 @@ export const VolunteerProfilePage: React.FC = () => {
               rows={3}
               value={bio}
               onChange={(e) => setBio(e.target.value)}
-              className="w-full bg-white text-ink-primary font-sans text-base border-[1.5px] border-[#475569] rounded-[8px] p-2.5 focus:border-ink-primary outline-none"
+              className="w-full bg-white text-ink-primary font-sans text-base rounded-[8px] p-2.5 focus:border-ink-primary"
             />
           </div>
 
@@ -230,7 +230,7 @@ export const VolunteerProfilePage: React.FC = () => {
           />
 
           {/* Emergency Contact */}
-          <div className="space-y-4 pt-4 border-t border-[#D5DAE1]">
+          <div className="space-y-4 pt-4">
             <h4 className="font-display text-xl font-bold text-ink-primary flex items-center gap-2">
               <Heart className="w-5 h-5 text-role-teamlead" weight="fill" />
               <span>Emergency contact person</span>
@@ -257,7 +257,7 @@ export const VolunteerProfilePage: React.FC = () => {
             </div>
           </div>
 
-          <div className="pt-4 border-t border-[#D5DAE1] flex justify-end">
+          <div className="pt-4 flex justify-end">
             <Button
               type="submit"
               variant="primary"
@@ -273,8 +273,8 @@ export const VolunteerProfilePage: React.FC = () => {
 
       {/* TAB 2: NOTIFICATION PREFERENCES */}
       {activeTab === 'notifications' && (
-        <form onSubmit={handleSaveNotifications} className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 space-y-6">
-          <div className="border-b border-[#D5DAE1] pb-3">
+        <form onSubmit={handleSaveNotifications} className="rounded-[10px] bg-white p-6 sm:p-8 space-y-6">
+          <div className="pb-3">
             <h3 className="font-display text-xl font-bold text-ink-primary">
               Email and alert preferences
             </h3>
@@ -283,7 +283,7 @@ export const VolunteerProfilePage: React.FC = () => {
             </p>
           </div>
 
-          <div className="space-y-4 divide-y divide-[#D5DAE1]">
+          <div className="space-y-4">
             <label className="flex items-start gap-3 pt-3 first:pt-0 cursor-pointer">
               <input
                 type="checkbox"
@@ -353,7 +353,7 @@ export const VolunteerProfilePage: React.FC = () => {
             </label>
           </div>
 
-          <div className="pt-4 border-t border-[#D5DAE1] flex justify-end">
+          <div className="pt-4 flex justify-end">
             <Button
               type="submit"
               variant="primary"

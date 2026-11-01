@@ -21,7 +21,7 @@ export const Panel: React.FC<PanelProps> = ({
 
   return (
     <div
-      className={`bg-[#F7F8FA] border-none rounded-[16px] ${paddingStyles} ${className}`}
+      className={`bg-[#F7F8FA] rounded-[16px] ${paddingStyles}  ${className} `}
       {...props}
     >
       {children}

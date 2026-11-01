@@ -105,7 +105,7 @@ export const TeamLeadRatingsPage: React.FC = () => {
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
       {/* Top Header */}
-      <div className="border-b border-[#D5DAE1] pb-4">
+      <div className="pb-4">
         <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
           Rate volunteer performance
         </h1>
@@ -135,7 +135,7 @@ export const TeamLeadRatingsPage: React.FC = () => {
           description="Volunteers who enroll or check in to this activity will appear here for evaluation."
         />
       ) : (
-        <div className="border border-[#D5DAE1] rounded-[10px] bg-white shadow-sm divide-y divide-[#D5DAE1] overflow-hidden">
+        <div className="rounded-[10px] bg-white shadow-sm overflow-hidden space-y-2">
           {displayedVolunteers.map((vol) => {
             const currentRating = ratingsMap[vol.userId] || { score: 5, note: '', saved: false };
             return (
@@ -154,7 +154,7 @@ export const TeamLeadRatingsPage: React.FC = () => {
                   </div>
 
                   {/* 1-5 Star Picker */}
-                  <div className="flex items-center gap-1.5 bg-canvas-subdued/40 px-3 py-1.5 border border-[#D5DAE1] rounded-[8px] self-start sm:self-auto">
+                  <div className="flex items-center gap-1.5 bg-canvas-subdued/40 px-3 py-1.5 rounded-[8px] self-start sm:self-auto">
                     {[1, 2, 3, 4, 5].map((star) => (
                       <button
                         key={star}
@@ -168,7 +168,7 @@ export const TeamLeadRatingsPage: React.FC = () => {
                             star <= currentRating.score
                               ? 'text-role-applicant fill-role-applicant'
                               : 'text-border'
-                          }`}
+                          } `}
                           weight={star <= currentRating.score ? 'fill' : 'regular'}
                         />
                       </button>
@@ -190,7 +190,7 @@ export const TeamLeadRatingsPage: React.FC = () => {
                       value={currentRating.note}
                       onChange={(e) => handleNoteChange(vol.userId, e.target.value)}
                       placeholder="e.g. Exhibited strong field initiative; assisted arriving community members promptly."
-                      className="w-full bg-white text-ink-primary font-sans text-[13px] border-[1.5px] border-[#475569] rounded-[8px] p-2 focus:border-ink-primary focus:outline-none"
+                      className="w-full bg-white text-ink-primary font-sans text-[13px] rounded-[8px] p-2 focus:border-ink-primary focus:outline-none"
                     />
                   </div>
 

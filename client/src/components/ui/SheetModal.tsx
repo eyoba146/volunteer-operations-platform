@@ -55,8 +55,8 @@ export const SheetModal: React.FC<SheetModalProps> = ({
         />
 
         {/* Drawer pane */}
-        <div className="relative w-full max-w-xl h-full bg-white border-l border-[#D5DAE1] shadow-2xl flex flex-col z-10 animate-in slide-in-from-right duration-200">
-          <div className="flex items-start justify-between p-5 border-b border-[#D5DAE1] bg-canvas-subdued">
+        <div className="relative w-full max-w-xl h-full bg-white shadow-[0_1px_3px_rgba(16,24,40,0.08),0_16px_36px_-4px_rgba(16,24,40,0.14)] flex flex-col z-10 animate-in slide-in-from-right duration-200">
+          <div className="flex items-start justify-between p-5 bg-[#F7F8FA]">
             <div>
               {title && (
                 <h3 className="font-display text-2xl font-bold text-ink-primary tracking-tight leading-tight">
@@ -71,7 +71,7 @@ export const SheetModal: React.FC<SheetModalProps> = ({
             </div>
             <button
               onClick={onClose}
-              className="p-1.5 text-ink-primary hover:bg-canvas-inset border border-[#D5DAE1] rounded-[8px] transition-colors cursor-pointer"
+              className="p-1.5 text-ink-primary hover:bg-[#E8EBEF] rounded-[8px] transition-colors cursor-pointer"
               aria-label="Close pane"
             >
               <X className="w-5 h-5" weight="bold" />
@@ -96,11 +96,11 @@ export const SheetModal: React.FC<SheetModalProps> = ({
 
       {/* Modal Dialog */}
       <div
-        className={`relative w-full ${maxWidthClass} bg-white border border-[#D5DAE1] rounded-[10px] shadow-2xl z-10 animate-in fade-in zoom-in-95 duration-150 overflow-hidden`}
+        className={`relative w-full ${maxWidthClass} bg-white rounded-[16px] shadow-[0_1px_3px_rgba(16,24,40,0.08),0_16px_36px_-4px_rgba(16,24,40,0.14)] z-10 animate-in fade-in zoom-in-95 duration-150 overflow-hidden`}
         role="dialog"
         aria-modal="true"
       >
-        <div className="flex items-start justify-between p-5 border-b border-[#D5DAE1] bg-canvas-subdued">
+        <div className="flex items-start justify-between p-5 bg-[#F7F8FA]">
           <div>
             {title && (
               <h3 className="font-display text-2xl font-bold text-ink-primary tracking-tight leading-tight">
@@ -115,7 +115,7 @@ export const SheetModal: React.FC<SheetModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-ink-primary hover:bg-canvas-inset border border-[#D5DAE1] rounded-[8px] transition-colors cursor-pointer"
+            className="p-1.5 text-ink-primary hover:bg-[#E8EBEF] rounded-[8px] transition-colors cursor-pointer"
             aria-label="Close dialog"
           >
             <X className="w-5 h-5" weight="bold" />

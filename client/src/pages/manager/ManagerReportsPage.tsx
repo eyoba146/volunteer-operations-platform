@@ -75,8 +75,8 @@ export const ManagerReportsPage: React.FC = () => {
   return (
     <div className="space-y-8 text-left">
       {/* Header */}
-      <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 space-y-4 shadow-sm">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#D5DAE1] pb-5">
+      <div className="rounded-[10px] bg-white p-6 sm:p-8 space-y-4 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-5">
           <div className="space-y-1">
             <h1 className="font-display font-bold text-3xl sm:text-4xl tracking-tight text-ink-primary leading-tight">
               Service operations reports
@@ -108,8 +108,8 @@ export const ManagerReportsPage: React.FC = () => {
       </div>
 
       {/* REPORT 1: Hours by Period */}
-      <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 space-y-5 shadow-sm">
-        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-[#D5DAE1] pb-3">
+      <div className="rounded-[10px] bg-white p-6 sm:p-8 space-y-5 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 pb-3">
           <div>
             <span className="font-sans text-[13px] font-semibold text-role-manager block">
               Report 1 • Service trajectory
@@ -118,7 +118,7 @@ export const ManagerReportsPage: React.FC = () => {
               Verified hours by period
             </h3>
           </div>
-          <span className="font-sans text-[13px] font-semibold text-role-volunteer bg-canvas-subdued/50 border border-[#D5DAE1] px-2.5 py-1 rounded-[4px]">
+          <span className="font-sans text-[13px] font-semibold text-role-volunteer bg-canvas-subdued/50 px-2.5 py-1 rounded-[4px]">
             Total logged: 1,033.0 verified hours
           </span>
         </div>
@@ -128,7 +128,7 @@ export const ManagerReportsPage: React.FC = () => {
         </p>
 
         {/* Custom SVG Ridgeline Profile */}
-        <div className="border border-[#D5DAE1] bg-canvas-subdued/30 rounded-[8px] p-4 overflow-hidden relative">
+        <div className="bg-canvas-subdued/30 rounded-[8px] p-4 overflow-hidden relative">
           <svg viewBox="0 0 800 240" className="w-full h-48 sm:h-60" preserveAspectRatio="none">
             <defs>
               <linearGradient id="ridgeGradient" x1="0" y1="0" x2="0" y2="1">
@@ -186,8 +186,8 @@ export const ManagerReportsPage: React.FC = () => {
       {/* REPORT 2 & 3: 2-Column Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* REPORT 2: Application Funnel */}
-        <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 space-y-4 shadow-sm">
-          <div className="border-b border-[#D5DAE1] pb-2">
+        <div className="rounded-[10px] bg-white p-6 space-y-4 shadow-sm">
+          <div className="pb-2">
             <span className="font-sans text-[13px] font-semibold text-role-manager block">
               Report 2 • Admissions pipeline
             </span>
@@ -207,7 +207,7 @@ export const ManagerReportsPage: React.FC = () => {
               { label: 'Stage 3: Accepted candidates', count: 32, pct: 67, note: 'Reviewed by admissions desk', color: 'bg-role-teamlead' },
               { label: 'Stage 4: Activated members', count: 28, pct: 58, note: 'Confirmed Telebirr & Member badge', color: 'bg-role-volunteer' },
             ].map((wp, idx) => (
-              <div key={idx} className="p-3 border border-[#D5DAE1] rounded-[8px] bg-canvas-subdued/30 space-y-1.5">
+              <div key={idx} className="p-3 rounded-[8px] bg-canvas-subdued/30 space-y-1.5">
                 <div className="flex items-center justify-between">
                   <span className="font-sans font-semibold text-[13px] text-ink-primary">
                     {wp.label}
@@ -216,8 +216,8 @@ export const ManagerReportsPage: React.FC = () => {
                     {wp.count} ({wp.pct}%)
                   </span>
                 </div>
-                <div className="w-full h-2.5 bg-white border border-[#D5DAE1] rounded-[4px] overflow-hidden">
-                  <div className={`h-full ${wp.color}`} style={{ width: `${wp.pct}%` }} />
+                <div className="w-full h-2.5 bg-white rounded-[4px] overflow-hidden">
+                  <div className={`h-full ${wp.color} `} style={{ width: `${wp.pct}%` }} />
                 </div>
                 <span className="text-[13px] text-ink-tertiary block font-sans">
                   {wp.note}
@@ -228,8 +228,8 @@ export const ManagerReportsPage: React.FC = () => {
         </div>
 
         {/* REPORT 3: Volunteers by Rank & Area */}
-        <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 space-y-4 shadow-sm">
-          <div className="border-b border-[#D5DAE1] pb-2">
+        <div className="rounded-[10px] bg-white p-6 space-y-4 shadow-sm">
+          <div className="pb-2">
             <span className="font-sans text-[13px] font-semibold text-role-manager block">
               Report 3 • Territorial footprint
             </span>
@@ -250,12 +250,12 @@ export const ManagerReportsPage: React.FC = () => {
               { area: 'Hawassa (Sidama Regional Corridor)', count: 4, pct: 9, ranks: '3 Members • 1 Senior' },
               { area: 'Bahir Dar (Tana Conservation)', count: 2, pct: 5, ranks: '2 Members' },
             ].map((reg) => (
-              <div key={reg.area} className="p-3 border border-[#D5DAE1] rounded-[8px] bg-canvas-subdued/30 space-y-1">
+              <div key={reg.area} className="p-3 rounded-[8px] bg-canvas-subdued/30 space-y-1">
                 <div className="flex justify-between items-baseline">
                   <span className="font-semibold text-[13px] text-ink-primary">{reg.area}</span>
                   <span className="font-mono text-[13px] font-semibold text-role-manager">{reg.count} volunteers ({reg.pct}%)</span>
                 </div>
-                <div className="w-full h-2 bg-white border border-[#D5DAE1] rounded-[4px] overflow-hidden">
+                <div className="w-full h-2 bg-white rounded-[4px] overflow-hidden">
                   <div className="h-full bg-role-manager" style={{ width: `${reg.pct}%` }} />
                 </div>
                 <span className="text-[13px] text-ink-tertiary block font-mono">
@@ -270,8 +270,8 @@ export const ManagerReportsPage: React.FC = () => {
       {/* REPORT 4 & 5: Activity Attendance & Top Volunteers */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* REPORT 4: Activity Attendance */}
-        <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 space-y-4 shadow-sm">
-          <div className="border-b border-[#D5DAE1] pb-2">
+        <div className="rounded-[10px] bg-white p-6 space-y-4 shadow-sm">
+          <div className="pb-2">
             <span className="font-sans text-[13px] font-semibold text-role-manager block">
               Report 4 • Field turnout
             </span>
@@ -292,12 +292,12 @@ export const ManagerReportsPage: React.FC = () => {
               { title: 'Hawassa Youth Health Outreach', cap: 12, turn: 11, pct: 92 },
               { title: 'Adama Youth Mentorship Session', cap: 18, turn: 16, pct: 89 },
             ].map((item, idx) => (
-              <div key={idx} className="p-3 border border-[#D5DAE1] rounded-[8px] bg-canvas-subdued/30 space-y-1">
+              <div key={idx} className="p-3 rounded-[8px] bg-canvas-subdued/30 space-y-1">
                 <div className="flex justify-between items-baseline">
                   <span className="font-semibold text-[13px] text-ink-primary">{item.title}</span>
                   <span className="font-mono text-[13px] font-semibold text-role-volunteer">{item.pct}% ({item.turn}/{item.cap})</span>
                 </div>
-                <div className="w-full h-2 bg-white border border-[#D5DAE1] rounded-[4px] overflow-hidden">
+                <div className="w-full h-2 bg-white rounded-[4px] overflow-hidden">
                   <div className="h-full bg-role-volunteer" style={{ width: `${item.pct}%` }} />
                 </div>
               </div>
@@ -306,8 +306,8 @@ export const ManagerReportsPage: React.FC = () => {
         </div>
 
         {/* REPORT 5: Top Volunteers */}
-        <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 space-y-4 shadow-sm">
-          <div className="border-b border-[#D5DAE1] pb-2">
+        <div className="rounded-[10px] bg-white p-6 space-y-4 shadow-sm">
+          <div className="pb-2">
             <span className="font-sans text-[13px] font-semibold text-role-manager block">
               Report 5 • Top contributors
             </span>
@@ -320,7 +320,7 @@ export const ManagerReportsPage: React.FC = () => {
             Volunteers who have achieved highest verified service hours and leadership ratings.
           </p>
 
-          <div className="divide-y divide-[#D5DAE1] border border-[#D5DAE1] rounded-[8px] bg-white overflow-hidden pt-1">
+          <div className="rounded-[8px] bg-white overflow-hidden pt-1 space-y-2">
             {[
               { rankNum: 1, name: 'Yonas Kebede', role: 'Team Lead', hours: 192.5, acts: 24, rating: 4.9, area: 'Adama' },
               { rankNum: 2, name: 'Selam Alemu', role: 'Team Lead Candidate', hours: 168.0, acts: 22, rating: 4.9, area: 'Bishoftu' },

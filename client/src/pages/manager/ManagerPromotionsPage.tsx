@@ -97,9 +97,9 @@ export const ManagerPromotionsPage: React.FC = () => {
         onPrimaryAction={() => setShowMoment(false)}
       />
       {/* Editorial Header */}
-      <div className="relative overflow-hidden rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 sm:p-8 space-y-4 border-none">
+      <div className="relative overflow-hidden rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 sm:p-8 space-y-4">
         <TopoBackdrop color="#2563EB" opacity={0.06} />
-        <div className="relative z-10 flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#EDEFF2] pb-5">
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-5">
           <div className="space-y-1">
             <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight">
               Volunteer promotion board
@@ -110,7 +110,7 @@ export const ManagerPromotionsPage: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="font-mono text-[13px] font-semibold text-role-manager bg-role-managerLight/30 border border-role-manager/30 px-3 py-1.5 rounded-[6px]">
+            <span className="font-mono text-[13px] font-semibold text-role-manager bg-role-managerLight/30 px-3 py-1.5 rounded-[6px]">
               Pending decisions: {promotions.length}
             </span>
           </div>
@@ -128,9 +128,9 @@ export const ManagerPromotionsPage: React.FC = () => {
           {promotions.map((promo) => (
             <div
               key={promo.id}
-              className="rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] border-none bg-white p-6 sm:p-8 space-y-6 shadow-sm"
+              className="rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] bg-white p-6 sm:p-8 space-y-6 shadow-sm"
             >
-              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-[#EDEFF2] pb-5">
+              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 pb-5">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-sans text-[13px] font-semibold text-role-teamlead">
@@ -175,7 +175,7 @@ export const ManagerPromotionsPage: React.FC = () => {
 
               {/* Justification note */}
               {promo.note && (
-                <div className="p-4 bg-canvas-subdued/30 border border-[#D5DAE1] rounded-[8px] text-[13px] font-sans text-ink-primary italic">
+                <div className="p-4 bg-canvas-subdued/30 rounded-[8px] text-[13px] font-sans text-ink-primary italic">
                   "{promo.note}"
                 </div>
               )}
@@ -187,7 +187,7 @@ export const ManagerPromotionsPage: React.FC = () => {
                     Verified service evidence summary
                   </span>
 
-                  <div className="border border-[#D5DAE1] rounded-[8px] bg-canvas-subdued/20 p-5 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                  <div className="rounded-[8px] bg-canvas-subdued/20 p-5 flex flex-col md:flex-row md:items-center justify-between gap-6">
                     <div className="flex items-baseline gap-3">
                       <span className="font-display font-bold text-4xl text-role-volunteer leading-none">
                         {promo.evidence.approvedHours}
@@ -202,21 +202,19 @@ export const ManagerPromotionsPage: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-[13px] pt-2 md:pt-0 border-t md:border-t-0 border-[#D5DAE1]">
+                    <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-[13px] pt-2 md:pt-0">
                       <div className="space-y-0.5">
                         <span className="text-[13px] text-ink-secondary block">Completed sessions</span>
                         <span className="text-lg font-bold text-ink-primary">
                           {promo.evidence.completedActivities}
                         </span>
                       </div>
-                      <div className="w-px h-8 bg-[#D5DAE1] hidden sm:block" />
                       <div className="space-y-0.5">
                         <span className="text-[13px] text-ink-secondary block">Average rating</span>
                         <span className="text-lg font-bold text-role-applicant">
                           {promo.evidence.averageRating} / 5.0
                         </span>
                       </div>
-                      <div className="w-px h-8 bg-[#D5DAE1] hidden sm:block" />
                       <div className="space-y-0.5">
                         <span className="text-[13px] text-ink-secondary block">Active tenure</span>
                         <span className="text-lg font-bold text-ink-primary">
@@ -264,12 +262,12 @@ export const ManagerPromotionsPage: React.FC = () => {
               value={decisionNote}
               onChange={(e) => setDecisionNote(e.target.value)}
               placeholder="e.g. Promotion approved based on outstanding field leadership and verified hours..."
-              className="w-full bg-white text-ink-primary font-sans text-[13px] border-[1.5px] border-[#475569] rounded-[8px] p-2.5 focus:ring-1 focus:ring-ink-primary outline-none"
+              className="w-full bg-white text-ink-primary font-sans text-[13px] rounded-[8px] p-2.5 focus:ring-1 focus:ring-ink-primary"
               required
             />
           </div>
 
-          <div className="pt-3 border-t border-[#EDEFF2] flex items-center justify-end gap-3">
+          <div className="pt-3 flex items-center justify-end gap-3">
             <Button
               type="button"
               variant="secondary"

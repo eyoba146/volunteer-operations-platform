@@ -56,7 +56,7 @@ export const Button: React.FC<ButtonProps> = ({
   return (
     <button
       disabled={disabled || isLoading}
-      className={`${baseStyles} ${sizeStyles} ${variantStyles} ${className}`}
+      className={` ${baseStyles}  ${sizeStyles}  ${variantStyles}  ${className} `}
       {...props}
     >
       {isLoading ? (

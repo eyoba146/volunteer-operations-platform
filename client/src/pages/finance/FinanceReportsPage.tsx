@@ -52,8 +52,8 @@ export const FinanceReportsPage: React.FC = () => {
   return (
     <div className="space-y-6 text-left">
       {/* Top Header Card */}
-      <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 space-y-4 shadow-sm">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#D5DAE1] pb-4">
+      <div className="rounded-[10px] bg-white p-6 space-y-4 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4">
           <div className="space-y-1">
             <h1 className="font-display font-black text-2xl sm:text-3xl tracking-tight text-ink-primary leading-tight">
               Financial settlement reports
@@ -86,8 +86,8 @@ export const FinanceReportsPage: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Monthly Breakdown */}
-        <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 space-y-4 shadow-sm">
-          <div className="border-b border-[#D5DAE1] pb-3">
+        <div className="rounded-[10px] bg-white p-6 space-y-4 shadow-sm">
+          <div className="pb-3">
             <h3 className="font-display text-xl font-bold text-ink-primary">
               Monthly registration revenue
             </h3>
@@ -100,12 +100,12 @@ export const FinanceReportsPage: React.FC = () => {
               { month: 'September 2026', count: 18, amount: 3600, pct: 30 },
               { month: 'August 2026', count: 14, amount: 2800, pct: 24 },
             ].map((m) => (
-              <div key={m.month} className="p-3 border border-[#E2E8F0] rounded-[8px] bg-canvas-subdued/40 space-y-1.5">
+              <div key={m.month} className="p-3 rounded-[8px] bg-canvas-subdued/40 space-y-1.5">
                 <div className="flex justify-between font-sans">
                   <span className="font-semibold text-[13px] text-ink-primary">{m.month}</span>
                   <span className="font-mono text-[13px] font-semibold text-role-volunteer">ETB {m.amount}.00 ({m.count} fees)</span>
                 </div>
-                <div className="w-full h-2 bg-white rounded-full border border-[#D5DAE1] overflow-hidden">
+                <div className="w-full h-2 bg-white rounded-full overflow-hidden">
                   <div className="h-full bg-role-volunteer" style={{ width: `${m.pct}%` }} />
                 </div>
               </div>
@@ -114,8 +114,8 @@ export const FinanceReportsPage: React.FC = () => {
         </div>
 
         {/* Settlement Metrics */}
-        <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 space-y-4 shadow-sm">
-          <div className="border-b border-[#D5DAE1] pb-3">
+        <div className="rounded-[10px] bg-white p-6 space-y-4 shadow-sm">
+          <div className="pb-3">
             <h3 className="font-display text-xl font-bold text-ink-primary">
               Settlement rail integrity breakdown
             </h3>
@@ -123,19 +123,19 @@ export const FinanceReportsPage: React.FC = () => {
           </div>
 
           <div className="space-y-3 font-sans text-sm pt-1">
-            <div className="p-3 bg-canvas-subdued/40 border border-[#E2E8F0] rounded-[8px] flex justify-between items-center">
+            <div className="p-3 bg-canvas-subdued/40 rounded-[8px] flex justify-between items-center">
               <span className="font-medium text-[13px] text-ink-primary">Automatic settlement rate:</span>
               <strong className="font-mono text-sm font-bold text-role-volunteer">96.8%</strong>
             </div>
-            <div className="p-3 bg-canvas-subdued/40 border border-[#E2E8F0] rounded-[8px] flex justify-between items-center">
+            <div className="p-3 bg-canvas-subdued/40 rounded-[8px] flex justify-between items-center">
               <span className="font-medium text-[13px] text-ink-primary">Average exception resolution time:</span>
               <strong className="font-mono text-[13px] font-semibold text-ink-primary">14 minutes</strong>
             </div>
-            <div className="p-3 bg-canvas-subdued/40 border border-[#E2E8F0] rounded-[8px] flex justify-between items-center">
+            <div className="p-3 bg-canvas-subdued/40 rounded-[8px] flex justify-between items-center">
               <span className="font-medium text-[13px] text-ink-primary">Total reimbursements processed:</span>
               <strong className="font-mono text-[13px] font-semibold text-red-600">- ETB 200.00 (1 case)</strong>
             </div>
-            <div className="p-3 bg-canvas-subdued/40 border border-[#E2E8F0] rounded-[8px] flex justify-between items-center">
+            <div className="p-3 bg-canvas-subdued/40 rounded-[8px] flex justify-between items-center">
               <span className="font-medium text-[13px] text-ink-primary">Outstanding review exceptions:</span>
               <strong className="font-mono text-[13px] font-semibold text-role-applicant">2 unconfirmed transfers</strong>
             </div>

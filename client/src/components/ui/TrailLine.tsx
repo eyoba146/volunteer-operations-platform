@@ -43,7 +43,7 @@ export const TrailLine: React.FC<TrailLineProps> = ({
   });
 
   return (
-    <div className={`relative w-full select-none py-6 ${className}`}>
+    <div className={`relative w-full select-none py-6 ${className} `}>
       {/* SVG Canvas for Trail Path */}
       <div className="relative w-full h-24 overflow-visible">
         <svg
@@ -127,7 +127,7 @@ export const TrailLine: React.FC<TrailLineProps> = ({
                       : idx === waypoints.length - 1
                       ? 'items-end text-right'
                       : 'items-center text-center'
-                  } max-w-[140px] ${onSelectWaypoint ? 'cursor-pointer hover:opacity-80' : ''}`}
+                  } max-w-[140px] ${onSelectWaypoint ? 'cursor-pointer hover:opacity-80' : ''} `}
                 >
                   <span
                     className={`font-display text-base tracking-tight font-bold leading-tight ${
@@ -136,7 +136,7 @@ export const TrailLine: React.FC<TrailLineProps> = ({
                         : isPassed
                         ? 'text-ink-primary font-bold'
                         : 'text-ink-tertiary'
-                    }`}
+                    } `}
                   >
                     {wp.label}
                   </span>

@@ -96,9 +96,9 @@ export const FinancePaymentsPage: React.FC = () => {
   return (
     <div className="space-y-6 text-left">
       {/* Top Header Card */}
-      <div className="relative overflow-hidden rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 space-y-4 border-none">
+      <div className="relative overflow-hidden rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 space-y-4">
         <TopoBackdrop color="#059669" opacity={0.06} />
-        <div className="relative z-10 flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#EDEFF2] pb-4">
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4">
           <div className="space-y-1">
             <h1 className="font-display font-black text-2xl sm:text-3xl tracking-tight text-ink-primary leading-tight">
               Telebirr payments ledger
@@ -109,7 +109,7 @@ export const FinancePaymentsPage: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="font-mono text-[13px] font-medium text-ink-primary bg-canvas-subdued border-[#EDEFF2] px-3 py-1.5 rounded-[8px]">
+            <span className="font-mono text-[13px] font-medium text-ink-primary bg-canvas-subdued px-3 py-1.5 rounded-[8px]">
               Total records: {payments.length}
             </span>
           </div>
@@ -158,7 +158,7 @@ export const FinancePaymentsPage: React.FC = () => {
         {inspecting && (
           <div className="space-y-6 text-left font-sans text-sm">
             {/* Amount & Status Card */}
-            <div className="p-4 rounded-[16px] bg-white shadow-xs border-none bg-white shadow-sm flex items-center justify-between">
+            <div className="p-4 rounded-[16px] bg-white shadow-xs bg-white shadow-sm flex items-center justify-between">
               <div>
                 <span className="text-[13px] text-ink-tertiary block font-mono">Current status</span>
                 <StatusMark status={inspecting.status} size="md" />
@@ -172,15 +172,15 @@ export const FinancePaymentsPage: React.FC = () => {
             </div>
 
             {/* Visual Settlement Timeline (Trail route step style) */}
-            <div className="p-4 rounded-[16px] bg-white shadow-xs border-none bg-white shadow-sm space-y-4">
-              <span className="font-display text-lg font-bold text-ink-primary block border-b border-[#EDEFF2] pb-2">
+            <div className="p-4 rounded-[16px] bg-white shadow-xs bg-white shadow-sm space-y-4">
+              <span className="font-display text-lg font-bold text-ink-primary block pb-2">
                 Settlement lifecycle timeline
               </span>
 
               <div className="relative pl-6 space-y-5 before:content-[''] before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-[#EDEFF2]">
                 {/* Step 1: Session Dispatched */}
                 <div className="relative space-y-0.5">
-                  <div className="absolute -left-6 top-1 w-3 h-3 rounded-full bg-ink-primary ring-2 ring-white" />
+                  <div className="absolute -left-6 top-1 w-3 h-3 rounded-full bg-ink-primary" />
                   <div className="flex items-baseline justify-between">
                     <span className="font-semibold text-[13px] text-ink-primary">1. Payment session initiated</span>
                     <span className="font-mono text-[13px] text-ink-tertiary">{new Date(inspecting.createdAt).toLocaleTimeString()}</span>
@@ -192,7 +192,7 @@ export const FinancePaymentsPage: React.FC = () => {
 
                 {/* Step 2: Telebirr Gateway Request */}
                 <div className="relative space-y-0.5">
-                  <div className="absolute -left-6 top-1 w-3 h-3 rounded-full bg-ink-primary ring-2 ring-white" />
+                  <div className="absolute -left-6 top-1 w-3 h-3 rounded-full bg-ink-primary" />
                   <div className="flex items-baseline justify-between">
                     <span className="font-semibold text-[13px] text-ink-primary">2. Phone prompt dispatched</span>
                     <span className="font-mono text-[13px] text-ink-tertiary">Merchant #884120</span>
@@ -204,9 +204,9 @@ export const FinancePaymentsPage: React.FC = () => {
 
                 {/* Step 3: Transaction Outcome */}
                 <div className="relative space-y-0.5">
-                  <div className={`absolute -left-6 top-1 w-3 h-3 rounded-full ring-2 ring-white ${
+                  <div className={`absolute -left-6 top-1 w-3 h-3 rounded-full ${
                     inspecting.status === 'confirmed' ? 'bg-role-volunteer' : inspecting.status === 'needs_review' ? 'bg-role-applicant' : 'bg-red-500'
-                  }`} />
+                  } `} />
                   <div className="flex items-baseline justify-between">
                     <span className="font-semibold text-[13px] text-ink-primary">
                       {inspecting.status === 'confirmed' ? '3. Telebirr reference confirmed' : inspecting.status === 'needs_review' ? '3. Exception flagged for review' : '3. Transaction state'}
@@ -222,9 +222,9 @@ export const FinancePaymentsPage: React.FC = () => {
 
                 {/* Step 4: Final Settlement / Receipt */}
                 <div className="relative space-y-0.5">
-                  <div className={`absolute -left-6 top-1 w-3 h-3 rounded-full ring-2 ring-white ${
+                  <div className={`absolute -left-6 top-1 w-3 h-3 rounded-full ${
                     inspecting.receiptNumber ? 'bg-role-volunteer' : inspecting.refundedAt ? 'bg-red-500' : 'bg-[#CBD2DA]'
-                  }`} />
+                  } `} />
                   <div className="flex items-baseline justify-between">
                     <span className="font-semibold text-[13px] text-ink-primary">
                       {inspecting.receiptNumber ? '4. Payment receipt issued' : inspecting.refundedAt ? '4. Refund processed' : '4. Awaiting resolution'}
@@ -245,16 +245,16 @@ export const FinancePaymentsPage: React.FC = () => {
             </div>
 
             {/* Payer Meta Information */}
-            <div className="p-4 rounded-[16px] bg-white shadow-xs border-none bg-canvas-subdued/40 space-y-2.5 font-mono text-[13px]">
-              <div className="flex justify-between border-b border-[#EDEFF2] pb-1.5">
+            <div className="p-4 rounded-[16px] bg-white shadow-xs bg-canvas-subdued/40 space-y-2.5 font-mono text-[13px]">
+              <div className="flex justify-between pb-1.5">
                 <span className="text-ink-tertiary">Payer name:</span>
                 <span className="font-bold text-ink-primary font-sans">{inspecting.payerName || 'Applicant'}</span>
               </div>
-              <div className="flex justify-between border-b border-[#EDEFF2] pb-1.5">
+              <div className="flex justify-between pb-1.5">
                 <span className="text-ink-tertiary">Payer phone:</span>
                 <span className="font-bold text-ink-primary">{inspecting.payerPhone || '—'}</span>
               </div>
-              <div className="flex justify-between border-b border-[#EDEFF2] pb-1.5">
+              <div className="flex justify-between pb-1.5">
                 <span className="text-ink-tertiary">Telebirr reference:</span>
                 <span className="font-bold text-ink-primary">{inspecting.telebirrReference}</span>
               </div>

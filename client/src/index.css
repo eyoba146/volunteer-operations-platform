@@ -71,9 +71,11 @@
   }
 
   .ticket-stub {
-    border-style: dashed;
-    border-width: 0 0 1px 0;
-    border-color: #EDEFF2;
+    /* Perforation drawn as background dots, never as a border */
+    background-image: radial-gradient(circle, #CBD2DA 1px, transparent 1px);
+    background-size: 8px 2px;
+    background-position: bottom;
+    background-repeat: repeat-x;
   }
 
   /* Hide scrollbar for clean horizontal snap rails */

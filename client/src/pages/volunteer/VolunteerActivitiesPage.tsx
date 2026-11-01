@@ -198,7 +198,7 @@ export const VolunteerActivitiesPage: React.FC = () => {
     <PageShell page="volunteer/activities" signature="TicketCard">
     <div className="space-y-6">
       {/* Top Header Banner */}
-      <div className="border-b border-[#EDEFF2] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div className="pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
           <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
             Browse volunteer activities
@@ -219,7 +219,7 @@ export const VolunteerActivitiesPage: React.FC = () => {
               viewMode === 'list'
                 ? 'bg-white text-ink-primary shadow-[0_1px_2px_rgba(16,24,40,0.06)]'
                 : 'text-ink-secondary hover:text-ink-primary'
-            }`}
+            } `}
           >
             <ListDashes className="w-4 h-4" weight="bold" />
             <span>List view</span>
@@ -230,7 +230,7 @@ export const VolunteerActivitiesPage: React.FC = () => {
               viewMode === 'calendar'
                 ? 'bg-white text-ink-primary shadow-[0_1px_2px_rgba(16,24,40,0.06)]'
                 : 'text-ink-secondary hover:text-ink-primary'
-            }`}
+            } `}
           >
             <CalendarBlank className="w-4 h-4" weight="bold" />
             <span>Calendar view</span>
@@ -250,7 +250,7 @@ export const VolunteerActivitiesPage: React.FC = () => {
             scopeTab === 'upcoming'
               ? 'bg-white text-ink-primary shadow-[0_1px_2px_rgba(16,24,40,0.06)]'
               : 'text-ink-secondary hover:text-ink-primary'
-          }`}
+          } `}
         >
           Upcoming
         </button>
@@ -264,7 +264,7 @@ export const VolunteerActivitiesPage: React.FC = () => {
             scopeTab === 'my'
               ? 'bg-white text-ink-primary shadow-[0_1px_2px_rgba(16,24,40,0.06)]'
               : 'text-ink-secondary hover:text-ink-primary'
-          }`}
+          } `}
         >
           My activities {userEnrollments.length > 0 && `(${userEnrollments.length})`}
         </button>
@@ -278,7 +278,7 @@ export const VolunteerActivitiesPage: React.FC = () => {
             scopeTab === 'past'
               ? 'bg-white text-ink-primary shadow-[0_1px_2px_rgba(16,24,40,0.06)]'
               : 'text-ink-secondary hover:text-ink-primary'
-          }`}
+          } `}
         >
           Past
         </button>
@@ -313,7 +313,7 @@ export const VolunteerActivitiesPage: React.FC = () => {
           />
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-[#EDEFF2] text-[13px]">
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-2 text-[13px]">
           <div className="flex items-center gap-3">
             <span className="font-sans font-medium text-ink-tertiary">Filter by rank:</span>
             <div className="flex flex-wrap gap-1.5">
@@ -325,7 +325,7 @@ export const VolunteerActivitiesPage: React.FC = () => {
                     selectedRank === opt.value
                       ? 'bg-ink-primary text-white'
                       : 'bg-[#F1F3F6] hover:bg-[#E8EBEF] text-ink-secondary'
-                  }`}
+                  } `}
                 >
                   {opt.label}
                 </button>
@@ -348,7 +348,7 @@ export const VolunteerActivitiesPage: React.FC = () => {
       {/* CALENDAR VIEW MODE */}
       {viewMode === 'calendar' && (
         <div className="bg-white rounded-[16px] shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#EDEFF2] pb-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3">
             <div>
               <h3 className="font-display text-xl sm:text-2xl font-bold text-ink-primary">
                 Activity calendar: November 2026
@@ -397,7 +397,7 @@ export const VolunteerActivitiesPage: React.FC = () => {
                       : d.hasActivities
                       ? 'bg-white hover:bg-[#F7F8FA] shadow-[0_1px_2px_rgba(16,24,40,0.04)]'
                       : 'bg-[#F7F8FA] text-ink-tertiary'
-                  }`}
+                  } `}
                 >
                   <span className="font-mono text-[13px] font-medium">{d.dayNumber}</span>
                   {d.hasActivities && (

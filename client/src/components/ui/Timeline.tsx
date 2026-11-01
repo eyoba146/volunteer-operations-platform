@@ -16,9 +16,11 @@ interface TimelineProps {
 
 export const Timeline: React.FC<TimelineProps> = ({ items, className = '' }) => {
   return (
-    <div className={`relative pl-4 space-y-6 ${className}`}>
-      {/* Vertical connecting rule */}
-      <div className="absolute left-[7px] top-2 bottom-2 w-[1.5px] bg-[#EDEFF2]" />
+    <div className={`relative pl-4 space-y-6 ${className} `}>
+      {/* Vertical connecting route */}
+      <svg className="absolute left-[6.5px] top-2 bottom-2 w-[2px] h-[calc(100%-16px)] overflow-visible">
+        <line x1="1" y1="0" x2="1" y2="100%" stroke="#E2E8F0" strokeWidth="2" strokeDasharray="3 3" />
+      </svg>
 
       {items.map((item, index) => {
         const isCurrent = item.status === 'current';
@@ -28,13 +30,13 @@ export const Timeline: React.FC<TimelineProps> = ({ items, className = '' }) => 
           <div key={item.id || index} className="relative flex items-start gap-3.5 group">
             {/* Clean Rounded Node */}
             <div
-              className={`relative z-10 w-3.5 h-3.5 shrink-0 mt-1 rounded-full border-none ${
+              className={`relative z-10 w-3.5 h-3.5 shrink-0 mt-1 rounded-full ${
                 isCompleted
                   ? 'bg-role-volunteer'
                   : isCurrent
-                  ? 'bg-role-applicant ring-4 ring-role-applicant/20'
+                  ? 'bg-role-applicant'
                   : 'bg-slate-300'
-              }`}
+              } `}
             />
 
             {/* Content */}

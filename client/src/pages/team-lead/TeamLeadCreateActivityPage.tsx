@@ -90,7 +90,7 @@ export const TeamLeadCreateActivityPage: React.FC = () => {
       </button>
 
       {/* Header */}
-      <div className="border-b border-[#D5DAE1] pb-4">
+      <div className="pb-4">
         <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
           Create volunteer activity
         </h1>
@@ -101,10 +101,10 @@ export const TeamLeadCreateActivityPage: React.FC = () => {
 
       <form
         onSubmit={handleSubmit}
-        className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 space-y-6 shadow-sm"
+        className="rounded-[10px] bg-white p-6 sm:p-8 space-y-6 shadow-sm"
       >
         {errorMessage && (
-          <div className="p-3 border border-role-teamlead/30 rounded-[8px] bg-role-teamleadLight/20 text-role-teamlead text-[13px] font-sans font-medium flex items-center gap-2">
+          <div className="p-3 rounded-[8px] bg-role-teamleadLight/20 text-role-teamlead text-[13px] font-sans font-medium flex items-center gap-2">
             <Warning className="w-4 h-4 shrink-0" weight="bold" />
             <span>{errorMessage}</span>
           </div>
@@ -192,7 +192,7 @@ export const TeamLeadCreateActivityPage: React.FC = () => {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Outline the mission goals, what volunteers will do, and what to bring..."
-              className="w-full bg-white text-ink-primary font-sans text-[13px] border-[1.5px] border-[#475569] rounded-[8px] p-2.5 focus:outline-none focus:ring-2 focus:ring-role-teamlead"
+              className="w-full bg-white text-ink-primary font-sans text-[13px] rounded-[8px] p-2.5 focus:outline-none focus:ring-2 focus:ring-role-teamlead"
               required
             />
           </div>
@@ -205,7 +205,7 @@ export const TeamLeadCreateActivityPage: React.FC = () => {
           />
         </div>
 
-        <div className="pt-4 border-t border-[#D5DAE1] flex justify-end">
+        <div className="pt-4 flex justify-end">
           <Button
             type="submit"
             variant="primary"

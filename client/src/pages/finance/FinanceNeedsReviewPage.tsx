@@ -170,8 +170,8 @@ export const FinanceNeedsReviewPage: React.FC = () => {
   return (
     <div className="space-y-6 text-left">
       {/* Top Header Card */}
-      <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 space-y-4 shadow-sm">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#D5DAE1] pb-4">
+      <div className="rounded-[10px] bg-white p-6 space-y-4 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4">
           <div className="space-y-1">
             <h1 className="font-display font-black text-2xl sm:text-3xl tracking-tight text-ink-primary leading-tight">
               Payments needing review
@@ -182,11 +182,11 @@ export const FinanceNeedsReviewPage: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className={`font-mono text-[13px] font-medium px-3 py-1.5 rounded-[8px] border ${
+            <span className={`font-mono text-[13px] font-medium px-3 py-1.5 rounded-[8px] ${
               payments.length > 0 
                 ? 'bg-amber-50 text-role-applicant border-amber-200' 
                 : 'bg-emerald-50 text-role-volunteer border-emerald-200'
-            }`}>
+            } `}>
               Exceptions in queue: {payments.length}
             </span>
           </div>
@@ -245,7 +245,7 @@ export const FinanceNeedsReviewPage: React.FC = () => {
               <select
                 value={selectedApplicantUserId}
                 onChange={(e) => setSelectedApplicantUserId(e.target.value)}
-                className="w-full bg-white text-ink-primary font-sans text-sm border border-[#475569] rounded-[8px] p-2.5 outline-none focus:ring-1 focus:ring-ink-primary"
+                className="w-full bg-white text-ink-primary font-sans text-sm rounded-[8px] p-2.5 focus:ring-1 focus:ring-ink-primary"
                 required
               >
                 {targetPayment?.payerName && (
@@ -272,12 +272,12 @@ export const FinanceNeedsReviewPage: React.FC = () => {
               value={actionNote}
               onChange={(e) => setActionNote(e.target.value)}
               placeholder="e.g. Phone confirmed with applicant; Telebirr transaction receipt verified..."
-              className="w-full bg-white text-ink-primary font-sans text-sm border border-[#475569] rounded-[8px] p-2.5 outline-none focus:ring-1 focus:ring-ink-primary"
+              className="w-full bg-white text-ink-primary font-sans text-sm rounded-[8px] p-2.5 focus:ring-1 focus:ring-ink-primary"
               required
             />
           </div>
 
-          <div className="pt-3 border-t border-[#D5DAE1] flex items-center justify-end gap-3">
+          <div className="pt-3 flex items-center justify-end gap-3">
             <Button
               type="button"
               variant="secondary"

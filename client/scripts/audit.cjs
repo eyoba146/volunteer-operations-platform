@@ -14,6 +14,7 @@ if (!fs.existsSync(DOCS_AUDIT_DIR)) {
 const args = process.argv.slice(2);
 const targetRoleArg = args.find(a => a.startsWith('--role='));
 const targetRole = targetRoleArg ? targetRoleArg.split('=')[1] : null;
+const bordersOnly = args.includes('--borders-only');
 
 // The routes specification mapped to roles and accounts
 const ALL_ROUTES = [
@@ -85,8 +86,8 @@ const FILTERED_ROUTES = targetRole
   : ALL_ROUTES;
 
 // In-page scanner function to evaluate against the 13 criteria
-async function scanPageRules(page, isMobile) {
-  return await page.evaluate((mobile) => {
+async function scanPageRules(page, isMobile, onlyBorders = false) {
+  return await page.evaluate((mobile, bordersOnly) => {
     const failures = [];
 
     // Helper: get CSS selector
@@ -121,47 +122,49 @@ async function scanPageRules(page, isMobile) {
       return [parseInt(m[1]), parseInt(m[2]), parseInt(m[3])];
     }
 
-    // 11. Horizontal overflow at 360px
-    if (mobile) {
-      const scrollW = document.documentElement.scrollWidth;
-      const clientW = window.innerWidth;
-      if (scrollW > clientW + 2) {
-        failures.push({
-          rule: '11. Horizontal overflow',
-          selector: 'html',
-          detail: `Page width ${scrollW}px overflows 360px viewport (${clientW}px)`
-        });
+    if (!bordersOnly) {
+      // 11. Horizontal overflow at 360px
+      if (mobile) {
+        const scrollW = document.documentElement.scrollWidth;
+        const clientW = window.innerWidth;
+        if (scrollW > clientW + 2) {
+          failures.push({
+            rule: '11. Horizontal overflow',
+            selector: 'html',
+            detail: `Page width ${scrollW}px overflows 360px viewport (${clientW}px)`
+          });
+        }
       }
-    }
 
-    // 12. Missing data-page / data-signature, or progress bar for rank progress
-    const pageRoot = document.querySelector('[data-page]');
-    if (!pageRoot) {
-      failures.push({
-        rule: '12. Missing tags',
-        selector: 'body',
-        detail: 'Page root is missing data-page attribute'
-      });
-    } else {
-      const sig = pageRoot.getAttribute('data-signature');
-      if (!sig) {
+      // 12. Missing data-page / data-signature, or progress bar for rank progress
+      const pageRoot = document.querySelector('[data-page]');
+      if (!pageRoot) {
         failures.push({
           rule: '12. Missing tags',
-          selector: '[data-page]',
-          detail: 'Page root is missing data-signature attribute'
+          selector: 'body',
+          detail: 'Page root is missing data-page attribute'
         });
+      } else {
+        const sig = pageRoot.getAttribute('data-signature');
+        if (!sig) {
+          failures.push({
+            rule: '12. Missing tags',
+            selector: '[data-page]',
+            detail: 'Page root is missing data-signature attribute'
+          });
+        }
       }
-    }
 
-    const rankProgressBars = document.querySelectorAll('progress, [role="progressbar"]');
-    for (const pb of rankProgressBars) {
-      const text = (pb.parentElement?.textContent || '').toLowerCase();
-      if (text.includes('rank') || text.includes('member') || text.includes('lead') || text.includes('hours to')) {
-        failures.push({
-          rule: '12. Missing tags / TrailMeter',
-          selector: getCssSelector(pb),
-          detail: 'Generic progress bar used for rank advancement instead of TrailMeter'
-        });
+      const rankProgressBars = document.querySelectorAll('progress, [role="progressbar"]');
+      for (const pb of rankProgressBars) {
+        const text = (pb.parentElement?.textContent || '').toLowerCase();
+        if (text.includes('rank') || text.includes('member') || text.includes('lead') || text.includes('hours to')) {
+          failures.push({
+            rule: '12. Missing tags / TrailMeter',
+            selector: getCssSelector(pb),
+            detail: 'Generic progress bar used for rank advancement instead of TrailMeter'
+          });
+        }
       }
     }
 
@@ -185,144 +188,188 @@ async function scanPageRules(page, isMobile) {
       const tagName = el.tagName.toLowerCase();
       const isInput = tagName === 'input' || tagName === 'select' || tagName === 'textarea';
 
-      // 1. Dark borders
-      if (!isInput && !el.closest('[data-allow="perforation"]') && !el.className.includes('border-dashed')) {
-        const bTop = parseFloat(style.borderTopWidth) || 0;
-        const bRight = parseFloat(style.borderRightWidth) || 0;
-        const bBottom = parseFloat(style.borderBottomWidth) || 0;
-        const bLeft = parseFloat(style.borderLeftWidth) || 0;
-        const maxWidth = Math.max(bTop, bRight, bBottom, bLeft);
+      // 1. Zero borders and zero divider lines (Zero Tolerance)
+      function isBorderVisible(w, s, c) {
+        if (!w || parseFloat(w) <= 0) return false;
+        if (!s || s === 'none' || s === 'hidden') return false;
+        if (!c || c === 'transparent' || c.includes('rgba(0, 0, 0, 0)')) return false;
+        return true;
+      }
 
-        if (maxWidth > 0) {
-          // Check if color is not transparent
-          const colorStr = style.borderColor;
-          if (colorStr && !colorStr.includes('rgba(0, 0, 0, 0)') && colorStr !== 'transparent') {
-            const colorRgb = parseRgb(colorStr);
-            if (colorRgb) {
-              const lum = getLum(colorRgb[0], colorRgb[1], colorRgb[2]);
-              // Hairline divider #EDEFF2 has rgb(237, 239, 242) and lum ~0.87
-              // Light grey inputs have lum ~0.7
-              // Thick dark border: lum < 0.82 and maxWidth > 1.5
-              if (lum < 0.82 && maxWidth > 1.5) {
-                failures.push({
-                  rule: '1. Dark borders',
-                  selector: getCssSelector(el),
-                  detail: `Dark border detected (width: ${maxWidth}px, color: ${style.borderColor})`
-                });
-              } else if (lum < 0.4 && maxWidth >= 1) { // Black or near black border
-                failures.push({
-                  rule: '1. Dark borders',
-                  selector: getCssSelector(el),
-                  detail: `Thick/dark card outline detected (color: ${style.borderColor})`
-                });
-              }
+      const bTop = parseFloat(style.borderTopWidth) || 0;
+      const bRight = parseFloat(style.borderRightWidth) || 0;
+      const bBottom = parseFloat(style.borderBottomWidth) || 0;
+      const bLeft = parseFloat(style.borderLeftWidth) || 0;
+      const maxWidth = Math.max(bTop, bRight, bBottom, bLeft);
+
+      if (
+        isBorderVisible(bTop, style.borderTopStyle, style.borderTopColor) ||
+        isBorderVisible(bRight, style.borderRightStyle, style.borderRightColor) ||
+        isBorderVisible(bBottom, style.borderBottomStyle, style.borderBottomColor) ||
+        isBorderVisible(bLeft, style.borderLeftStyle, style.borderLeftColor)
+      ) {
+        failures.push({
+          rule: '1. Zero borders',
+          selector: getCssSelector(el),
+          detail: `Border detected (width: ${maxWidth}px, color: ${style.borderColor}, style: ${style.borderStyle})`
+        });
+      }
+
+      // Check pseudo-elements (::before, ::after)
+      const beforeStyle = window.getComputedStyle(el, '::before');
+      if (beforeStyle && beforeStyle.content && beforeStyle.content !== 'none' && beforeStyle.content !== '""') {
+        const bW = Math.max(parseFloat(beforeStyle.borderTopWidth)||0, parseFloat(beforeStyle.borderRightWidth)||0, parseFloat(beforeStyle.borderBottomWidth)||0, parseFloat(beforeStyle.borderLeftWidth)||0);
+        if (isBorderVisible(bW, beforeStyle.borderTopStyle, beforeStyle.borderTopColor)) {
+          failures.push({
+            rule: '1. Zero borders',
+            selector: getCssSelector(el) + '::before',
+            detail: `Pseudo-element border detected (width: ${bW}px, color: ${beforeStyle.borderColor})`
+          });
+        }
+      }
+
+      const afterStyle = window.getComputedStyle(el, '::after');
+      if (afterStyle && afterStyle.content && afterStyle.content !== 'none' && afterStyle.content !== '""') {
+        const aW = Math.max(parseFloat(afterStyle.borderTopWidth)||0, parseFloat(afterStyle.borderRightWidth)||0, parseFloat(afterStyle.borderBottomWidth)||0, parseFloat(afterStyle.borderLeftWidth)||0);
+        if (isBorderVisible(aW, afterStyle.borderTopStyle, afterStyle.borderTopColor)) {
+          failures.push({
+            rule: '1. Zero borders',
+            selector: getCssSelector(el) + '::after',
+            detail: `Pseudo-element border detected (width: ${aW}px, color: ${afterStyle.borderColor})`
+          });
+        }
+      }
+
+      // Check for divider lines (elements with height or width <= 2px and background)
+      const rect = el.getBoundingClientRect();
+      if (rect.width > 0 && rect.height > 0) {
+        const isHLine = rect.height <= 2 && rect.width >= 24;
+        const isVLine = rect.width <= 2 && rect.height >= 24;
+        if (isHLine || isVLine) {
+          const bg = style.backgroundColor;
+          if (bg && bg !== 'transparent' && !bg.includes('rgba(0, 0, 0, 0)')) {
+            // Allow progress bars, SVG lines, trail lines, and active tab indicator
+            if (
+              !el.closest('svg') &&
+              !el.closest('[role="progressbar"]') &&
+              !el.closest('.relative.w-full.h-3') &&
+              !el.closest('[role="tab"]') &&
+              !el.closest('[role="tablist"]')
+            ) {
+              failures.push({
+                rule: '1. Zero dividers',
+                selector: getCssSelector(el),
+                detail: `Divider line detected (dimensions: ${Math.round(rect.width)}x${Math.round(rect.height)}px, bg: ${bg})`
+              });
             }
           }
         }
       }
 
-      // 2. Hard shadows
-      if (style.boxShadow && style.boxShadow !== 'none') {
-        const shadowRegex = /(rgba?\([^\)]+\))\s+(-?\d+px)\s+(-?\d+px)\s+(\d+px)/g;
-        let sMatch;
-        while ((sMatch = shadowRegex.exec(style.boxShadow)) !== null) {
-          const sColor = sMatch[1];
-          const sX = parseInt(sMatch[2], 10);
-          const sY = parseInt(sMatch[3], 10);
-          const sBlur = parseInt(sMatch[4], 10);
+      if (!bordersOnly) {
+        // 2. Hard shadows
+        if (style.boxShadow && style.boxShadow !== 'none') {
+          const shadowRegex = /(rgba?\([^\)]+\))\s+(-?\d+px)\s+(-?\d+px)\s+(\d+px)/g;
+          let sMatch;
+          while ((sMatch = shadowRegex.exec(style.boxShadow)) !== null) {
+            const sColor = sMatch[1];
+            const sX = parseInt(sMatch[2], 10);
+            const sY = parseInt(sMatch[3], 10);
+            const sBlur = parseInt(sMatch[4], 10);
 
-          // Ignore transparent shadows (Tailwind ring resets)
-          if (sColor.includes('rgba(0, 0, 0, 0)')) continue;
+            // Ignore transparent shadows (Tailwind ring resets)
+            if (sColor.includes('rgba(0, 0, 0, 0)')) continue;
 
-          // If blur is 0 and offset is non-zero, it's a hard shadow
-          if (sBlur === 0 && (sX !== 0 || sY !== 0)) {
+            // If blur is 0 and offset is non-zero, it's a hard shadow
+            if (sBlur === 0 && (sX !== 0 || sY !== 0)) {
+              failures.push({
+                rule: '2. Hard shadows',
+                selector: getCssSelector(el),
+                detail: `Zero-blur offset shadow detected: ${sMatch[0]}`
+              });
+            }
+          }
+        }
+
+        // 4. Uppercase
+        if (style.textTransform === 'uppercase') {
+          const text = el.innerText || el.textContent || '';
+          if (text.trim().length > 3 && !['VTS', 'ETB', 'QR', 'ID', 'PDF', 'SMS', 'PIN'].includes(text.trim())) {
             failures.push({
-              rule: '2. Hard shadows',
+              rule: '4. Uppercase',
               selector: getCssSelector(el),
-              detail: `Zero-blur offset shadow detected: ${sMatch[0]}`
+              detail: `Uppercase text-transform detected on "${text.trim().slice(0, 30)}"`
             });
           }
         }
-      }
 
-      // 4. Uppercase
-      if (style.textTransform === 'uppercase') {
-        const text = el.innerText || el.textContent || '';
-        if (text.trim().length > 3 && !['VTS', 'ETB', 'QR', 'ID', 'PDF', 'SMS', 'PIN'].includes(text.trim())) {
-          failures.push({
-            rule: '4. Uppercase',
-            selector: getCssSelector(el),
-            detail: `Uppercase text-transform detected on "${text.trim().slice(0, 30)}"`
-          });
+        // 5. Tiny text (< 13px)
+        const fontSize = parseFloat(style.fontSize);
+        if (fontSize < 12.9) {
+          // Direct non-empty text check
+          let hasDirectText = false;
+          for (const child of el.childNodes) {
+            if (child.nodeType === Node.TEXT_NODE && child.textContent.trim().length > 0) {
+              hasDirectText = true;
+              break;
+            }
+          }
+          if (hasDirectText) {
+            failures.push({
+              rule: '5. Tiny text',
+              selector: getCssSelector(el),
+              detail: `Font size ${fontSize}px is below 13px threshold`
+            });
+          }
         }
-      }
 
-      // 5. Tiny text (< 13px)
-      const fontSize = parseFloat(style.fontSize);
-      if (fontSize < 12.9) {
-        // Direct non-empty text check
-        let hasDirectText = false;
+        // 7. Dark primary button limit & outlined buttons
+        if (tagName === 'button') {
+          const bg = parseRgb(style.backgroundColor);
+          const bWidth = parseFloat(style.borderTopWidth) || 0;
+          if (bWidth > 0 && (!bg || (bg[0] === 255 && bg[1] === 255 && bg[2] === 255))) {
+            const bColor = parseRgb(style.borderColor);
+            if (bColor && getLum(bColor[0], bColor[1], bColor[2]) < 0.6) {
+              failures.push({
+                rule: '7. Button rules',
+                selector: getCssSelector(el),
+                detail: `Outlined button detected with border ${style.borderColor}`
+              });
+            }
+          }
+        }
+
+        // 13. Banned words in text
         for (const child of el.childNodes) {
-          if (child.nodeType === Node.TEXT_NODE && child.textContent.trim().length > 0) {
-            hasDirectText = true;
-            break;
-          }
-        }
-        if (hasDirectText) {
-          failures.push({
-            rule: '5. Tiny text',
-            selector: getCssSelector(el),
-            detail: `Font size ${fontSize}px is below 13px threshold`
-          });
-        }
-      }
-
-      // 7. Dark primary button limit & outlined buttons
-      if (tagName === 'button') {
-        const bg = parseRgb(style.backgroundColor);
-        const bWidth = parseFloat(style.borderTopWidth) || 0;
-        if (bWidth > 0 && (!bg || (bg[0] === 255 && bg[1] === 255 && bg[2] === 255))) {
-          const bColor = parseRgb(style.borderColor);
-          if (bColor && getLum(bColor[0], bColor[1], bColor[2]) < 0.6) {
-            failures.push({
-              rule: '7. Button rules',
-              selector: getCssSelector(el),
-              detail: `Outlined button detected with border ${style.borderColor}`
-            });
-          }
-        }
-      }
-
-      // 13. Banned words in text
-      for (const child of el.childNodes) {
-        if (child.nodeType === Node.TEXT_NODE) {
-          const val = (child.textContent || '').trim();
-          if (val) {
-            const lower = val.toLowerCase();
-            for (const w of bannedWords) {
-              if (lower.includes(w) && !val.includes('data-') && !val.includes('class')) {
+          if (child.nodeType === Node.TEXT_NODE) {
+            const val = (child.textContent || '').trim();
+            if (val) {
+              const lower = val.toLowerCase();
+              for (const w of bannedWords) {
+                if (lower.includes(w) && !val.includes('data-') && !val.includes('class')) {
+                  failures.push({
+                    rule: '13. Banned words',
+                    selector: getCssSelector(el),
+                    detail: `Banned word "${w}" detected in text: "${val.slice(0, 40)}"`
+                  });
+                }
+              }
+              if (!isAuditDoc && lower.includes('audit') && !lower.includes('audit report')) {
                 failures.push({
                   rule: '13. Banned words',
                   selector: getCssSelector(el),
-                  detail: `Banned word "${w}" detected in text: "${val.slice(0, 40)}"`
+                  detail: `Banned word "audit" detected in text: "${val.slice(0, 40)}"`
                 });
               }
-            }
-            if (!isAuditDoc && lower.includes('audit') && !lower.includes('audit report')) {
-              failures.push({
-                rule: '13. Banned words',
-                selector: getCssSelector(el),
-                detail: `Banned word "audit" detected in text: "${val.slice(0, 40)}"`
-              });
-            }
-            // Minute displays like (9821m) or 9821m
-            const mMatch = val.match(/\(\d+m\)/i) || val.match(/\b\d{3,}m\b/);
-            if (mMatch) {
-              failures.push({
-                rule: '13. Banned words / Minute display',
-                selector: getCssSelector(el),
-                detail: `Minute shorthand display detected: "${mMatch[0]}"`
-              });
+              // Minute displays like (9821m) or 9821m
+              const mMatch = val.match(/\(\d+m\)/i) || val.match(/\b\d{3,}m\b/);
+              if (mMatch) {
+                failures.push({
+                  rule: '13. Banned words / Minute display',
+                  selector: getCssSelector(el),
+                  detail: `Minute shorthand display detected: "${mMatch[0]}"`
+                });
+              }
             }
           }
         }
@@ -330,7 +377,7 @@ async function scanPageRules(page, isMobile) {
     }
 
     return failures;
-  }, isMobile);
+  }, isMobile, onlyBorders);
 }
 
 // Generate the visual HTML report
@@ -489,7 +536,7 @@ async function runAudit() {
 
     const desktopShot = path.join(roleDir, `${item.name}-1440.png`);
     await page.screenshot({ path: desktopShot, fullPage: false });
-    const desktopFailures = await scanPageRules(page, false);
+    const desktopFailures = await scanPageRules(page, false, bordersOnly);
 
     // 2. Mobile 360
     await page.setViewport({ width: 360, height: 780, isMobile: true, hasTouch: true, deviceScaleFactor: 1 });
@@ -498,7 +545,7 @@ async function runAudit() {
 
     const mobileShot = path.join(roleDir, `${item.name}-360.png`);
     await page.screenshot({ path: mobileShot, fullPage: false });
-    const mobileFailures = await scanPageRules(page, true);
+    const mobileFailures = await scanPageRules(page, true, bordersOnly);
 
     // Merge unique failures
     const failuresMap = {};
@@ -516,6 +563,9 @@ async function runAudit() {
     });
 
     console.log(`  -> ${combinedFailures.length === 0 ? '✓ PASS' : '✗ FAIL (' + combinedFailures.length + ' issues)'}`);
+    if (combinedFailures.length > 0) {
+      combinedFailures.forEach(f => console.log(`      * [${f.rule}] ${f.selector}: ${f.detail}`));
+    }
   }
 
   await browser.close();
@@ -527,6 +577,37 @@ async function runAudit() {
   const htmlPath = path.join(DOCS_AUDIT_DIR, 'index.html');
   const htmlContent = generateHtmlReport(results);
   fs.writeFileSync(htmlPath, htmlContent, 'utf8');
+
+  if (bordersOnly) {
+    const logPath = path.join(DOCS_AUDIT_DIR, 'zero_borders_audit.log');
+    let logContent = `================================================================================\n`;
+    logContent += `VTS ZERO BORDERS AUDIT SCANNER LOG\n`;
+    logContent += `Timestamp: ${new Date().toISOString()}\n`;
+    logContent += `Rule: Zero borders (not dark, not light, no hairlines, no dividers)\n`;
+    logContent += `Viewports: 1440px (Desktop) & 360px (Mobile)\n`;
+    logContent += `Total routes scanned: ${results.length}\n`;
+    logContent += `Total viewports evaluated: ${results.length * 2}\n`;
+    logContent += `================================================================================\n\n`;
+
+    let totalBorderIssues = 0;
+    for (const res of results) {
+      const status = res.failures.length === 0 ? 'PASS' : `FAIL (${res.failures.length} issues)`;
+      logContent += `[${status}] ${res.role.toUpperCase().padEnd(10)} ${res.path}\n`;
+      if (res.failures.length > 0) {
+        totalBorderIssues += res.failures.length;
+        res.failures.forEach(f => {
+          logContent += `    - [${f.rule}] ${f.selector}: ${f.detail}\n`;
+        });
+      }
+    }
+
+    logContent += `\n================================================================================\n`;
+    logContent += `AUDIT CONCLUSION: ${totalBorderIssues === 0 ? '100% CLEAN - ZERO BORDERS & ZERO DIVIDERS' : totalBorderIssues + ' ISSUES FOUND'}\n`;
+    logContent += `Passing routes: ${results.filter(r => r.failures.length === 0).length}/${results.length}\n`;
+    logContent += `================================================================================\n`;
+    fs.writeFileSync(logPath, logContent, 'utf8');
+    console.log(`Saved Zero Borders Audit Log to: ${logPath}`);
+  }
 
   console.log(`\n=== AUDIT COMPLETE ===`);
   console.log(`Report JSON: ${reportPath}`);

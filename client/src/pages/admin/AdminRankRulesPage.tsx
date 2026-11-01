@@ -72,8 +72,8 @@ export const AdminRankRulesPage: React.FC = () => {
       </button>
 
       {/* Header Card */}
-      <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 space-y-4 shadow-sm">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#D5DAE1] pb-4">
+      <div className="rounded-[10px] bg-white p-6 sm:p-8 space-y-4 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4">
           <div className="space-y-1">
             <h1 className="font-display font-black text-2xl sm:text-3xl tracking-tight text-ink-primary leading-tight">
               Rank progression rules
@@ -85,7 +85,7 @@ export const AdminRankRulesPage: React.FC = () => {
         </div>
 
         {/* Live recalculation callout */}
-        <div className="p-3 bg-emerald-50/60 border border-emerald-200 rounded-[8px] flex items-center gap-3 text-sm text-emerald-950 font-sans">
+        <div className="p-3 bg-emerald-50/60 rounded-[8px] flex items-center gap-3 text-sm text-emerald-950 font-sans">
           <Lightning className="w-5 h-5 text-role-volunteer shrink-0" weight="fill" />
           <span className="text-[13px]">
             <strong>Rules engine:</strong> Any change saved below immediately recalculates volunteer progress meters, percentage completion bars, and Manager promotion eligibility across the entire platform in real time.
@@ -97,9 +97,9 @@ export const AdminRankRulesPage: React.FC = () => {
         {rules.map((rule) => (
           <div
             key={rule.rank}
-            className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 space-y-5 shadow-sm text-left"
+            className="rounded-[10px] bg-white p-6 sm:p-8 space-y-5 shadow-sm text-left"
           >
-            <div className="flex items-center justify-between border-b border-[#D5DAE1] pb-3">
+            <div className="flex items-center justify-between pb-3">
               <div className="flex items-center gap-3">
                 <StatusMark status={rule.rank} size="md" />
                 <h3 className="font-display text-xl font-bold tracking-tight text-ink-primary">

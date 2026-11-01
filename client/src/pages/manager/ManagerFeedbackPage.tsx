@@ -70,8 +70,8 @@ export const ManagerFeedbackPage: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Header */}
-      <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 space-y-4 shadow-sm">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#D5DAE1] pb-5">
+      <div className="rounded-[10px] bg-white p-6 sm:p-8 space-y-4 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-5">
           <div className="space-y-1">
             <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight">
               Activity feedback inbox
@@ -82,14 +82,14 @@ export const ManagerFeedbackPage: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="font-mono text-[13px] font-semibold text-role-manager bg-role-managerLight/30 border border-role-manager/30 px-3 py-1.5 rounded-[6px]">
+            <span className="font-mono text-[13px] font-semibold text-role-manager bg-role-managerLight/30 px-3 py-1.5 rounded-[6px]">
               Unreviewed: {unreviewedCount}
             </span>
           </div>
         </div>
 
         {/* Metric Strip */}
-        <div className="border border-[#D5DAE1] rounded-[8px] bg-white divide-x divide-[#D5DAE1] grid grid-cols-1 sm:grid-cols-3 overflow-hidden">
+        <div className="rounded-[8px] bg-white grid grid-cols-1 sm:grid-cols-3 overflow-hidden">
           <div className="p-3 text-center space-y-0.5">
             <span className="text-[13px] text-ink-tertiary font-mono block">Average rating</span>
             <span className="font-display text-2xl sm:text-3xl font-bold text-role-applicant leading-none block">
@@ -152,22 +152,22 @@ export const ManagerFeedbackPage: React.FC = () => {
           {filtered.map((fb) => (
             <div
               key={fb.id}
-              className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 space-y-4 shadow-sm text-left"
+              className="rounded-[10px] bg-white p-6 space-y-4 shadow-sm text-left"
             >
-              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 border-b border-[#D5DAE1] pb-3">
+              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 pb-3">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-display text-xl font-bold text-ink-primary">
                       {fb.userName}
                     </span>
                     {fb.userArea && (
-                      <span className="font-mono text-[13px] text-ink-tertiary px-1.5 py-0.5 bg-canvas-subdued/50 border border-[#D5DAE1] rounded-[4px]">
+                      <span className="font-mono text-[13px] text-ink-tertiary px-1.5 py-0.5 bg-canvas-subdued/50 rounded-[4px]">
                         {fb.userArea}
                       </span>
                     )}
                     <span className={`font-mono text-[13px] font-semibold px-2 py-0.5 rounded-[4px] ${
-                      fb.status === 'new' ? 'bg-amber-100 text-amber-900 border border-amber-300' : 'bg-canvas-subdued/50 text-ink-tertiary border border-[#D5DAE1]'
-                    }`}>
+                      fb.status === 'new' ? 'bg-amber-100 text-amber-900' : 'bg-canvas-subdued/50 text-ink-tertiary'
+                    } `}>
                       {fb.status === 'new' ? 'Unreviewed' : 'Reviewed'}
                     </span>
                   </div>
@@ -179,13 +179,13 @@ export const ManagerFeedbackPage: React.FC = () => {
 
                 <div className="flex items-center gap-3">
                   {/* Star Rating */}
-                  <div className="flex items-center gap-0.5 bg-canvas-subdued/40 px-2.5 py-1 border border-[#D5DAE1] rounded-[6px]">
+                  <div className="flex items-center gap-0.5 bg-canvas-subdued/40 px-2.5 py-1 rounded-[6px]">
                     {Array.from({ length: 5 }).map((_, idx) => (
                       <Star
                         key={idx}
                         className={`w-3.5 h-3.5 ${
                           idx < fb.rating ? 'text-amber-500 fill-amber-500' : 'text-gray-300'
-                        }`}
+                        } `}
                         weight={idx < fb.rating ? 'fill' : 'regular'}
                       />
                     ))}
@@ -209,7 +209,7 @@ export const ManagerFeedbackPage: React.FC = () => {
               </div>
 
               {/* Comment Body */}
-              <p className="font-sans text-[13px] text-ink-primary leading-relaxed bg-canvas-subdued/30 p-4 border border-[#D5DAE1] rounded-[8px] italic">
+              <p className="font-sans text-[13px] text-ink-primary leading-relaxed bg-canvas-subdued/30 p-4 rounded-[8px] italic">
                 "{fb.comment}"
               </p>
 

@@ -23,7 +23,7 @@ export const Tabs: React.FC<TabsProps> = ({
 }) => {
   return (
     <div
-      className={`flex items-center gap-6 border-b border-[#EDEFF2] overflow-x-auto no-scrollbar select-none ${className}`}
+      className={`flex items-center gap-6 overflow-x-auto no-scrollbar select-none ${className} `}
       role="tablist"
     >
       {tabs.map((tab) => {
@@ -38,7 +38,7 @@ export const Tabs: React.FC<TabsProps> = ({
               isActive
                 ? 'font-bold text-ink-primary'
                 : 'font-medium text-ink-secondary hover:text-ink-primary'
-            }`}
+            } `}
           >
             <span>{tab.label}</span>
             {tab.count !== undefined && (
@@ -47,7 +47,7 @@ export const Tabs: React.FC<TabsProps> = ({
                   isActive
                     ? 'bg-ink-primary text-white'
                     : 'bg-[#F1F3F6] text-ink-secondary'
-                }`}
+                } `}
               >
                 {tab.count}
               </span>

@@ -10,40 +10,40 @@ export default {
         canvas: {
           DEFAULT: '#FFFFFF', // Pure crisp white page canvas
           subdued: '#F1F3F6', // Tonal panel & button fill
-          panel:   '#F7F8FA', // Panel tier background (#F7F8FA)
+          panel: '#F7F8FA', // Panel tier background (#F7F8FA)
           sidebar: '#F7F8FA', // Sidebar tone (#F7F8FA)
-          raised:  '#FFFFFF', // Raised tier card surface
-          inset:   '#F1F3F6',
-          dark:    '#111315',
+          raised: '#FFFFFF', // Raised tier card surface
+          inset: '#F1F3F6',
+          dark: '#111315',
         },
         ink: {
-          primary:   '#111111', // Deep carbon text
+          primary: '#111111', // Deep carbon text
           secondary: '#374151', // Clean neutral slate (meets 4.5:1 on light backgrounds)
-          tertiary:  '#64748B', // Muted slate-500
-          inverted:  '#FFFFFF',
+          tertiary: '#64748B', // Muted slate-500
+          inverted: '#FFFFFF',
         },
         border: {
-          DEFAULT: '#EDEFF2', // Hairline divider only
-          subdued: '#EDEFF2', // Hairline list row separator
-          divider: '#EDEFF2', // Hairline divider
-          input:   '#CBD2DA', // 1px input/select border
-          strong:  'transparent', // No dark outlines
+          DEFAULT: 'transparent', // No borders anywhere
+          subdued: 'transparent',
+          divider: 'transparent',
+          input:   'transparent',
+          strong:  'transparent',
         },
         // Role Dominant Fields & Tonal Tints (4% - 6%)
         role: {
-          applicant:       '#E58B05',
-          applicantLight:  '#FEF7ED', // 5% tint
-          volunteer:       '#1E824C',
-          volunteerLight:  '#F0FDF4', // 5% tint
-          teamlead:        '#D63927',
-          teamleadLight:   '#FEF2F2', // 5% tint
-          manager:         '#0E6266',
-          managerLight:    '#F0FDFA', // 5% tint
-          finance:         '#111315',
-          financeLight:    '#F8FAFC',
-          financeAccent:   '#784E0B',
-          admin:           '#202328',
-          adminLight:      '#F8FAFC',
+          applicant: '#E58B05',
+          applicantLight: '#FEF7ED', // 5% tint
+          volunteer: '#1E824C',
+          volunteerLight: '#F0FDF4', // 5% tint
+          teamlead: '#D63927',
+          teamleadLight: '#FEF2F2', // 5% tint
+          manager: '#0E6266',
+          managerLight: '#F0FDFA', // 5% tint
+          finance: '#111315',
+          financeLight: '#F8FAFC',
+          financeAccent: '#784E0B',
+          admin: '#202328',
+          adminLight: '#F8FAFC',
         },
         // Telebirr brand accent
         telebirr: {

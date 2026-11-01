@@ -101,8 +101,8 @@ export const ManagerAnnouncementsPage: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       {/* Header */}
-      <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 space-y-4 shadow-sm">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#D5DAE1] pb-5">
+      <div className="rounded-[10px] bg-white p-6 sm:p-8 space-y-4 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-5">
           <div className="space-y-1">
             <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight">
               Notices & broadcasts
@@ -116,8 +116,8 @@ export const ManagerAnnouncementsPage: React.FC = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
         {/* Post Form */}
-        <div className="lg:col-span-2 border border-[#D5DAE1] rounded-[10px] bg-white p-6 space-y-4 shadow-sm h-fit">
-          <div className="border-b border-[#D5DAE1] pb-2">
+        <div className="lg:col-span-2 rounded-[10px] bg-white p-6 space-y-4 shadow-sm h-fit">
+          <div className="pb-2">
             <h3 className="font-display text-xl font-bold text-ink-primary">
               Compose notice
             </h3>
@@ -211,7 +211,7 @@ export const ManagerAnnouncementsPage: React.FC = () => {
                 value={body}
                 onChange={(e) => setBody(e.target.value)}
                 placeholder="Write your broadcast update here..."
-                className="w-full bg-white text-ink-primary font-sans text-[13px] border-[1.5px] border-[#475569] rounded-[8px] p-2.5 focus:ring-1 focus:ring-ink-primary outline-none"
+                className="w-full bg-white text-ink-primary font-sans text-[13px] rounded-[8px] p-2.5 focus:ring-1 focus:ring-ink-primary"
                 required
               />
             </div>
@@ -222,7 +222,7 @@ export const ManagerAnnouncementsPage: React.FC = () => {
                 id="pinned"
                 checked={pinned}
                 onChange={(e) => setPinned(e.target.checked)}
-                className="w-4 h-4 rounded border-[#D5DAE1] text-role-manager focus:ring-role-manager"
+                className="w-4 h-4 rounded text-role-manager focus:ring-role-manager"
               />
               <label htmlFor="pinned" className="text-[13px] font-medium text-ink-primary cursor-pointer">
                 Pin notice to top of volunteer feed
@@ -243,7 +243,7 @@ export const ManagerAnnouncementsPage: React.FC = () => {
 
         {/* Announcements Stream */}
         <div className="lg:col-span-3 space-y-4">
-          <div className="flex items-center justify-between border-b border-[#D5DAE1] pb-2">
+          <div className="flex items-center justify-between pb-2">
             <h3 className="font-display text-xl font-bold text-ink-primary">
               Active broadcasts ({announcements.length})
             </h3>
@@ -260,17 +260,17 @@ export const ManagerAnnouncementsPage: React.FC = () => {
               {announcements.map((ann) => (
                 <div
                   key={ann.id}
-                  className="border border-[#D5DAE1] rounded-[10px] bg-white p-5 space-y-3 shadow-sm"
+                  className="rounded-[10px] bg-white p-5 space-y-3 shadow-sm"
                 >
-                  <div className="flex items-start justify-between gap-2 border-b border-[#D5DAE1] pb-2">
+                  <div className="flex items-start justify-between gap-2 pb-2">
                     <div className="space-y-0.5">
                       <div className="flex items-center gap-2">
                         {ann.pinned && (
-                          <span className="font-mono text-[13px] font-semibold px-1.5 py-0.5 bg-amber-100 text-amber-800 rounded-[4px] flex items-center gap-1 border border-amber-300">
+                          <span className="font-mono text-[13px] font-semibold px-1.5 py-0.5 bg-amber-100 text-amber-800 rounded-[4px] flex items-center gap-1">
                             <PushPin className="w-3 h-3" weight="fill" /> Pinned
                           </span>
                         )}
-                        <span className="font-mono text-[13px] font-medium px-2 py-0.5 bg-canvas-subdued/50 border border-[#D5DAE1] rounded-[4px] text-ink-primary">
+                        <span className="font-mono text-[13px] font-medium px-2 py-0.5 bg-canvas-subdued/50 rounded-[4px] text-ink-primary">
                           {getAudienceLabel(ann.audience)}
                         </span>
                       </div>
@@ -288,7 +288,7 @@ export const ManagerAnnouncementsPage: React.FC = () => {
                     {ann.body}
                   </p>
 
-                  <div className="flex items-center justify-between pt-2 border-t border-[#D5DAE1]/60 text-[13px] font-mono text-ink-tertiary">
+                  <div className="flex items-center justify-between pt-2 text-[13px] font-mono text-ink-tertiary">
                     <span>Broadcast by: <strong>{ann.authorName}</strong> ({ann.authorRole})</span>
                   </div>
                 </div>

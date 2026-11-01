@@ -17,7 +17,7 @@ export const PageShell: React.FC<PageShellProps> = ({
     <div
       data-page={page}
       data-signature={signature}
-      className={`min-h-full w-full bg-white text-ink-primary font-sans antialiased ${className}`}
+      className={`min-h-full w-full bg-white text-ink-primary font-sans antialiased ${className} `}
     >
       {children}
     </div>

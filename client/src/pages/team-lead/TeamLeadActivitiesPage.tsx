@@ -80,7 +80,7 @@ export const TeamLeadActivitiesPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Top Header */}
-      <div className="border-b border-[#EDEFF2] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div className="pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
           <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
             Activities under my leadership
@@ -118,7 +118,7 @@ export const TeamLeadActivitiesPage: React.FC = () => {
               actionSlot={
                 <div className="flex flex-col sm:flex-row items-end sm:items-center gap-3">
                   <div className="bg-[#F7F8FA] rounded-[10px] p-2.5 text-center min-w-[100px]">
-                    <span className="font-sans text-[12px] font-medium text-ink-tertiary block">
+                    <span className="font-sans text-[13px] font-medium text-ink-tertiary block">
                       Session code
                     </span>
                     <span className="font-mono text-xl font-bold text-ink-primary tracking-widest block">
@@ -169,7 +169,7 @@ export const TeamLeadActivitiesPage: React.FC = () => {
       >
         {rosterTarget && (
           <div className="space-y-5">
-            <div className="border border-[#D5DAE1] rounded-[8px] bg-canvas-subdued/30 p-4 font-mono text-[13px] space-y-1.5">
+            <div className="rounded-[8px] bg-canvas-subdued/30 p-4 font-mono text-[13px] space-y-1.5">
               <div className="flex justify-between">
                 <span className="text-ink-secondary">Schedule:</span>
                 <span className="font-semibold text-ink-primary">
@@ -188,7 +188,7 @@ export const TeamLeadActivitiesPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="border border-[#D5DAE1] rounded-[8px] bg-white divide-y divide-[#D5DAE1] overflow-hidden">
+            <div className="rounded-[8px] bg-white overflow-hidden space-y-2">
               {isLoadingRoster ? (
                 <div className="p-4 space-y-2">
                   <Skeleton variant="row" className="h-10" />

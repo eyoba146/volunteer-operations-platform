@@ -30,11 +30,11 @@ export function DataList<T>({
   const hasMore = items.length > limit;
 
   return (
-    <div className={`w-full ${className}`}>
-      {header && <div className="pb-3 border-b border-[#EDEFF2]">{header}</div>}
-      <div className="divide-y divide-[#EDEFF2]">
+    <div className={`w-full ${className} `}>
+      {header && <div className="pb-4">{header}</div>}
+      <div className="space-y-2">
         {displayedItems.map((item, idx) => (
-          <div key={keyExtractor(item, idx)} className="py-4 first:pt-2 last:pb-2">
+          <div key={keyExtractor(item, idx)} className="p-3 rounded-[12px] hover:bg-[#F7F8FA] transition-colors">
             {renderItem(item, idx)}
           </div>
         ))}
@@ -44,7 +44,7 @@ export function DataList<T>({
           <button
             type="button"
             onClick={() => setExpanded(!expanded)}
-            className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-ink-primary bg-[#F1F3F6] hover:bg-[#E8EBEF] rounded-[8px] border-none transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-ink-primary bg-[#F1F3F6] hover:bg-[#E8EBEF] rounded-[8px] transition-colors cursor-pointer"
           >
             <span>{expanded ? 'Show less' : `Show all ${items.length}`}</span>
             {expanded ? <CaretUp className="w-4 h-4" /> : <CaretDown className="w-4 h-4" />}

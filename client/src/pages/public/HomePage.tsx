@@ -180,7 +180,7 @@ export const HomePage: React.FC = () => {
     <PageShell page="public/home" signature="TopoBackdrop, TrailMeter, TicketCard">
       <div className="space-y-0 text-ink-primary">
         {/* 1. HERO: Saffron Field with High-Contrast Editorial Typography */}
-        <section className="relative overflow-hidden bg-role-applicant text-ink-primary border-b border-[#EDEFF2] pt-12 md:pt-20 pb-16 md:pb-20 px-4 sm:px-6 lg:px-8">
+        <section className="relative overflow-hidden bg-role-applicant text-ink-primary pt-12 md:pt-20 pb-16 md:pb-20 px-4 sm:px-6 lg:px-8">
           <TopoBackdrop color="#111111" opacity={0.06} />
           <div className="relative z-10 max-w-7xl mx-auto space-y-6">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white/70 rounded-full text-sm font-semibold">
@@ -233,7 +233,7 @@ export const HomePage: React.FC = () => {
 
         {/* 2. THE TRAIL RANKS: Interactive Waypoint with Single Rich Detail Panel (NO 4-box row) */}
         <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-10">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#EDEFF2] pb-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6">
             <div className="space-y-1">
               <span className="text-sm font-bold text-ink-secondary">
                 Four stages of advancement
@@ -263,17 +263,17 @@ export const HomePage: React.FC = () => {
             />
 
             {/* Interactive Rank Selector Buttons for Mobile */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-4 border-t border-[#EDEFF2] mt-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-4 mt-4">
               {RANKS.map((r, idx) => (
                 <button
                   key={r.id}
                   type="button"
                   onClick={() => setActiveRankIndex(idx)}
-                  className={`py-2 px-3 text-left rounded-[8px] border-none transition-all text-sm cursor-pointer ${
+                  className={`py-2 px-3 text-left rounded-[8px] transition-all text-sm cursor-pointer ${
                     activeRankIndex === idx
                       ? 'bg-[#F1F3F6] font-bold text-ink-primary'
                       : 'bg-transparent text-ink-secondary hover:text-ink-primary hover:bg-[#F7F8FA]'
-                  }`}
+                  } `}
                 >
                   <div className="flex items-center gap-1.5">
                     <span
@@ -315,16 +315,16 @@ export const HomePage: React.FC = () => {
                   {currentRank.summary}
                 </p>
 
-                <div className="pt-2 border-t border-[#EDEFF2] space-y-2.5 text-sm">
-                  <div className="flex justify-between py-1 border-b border-[#EDEFF2]">
+                <div className="pt-2 space-y-2.5 text-sm">
+                  <div className="flex justify-between py-1">
                     <span className="text-ink-secondary">Service hours</span>
                     <span className="font-bold text-ink-primary">{currentRank.hours}</span>
                   </div>
-                  <div className="flex justify-between py-1 border-b border-[#EDEFF2]">
+                  <div className="flex justify-between py-1">
                     <span className="text-ink-secondary">Completed activities</span>
                     <span className="font-bold text-ink-primary">{currentRank.activities}</span>
                   </div>
-                  <div className="flex justify-between py-1 border-b border-[#EDEFF2]">
+                  <div className="flex justify-between py-1">
                     <span className="text-ink-secondary">Participant rating</span>
                     <span className="font-bold text-ink-primary">{currentRank.rating}</span>
                   </div>
@@ -346,7 +346,7 @@ export const HomePage: React.FC = () => {
 
                 <div className="space-y-3">
                   {currentRank.unlocks.map((item, idx) => (
-                    <div key={idx} className="flex items-start gap-3 bg-white p-3.5 rounded-[8px] border-none">
+                    <div key={idx} className="flex items-start gap-3 bg-white p-3.5 rounded-[8px]">
                       <CheckCircle className="w-5 h-5 text-role-volunteer shrink-0 mt-0.5" weight="fill" />
                       <div>
                         <p className="text-sm font-semibold text-ink-primary">{item}</p>
@@ -359,7 +359,7 @@ export const HomePage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => navigate('/register')}
-                    className="text-sm font-bold text-ink-primary hover:underline inline-flex items-center gap-1.5 cursor-pointer border-none bg-transparent"
+                    className="text-sm font-bold text-ink-primary hover:underline inline-flex items-center gap-1.5 cursor-pointer bg-transparent"
                   >
                     <span>Apply to begin with Member status</span>
                     <ArrowRight className="w-4 h-4" />
@@ -371,7 +371,7 @@ export const HomePage: React.FC = () => {
         </section>
 
         {/* 3. HOW TO JOIN: Vertical Numbered Timeline (NO boxes) */}
-        <section className="py-16 md:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-[#EDEFF2]">
+        <section className="py-16 md:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             <div className="lg:col-span-4 space-y-3 sticky top-24">
               <span className="text-sm font-bold text-ink-secondary">
@@ -399,7 +399,7 @@ export const HomePage: React.FC = () => {
               {JOIN_STEPS.map((step) => (
                 <div
                   key={step.num}
-                  className="flex items-start gap-6 pb-8 border-b border-[#EDEFF2] last:border-b-0 last:pb-0"
+                  className="flex items-start gap-6 pb-8 last:pb-0"
                 >
                   <div className="flex items-center gap-2 shrink-0">
                     <span className="w-2.5 h-2.5 rounded-full bg-role-applicant" />
@@ -422,8 +422,8 @@ export const HomePage: React.FC = () => {
         </section>
 
         {/* 4. UPCOMING ACTIVITIES: One Featured Ticket + Horizontal Scrolling Strip */}
-        <section className="py-16 md:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-[#EDEFF2] space-y-8">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#EDEFF2] pb-6">
+        <section className="py-16 md:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6">
             <div className="space-y-1">
               <span className="text-sm font-bold text-ink-secondary">
                 Community fieldwork
@@ -435,7 +435,7 @@ export const HomePage: React.FC = () => {
             <button
               type="button"
               onClick={() => navigate('/register')}
-              className="text-sm font-bold text-ink-primary hover:underline inline-flex items-center gap-1.5 cursor-pointer border-none bg-transparent"
+              className="text-sm font-bold text-ink-primary hover:underline inline-flex items-center gap-1.5 cursor-pointer bg-transparent"
             >
               <span>Browse all activities</span>
               <ArrowRight className="w-4 h-4" />
@@ -460,7 +460,7 @@ export const HomePage: React.FC = () => {
                     {FEATURED_ACTIVITY.description}
                   </p>
 
-                  <div className="space-y-1.5 pt-2 border-t border-[#EDEFF2]">
+                  <div className="space-y-1.5 pt-2">
                     <div className="flex items-center gap-2 text-sm font-semibold text-ink-primary">
                       <Calendar className="w-4 h-4 text-role-teamlead" weight="bold" />
                       <span>{FEATURED_ACTIVITY.date}</span>
@@ -493,7 +493,7 @@ export const HomePage: React.FC = () => {
 
               <div className="flex gap-4 overflow-x-auto pb-4 pt-1 no-scrollbar">
                 {STRIP_ACTIVITIES.map((act) => (
-                  <div key={act.title} className={`${act.widthClass} shrink-0`}>
+                  <div key={act.title} className={` ${act.widthClass} shrink-0`}>
                     <TicketPass
                       variant={act.variant}
                       title={act.title}
@@ -521,7 +521,7 @@ export const HomePage: React.FC = () => {
         </section>
 
         {/* 5. CLOSING CALL TO ACTION: Light Surface with High-Contrast Primary & Secondary Buttons */}
-        <section className="bg-white border-t border-[#EDEFF2] py-16 md:py-20 px-4 sm:px-6 lg:px-8">
+        <section className="bg-white py-16 md:py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center space-y-5">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#F1F3F6] rounded-full text-[13px] font-semibold text-ink-secondary">
               <span>Verified community service</span>

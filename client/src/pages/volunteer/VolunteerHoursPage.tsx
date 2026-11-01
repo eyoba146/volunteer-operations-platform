@@ -267,7 +267,7 @@ export const VolunteerHoursPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Top Header */}
-      <div className="border-b border-[#EDEFF2] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div className="pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
           <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
             Your hours
@@ -312,7 +312,7 @@ export const VolunteerHoursPage: React.FC = () => {
           </p>
 
           {modalError && (
-            <div className="p-3 border border-role-teamlead/30 rounded-[8px] bg-role-teamleadLight/20 text-role-teamlead text-[13px] font-sans font-medium flex items-center gap-2">
+            <div className="p-3 rounded-[8px] bg-role-teamleadLight/20 text-role-teamlead text-[13px] font-sans font-medium flex items-center gap-2">
               <Warning className="w-4 h-4 shrink-0" weight="bold" />
               <span>{modalError}</span>
             </div>
@@ -369,12 +369,12 @@ export const VolunteerHoursPage: React.FC = () => {
               value={manualNote}
               onChange={(e) => setManualNote(e.target.value)}
               placeholder="e.g. Arrived directly at field site station B; phone battery ran out before check-in code was scanned."
-              className="w-full bg-white text-ink-primary font-sans text-[13px] border-[1.5px] border-[#475569] rounded-[8px] p-2.5 focus:outline-none focus:ring-2 focus:ring-role-volunteer"
+              className="w-full bg-white text-ink-primary font-sans text-[13px] rounded-[8px] p-2.5 focus:outline-none focus:ring-2 focus:ring-role-volunteer"
               required
             />
           </div>
 
-          <div className="flex justify-end gap-2 pt-2 border-t border-[#D5DAE1]">
+          <div className="flex justify-end gap-2 pt-2">
             <Button
               type="button"
               variant="secondary"

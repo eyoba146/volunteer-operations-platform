@@ -45,10 +45,10 @@ export const TicketCard: React.FC<TicketCardProps> = ({
   return (
     <div
       onClick={handleClick}
-      className={`group relative rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] transition-all duration-200 hover:-translate-y-0.5 cursor-pointer flex flex-col md:flex-row items-stretch overflow-hidden ${className}`}
+      className={`group relative rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] transition-all duration-200 hover:-translate-y-0.5 cursor-pointer flex flex-col md:flex-row items-stretch overflow-hidden ${className} `}
     >
       {/* Left Date Stub */}
-      <div className="relative shrink-0 md:w-36 bg-[#F7F8FA] p-5 flex flex-col items-center justify-center text-center border-b md:border-b-0 md:border-r border-dashed border-[#EDEFF2]">
+      <div className="relative shrink-0 md:w-36 bg-[#F7F8FA] p-5 flex flex-col items-center justify-center text-center">
         {/* Concave Notches on Separator (Top & Bottom) */}
         <div className="hidden md:block absolute -top-3 -right-3 w-6 h-6 rounded-full bg-white z-10" />
         <div className="hidden md:block absolute -bottom-3 -right-3 w-6 h-6 rounded-full bg-white z-10" />
@@ -98,7 +98,7 @@ export const TicketCard: React.FC<TicketCardProps> = ({
         </div>
 
         {/* Footer info: Location, Capacity & Action */}
-        <div className="pt-2 border-t border-[#EDEFF2] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="pt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex flex-wrap items-center gap-4 text-[13px] font-sans text-ink-secondary">
             <span className="flex items-center gap-1.5 font-medium">
               <MapPin className="w-4 h-4 text-ink-tertiary" />

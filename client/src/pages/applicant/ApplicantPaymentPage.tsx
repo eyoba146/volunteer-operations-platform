@@ -175,7 +175,7 @@ export const ApplicantPaymentPage: React.FC = () => {
           }}
         />
 
-        <div className="relative overflow-hidden rounded-[16px] bg-[#F7F8FA] p-8 text-center space-y-3 border-none">
+        <div className="relative overflow-hidden rounded-[16px] bg-[#F7F8FA] p-8 text-center space-y-3">
           <TopoBackdrop color="#16A34A" opacity={0.08} />
           <div className="relative z-10 space-y-3">
             <div className="w-16 h-16 mx-auto bg-role-volunteer text-white rounded-full flex items-center justify-center">
@@ -204,7 +204,7 @@ export const ApplicantPaymentPage: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
           {/* Left: Volunteer ID Card */}
           <div className="space-y-3">
-            <div className="flex items-center justify-between border-b border-[#EDEFF2] pb-2">
+            <div className="flex items-center justify-between pb-2">
               <h2 className="font-display text-2xl font-bold text-ink-primary">
                 Your volunteer pass
               </h2>
@@ -221,8 +221,8 @@ export const ApplicantPaymentPage: React.FC = () => {
           </div>
 
           {/* Right: Payment Receipt Pass */}
-          <div className="relative overflow-hidden bg-white p-6 md:p-8 space-y-5 shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] rounded-[16px] text-left border-none">
-            <div className="flex items-center justify-between border-b border-[#EDEFF2] pb-3">
+          <div className="relative overflow-hidden bg-white p-6 md:p-8 space-y-5 shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] rounded-[16px] text-left">
+            <div className="flex items-center justify-between pb-3">
               <div>
                 <span className="font-display text-2xl font-bold text-ink-primary block leading-none">
                   Payment receipt
@@ -234,24 +234,24 @@ export const ApplicantPaymentPage: React.FC = () => {
               <Receipt className="w-8 h-8 text-ink-primary" />
             </div>
 
-            <div className="space-y-3 font-sans text-sm border-b border-[#EDEFF2] pb-4">
-              <div data-allow="perforation" className="flex justify-between py-1 border-b border-dashed border-[#EDEFF2]">
+            <div className="space-y-3 font-sans text-sm pb-4">
+              <div data-allow="perforation" className="flex justify-between py-1">
                 <span className="text-ink-secondary">Receipt number:</span>
                 <span className="font-bold text-ink-primary">{payment?.receiptNumber || 'REC-2026-98124'}</span>
               </div>
-              <div data-allow="perforation" className="flex justify-between py-1 border-b border-dashed border-[#EDEFF2]">
+              <div data-allow="perforation" className="flex justify-between py-1">
                 <span className="text-ink-secondary">Telebirr reference:</span>
                 <span className="text-ink-primary font-bold">{payment?.telebirrReference || 'TB-2026-918204'}</span>
               </div>
-              <div data-allow="perforation" className="flex justify-between py-1 border-b border-dashed border-[#EDEFF2]">
+              <div data-allow="perforation" className="flex justify-between py-1">
                 <span className="text-ink-secondary">Payer name:</span>
                 <span className="text-ink-primary font-medium">{payment?.payerName || activeProfile.fullName}</span>
               </div>
-              <div data-allow="perforation" className="flex justify-between py-1 border-b border-dashed border-[#EDEFF2]">
+              <div data-allow="perforation" className="flex justify-between py-1">
                 <span className="text-ink-secondary">Payer mobile:</span>
                 <span className="text-ink-primary font-medium">{payment?.payerPhone || phone}</span>
               </div>
-              <div data-allow="perforation" className="flex justify-between py-1 border-b border-dashed border-[#EDEFF2]">
+              <div data-allow="perforation" className="flex justify-between py-1">
                 <span className="text-ink-secondary">Amount paid:</span>
                 <span className="font-bold text-ink-primary">ETB 200.00</span>
               </div>
@@ -261,7 +261,7 @@ export const ApplicantPaymentPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="p-3 bg-canvas-subdued border-none bg-[#F1F3F6] rounded-[6px] text-sm font-sans text-ink-secondary">
+            <div className="p-3 bg-canvas-subdued bg-[#F1F3F6] rounded-[6px] text-sm font-sans text-ink-secondary">
               A copy of this payment receipt and your volunteer onboarding instructions have been sent to your email.
             </div>
 
@@ -283,7 +283,7 @@ export const ApplicantPaymentPage: React.FC = () => {
     <PageShell page="applicant/payment" signature="MomentOverlay, TopoBackdrop">
     <div className="max-w-4xl mx-auto space-y-8">
       {/* Header */}
-      <div className="border-b border-[#EDEFF2] pb-5 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div className="pb-5 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
           <h1 className="font-display font-bold text-3xl sm:text-4xl tracking-tight text-ink-primary leading-tight">
             Registration fee payment
@@ -293,7 +293,7 @@ export const ApplicantPaymentPage: React.FC = () => {
           </p>
         </div>
         {timeLeft && (
-          <div className="bg-amber-100 rounded-[8px] px-3 py-1.5 flex items-center gap-2 border-none">
+          <div className="bg-amber-100 rounded-[8px] px-3 py-1.5 flex items-center gap-2">
             <Clock className="w-4 h-4 text-role-applicant" weight="bold" />
             <span className="font-sans text-[13px] font-bold text-ink-primary">
               Deadline: {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m left
@@ -305,8 +305,8 @@ export const ApplicantPaymentPage: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
         {/* Left Column: What It Covers */}
         <div className="md:col-span-2 space-y-5">
-          <div className="rounded-[16px] bg-[#F7F8FA] p-6 space-y-5 border-none">
-            <div className="border-b border-[#EDEFF2] pb-3">
+          <div className="rounded-[16px] bg-[#F7F8FA] p-6 space-y-5">
+            <div className="pb-3">
               <span className="font-sans text-[13px] font-bold text-role-applicant block">
                 One-time activation fee
               </span>
@@ -322,7 +322,7 @@ export const ApplicantPaymentPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="space-y-2 pt-3 border-t border-[#EDEFF2] text-sm font-sans text-ink-secondary leading-relaxed">
+            <div className="space-y-2 pt-3 text-sm font-sans text-ink-secondary leading-relaxed">
               <span className="font-bold text-ink-primary block">What this covers:</span>
               <ul className="space-y-1.5 list-disc list-inside">
                 <li>Volunteer ID pass with verifiable QR code</li>
@@ -332,7 +332,7 @@ export const ApplicantPaymentPage: React.FC = () => {
               </ul>
             </div>
 
-            <div className="p-3 bg-canvas-subdued border-none bg-[#F1F3F6] rounded-[6px] text-[13px] font-sans text-ink-secondary">
+            <div className="p-3 bg-canvas-subdued bg-[#F1F3F6] rounded-[6px] text-[13px] font-sans text-ink-secondary">
               Merchant: Volunteer Tracking System<br />
               Shortcode: 884120
             </div>
@@ -341,9 +341,9 @@ export const ApplicantPaymentPage: React.FC = () => {
 
         {/* Right Column: Telebirr Payment Rail */}
         <div className="md:col-span-3 space-y-6">
-          <div className="rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 md:p-8 space-y-6 border-none">
+          <div className="rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 md:p-8 space-y-6">
             {/* Telebirr Brand Header */}
-            <div className="flex items-center justify-between border-b border-[#EDEFF2] pb-4">
+            <div className="flex items-center justify-between pb-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-[8px] bg-role-applicant text-white flex items-center justify-center font-display text-2xl font-black">
                   tb
@@ -362,7 +362,7 @@ export const ApplicantPaymentPage: React.FC = () => {
 
             {/* Edge Case: Delay / Checking Payment */}
             {simulationState === 'delay' && (
-              <div className="p-5 bg-amber-50 rounded-[8px] border-none space-y-3 text-sm font-sans text-ink-primary">
+              <div className="p-5 bg-amber-50 rounded-[8px] space-y-3 text-sm font-sans text-ink-primary">
                 <div className="flex items-center gap-2 font-bold text-ink-primary">
                   <Clock className="w-5 h-5 text-role-applicant animate-spin" weight="bold" />
                   <span className="text-base font-bold">We are checking your payment</span>
@@ -384,7 +384,7 @@ export const ApplicantPaymentPage: React.FC = () => {
 
             {/* Edge Case: Failed / Declined */}
             {simulationState === 'failed' && (
-              <div className="p-5 bg-rose-50 rounded-[8px] border-none space-y-3 text-sm font-sans text-ink-primary">
+              <div className="p-5 bg-rose-50 rounded-[8px] space-y-3 text-sm font-sans text-ink-primary">
                 <div className="flex items-center gap-2 font-bold text-role-teamlead">
                   <WarningCircle className="w-5 h-5 shrink-0" weight="bold" />
                   <span className="text-base font-bold">Payment could not be completed</span>
@@ -407,7 +407,7 @@ export const ApplicantPaymentPage: React.FC = () => {
 
             {/* Edge Case: Duplicate Payment */}
             {simulationState === 'duplicate' && (
-              <div className="p-5 bg-rose-50 rounded-[8px] border-none space-y-3 text-sm font-sans text-ink-primary">
+              <div className="p-5 bg-rose-50 rounded-[8px] space-y-3 text-sm font-sans text-ink-primary">
                 <div className="flex items-center gap-2 font-bold text-role-teamlead">
                   <WarningCircle className="w-5 h-5 shrink-0" weight="bold" />
                   <span className="text-base font-bold">Duplicate payment flagged</span>
@@ -440,7 +440,7 @@ export const ApplicantPaymentPage: React.FC = () => {
                   required
                 />
 
-                <div className="p-4 border-none bg-[#F1F3F6] rounded-[8px] bg-canvas-subdued flex items-center justify-between gap-4">
+                <div className="p-4 bg-[#F1F3F6] rounded-[8px] bg-canvas-subdued flex items-center justify-between gap-4">
                   <div className="space-y-1">
                     <span className="font-display text-lg font-bold text-ink-primary block leading-none">
                       Telebirr QR option
@@ -449,7 +449,7 @@ export const ApplicantPaymentPage: React.FC = () => {
                       Scan with your Telebirr SuperApp camera to authorize payment directly.
                     </p>
                   </div>
-                  <div className="w-16 h-16 border-none bg-[#F1F3F6] rounded-[6px] bg-white p-1 flex items-center justify-center shrink-0">
+                  <div className="w-16 h-16 bg-[#F1F3F6] rounded-[6px] bg-white p-1 flex items-center justify-center shrink-0">
                     <QrCode className="w-full h-full text-ink-primary" />
                   </div>
                 </div>
@@ -470,7 +470,7 @@ export const ApplicantPaymentPage: React.FC = () => {
             {/* In-Flight USSD Prompt Simulation */}
             {simulationState === 'waiting' && (
               <div className="space-y-6 text-center py-4">
-                <div className="w-16 h-16 mx-auto border-none bg-[#F1F3F6] rounded-full bg-role-applicantLight flex items-center justify-center text-ink-primary">
+                <div className="w-16 h-16 mx-auto bg-[#F1F3F6] rounded-full bg-role-applicantLight flex items-center justify-center text-ink-primary">
                   <DeviceMobile className="w-8 h-8 animate-bounce text-role-applicant" weight="bold" />
                 </div>
 
@@ -484,8 +484,8 @@ export const ApplicantPaymentPage: React.FC = () => {
                 </div>
 
                 {/* Telebirr Edge Case Simulation Control Panel */}
-                <div className="p-5 border-none bg-[#F1F3F6] rounded-[8px] bg-canvas-subdued text-left space-y-4">
-                  <div className="flex items-center justify-between border-b border-[#EDEFF2] pb-2">
+                <div className="p-5 bg-[#F1F3F6] rounded-[8px] bg-canvas-subdued text-left space-y-4">
+                  <div className="flex items-center justify-between pb-2">
                     <span className="font-display text-lg font-bold text-ink-primary">
                       Demo Telebirr gateway controls
                     </span>

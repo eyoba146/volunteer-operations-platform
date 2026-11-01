@@ -59,10 +59,10 @@ export const TeamLeadHomePage: React.FC = () => {
   return (
     <div className="space-y-8">
       {/* Team Lead Dispatch Header with TopoBackdrop */}
-      <div className="relative rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] overflow-hidden p-6 sm:p-8 space-y-6 border-none">
+      <div className="relative rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] overflow-hidden p-6 sm:p-8 space-y-6">
         <TopoBackdrop color="#DC2626" opacity={0.06} />
 
-        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#EDEFF2] pb-5">
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5">
           <div className="flex items-center gap-4">
             <Avatar
               name={profile?.fullName || user?.username || 'Team Lead'}
@@ -127,14 +127,13 @@ export const TeamLeadHomePage: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm pt-2 md:pt-0 border-t md:border-t-0 border-[#EDEFF2]">
+          <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm pt-2 md:pt-0">
             <div className="space-y-0.5">
               <span className="text-[13px] text-ink-secondary block">Supervised activities</span>
               <span className="text-xl font-bold text-ink-primary">
                 {leadActivities.length}
               </span>
             </div>
-            <div className="w-px h-8 bg-[#EDEFF2] hidden sm:block" />
             <div className="space-y-0.5">
               <span className="text-[13px] text-ink-secondary block">Assigned community area</span>
               <span className="text-xl font-bold text-ink-primary">
@@ -148,9 +147,9 @@ export const TeamLeadHomePage: React.FC = () => {
       {/* Two Column Layout: Today's Session & Quick Field Actions */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Today's Active Session Pass & Check-In Code */}
-        <div className="rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 space-y-5 flex flex-col justify-between border-none">
+        <div className="rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 space-y-5 flex flex-col justify-between">
           <div className="space-y-4">
-            <div className="flex items-center justify-between border-b border-[#EDEFF2] pb-3">
+            <div className="flex items-center justify-between pb-3">
               <div className="flex items-center gap-2">
                 <CalendarIcon className="w-5 h-5 text-role-teamlead" weight="bold" />
                 <h3 className="font-display text-xl font-bold text-ink-primary">
@@ -205,7 +204,7 @@ export const TeamLeadHomePage: React.FC = () => {
             )}
           </div>
 
-          <div className="pt-3 border-t border-[#EDEFF2]">
+          <div className="pt-3">
             <Link
               to={todayAct ? `/team-lead/roster/${todayAct.id}` : '/team-lead/activities'}
               className="text-sm font-bold text-ink-primary hover:underline flex items-center gap-1.5"
@@ -217,9 +216,9 @@ export const TeamLeadHomePage: React.FC = () => {
         </div>
 
         {/* Pending Hours Approvals Card */}
-        <div className="rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 space-y-4 flex flex-col justify-between border-none">
+        <div className="rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 space-y-4 flex flex-col justify-between">
           <div className="space-y-4">
-            <div className="flex items-center justify-between border-b border-[#EDEFF2] pb-3">
+            <div className="flex items-center justify-between pb-3">
               <div className="flex items-center gap-2">
                 <CheckCircle className="w-5 h-5 text-role-teamlead" weight="bold" />
                 <h3 className="font-display text-xl font-bold text-ink-primary">
@@ -236,7 +235,7 @@ export const TeamLeadHomePage: React.FC = () => {
                 All submitted volunteer hours have been reviewed and approved.
               </p>
             ) : (
-              <div className="divide-y divide-[#EDEFF2]">
+              <div className="space-y-2">
                 {pendingHours.slice(0, 3).map((h) => (
                   <div key={h.id} className="py-2.5 flex items-center justify-between gap-3 text-sm">
                     <div>
@@ -260,7 +259,7 @@ export const TeamLeadHomePage: React.FC = () => {
             )}
           </div>
 
-          <div className="pt-3 border-t border-[#EDEFF2]">
+          <div className="pt-3">
             <Link
               to="/team-lead/approve-hours"
               className="text-sm font-bold text-ink-primary hover:underline flex items-center gap-1.5"

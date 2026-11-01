@@ -133,11 +133,11 @@ export const VolunteerActivityDetailPage: React.FC = () => {
       </button>
 
       {/* Main Hero Card with TopoBackdrop */}
-      <div className="relative rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] overflow-hidden p-6 sm:p-8 space-y-6 border-none">
+      <div className="relative rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] overflow-hidden p-6 sm:p-8 space-y-6">
         <TopoBackdrop color="#15803D" opacity={0.06} />
 
         {/* Header Section */}
-        <div className="relative z-10 space-y-4 border-b border-[#EDEFF2] pb-6">
+        <div className="relative z-10 space-y-4 pb-6">
           <div className="flex flex-wrap items-center gap-2">
             <span className="font-mono text-[13px] font-medium px-2.5 py-0.5 bg-[#F1F3F6] rounded-[4px] text-ink-primary">
               {activity.type.replace('_', ' ')}
@@ -156,7 +156,7 @@ export const VolunteerActivityDetailPage: React.FC = () => {
               </span>
             )}
             {isWaiting && (
-              <span className="font-mono text-[13px] font-medium px-2.5 py-0.5 bg-role-applicantLight text-role-applicant rounded-[4px] border border-role-applicant/30 flex items-center gap-1">
+              <span className="font-mono text-[13px] font-medium px-2.5 py-0.5 bg-role-applicantLight text-role-applicant rounded-[4px] flex items-center gap-1">
                 <Hourglass className="w-3.5 h-3.5" weight="fill" />
                 <span>On waiting list</span>
               </span>
@@ -173,7 +173,7 @@ export const VolunteerActivityDetailPage: React.FC = () => {
         </div>
 
         {/* Operational Attributes Grid */}
-        <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 p-4 rounded-[12px] bg-[#F7F8FA] font-sans text-[13px] border-none">
+        <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 p-4 rounded-[12px] bg-[#F7F8FA] font-sans text-[13px]">
           <div className="space-y-1">
             <span className="font-sans text-[13px] font-semibold text-ink-tertiary block">
               Schedule & timing
@@ -240,7 +240,7 @@ export const VolunteerActivityDetailPage: React.FC = () => {
               {activity.skills.map((skill, i) => (
                 <span
                   key={i}
-                  className="px-3 py-1 bg-[#F7F8FA] rounded-[6px] font-sans text-[13px] font-medium text-ink-primary flex items-center gap-1.5 border-none"
+                  className="px-3 py-1 bg-[#F7F8FA] rounded-[6px] font-sans text-[13px] font-medium text-ink-primary flex items-center gap-1.5"
                 >
                   <Tag className="w-3.5 h-3.5 text-role-volunteer" weight="bold" />
                   <span>{skill}</span>
@@ -251,7 +251,7 @@ export const VolunteerActivityDetailPage: React.FC = () => {
         )}
 
         {/* Action Panel */}
-        <div className="pt-6 border-t border-[#EDEFF2] flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="text-[13px] text-ink-secondary">
             {isJoined ? (
               <p className="text-role-volunteer font-semibold">

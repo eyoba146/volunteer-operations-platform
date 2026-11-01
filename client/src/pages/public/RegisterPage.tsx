@@ -151,7 +151,7 @@ export const RegisterPage: React.FC = () => {
     <PageShell page="public/register" signature="TopoBackdrop">
       <div className="max-w-xl mx-auto px-4 sm:px-6 py-10 md:py-14 space-y-6">
         {/* Editorial Header */}
-        <div className="space-y-2 border-b border-[#EDEFF2] pb-6 text-center">
+        <div className="space-y-2 pb-6 text-center">
           <h1 className="font-display font-bold text-3xl sm:text-4xl text-ink-primary tracking-tight">
             Join the volunteer trail
           </h1>
@@ -303,7 +303,7 @@ export const RegisterPage: React.FC = () => {
                   <div
                     className={`flex items-center gap-1.5 font-semibold ${
                       hasMinLength ? 'text-role-volunteer' : 'text-ink-tertiary'
-                    }`}
+                    } `}
                   >
                     {hasMinLength ? <Check className="w-4 h-4" weight="bold" /> : <div className="w-1.5 h-1.5 rounded-full bg-current" />}
                     <span>8+ characters</span>
@@ -311,7 +311,7 @@ export const RegisterPage: React.FC = () => {
                   <div
                     className={`flex items-center gap-1.5 font-semibold ${
                       hasLetter ? 'text-role-volunteer' : 'text-ink-tertiary'
-                    }`}
+                    } `}
                   >
                     {hasLetter ? <Check className="w-4 h-4" weight="bold" /> : <div className="w-1.5 h-1.5 rounded-full bg-current" />}
                     <span>At least 1 letter</span>
@@ -319,7 +319,7 @@ export const RegisterPage: React.FC = () => {
                   <div
                     className={`flex items-center gap-1.5 font-semibold ${
                       hasNumber ? 'text-role-volunteer' : 'text-ink-tertiary'
-                    }`}
+                    } `}
                   >
                     {hasNumber ? <Check className="w-4 h-4" weight="bold" /> : <div className="w-1.5 h-1.5 rounded-full bg-current" />}
                     <span>At least 1 number</span>
@@ -344,7 +344,7 @@ export const RegisterPage: React.FC = () => {
             </form>
 
             {/* Footer Link */}
-            <div className="pt-4 border-t border-[#EDEFF2] flex flex-col sm:flex-row items-center justify-between text-sm text-ink-secondary gap-2 mt-6">
+            <div className="pt-4 flex flex-col sm:flex-row items-center justify-between text-sm text-ink-secondary gap-2 mt-6">
               <span>Already registered?</span>
               <Link
                 to="/sign-in"

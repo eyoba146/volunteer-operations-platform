@@ -72,7 +72,7 @@ export const VolunteerMyActivitiesPage: React.FC = () => {
     <PageShell page="volunteer/my-activities" signature="TicketCard">
     <div className="space-y-6">
       {/* Header */}
-      <div className="border-b border-[#EDEFF2] pb-4">
+      <div className="pb-4">
         <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
           My volunteer roster
         </h1>

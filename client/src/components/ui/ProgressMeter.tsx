@@ -26,7 +26,7 @@ export const ProgressMeter: React.FC<ProgressMeterProps> = ({
   const effectiveColor = roleColor || (color === 'green' ? '#1E824C' : color === 'gold' ? '#E58B05' : '#111315');
 
   return (
-    <div className={`space-y-2.5 ${className}`}>
+    <div className={`space-y-2.5 ${className} `}>
       <div className="flex items-end justify-between">
         <div>
           <span className="font-sans text-sm font-bold tracking-tight text-ink-secondary block">
@@ -53,7 +53,7 @@ export const ProgressMeter: React.FC<ProgressMeterProps> = ({
       </div>
 
       {/* Trail Route Segment */}
-      <div className="relative w-full h-3 bg-canvas-inset overflow-hidden rounded-[6px] border border-[#D5DAE1]">
+      <div className="relative w-full h-3 bg-canvas-inset overflow-hidden rounded-[6px]">
         {/* Animated Trail Route Line */}
         <motion.div
           className="h-full relative rounded-l-[4px]"

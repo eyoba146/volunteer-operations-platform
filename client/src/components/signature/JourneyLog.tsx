@@ -63,20 +63,20 @@ export const JourneyLog: React.FC<JourneyLogProps> = ({
       case 'approved':
       case 'confirmed':
         return (
-          <div className="w-5 h-5 rounded-full bg-role-volunteer text-white flex items-center justify-center ring-4 ring-white">
+          <div className="w-5 h-5 rounded-full bg-role-volunteer text-white flex items-center justify-center">
             <Check className="w-3 h-3" weight="bold" />
           </div>
         );
       case 'logged':
       case 'waiting':
         return (
-          <div className="w-5 h-5 rounded-full bg-white border border-slate-300 flex items-center justify-center ring-4 ring-white">
+          <div className="w-5 h-5 rounded-full bg-slate-200 flex items-center justify-center">
             <div className="w-1.5 h-1.5 rounded-full bg-slate-500" />
           </div>
         );
       case 'needs_review':
         return (
-          <div className="w-5 h-5 rounded-full bg-amber-500 text-white flex items-center justify-center ring-4 ring-white">
+          <div className="w-5 h-5 rounded-full bg-amber-500 text-white flex items-center justify-center">
             <Warning className="w-3 h-3" weight="bold" />
           </div>
         );
@@ -84,13 +84,13 @@ export const JourneyLog: React.FC<JourneyLogProps> = ({
       case 'failed':
       case 'rejected':
         return (
-          <div className="w-5 h-5 rounded-full bg-red-500 text-white flex items-center justify-center ring-4 ring-white">
+          <div className="w-5 h-5 rounded-full bg-red-500 text-white flex items-center justify-center">
             <X className="w-3 h-3" weight="bold" />
           </div>
         );
       default:
         return (
-          <div className="w-5 h-5 rounded-full bg-slate-400 text-white flex items-center justify-center ring-4 ring-white">
+          <div className="w-5 h-5 rounded-full bg-slate-400 text-white flex items-center justify-center">
             <span className="w-1.5 h-1.5 rounded-full bg-white" />
           </div>
         );
@@ -98,15 +98,15 @@ export const JourneyLog: React.FC<JourneyLogProps> = ({
   };
 
   return (
-    <div className={`space-y-6 ${className}`}>
+    <div className={`space-y-6 ${className} `}>
       {/* Editorial Lead Summary (Replaces 3 equal stat boxes with 1 large lead numeral) */}
       {leadSummary && (
         typeof leadSummary === 'string' ? (
-          <div className="rounded-[16px] bg-[#F7F8FA] p-5 sm:p-6 border-none font-sans text-sm text-ink-secondary">
+          <div className="rounded-[16px] bg-[#F7F8FA] p-5 sm:p-6 font-sans text-sm text-ink-secondary">
             {leadSummary}
           </div>
         ) : (
-          <div className="rounded-[16px] bg-[#F7F8FA] p-6 sm:p-8 flex flex-col sm:flex-row sm:items-baseline gap-4 sm:gap-6 border-none">
+          <div className="rounded-[16px] bg-[#F7F8FA] p-6 sm:p-8 flex flex-col sm:flex-row sm:items-baseline gap-4 sm:gap-6">
             <div className="flex items-baseline gap-2">
               <span className="font-display font-black text-5xl sm:text-6xl text-ink-primary tracking-tight leading-none">
                 {leadSummary.leadNumeral}
@@ -115,7 +115,7 @@ export const JourneyLog: React.FC<JourneyLogProps> = ({
                 {leadSummary.label}
               </span>
             </div>
-            <div className="font-sans text-[14px] text-ink-secondary border-t sm:border-t-0 sm:border-l border-[#EDEFF2] pt-3 sm:pt-0 sm:pl-6 leading-relaxed">
+            <div className="font-sans text-[14px] text-ink-secondary pt-3 sm:pt-0 sm:pl-6 leading-relaxed">
               {leadSummary.inlineSentence}
             </div>
           </div>
@@ -131,11 +131,10 @@ export const JourneyLog: React.FC<JourneyLogProps> = ({
               <span className="font-sans font-bold text-[13px] text-ink-secondary">
                 {monthLabel}
               </span>
-              <div className="flex-1 h-px bg-[#EDEFF2]" />
             </div>
 
             {/* Spine Container */}
-            <div className="relative pl-6 space-y-3 before:content-[''] before:absolute before:left-2.5 before:top-3 before:bottom-3 before:w-0.5 before:bg-[#EDEFF2]">
+            <div className="relative pl-6 space-y-3">
               {monthItems.map((item) => {
                 const isExpanded = expandedId === item.id;
                 const dateFormatted = !isNaN(new Date(item.date).getTime())
@@ -201,7 +200,7 @@ export const JourneyLog: React.FC<JourneyLogProps> = ({
 
                     {/* Expanded Story Details */}
                     {isExpanded && (
-                      <div className="border-t border-[#EDEFF2] bg-[#F7F8FA] p-4 sm:p-5 space-y-3 animate-in fade-in duration-150">
+                      <div className="bg-[#F7F8FA] p-4 sm:p-5 space-y-3 animate-in fade-in duration-150">
                         {(() => {
                           const detailsList: JourneyLogDetail[] = Array.isArray(item.details)
                             ? item.details

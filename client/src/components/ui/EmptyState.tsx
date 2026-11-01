@@ -22,7 +22,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
 }) => {
   return (
     <div
-      className={`rounded-[16px] bg-[#F7F8FA] p-8 md:p-12 text-center max-w-xl mx-auto space-y-4 border-none relative overflow-hidden ${className}`}
+      className={`rounded-[16px] bg-[#F7F8FA] p-8 md:p-12 text-center max-w-xl mx-auto space-y-4 relative overflow-hidden ${className} `}
     >
       {/* Topo and Trail Route Custom Illustration */}
       <div className="relative w-20 h-20 mx-auto flex items-center justify-center">

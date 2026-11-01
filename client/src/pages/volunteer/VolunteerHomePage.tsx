@@ -76,7 +76,7 @@ export const VolunteerHomePage: React.FC = () => {
       <div className="relative rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] overflow-hidden p-6 md:p-8 space-y-6">
         <TopoBackdrop color="#15803D" opacity={0.07} />
 
-        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#EDEFF2] pb-5">
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5">
           <div className="flex items-center gap-4">
             <Avatar
               name={profile?.fullName || user?.username || 'Volunteer'}
@@ -183,7 +183,7 @@ export const VolunteerHomePage: React.FC = () => {
 
         {/* Community Announcements */}
         <div className="rounded-[16px] bg-[#F7F8FA] p-6 space-y-5">
-          <div className="flex items-center justify-between border-b border-[#EDEFF2] pb-3">
+          <div className="flex items-center justify-between pb-3">
             <div className="flex items-center gap-2">
               <Megaphone className="w-5 h-5 text-role-volunteer" weight="bold" />
               <h3 className="font-display text-xl font-bold text-ink-primary">
@@ -222,6 +222,5 @@ export const VolunteerHomePage: React.FC = () => {
       </div>
     </div>
     </PageShell>
-  );
   );
 };

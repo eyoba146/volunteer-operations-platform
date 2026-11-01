@@ -26,7 +26,7 @@ export const VolunteerIdCardPage: React.FC = () => {
   return (
     <div className="max-w-xl mx-auto space-y-8">
       {/* Header */}
-      <div className="border-b border-[#D5DAE1] pb-5 text-center">
+      <div className="pb-5 text-center">
         <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
           Volunteer ID pass
         </h1>

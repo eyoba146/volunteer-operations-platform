@@ -65,9 +65,9 @@ export const ManagerDashboardPage: React.FC = () => {
   return (
     <div className="space-y-8 max-w-5xl mx-auto">
       {/* Editorial Header */}
-      <div className="relative overflow-hidden rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 sm:p-8 space-y-6 border-none">
+      <div className="relative overflow-hidden rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 sm:p-8 space-y-6">
         <TopoBackdrop color="#2563EB" opacity={0.06} />
-        <div className="relative z-10 flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-[#EDEFF2] pb-6">
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-start justify-between gap-4 pb-6">
           <div className="space-y-1">
             <h1 className="font-display font-bold text-3xl sm:text-4xl tracking-tight text-ink-primary">
               Candidate intake and field operations
@@ -106,28 +106,25 @@ export const ManagerDashboardPage: React.FC = () => {
           </div>
 
           {/* Simple Inline List with subtle dividers */}
-          <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm pt-2 md:pt-0 border-t md:border-t-0 border-[#D5DAE1]">
+          <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm pt-2 md:pt-0">
             <div className="space-y-0.5">
               <span className="text-[13px] text-ink-secondary block">Promotions waiting</span>
               <span className="text-xl font-bold text-role-teamlead">
                 {stats?.promotionsWaiting || 0}
               </span>
             </div>
-            <div className="w-px h-8 bg-[#EDEFF2] hidden sm:block" />
             <div className="space-y-0.5">
               <span className="text-[13px] text-ink-secondary block">New members</span>
               <span className="text-xl font-bold text-role-volunteer">
                 +{stats?.newVolunteersThisMonth || 0}
               </span>
             </div>
-            <div className="w-px h-8 bg-[#EDEFF2] hidden sm:block" />
             <div className="space-y-0.5">
               <span className="text-[13px] text-ink-secondary block">Approved hours</span>
               <span className="text-xl font-bold text-ink-primary">
                 {stats?.approvedHoursThisMonth || 0} hrs
               </span>
             </div>
-            <div className="w-px h-8 bg-[#EDEFF2] hidden sm:block" />
             <div className="space-y-0.5">
               <span className="text-[13px] text-ink-secondary block">Open activities</span>
               <span className="text-xl font-bold text-ink-primary">
@@ -141,9 +138,9 @@ export const ManagerDashboardPage: React.FC = () => {
       {/* Two Column Layout: Applications & Pending Promotions */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Applications Waiting */}
-        <div className="rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 space-y-5 border-none flex flex-col justify-between">
+        <div className="rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 space-y-5 flex flex-col justify-between">
           <div className="space-y-4">
-            <div className="flex items-center justify-between border-b border-[#EDEFF2] pb-3">
+            <div className="flex items-center justify-between pb-3">
               <div className="flex items-center gap-2">
                 <ClipboardText className="w-5 h-5 text-ink-primary" weight="bold" />
                 <h3 className="font-display text-xl font-bold text-ink-primary">
@@ -160,7 +157,7 @@ export const ManagerDashboardPage: React.FC = () => {
                 All submitted applications have been reviewed.
               </p>
             ) : (
-              <div className="divide-y divide-[#EDEFF2]">
+              <div className="space-y-2">
                 {pendingApplications.map((app) => (
                   <div key={app.id} className="py-3 flex items-center justify-between gap-3 text-sm">
                     <div>
@@ -186,7 +183,7 @@ export const ManagerDashboardPage: React.FC = () => {
             )}
           </div>
 
-          <div className="pt-3 border-t border-[#EDEFF2]">
+          <div className="pt-3">
             <Link
               to="/manager/applications"
               className="text-sm font-bold text-ink-primary hover:underline flex items-center gap-1.5"
@@ -198,9 +195,9 @@ export const ManagerDashboardPage: React.FC = () => {
         </div>
 
         {/* Promotions Waiting Board */}
-        <div className="rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 space-y-5 border-none flex flex-col justify-between">
+        <div className="rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 space-y-5 flex flex-col justify-between">
           <div className="space-y-4">
-            <div className="flex items-center justify-between border-b border-[#EDEFF2] pb-3">
+            <div className="flex items-center justify-between pb-3">
               <div className="flex items-center gap-2">
                 <Sparkle className="w-5 h-5 text-role-teamlead" weight="fill" />
                 <h3 className="font-display text-xl font-bold text-ink-primary">
@@ -217,7 +214,7 @@ export const ManagerDashboardPage: React.FC = () => {
                 No active promotion recommendations waiting for decision.
               </p>
             ) : (
-              <div className="divide-y divide-[#EDEFF2]">
+              <div className="space-y-2">
                 {pendingPromotions.map((promo) => (
                   <div key={promo.id} className="py-3 space-y-1 text-sm">
                     <div className="flex items-center justify-between">
@@ -239,7 +236,7 @@ export const ManagerDashboardPage: React.FC = () => {
             )}
           </div>
 
-          <div className="pt-3 border-t border-[#EDEFF2]">
+          <div className="pt-3">
             <Link
               to="/manager/promotions"
               className="text-sm font-bold text-ink-primary hover:underline flex items-center gap-1.5"

@@ -70,26 +70,22 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           const typeConfig = {
             success: {
               icon: <Check className="w-4 h-4 text-role-volunteer" weight="bold" />,
-              border: 'border-role-volunteer',
-            },
+                          },
             error: {
               icon: <Warning className="w-4 h-4 text-role-teamlead" weight="bold" />,
-              border: 'border-role-teamlead',
-            },
+                          },
             warning: {
               icon: <Warning className="w-4 h-4 text-role-applicant" weight="bold" />,
-              border: 'border-role-applicant',
-            },
+                          },
             info: {
               icon: <Info className="w-4 h-4 text-role-manager" weight="bold" />,
-              border: 'border-role-manager',
-            },
+                          },
           }[t.type];
 
           return (
             <div
               key={t.id}
-              className={`pointer-events-auto bg-canvas-raised border-l-4 ${typeConfig.border} border-y border-r border-border p-3.5 shadow-modal flex items-start gap-3 animate-in slide-in-from-bottom-2 duration-150`}
+              className={`pointer-events-auto bg-canvas-raised p-3.5 rounded-[16px] shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] flex items-start gap-3 animate-in slide-in-from-bottom-2 duration-150`}
             >
               <div className="shrink-0 mt-0.5">{typeConfig.icon}</div>
               <div className="flex-1 space-y-0.5 text-left">

@@ -58,14 +58,14 @@ export const DemoEmailInbox: React.FC<DemoEmailInboxProps> = ({ isOpen, onClose 
 
       {/* Main Container */}
       <div
-        className="relative w-full max-w-4xl h-[640px] max-h-[90vh] bg-white border border-[#D5DAE1] rounded-[10px] shadow-2xl flex flex-col z-10 overflow-hidden"
+        className="relative w-full max-w-4xl h-[640px] max-h-[90vh] bg-white border-none rounded-[16px] shadow-[0_1px_3px_rgba(16,24,40,0.08),0_16px_36px_-4px_rgba(16,24,40,0.14)] flex flex-col z-10 overflow-hidden"
         role="dialog"
         aria-modal="true"
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-[#D5DAE1] bg-canvas-subdued shrink-0">
+        <div className="flex items-center justify-between p-4 bg-[#F7F8FA] shrink-0 border-none">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-[6px] border border-[#D5DAE1] bg-white flex items-center justify-center text-ink-primary">
+            <div className="w-8 h-8 rounded-[6px] bg-white flex items-center justify-center text-ink-primary border-none">
               <Envelope className="w-4 h-4" />
             </div>
             <div>
@@ -73,7 +73,7 @@ export const DemoEmailInbox: React.FC<DemoEmailInboxProps> = ({ isOpen, onClose 
                 <h3 className="font-display text-lg font-bold text-ink-primary">
                   Demo email preview inbox
                 </h3>
-                <span className="font-sans text-[13px] px-2 py-0.5 rounded-[4px] border border-[#D5DAE1] bg-white text-ink-secondary">
+                <span className="font-sans text-[13px] px-2 py-0.5 rounded-[4px] bg-white text-ink-secondary border-none">
                   Delivery simulator
                 </span>
               </div>
@@ -84,7 +84,7 @@ export const DemoEmailInbox: React.FC<DemoEmailInboxProps> = ({ isOpen, onClose 
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-ink-secondary hover:text-ink-primary hover:bg-canvas-inset border border-transparent hover:border-[#D5DAE1] rounded-[6px] transition-colors cursor-pointer"
+            className="p-1.5 text-ink-secondary hover:text-ink-primary hover:bg-[#E8EBEF] rounded-[6px] transition-colors cursor-pointer border-none"
             aria-label="Close email simulator"
           >
             <X className="w-5 h-5" />
@@ -94,7 +94,7 @@ export const DemoEmailInbox: React.FC<DemoEmailInboxProps> = ({ isOpen, onClose 
         {/* Two-Pane Body */}
         <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
           {/* Email List Column */}
-          <div className="w-full md:w-80 border-b md:border-b-0 md:border-r border-[#D5DAE1] overflow-y-auto bg-canvas-subdued/30 divide-y divide-[#D5DAE1] shrink-0">
+          <div className="w-full md:w-80 overflow-y-auto bg-[#F7F8FA]/60 shrink-0 border-none space-y-1 p-2">
             {isLoading ? (
               <div className="p-4 text-[13px] font-sans text-ink-secondary">Loading messages...</div>
             ) : emails.length === 0 ? (
@@ -108,10 +108,10 @@ export const DemoEmailInbox: React.FC<DemoEmailInboxProps> = ({ isOpen, onClose 
                   <button
                     key={em.id}
                     onClick={() => handleSelectEmail(em)}
-                    className={`w-full text-left p-3.5 transition-colors cursor-pointer block ${
+                    className={`w-full text-left p-3.5 rounded-[8px] transition-colors cursor-pointer block border-none ${
                       isSelected
-                        ? 'bg-white border-l-2 border-l-ink-primary font-medium'
-                        : 'hover:bg-canvas-subdued/70'
+                        ? 'bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05)] font-bold'
+                        : 'hover:bg-[#E8EBEF]'
                     }`}
                   >
                     <div className="flex items-center justify-between text-[13px] mb-1">
@@ -131,7 +131,7 @@ export const DemoEmailInbox: React.FC<DemoEmailInboxProps> = ({ isOpen, onClose 
                     </h4>
                     {em.code && (
                       <div className="mt-1.5">
-                        <span className="font-sans text-[13px] font-bold px-1.5 py-0.5 bg-role-applicantLight text-ink-primary border border-role-applicant rounded-[4px]">
+                        <span className="font-sans text-[13px] font-bold px-1.5 py-0.5 bg-role-applicantLight text-ink-primary rounded-[4px] border-none">
                           Code: {em.code}
                         </span>
                       </div>
@@ -147,12 +147,12 @@ export const DemoEmailInbox: React.FC<DemoEmailInboxProps> = ({ isOpen, onClose 
             {selectedEmail ? (
               <div className="space-y-6">
                 {/* Meta header */}
-                <div className="space-y-3 pb-4 border-b border-[#D5DAE1]">
+                <div className="space-y-3 pb-4">
                   <div className="flex items-start justify-between gap-4">
                     <h2 className="font-display text-xl font-bold text-ink-primary leading-tight">
                       {selectedEmail.subject}
                     </h2>
-                    <span className="font-sans text-[13px] px-2 py-0.5 border border-[#D5DAE1] rounded-[4px] bg-canvas-subdued text-ink-secondary shrink-0">
+                    <span className="font-sans text-[13px] px-2 py-0.5 rounded-[4px] bg-[#F7F8FA] text-ink-secondary shrink-0 border-none">
                       {selectedEmail.category}
                     </span>
                   </div>
@@ -175,7 +175,7 @@ export const DemoEmailInbox: React.FC<DemoEmailInboxProps> = ({ isOpen, onClose 
                 </div>
 
                 {/* Email Body */}
-                <div className="bg-canvas-subdued/40 border border-[#D5DAE1] rounded-[8px] p-5 space-y-4 font-sans text-sm text-ink-primary leading-relaxed whitespace-pre-line">
+                <div className="bg-[#F7F8FA] rounded-[12px] p-5 space-y-4 font-sans text-sm text-ink-primary leading-relaxed whitespace-pre-line border-none">
                   {selectedEmail.body}
                 </div>
 

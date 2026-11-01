@@ -21,7 +21,7 @@ export const Raised: React.FC<RaisedProps> = ({
 
   return (
     <div
-      className={`bg-white border-none rounded-[16px] shadow-[0_1px_2px_rgba(16,24,40,0.05),_0_8px_24px_-12px_rgba(16,24,40,0.10)] ${paddingStyles} ${className}`}
+      className={`bg-white rounded-[16px] shadow-[0_1px_2px_rgba(16,24,40,0.05),_0_8px_24px_-12px_rgba(16,24,40,0.10)] ${paddingStyles}  ${className} `}
       {...props}
     >
       {children}

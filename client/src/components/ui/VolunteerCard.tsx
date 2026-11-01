@@ -23,14 +23,14 @@ export const VolunteerCard: React.FC<VolunteerCardProps> = ({
 
   return (
     <div
-      className={`relative max-w-sm w-full bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] rounded-[16px] p-6 sm:p-7 space-y-5 text-left select-none overflow-hidden border-none ${className}`}
+      className={`relative max-w-sm w-full bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] rounded-[16px] p-6 sm:p-7 space-y-5 text-left select-none overflow-hidden ${className} `}
       id="printable-volunteer-id-card"
     >
       <TopoBackdrop color="#16A34A" opacity={0.07} />
 
       <div className="relative z-10 space-y-5">
         {/* Top Header */}
-      <div className="flex items-start justify-between border-b border-[#EDEFF2] pb-4">
+      <div className="flex items-start justify-between pb-4">
         <div>
           <span className="font-display text-2xl font-bold text-ink-primary tracking-tight block">
             VTS trail pass
@@ -86,7 +86,7 @@ export const VolunteerCard: React.FC<VolunteerCardProps> = ({
       </div>
 
         {/* Perforated Stub Bottom */}
-        <div className="pt-4 border-t border-dashed border-[#EDEFF2] flex items-center justify-between">
+        <div className="pt-4 flex items-center justify-between">
           <div className="space-y-0.5">
             <span className="text-[13px] font-sans text-ink-secondary font-medium block">
               Scan to verify on trail

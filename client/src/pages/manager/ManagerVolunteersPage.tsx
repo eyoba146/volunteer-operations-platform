@@ -163,8 +163,8 @@ export const ManagerVolunteersPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Top Header */}
-      <div className="rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] border-none bg-white p-6 sm:p-8 space-y-4 shadow-sm">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#EDEFF2] pb-5">
+      <div className="rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] bg-white p-6 sm:p-8 space-y-4 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-5">
           <div className="space-y-1">
             <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight">
               Volunteer directory & records
@@ -175,7 +175,7 @@ export const ManagerVolunteersPage: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="font-mono text-[13px] font-semibold text-role-manager bg-role-managerLight/30 border border-role-manager/30 px-3 py-1.5 rounded-[6px]">
+            <span className="font-mono text-[13px] font-semibold text-role-manager bg-role-managerLight/30 px-3 py-1.5 rounded-[6px]">
               Total volunteers: {volunteers.length}
             </span>
           </div>
@@ -218,7 +218,7 @@ export const ManagerVolunteersPage: React.FC = () => {
       </div>
 
       {/* Ledger Table */}
-      <div className="rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] border-none bg-white shadow-sm overflow-hidden">
+      <div className="rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] bg-white shadow-sm overflow-hidden">
         <LedgerTable
           data={volunteers}
           columns={columns}
@@ -237,7 +237,7 @@ export const ManagerVolunteersPage: React.FC = () => {
         {inspecting && (
           <div className="space-y-6 text-left font-sans text-[13px]">
             {/* Header Badge */}
-            <div className="flex items-center gap-4 p-4 rounded-[12px] bg-white shadow-xs border-none bg-white shadow-sm">
+            <div className="flex items-center gap-4 p-4 rounded-[12px] bg-white shadow-xs bg-white shadow-sm">
               <Avatar
                 name={inspecting.profile.fullName}
                 photoUrl={inspecting.profile.photoUrl}
@@ -259,7 +259,7 @@ export const ManagerVolunteersPage: React.FC = () => {
             </div>
 
             {/* Performance Metric Strip */}
-            <div className="rounded-[12px] bg-white shadow-xs border-none bg-white divide-x divide-[#D5DAE1] grid grid-cols-3 overflow-hidden">
+            <div className="rounded-[12px] bg-white shadow-xs bg-white grid grid-cols-3 overflow-hidden">
               <div className="p-3 text-center space-y-0.5">
                 <span className="text-[13px] font-medium text-ink-tertiary block">Approved hours</span>
                 <span className="font-display text-2xl font-bold text-ink-primary block leading-none">
@@ -284,7 +284,7 @@ export const ManagerVolunteersPage: React.FC = () => {
             </div>
 
             {/* Permanent Rank History Trail Signature */}
-            <div className="p-4 rounded-[14px] bg-[#F7F8FA] space-y-2 border-none">
+            <div className="p-4 rounded-[14px] bg-[#F7F8FA] space-y-2">
               <span className="font-sans font-bold text-ink-primary text-sm block">
                 Rank advancement trail
               </span>
@@ -320,7 +320,7 @@ export const ManagerVolunteersPage: React.FC = () => {
             </div>
 
             {/* Contact Information */}
-            <div className="p-4 rounded-[12px] bg-white shadow-xs border-none bg-canvas-subdued/30 space-y-3">
+            <div className="p-4 rounded-[12px] bg-white shadow-xs bg-canvas-subdued/30 space-y-3">
               <span className="font-semibold text-[13px] text-ink-primary block">
                 Contact details & area
               </span>
@@ -341,7 +341,7 @@ export const ManagerVolunteersPage: React.FC = () => {
             </div>
 
             {/* Bio & Background */}
-            <div className="p-4 rounded-[12px] bg-white shadow-xs border-none bg-canvas-subdued/30 space-y-1.5">
+            <div className="p-4 rounded-[12px] bg-white shadow-xs bg-canvas-subdued/30 space-y-1.5">
               <span className="font-semibold text-[13px] text-ink-primary block">
                 Bio & motivation
               </span>
@@ -351,13 +351,13 @@ export const ManagerVolunteersPage: React.FC = () => {
             </div>
 
             {/* Skills Catalog */}
-            <div className="p-4 rounded-[12px] bg-white shadow-xs border-none bg-canvas-subdued/30 space-y-2">
+            <div className="p-4 rounded-[12px] bg-white shadow-xs bg-canvas-subdued/30 space-y-2">
               <span className="font-semibold text-[13px] text-ink-primary block">
                 Verified skills
               </span>
               <div className="flex flex-wrap gap-1.5">
                 {inspecting.profile.skills.map((s) => (
-                  <span key={s} className="px-2 py-0.5 bg-white border border-[#D5DAE1] rounded-[4px] font-mono text-[13px] font-medium text-ink-primary">
+                  <span key={s} className="px-2 py-0.5 bg-white rounded-[4px] font-mono text-[13px] font-medium text-ink-primary">
                     {s}
                   </span>
                 ))}
@@ -366,7 +366,7 @@ export const ManagerVolunteersPage: React.FC = () => {
 
             {/* Emergency Contact */}
             {inspecting.profile.emergencyContact && (
-              <div className="p-4 rounded-[12px] bg-white shadow-xs border-none bg-canvas-subdued/30 space-y-1">
+              <div className="p-4 rounded-[12px] bg-white shadow-xs bg-canvas-subdued/30 space-y-1">
                 <span className="font-semibold text-[13px] text-ink-primary block">
                   Emergency contact
                 </span>

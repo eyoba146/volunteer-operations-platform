@@ -64,7 +64,7 @@ export const TeamLeadAnnouncementsPage: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       {/* Top Header */}
-      <div className="border-b border-[#D5DAE1] pb-4">
+      <div className="pb-4">
         <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
           Broadcast field notices
         </h1>
@@ -75,8 +75,8 @@ export const TeamLeadAnnouncementsPage: React.FC = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
         {/* Post Form */}
-        <div className="lg:col-span-2 border border-[#D5DAE1] rounded-[10px] bg-white p-6 space-y-4 shadow-sm h-fit">
-          <div className="border-b border-[#D5DAE1] pb-2">
+        <div className="lg:col-span-2 rounded-[10px] bg-white p-6 space-y-4 shadow-sm h-fit">
+          <div className="pb-2">
             <h3 className="font-display text-xl font-bold text-ink-primary">
               Post new notice
             </h3>
@@ -100,7 +100,7 @@ export const TeamLeadAnnouncementsPage: React.FC = () => {
                 value={body}
                 onChange={(e) => setBody(e.target.value)}
                 placeholder="Write clear instructions for volunteers..."
-                className="w-full bg-white text-ink-primary font-sans text-[13px] border-[1.5px] border-[#475569] rounded-[8px] p-2.5 focus:outline-none focus:ring-2 focus:ring-role-teamlead"
+                className="w-full bg-white text-ink-primary font-sans text-[13px] rounded-[8px] p-2.5 focus:outline-none focus:ring-2 focus:ring-role-teamlead"
                 required
               />
             </div>
@@ -119,8 +119,8 @@ export const TeamLeadAnnouncementsPage: React.FC = () => {
         </div>
 
         {/* Existing Notices Feed */}
-        <div className="lg:col-span-3 border border-[#D5DAE1] rounded-[10px] bg-white shadow-sm divide-y divide-[#D5DAE1] overflow-hidden">
-          <div className="p-4 bg-canvas-subdued/30 border-b border-[#D5DAE1] font-display text-lg font-bold text-ink-primary">
+        <div className="lg:col-span-3 rounded-[10px] bg-white shadow-sm overflow-hidden space-y-2">
+          <div className="p-4 bg-canvas-subdued/30 font-display text-lg font-bold text-ink-primary">
             Recent announcements stream
           </div>
 

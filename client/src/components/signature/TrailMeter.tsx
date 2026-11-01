@@ -105,7 +105,7 @@ export const TrailMeter: React.FC<TrailMeterProps> = ({
   // Compact single-line variant (used in sidebar footer or small panels)
   if (variant === 'compact') {
     return (
-      <div className={`space-y-2 select-none ${className}`}>
+      <div className={`space-y-2 select-none ${className} `}>
         <div className="flex items-center justify-between text-[13px] font-sans">
           <span className="font-semibold text-ink-primary truncate">
             {calloutText}
@@ -135,7 +135,7 @@ export const TrailMeter: React.FC<TrailMeterProps> = ({
   // Summit celebration variant
   if (!isApplicant && (variant === 'summit' || currentRank === 'manager' || clampedHours >= 250)) {
     return (
-      <div className={`p-6 rounded-[16px] bg-[#F7F8FA] flex flex-col sm:flex-row items-center gap-6 ${className}`}>
+      <div className={`p-6 rounded-[16px] bg-[#F7F8FA] flex flex-col sm:flex-row items-center gap-6 ${className} `}>
         <div className="w-16 h-16 rounded-full bg-emerald-100 text-role-volunteer flex items-center justify-center shrink-0">
           <Trophy className="w-8 h-8" weight="fill" />
         </div>
@@ -161,11 +161,13 @@ export const TrailMeter: React.FC<TrailMeterProps> = ({
 
   // Full Hero Variant
   return (
-    <div className={`relative pt-12 pb-6 px-2 select-none ${className}`}>
+    <div className={`relative pt-12 pb-6 px-2 select-none ${className} `}>
       {/* Route SVG Canvas */}
       <div className="relative w-full h-12 flex items-center">
-        {/* Background track (dashed upcoming) */}
-        <div className="absolute left-0 right-0 h-1 border-b border-dashed border-[#CBD2DA]" />
+        {/* Background track (dashed upcoming drawn as SVG) */}
+        <svg className="absolute left-0 right-0 w-full h-1 pointer-events-none">
+          <line x1="0" y1="0.5" x2="100%" y2="0.5" stroke="#CBD2DA" strokeDasharray="4 4" strokeWidth="1" />
+        </svg>
 
         {/* Completed solid path */}
         <div
@@ -196,7 +198,7 @@ export const TrailMeter: React.FC<TrailMeterProps> = ({
                     : isNext
                     ? 'bg-emerald-100 text-role-volunteer border-none'
                     : 'bg-[#E5E8EB] text-ink-tertiary border-none'
-                }`}
+                } `}
               >
                 {!isApplicant && station.id === 'member' && <span className="w-2 h-2 rounded-full bg-current" />}
                 {!isApplicant && station.id === 'senior_member' && <Star className="w-3 h-3" weight="fill" />}
@@ -210,7 +212,7 @@ export const TrailMeter: React.FC<TrailMeterProps> = ({
                 <span
                   className={`block text-[13px] font-sans font-semibold ${
                     isReached ? 'text-ink-primary' : 'text-ink-tertiary'
-                  }`}
+                  } `}
                 >
                   {station.title}
                 </span>
@@ -237,14 +239,16 @@ export const TrailMeter: React.FC<TrailMeterProps> = ({
             <span>{calloutText}</span>
           </div>
 
-          {/* Pointer Triangle */}
-          <div className="w-0 h-0 border-x-4 border-x-transparent border-t-4 border-t-ink-primary" />
+          {/* Pointer Triangle drawn as SVG */}
+          <svg className="w-2 h-1 fill-ink-primary -mt-0.5" viewBox="0 0 8 4">
+            <polygon points="0,0 8,0 4,4" />
+          </svg>
         </div>
       </div>
 
       {/* Popover Tooltip for Stations */}
       {activeTooltip && (
-        <div className="mt-8 p-3 rounded-[12px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.15)] border border-[#EDEFF2] max-w-sm mx-auto text-center space-y-1 animate-in fade-in duration-150">
+        <div className="mt-8 p-3 rounded-[12px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.15)] max-w-sm mx-auto text-center space-y-1 animate-in fade-in duration-150">
           <div className="flex items-center justify-center gap-2">
             <span className="font-display font-bold text-ink-primary text-[14px]">
               {activeTooltip.title}

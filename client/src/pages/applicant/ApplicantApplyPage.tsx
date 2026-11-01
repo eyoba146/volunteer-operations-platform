@@ -280,7 +280,7 @@ export const ApplicantApplyPage: React.FC = () => {
     <PageShell page="applicant/apply" signature="none:multi-step-form">
     <div className="max-w-3xl mx-auto space-y-8">
       {/* Header */}
-      <div className="border-b border-[#EDEFF2] pb-5 space-y-2">
+      <div className="pb-5 space-y-2">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
           <div>
             <h1 className="font-display font-bold text-3xl sm:text-4xl tracking-tight text-ink-primary leading-tight">
@@ -304,7 +304,7 @@ export const ApplicantApplyPage: React.FC = () => {
       </div>
 
       {/* Step Waypoint Navigation */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 border-b border-[#EDEFF2] pb-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pb-4">
         {steps.map((s) => {
           const isActive = currentStep === s.num;
           const isDone = currentStep > s.num;
@@ -313,13 +313,13 @@ export const ApplicantApplyPage: React.FC = () => {
               key={s.num}
               type="button"
               onClick={() => setCurrentStep(s.num)}
-              className={`text-left p-3 rounded-[8px] transition-colors cursor-pointer min-h-[44px] border-none ${
+              className={`text-left p-3 rounded-[8px] transition-colors cursor-pointer min-h-[44px] ${
   isActive
     ? 'bg-[#F1F3F6] font-bold text-ink-primary'
     : isDone
     ? 'bg-emerald-50 text-emerald-800'
     : 'bg-[#F7F8FA] text-ink-secondary hover:bg-[#F1F3F6]'
-}`}
+} `}
             >
               <div className="flex items-center justify-between">
                 <span className="font-display text-lg font-bold block leading-none">
@@ -347,7 +347,7 @@ export const ApplicantApplyPage: React.FC = () => {
         {/* Step 1: Personal & Regional */}
         {currentStep === 1 && (
           <div className="space-y-5 animate-in fade-in duration-150">
-            <div className="border-b border-[#EDEFF2] pb-3">
+            <div className="pb-3">
               <h2 className="font-display text-2xl font-bold text-ink-primary">
                 1. Personal details and community area
               </h2>
@@ -404,7 +404,7 @@ export const ApplicantApplyPage: React.FC = () => {
               hint="List languages separated by commas."
             />
 
-            <div className="pt-4 flex items-center justify-between border-t border-[#EDEFF2]">
+            <div className="pt-4 flex items-center justify-between">
               <Button
                 type="button"
                 variant="secondary"
@@ -430,7 +430,7 @@ export const ApplicantApplyPage: React.FC = () => {
         {/* Step 2: Photo & ID Uploads */}
         {currentStep === 2 && (
           <div className="space-y-6 animate-in fade-in duration-150">
-            <div className="border-b border-[#EDEFF2] pb-3">
+            <div className="pb-3">
               <h2 className="font-display text-2xl font-bold text-ink-primary">
                 2. Photos and identification (optional)
               </h2>
@@ -449,7 +449,7 @@ export const ApplicantApplyPage: React.FC = () => {
               </p>
 
               <div className="flex flex-col sm:flex-row items-start gap-4">
-                <div className="w-24 h-24 border border-dashed border-[#EDEFF2] rounded-[8px] bg-canvas-subdued flex items-center justify-center shrink-0 overflow-hidden">
+                <div className="w-24 h-24 rounded-[8px] bg-canvas-subdued flex items-center justify-center shrink-0 overflow-hidden">
                   {photoUrl ? (
                     <img src={photoUrl} alt="Preview" className="w-full h-full object-cover" />
                   ) : (
@@ -494,7 +494,7 @@ export const ApplicantApplyPage: React.FC = () => {
                           key={p.name}
                           type="button"
                           onClick={() => setPhotoUrl(p.url)}
-                          className="px-2.5 py-1 text-[13px] border border-[#EDEFF2] rounded-[6px] bg-canvas-subdued hover:bg-white font-sans text-ink-secondary cursor-pointer"
+                          className="px-2.5 py-1 text-[13px] rounded-[6px] bg-canvas-subdued hover:bg-white font-sans text-ink-secondary cursor-pointer"
                         >
                           Sample {String.fromCharCode(65 + idx)}
                         </button>
@@ -506,7 +506,7 @@ export const ApplicantApplyPage: React.FC = () => {
             </div>
 
             {/* Kebele / National ID Card */}
-            <div className="space-y-3 pt-4 border-t border-[#EDEFF2]">
+            <div className="space-y-3 pt-4">
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <label className="block text-sm font-bold text-ink-primary">
@@ -516,14 +516,14 @@ export const ApplicantApplyPage: React.FC = () => {
                     Visible strictly to Program Managers for identity verification. Never shared publicly.
                   </p>
                 </div>
-                <div className="flex items-center gap-1 text-[13px] font-bold text-role-volunteer bg-role-volunteerLight px-2 py-0.5 rounded-[4px] border border-role-volunteer">
+                <div className="flex items-center gap-1 text-[13px] font-bold text-role-volunteer bg-role-volunteerLight px-2 py-0.5 rounded-[4px]">
                   <ShieldCheck className="w-3.5 h-3.5" />
                   <span>Private</span>
                 </div>
               </div>
 
               <div className="flex flex-col sm:flex-row items-start gap-4">
-                <div className="w-32 h-20 border border-dashed border-[#EDEFF2] rounded-[8px] bg-canvas-subdued flex items-center justify-center shrink-0 overflow-hidden">
+                <div className="w-32 h-20 rounded-[8px] bg-canvas-subdued flex items-center justify-center shrink-0 overflow-hidden">
                   {idPhotoUrl ? (
                     <img src={idPhotoUrl} alt="ID Document Preview" className="w-full h-full object-cover" />
                   ) : (
@@ -561,7 +561,7 @@ export const ApplicantApplyPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setIdPhotoUrl(SAMPLE_ID_PHOTOS[0].url)}
-                      className="px-2.5 py-1 text-[13px] border border-[#EDEFF2] rounded-[6px] bg-canvas-subdued hover:bg-white font-sans text-ink-secondary cursor-pointer"
+                      className="px-2.5 py-1 text-[13px] rounded-[6px] bg-canvas-subdued hover:bg-white font-sans text-ink-secondary cursor-pointer"
                     >
                       Use sample Kebele ID card
                     </button>
@@ -570,7 +570,7 @@ export const ApplicantApplyPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="pt-4 flex items-center justify-between border-t border-[#EDEFF2]">
+            <div className="pt-4 flex items-center justify-between">
               <Button
                 type="button"
                 variant="secondary"
@@ -595,7 +595,7 @@ export const ApplicantApplyPage: React.FC = () => {
         {/* Step 3: Skills & Availability */}
         {currentStep === 3 && (
           <div className="space-y-6 animate-in fade-in duration-150">
-            <div className="border-b border-[#EDEFF2] pb-3">
+            <div className="pb-3">
               <h2 className="font-display text-2xl font-bold text-ink-primary">
                 3. Skills offered and availability
               </h2>
@@ -616,11 +616,11 @@ export const ApplicantApplyPage: React.FC = () => {
                       key={skill}
                       type="button"
                       onClick={() => toggleSkill(skill)}
-                      className={`text-left p-3 text-sm font-sans border rounded-[8px] transition-colors cursor-pointer min-h-[44px] flex items-center justify-between ${
+                      className={`text-left p-3 text-sm font-sans rounded-[8px] transition-colors cursor-pointer min-h-[44px] flex items-center justify-between ${
                         isChecked
                           ? 'border-ink-primary bg-canvas-inset font-bold text-ink-primary shadow-sm'
                           : 'border-[#EDEFF2] bg-canvas-subdued/50 hover:bg-canvas-subdued text-ink-secondary'
-                      }`}
+                      } `}
                     >
                       <span className="truncate">{skill}</span>
                       {isChecked && <Check className="w-4 h-4 text-role-volunteer shrink-0" weight="bold" />}
@@ -630,7 +630,7 @@ export const ApplicantApplyPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="space-y-3 pt-3 border-t border-[#EDEFF2]">
+            <div className="space-y-3 pt-3">
               <label className="block text-sm font-bold text-ink-primary">
                 Typical availability windows
               </label>
@@ -642,11 +642,11 @@ export const ApplicantApplyPage: React.FC = () => {
                       key={item}
                       type="button"
                       onClick={() => toggleAvailability(item)}
-                      className={`text-left p-3 text-sm font-sans border rounded-[8px] transition-colors cursor-pointer min-h-[44px] flex items-center justify-between ${
+                      className={`text-left p-3 text-sm font-sans rounded-[8px] transition-colors cursor-pointer min-h-[44px] flex items-center justify-between ${
                         isChecked
                           ? 'border-ink-primary bg-canvas-inset font-bold text-ink-primary shadow-sm'
                           : 'border-[#EDEFF2] bg-canvas-subdued/50 hover:bg-canvas-subdued text-ink-secondary'
-                      }`}
+                      } `}
                     >
                       <span>{item}</span>
                       {isChecked && <Check className="w-4 h-4 text-role-volunteer shrink-0" weight="bold" />}
@@ -656,7 +656,7 @@ export const ApplicantApplyPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="pt-4 flex items-center justify-between border-t border-[#EDEFF2]">
+            <div className="pt-4 flex items-center justify-between">
               <Button
                 type="button"
                 variant="secondary"
@@ -681,7 +681,7 @@ export const ApplicantApplyPage: React.FC = () => {
         {/* Step 4: Motivation & Emergency Contact */}
         {currentStep === 4 && (
           <div className="space-y-6 animate-in fade-in duration-150">
-            <div className="border-b border-[#EDEFF2] pb-3">
+            <div className="pb-3">
               <h2 className="font-display text-2xl font-bold text-ink-primary">
                 4. Service motivation and emergency contact
               </h2>
@@ -699,12 +699,12 @@ export const ApplicantApplyPage: React.FC = () => {
                 value={motivation}
                 onChange={(e) => setMotivation(e.target.value)}
                 placeholder="Describe your motivation, community background, or causes you care about..."
-                className="w-full bg-white text-ink-primary font-sans text-base border-[1.5px] border-[#475569] rounded-[8px] p-3 focus:border-ink-primary outline-none"
+                className="w-full bg-white text-ink-primary font-sans text-base rounded-[8px] p-3 focus:border-ink-primary"
                 required
               />
             </div>
 
-            <div className="space-y-4 pt-3 border-t border-[#EDEFF2]">
+            <div className="space-y-4 pt-3">
               <div>
                 <h3 className="font-display text-xl font-bold text-ink-primary">
                   Emergency contact details
@@ -740,7 +740,7 @@ export const ApplicantApplyPage: React.FC = () => {
             </div>
 
             {/* Review Summary */}
-            <div className="p-4 bg-canvas-subdued border border-[#EDEFF2] rounded-[8px] space-y-2 text-sm font-sans">
+            <div className="p-4 bg-canvas-subdued rounded-[8px] space-y-2 text-sm font-sans">
               <span className="font-bold text-ink-primary block">
                 Submission confirmation summary:
               </span>
@@ -749,7 +749,7 @@ export const ApplicantApplyPage: React.FC = () => {
               </p>
             </div>
 
-            <div className="pt-4 border-t border-[#EDEFF2] flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-3">
               <Button
                 type="button"
                 variant="secondary"

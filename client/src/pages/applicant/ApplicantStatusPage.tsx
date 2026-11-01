@@ -204,7 +204,7 @@ export const ApplicantStatusPage: React.FC = () => {
     <PageShell page="applicant/status" signature="TrailMeter, TopoBackdrop">
     <div className="space-y-8 max-w-4xl mx-auto">
       {/* Header */}
-      <div className="border-b border-[#EDEFF2] pb-5 flex flex-wrap items-center justify-between gap-4">
+      <div className="pb-5 flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="font-display font-bold text-3xl sm:text-4xl tracking-tight text-ink-primary leading-tight">
             Application status
@@ -230,10 +230,10 @@ export const ApplicantStatusPage: React.FC = () => {
       </div>
 
       {/* Applicant Trail Route Progress Signature */}
-      <div className="rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 sm:p-8 space-y-4 relative overflow-hidden border-none">
+      <div className="rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 sm:p-8 space-y-4 relative overflow-hidden">
         <TopoBackdrop color="#D97706" opacity={0.06} />
         <div className="relative z-10">
-          <div className="flex items-center justify-between border-b border-[#EDEFF2] pb-4">
+          <div className="flex items-center justify-between pb-4">
             <div>
               <h2 className="font-display text-xl sm:text-2xl font-bold text-ink-primary">
                 Your journey to membership
@@ -311,14 +311,14 @@ export const ApplicantStatusPage: React.FC = () => {
 
       {/* Clarification Alert if More Info Needed */}
       {application.status === 'more_info_needed' && (
-        <div className="border border-role-applicant bg-role-applicantLight rounded-[10px] p-6 space-y-3">
+        <div className="bg-role-applicantLight rounded-[10px] p-6 space-y-3">
           <div className="flex items-start gap-3">
             <Warning className="w-6 h-6 text-role-applicant shrink-0 mt-0.5" weight="bold" />
             <div className="space-y-2 text-sm font-sans text-ink-primary">
               <h3 className="font-display text-xl font-bold text-ink-primary">
                 Clarification requested by admissions
               </h3>
-              <p className="leading-relaxed bg-white p-3 border border-[#D5DAE1] rounded-[8px]">
+              <p className="leading-relaxed bg-white p-3 rounded-[8px]">
                 "{application.decisionReason}"
               </p>
               <div className="pt-2">
@@ -338,7 +338,7 @@ export const ApplicantStatusPage: React.FC = () => {
 
       {/* Rejection notice */}
       {isRejected && (
-        <div className="border border-role-teamlead bg-role-teamleadLight rounded-[10px] p-6 space-y-2">
+        <div className="bg-role-teamleadLight rounded-[10px] p-6 space-y-2">
           <div className="flex items-start gap-3">
             <XCircle className="w-6 h-6 text-role-teamlead shrink-0 mt-0.5" weight="bold" />
             <div className="space-y-1 text-sm font-sans text-ink-primary">
@@ -358,7 +358,7 @@ export const ApplicantStatusPage: React.FC = () => {
 
       {/* Withdrawn notice */}
       {isWithdrawn && (
-        <div className="border border-[#D5DAE1] bg-canvas-subdued rounded-[10px] p-6 space-y-2">
+        <div className="bg-canvas-subdued rounded-[10px] p-6 space-y-2">
           <h3 className="font-display text-xl font-bold text-ink-secondary">
             Application withdrawn
           </h3>
@@ -381,7 +381,7 @@ export const ApplicantStatusPage: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Timeline Column */}
         <Raised className="lg:col-span-2 space-y-6">
-          <h2 className="font-display text-2xl font-bold text-ink-primary border-b border-[#EDEFF2] pb-3">
+          <h2 className="font-display text-2xl font-bold text-ink-primary pb-3">
             Recruitment milestones
           </h2>
           <Timeline items={timelineItems} />
@@ -389,7 +389,7 @@ export const ApplicantStatusPage: React.FC = () => {
 
         {/* Application Summary Card */}
         <Panel className="space-y-5 h-fit">
-          <div className="border-b border-[#EDEFF2] pb-3 flex items-center justify-between">
+          <div className="pb-3 flex items-center justify-between">
             <h3 className="font-display text-xl font-bold text-ink-primary">
               Submitted details
             </h3>
@@ -434,7 +434,7 @@ export const ApplicantStatusPage: React.FC = () => {
                 {application.formData?.skills.map((s) => (
                   <span
                     key={s}
-                    className="px-2.5 py-1 bg-white rounded-[6px] text-[13px] font-sans text-ink-primary shadow-none border-none"
+                    className="px-2.5 py-1 bg-white rounded-[6px] text-[13px] font-sans text-ink-primary shadow-none"
                   >
                     {s}
                   </span>
@@ -443,7 +443,7 @@ export const ApplicantStatusPage: React.FC = () => {
             </div>
 
             {application.formData?.emergencyContact && (
-              <div className="pt-2 border-t border-[#EDEFF2]">
+              <div className="pt-2">
                 <span className="text-[13px] font-bold text-ink-secondary block">
                   Emergency contact
                 </span>
@@ -453,7 +453,7 @@ export const ApplicantStatusPage: React.FC = () => {
               </div>
             )}
 
-            <div className="pt-2 border-t border-[#EDEFF2]">
+            <div className="pt-2">
               <Button
                 variant="secondary"
                 size="sm"
@@ -480,11 +480,11 @@ export const ApplicantStatusPage: React.FC = () => {
             Withdrawing your application will remove your file from the current review queue. Any pending admissions decision will be cancelled.
           </p>
 
-          <div className="p-3 bg-role-teamleadLight border border-role-teamlead rounded-[8px] text-role-teamlead font-semibold">
+          <div className="p-3 bg-role-teamleadLight rounded-[8px] text-role-teamlead font-semibold">
             Are you sure you want to withdraw?
           </div>
 
-          <div className="pt-3 flex items-center justify-end gap-2 border-t border-[#EDEFF2]">
+          <div className="pt-3 flex items-center justify-end gap-2">
             <Button
               variant="secondary"
               size="sm"

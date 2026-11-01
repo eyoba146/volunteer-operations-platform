@@ -85,7 +85,7 @@ export const TeamLeadRecommendPromotionPage: React.FC = () => {
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       {/* Header */}
-      <div className="border-b border-[#D5DAE1] pb-4">
+      <div className="pb-4">
         <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
           Recommend volunteer for promotion
         </h1>
@@ -96,10 +96,10 @@ export const TeamLeadRecommendPromotionPage: React.FC = () => {
 
       <form
         onSubmit={handleSubmit}
-        className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 space-y-6 shadow-sm text-left"
+        className="rounded-[10px] bg-white p-6 sm:p-8 space-y-6 shadow-sm text-left"
       >
         {errorMsg && (
-          <div className="p-3 border border-role-teamlead/30 rounded-[8px] bg-role-teamleadLight/20 text-role-teamlead text-[13px] font-sans font-medium flex items-center gap-2">
+          <div className="p-3 rounded-[8px] bg-role-teamleadLight/20 text-role-teamlead text-[13px] font-sans font-medium flex items-center gap-2">
             <Warning className="w-4 h-4 shrink-0" weight="bold" />
             <span>{errorMsg}</span>
           </div>
@@ -123,7 +123,7 @@ export const TeamLeadRecommendPromotionPage: React.FC = () => {
           />
 
           {selectedVol && (
-            <div className="p-3 bg-canvas-subdued/30 border border-[#D5DAE1] rounded-[8px] text-[13px] font-mono text-ink-secondary space-y-1">
+            <div className="p-3 bg-canvas-subdued/30 rounded-[8px] text-[13px] font-mono text-ink-secondary space-y-1">
               <div>Area: <strong className="text-ink-primary font-sans">{selectedVol.area}</strong></div>
               <div>Volunteer number: <strong className="text-ink-primary">{selectedVol.volunteerNumber}</strong></div>
             </div>
@@ -149,13 +149,13 @@ export const TeamLeadRecommendPromotionPage: React.FC = () => {
               value={recommendationNote}
               onChange={(e) => setRecommendationNote(e.target.value)}
               placeholder="State specific community activities, leadership reliability, and evidence of exemplary performance..."
-              className="w-full bg-white text-ink-primary font-sans text-[13px] border-[1.5px] border-[#475569] rounded-[8px] p-2.5 focus:outline-none focus:ring-2 focus:ring-role-teamlead"
+              className="w-full bg-white text-ink-primary font-sans text-[13px] rounded-[8px] p-2.5 focus:outline-none focus:ring-2 focus:ring-role-teamlead"
               required
             />
           </div>
         </div>
 
-        <div className="pt-4 border-t border-[#D5DAE1] flex justify-end">
+        <div className="pt-4 flex justify-end">
           <Button
             type="submit"
             variant="primary"

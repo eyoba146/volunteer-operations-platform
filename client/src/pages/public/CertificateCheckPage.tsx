@@ -42,7 +42,7 @@ export const CertificateCheckPage: React.FC = () => {
     <PageShell page="public/check-certificate" signature="TopoBackdrop">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14 space-y-8">
         {/* Header */}
-        <div className="space-y-2 border-b border-[#EDEFF2] pb-6 text-center">
+        <div className="space-y-2 pb-6 text-center">
           <h1 className="font-display font-bold text-3xl sm:text-5xl tracking-tight text-ink-primary leading-tight">
             Verify volunteer certificate
           </h1>
@@ -89,7 +89,7 @@ export const CertificateCheckPage: React.FC = () => {
                     setCode(s.code);
                     doVerify(s.code);
                   }}
-                  className="px-3 py-1 text-[13px] font-semibold bg-[#F1F3F6] hover:bg-[#E8EBEF] rounded-[6px] text-ink-primary transition-colors cursor-pointer border-none"
+                  className="px-3 py-1 text-[13px] font-semibold bg-[#F1F3F6] hover:bg-[#E8EBEF] rounded-[6px] text-ink-primary transition-colors cursor-pointer"
                 >
                   {s.code}
                 </button>
@@ -131,7 +131,7 @@ export const CertificateCheckPage: React.FC = () => {
                   </div>
 
                   {/* Ledger-Style Metadata Rows */}
-                  <Panel padding="md" className="divide-y divide-[#EDEFF2]">
+                  <Panel padding="md" className="space-y-2">
                     <div className="py-2.5 flex items-center justify-between text-sm first:pt-0">
                       <span className="text-ink-secondary font-medium">Volunteer pass ID</span>
                       <span className="font-bold text-ink-primary">{result.certificate.volunteerNumber}</span>
@@ -157,7 +157,7 @@ export const CertificateCheckPage: React.FC = () => {
                   </Panel>
 
                   {/* Perforated Divider */}
-                  <div data-allow="perforation" className="relative border-t border-dashed border-[#EDEFF2] pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div data-allow="perforation" className="relative pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
                     <div className="font-sans text-[13px] text-ink-secondary">
                       Verification signature: <strong className="font-sans text-ink-primary font-bold">{result.certificate.id}</strong>
                     </div>

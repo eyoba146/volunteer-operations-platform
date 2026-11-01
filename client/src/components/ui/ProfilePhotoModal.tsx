@@ -149,7 +149,7 @@ export const ProfilePhotoModal: React.FC<ProfilePhotoModalProps> = ({ isOpen, on
     >
       <div className="space-y-5">
         {fileError && (
-          <div className="p-3 bg-red-50 border border-role-teamlead text-role-teamlead text-sm font-semibold rounded-[8px]">
+          <div className="p-3 bg-red-50 text-role-teamlead text-sm font-semibold rounded-[8px]">
             {fileError}
           </div>
         )}
@@ -157,7 +157,7 @@ export const ProfilePhotoModal: React.FC<ProfilePhotoModalProps> = ({ isOpen, on
         {/* Viewfinder Canvas / Area */}
         <div className="flex flex-col items-center justify-center space-y-3">
           <div
-            className="relative w-64 h-64 border border-[#D5DAE1] rounded-[10px] bg-canvas-subdued overflow-hidden cursor-move flex items-center justify-center select-none"
+            className="relative w-64 h-64 rounded-[12px] bg-[#F1F3F6] overflow-hidden cursor-move flex items-center justify-center select-none"
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
@@ -193,7 +193,7 @@ export const ProfilePhotoModal: React.FC<ProfilePhotoModalProps> = ({ isOpen, on
             )}
 
             {/* Viewfinder crosshairs */}
-            <div className="absolute inset-0 border border-white/40 pointer-events-none flex items-center justify-center">
+            <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
               <div className="w-full h-[1px] bg-white/20" />
               <div className="h-full w-[1px] bg-white/20 absolute" />
             </div>
@@ -206,7 +206,7 @@ export const ProfilePhotoModal: React.FC<ProfilePhotoModalProps> = ({ isOpen, on
 
         {/* Zoom Slider Control (only when new image is loaded) */}
         {rawImage && (
-          <div className="space-y-2 bg-canvas-subdued p-4 border border-[#D5DAE1] rounded-[8px]">
+          <div className="space-y-2 bg-[#F1F3F6] p-4 rounded-[12px]">
             <div className="flex items-center justify-between text-sm font-bold text-ink-primary">
               <span className="flex items-center gap-1.5">
                 <MagnifyingGlassPlus className="w-4 h-4" weight="bold" />
@@ -236,7 +236,7 @@ export const ProfilePhotoModal: React.FC<ProfilePhotoModalProps> = ({ isOpen, on
         />
 
         {/* Action Controls */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-3 border-t border-[#D5DAE1]">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-3">
           <div className="flex items-center gap-2">
             <Button
               type="button"

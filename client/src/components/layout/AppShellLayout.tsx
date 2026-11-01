@@ -314,7 +314,7 @@ export const AppShellLayout: React.FC = () => {
       )}
 
       {/* PHONE TOP HEADER (under 768px): Brand & Profile */}
-      <header className="md:hidden sticky top-0 z-40 bg-white border-b border-[#EDEFF2] px-4 h-14 flex items-center justify-between select-none">
+      <header className="md:hidden sticky top-0 z-40 bg-white px-4 h-14 flex items-center justify-between select-none">
         <div className="flex items-center gap-3">
           <button
             onClick={() => setMobileDrawerOpen(true)}
@@ -402,7 +402,7 @@ export const AppShellLayout: React.FC = () => {
         } md:pl-[72px]`}
       >
         {/* SLIM PAGE HEADER: Breadcrumb, Title & Quick Actions */}
-        <div className="hidden md:block sticky top-0 z-20 bg-white border-b border-[#EDEFF2] px-6 lg:px-8 py-3 select-none">
+        <div className="hidden md:block sticky top-0 z-20 bg-white px-6 lg:px-8 py-3 select-none">
           <div className="flex items-center justify-between gap-4">
             {/* Breadcrumb & Section indicator */}
             <div className="flex items-center gap-2 text-[13px] text-ink-secondary truncate">
@@ -438,7 +438,7 @@ export const AppShellLayout: React.FC = () => {
       </div>
 
       {/* PHONE FLOATING BOTTOM DOCK (< 768px): 4 primary destinations + More button */}
-      <div className="md:hidden fixed bottom-3 left-3 right-3 z-40 bg-white/95 backdrop-blur-md border border-[#EDEFF2] rounded-[16px] p-1.5 flex items-center justify-around shadow-[0_1px_3px_rgba(16,24,40,0.08),0_12px_32px_-4px_rgba(16,24,40,0.12)]">
+      <div className="md:hidden fixed bottom-3 left-3 right-3 z-40 bg-white/95 backdrop-blur-md rounded-[16px] p-1.5 flex items-center justify-around shadow-[0_1px_3px_rgba(16,24,40,0.08),0_12px_32px_-4px_rgba(16,24,40,0.12)]">
         {mobileDockItems.map((item) => {
           const isActive = location.pathname === item.to || location.pathname.startsWith(item.to + '/');
           return (
@@ -449,7 +449,7 @@ export const AppShellLayout: React.FC = () => {
                 isActive
                   ? 'text-ink-primary font-bold bg-[#F1F3F6]'
                   : 'text-ink-secondary hover:text-ink-primary'
-              }`}
+              } `}
             >
               {item.icon}
               <span className="text-[13px] font-sans tracking-tight">{item.label}</span>

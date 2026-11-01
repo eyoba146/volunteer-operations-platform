@@ -147,7 +147,7 @@ export const VolunteerCheckInPage: React.FC = () => {
           </p>
         </div>
 
-        <div className="border-none rounded-[8px] bg-canvas-subdued/30 p-4 font-mono text-[13px] text-left space-y-2">
+        <div className="rounded-[8px] bg-canvas-subdued/30 p-4 font-mono text-[13px] text-left space-y-2">
           <div className="flex justify-between">
             <span className="text-ink-secondary">Logged duration:</span>
             <span className="font-semibold text-ink-primary">
@@ -166,7 +166,7 @@ export const VolunteerCheckInPage: React.FC = () => {
               {new Date(checkoutComplete.checkOut).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </span>
           </div>
-          <div className="flex justify-between border-t border-[#EDEFF2] pt-2">
+          <div className="flex justify-between pt-2">
             <span className="text-ink-secondary">Review status:</span>
             <span className="font-semibold text-role-applicant">Logged • Awaiting lead decision</span>
           </div>
@@ -199,14 +199,14 @@ export const VolunteerCheckInPage: React.FC = () => {
     return (
       <PageShell page="volunteer/check-in" signature="none:check-in-station">
       <div className="max-w-lg mx-auto space-y-6">
-        <div className="border-b border-[#EDEFF2] pb-4 text-center">
+        <div className="pb-4 text-center">
           <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
             Checked in
           </h1>
         </div>
 
         <Raised className="p-6 sm:p-8 space-y-5">
-          <div className="flex items-center justify-between border-b border-[#EDEFF2] pb-3">
+          <div className="flex items-center justify-between pb-3">
             <div className="flex items-center gap-2">
               <span className="w-3 h-3 bg-role-volunteer rounded-full animate-ping" />
               <span className="font-sans text-[13px] font-semibold text-role-volunteer">
@@ -227,7 +227,7 @@ export const VolunteerCheckInPage: React.FC = () => {
             </p>
           </div>
 
-          <div className="border-none rounded-[8px] bg-canvas-subdued/30 p-4 font-mono text-[13px] space-y-1.5">
+          <div className="rounded-[8px] bg-canvas-subdued/30 p-4 font-mono text-[13px] space-y-1.5">
             <div className="flex justify-between">
               <span className="text-ink-secondary">Volunteer:</span>
               <span className="font-semibold text-ink-primary">{activeSession.userName}</span>
@@ -261,7 +261,7 @@ export const VolunteerCheckInPage: React.FC = () => {
     <PageShell page="volunteer/check-in" signature="none:check-in-station">
     <div className="max-w-xl mx-auto space-y-6">
       {/* Header */}
-      <div className="border-b border-[#EDEFF2] pb-4 text-center">
+      <div className="pb-4 text-center">
         <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
           Activity check-in
         </h1>
@@ -271,7 +271,7 @@ export const VolunteerCheckInPage: React.FC = () => {
       </div>
 
       {/* Mode Switcher */}
-      <div className="flex rounded-[10px] bg-[#F1F3F6] p-1 border-none">
+      <div className="flex rounded-[10px] bg-[#F1F3F6] p-1">
         <button
           onClick={() => {
             setMethod('code');
@@ -280,7 +280,7 @@ export const VolunteerCheckInPage: React.FC = () => {
           className={`flex-1 py-2 rounded-[6px] font-sans text-[13px] font-semibold flex items-center justify-center gap-1.5 cursor-pointer transition-colors ${method === 'code'
               ? 'bg-white text-ink-primary shadow-[0_1px_2px_rgba(16,24,40,0.06)] border-none'
               : 'text-ink-secondary hover:text-ink-primary'
-            }`}
+            } `}
         >
           <Key className="w-4 h-4" weight="bold" />
           <span>4-Digit short code</span>
@@ -293,7 +293,7 @@ export const VolunteerCheckInPage: React.FC = () => {
           className={`flex-1 py-2 rounded-[6px] font-sans text-[13px] font-semibold flex items-center justify-center gap-1.5 cursor-pointer transition-colors ${method === 'qr'
               ? 'bg-white text-ink-primary shadow-[0_1px_2px_rgba(16,24,40,0.06)] border-none'
               : 'text-ink-secondary hover:text-ink-primary'
-            }`}
+            } `}
         >
           <QrCode className="w-4 h-4" weight="bold" />
           <span>Scan QR pass</span>
@@ -303,7 +303,7 @@ export const VolunteerCheckInPage: React.FC = () => {
       {/* Main Check-In Box */}
       <Raised className="p-6 sm:p-8 space-y-6">
         {errorMessage && (
-          <div className="p-3 border border-role-teamlead/30 rounded-[8px] bg-role-teamleadLight/20 text-role-teamlead text-[13px] font-sans font-medium flex items-center gap-2">
+          <div className="p-3 rounded-[8px] bg-role-teamleadLight/20 text-role-teamlead text-[13px] font-sans font-medium flex items-center gap-2">
             <Warning className="w-4 h-4 shrink-0" weight="bold" />
             <span>{errorMessage}</span>
           </div>
@@ -348,7 +348,7 @@ export const VolunteerCheckInPage: React.FC = () => {
                 value={inputCode}
                 onChange={(e) => setInputCode(e.target.value.replace(/\D/g, ''))}
                 placeholder="e.g. 5291"
-                className="w-full text-center font-mono text-3xl font-bold tracking-[0.5em] p-3 border border-[#CBD2DA] rounded-[8px] bg-white text-ink-primary focus:outline-none focus:ring-2 focus:ring-role-volunteer"
+                className="w-full text-center font-mono text-3xl font-bold tracking-[0.5em] p-3 rounded-[8px] bg-white text-ink-primary focus:outline-none focus:ring-2 focus:ring-role-volunteer"
                 required
               />
               <span className="font-sans text-[13px] text-ink-secondary block text-center">
@@ -373,7 +373,7 @@ export const VolunteerCheckInPage: React.FC = () => {
         {method === 'qr' && (
           <div className="space-y-5 text-center">
             {/* Viewfinder Reticle */}
-            <div className="relative w-64 h-64 mx-auto border border-dashed border-[#CBD2DA] rounded-[16px] bg-canvas-subdued/20 flex flex-col items-center justify-center p-4 overflow-hidden">
+            <div className="relative w-64 h-64 mx-auto rounded-[16px] bg-canvas-subdued/20 flex flex-col items-center justify-center p-4 overflow-hidden">
               <svg className="absolute inset-0 w-full h-full pointer-events-none p-3" viewBox="0 0 100 100" fill="none" stroke="currentColor">
                 <path d="M 5 20 V 5 H 20" strokeWidth="2.5" className="text-role-volunteer" strokeLinecap="round" />
                 <path d="M 80 5 H 95 V 20" strokeWidth="2.5" className="text-role-volunteer" strokeLinecap="round" />

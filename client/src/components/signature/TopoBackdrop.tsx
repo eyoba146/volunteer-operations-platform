@@ -14,7 +14,7 @@ export const TopoBackdrop: React.FC<TopoBackdropProps> = ({
   return (
     <div
       aria-hidden="true"
-      className={`absolute inset-0 pointer-events-none overflow-hidden select-none ${className}`}
+      className={`absolute inset-0 pointer-events-none overflow-hidden select-none ${className} `}
       style={{ opacity }}
     >
       <svg

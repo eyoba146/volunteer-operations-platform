@@ -27,7 +27,7 @@ export const ForgotPasswordPage: React.FC = () => {
   return (
     <PageShell page="public/forgot-password" signature="none:recovery-form">
       <div className="max-w-lg mx-auto px-4 sm:px-6 py-10 md:py-14 space-y-6">
-        <div className="space-y-2 border-b border-[#EDEFF2] pb-6 text-center">
+        <div className="space-y-2 pb-6 text-center">
           <h1 className="font-display font-bold text-3xl sm:text-4xl tracking-tight text-ink-primary leading-tight">
             Recover password
           </h1>
@@ -88,7 +88,7 @@ export const ForgotPasswordPage: React.FC = () => {
                   Send reset link
                 </Button>
 
-                <div className="pt-2 text-center border-t border-[#EDEFF2]">
+                <div className="pt-2 text-center">
                   <Link
                     to="/sign-in"
                     className="font-sans text-[13px] font-semibold text-ink-secondary hover:text-ink-primary inline-flex items-center gap-1"

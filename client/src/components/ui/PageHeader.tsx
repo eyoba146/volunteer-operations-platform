@@ -21,7 +21,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
   children,
 }) => {
   return (
-    <header className={`relative mb-8 ${className}`}>
+    <header className={`relative mb-8 ${className} `}>
       {withTopo && roleColor && (
         <TopoBackdrop color={roleColor} opacity={0.07} className="rounded-[16px] pointer-events-none" />
       )}

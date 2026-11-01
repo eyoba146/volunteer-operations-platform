@@ -100,7 +100,7 @@ export const VolunteerRankProgressPage: React.FC = () => {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="border-b border-[#EDEFF2] pb-5 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div className="pb-5 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
           <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
             Rank progression board
@@ -116,10 +116,10 @@ export const VolunteerRankProgressPage: React.FC = () => {
       </div>
 
       {/* THE SIGNATURE TRAIL ROUTE LINE */}
-      <div className="relative rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] overflow-hidden p-6 sm:p-8 space-y-4 border-none">
+      <div className="relative rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] overflow-hidden p-6 sm:p-8 space-y-4">
         <TopoBackdrop color="#15803D" opacity={0.06} />
 
-        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#EDEFF2] pb-3">
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3">
           <div className="space-y-0.5">
             <h3 className="font-display text-2xl font-bold text-ink-primary">
               Rank progression trail
@@ -143,7 +143,7 @@ export const VolunteerRankProgressPage: React.FC = () => {
 
       {/* Promotion Status Banners */}
       {progress.promotionStatus === 'recommended' && (
-        <div className="rounded-[16px] bg-[#FFFBEB] border-none p-6 space-y-3">
+        <div className="rounded-[16px] bg-[#FFFBEB] p-6 space-y-3">
           <div className="flex items-start gap-3">
             <Sparkle className="w-6 h-6 text-role-applicant shrink-0 mt-0.5" weight="fill" />
             <div className="space-y-1">
@@ -166,7 +166,7 @@ export const VolunteerRankProgressPage: React.FC = () => {
       )}
 
       {progress.promotionStatus === 'eligible' && (
-        <div className="rounded-[16px] bg-[#ECFDF5] border-none p-6 space-y-3">
+        <div className="rounded-[16px] bg-[#ECFDF5] p-6 space-y-3">
           <div className="flex flex-col flex-wrap sm:flex-row sm:items-center justify-between gap-4">
             <div className="space-y-1">
               <span className="font-sans text-[13px] font-bold text-role-volunteer block">
@@ -195,12 +195,12 @@ export const VolunteerRankProgressPage: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Column: Current Station & Unlocked Privileges */}
         <div className="space-y-6">
-          <div className="rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] border-none p-6 space-y-4">
+          <div className="rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 space-y-4">
             <span className="font-sans text-[13px] font-bold text-ink-secondary block">
               Current rank standing
             </span>
 
-            <div className="flex items-center gap-3 border-b border-[#EDEFF2] pb-4">
+            <div className="flex items-center gap-3 pb-4">
               <div className="w-12 h-12 bg-role-volunteer text-white rounded-[8px] flex items-center justify-center font-display text-2xl font-bold">
                 {progress.currentRank === 'senior_member' ? 'SM' : progress.currentRank === 'team_lead' ? 'TL' : 'M'}
               </div>
@@ -214,7 +214,7 @@ export const VolunteerRankProgressPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="space-y-2.5 text-sm font-sans text-ink-secondary divide-y divide-[#EDEFF2]">
+            <div className="space-y-2.5 text-sm font-sans text-ink-secondary">
               <div className="flex justify-between pt-1">
                 <span>Total approved hours:</span>
                 <strong className="text-ink-primary">{progress.approvedHours} hrs</strong>
@@ -236,7 +236,7 @@ export const VolunteerRankProgressPage: React.FC = () => {
 
           {/* Next Rank Info */}
           {progress.nextRank && (
-            <div className="rounded-[16px] bg-[#F7F8FA] border-none p-6 space-y-3">
+            <div className="rounded-[16px] bg-[#F7F8FA] p-6 space-y-3">
               <span className="font-sans text-[13px] font-bold text-ink-secondary block">
                 Target rank
               </span>
@@ -255,8 +255,8 @@ export const VolunteerRankProgressPage: React.FC = () => {
         </div>
 
         {/* Right Column: 5 Requirement Meters */}
-        <div className="lg:col-span-2 rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] border-none p-6 sm:p-8 space-y-6">
-          <div className="border-b border-[#EDEFF2] pb-3 flex items-center justify-between">
+        <div className="lg:col-span-2 rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 sm:p-8 space-y-6">
+          <div className="pb-3 flex items-center justify-between">
             <h2 className="font-display text-2xl font-bold text-ink-primary">
               Rank criteria: {progress.nextRank?.replace('_', ' ') || 'Next rank'}
             </h2>
@@ -331,7 +331,7 @@ export const VolunteerRankProgressPage: React.FC = () => {
             </div>
 
             {/* 5. Required Training Session */}
-            <div className="space-y-2 pt-2 border-t border-[#EDEFF2]">
+            <div className="space-y-2 pt-2">
               <div className="flex items-center justify-between text-sm">
                 <span className="font-sans font-bold text-ink-primary">
                   5. Orientation and training
@@ -340,7 +340,7 @@ export const VolunteerRankProgressPage: React.FC = () => {
                   {progress.requiredTraining}
                 </span>
               </div>
-              <div className="p-4 rounded-[12px] bg-[#F7F8FA] border-none flex items-center justify-between text-sm font-sans">
+              <div className="p-4 rounded-[12px] bg-[#F7F8FA] flex items-center justify-between text-sm font-sans">
                 <div className="flex items-center gap-2.5">
                   <CertIcon className="w-5 h-5 text-role-volunteer" weight="bold" />
                   <span className="font-bold text-ink-primary">{progress.requiredTraining}</span>

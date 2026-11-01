@@ -37,9 +37,8 @@ export const TicketPass: React.FC<TicketPassProps> = ({
   return (
     <div
       onClick={onClick}
-      className={`relative bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] rounded-[16px] transition-all duration-150 select-none overflow-hidden ${
-        onClick ? 'cursor-pointer hover:shadow-[0_1px_3px_rgba(16,24,40,0.08),0_12px_32px_-4px_rgba(16,24,40,0.12)] hover:-translate-y-0.5' : ''
-      } ${className}`}
+      className={`relative bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] rounded-[16px] transition-all duration-150 select-none overflow-hidden ${onClick ? 'cursor-pointer hover:shadow-[0_1px_3px_rgba(16,24,40,0.08),0_12px_32px_-4px_rgba(16,24,40,0.12)] hover:-translate-y-0.5' : ''
+        } ${className}`}
     >
       {/* Top Banner with Badge */}
       <div className={`px-5 py-3 flex items-center justify-between ${headerAccent}`}>
@@ -69,7 +68,10 @@ export const TicketPass: React.FC<TicketPassProps> = ({
       </div>
 
       {/* Perforated Stub Divider */}
-      <div data-allow="perforation" className="relative border-t border-dashed border-[#EDEFF2] flex items-center justify-between px-5 py-3.5 bg-[#F7F8FA]">
+      <div className="relative flex items-center justify-between px-5 py-3.5 bg-[#F7F8FA]">
+        <svg className="absolute top-0 left-6 right-6 h-[1px] w-[calc(100%-48px)] overflow-visible" preserveAspectRatio="none">
+          <line x1="0" y1="0" x2="100%" y2="0" stroke="#CBD2DA" strokeDasharray="4 4" strokeWidth="1" />
+        </svg>
         {/* Left and Right Notches */}
         <div className="absolute -left-3 -top-3 w-6 h-6 rounded-full bg-white shadow-inner" />
         <div className="absolute -right-3 -top-3 w-6 h-6 rounded-full bg-white shadow-inner" />

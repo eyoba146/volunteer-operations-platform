@@ -278,7 +278,7 @@ export const ManagerApplicationsPage: React.FC = () => {
           </span>
           <div className="flex flex-wrap gap-1">
             {app.formData?.skills?.slice(0, 2).map((s) => (
-              <span key={s} className="px-2 py-0.5 bg-canvas-subdued/50 border border-[#D5DAE1] rounded-[4px] text-[13px] font-mono text-ink-primary">
+              <span key={s} className="px-2 py-0.5 bg-canvas-subdued/50 rounded-[4px] text-[13px] font-mono text-ink-primary">
                 {s}
               </span>
             ))}
@@ -323,7 +323,7 @@ export const ManagerApplicationsPage: React.FC = () => {
   return (
     <div className="space-y-6 max-w-5xl mx-auto">
       {/* Header */}
-      <div className="border-b border-[#D5DAE1] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div className="pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
           <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
             Candidate applications
@@ -335,7 +335,7 @@ export const ManagerApplicationsPage: React.FC = () => {
 
         {/* Bulk Action Controls */}
         {selectedIds.length > 0 && (
-          <div className="flex items-center gap-2 bg-role-managerLight/30 border border-role-manager/40 rounded-[8px] p-2">
+          <div className="flex items-center gap-2 bg-role-managerLight/30 rounded-[8px] p-2">
             <span className="font-mono text-[13px] font-semibold text-ink-primary px-2">
               {selectedIds.length} selected
             </span>
@@ -362,7 +362,7 @@ export const ManagerApplicationsPage: React.FC = () => {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-5 space-y-4 shadow-sm">
+      <div className="rounded-[10px] bg-white p-5 space-y-4 shadow-sm">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
           <div className="sm:col-span-2">
             <Input
@@ -386,7 +386,7 @@ export const ManagerApplicationsPage: React.FC = () => {
           />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-[#D5DAE1]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
           <Select
             label="Filter by specific skill"
             value={selectedSkill}
@@ -404,7 +404,7 @@ export const ManagerApplicationsPage: React.FC = () => {
       </div>
 
       {/* Ledger Table */}
-      <div className="border border-[#D5DAE1] rounded-[10px] bg-white shadow-sm overflow-hidden">
+      <div className="rounded-[10px] bg-white shadow-sm overflow-hidden">
         <LedgerTable
           data={applications}
           columns={columns}
@@ -423,7 +423,7 @@ export const ManagerApplicationsPage: React.FC = () => {
         {inspectingApp && (
           <div className="space-y-6 text-left font-sans text-[13px]">
             {/* Status & ID Banner */}
-            <div className="flex items-center justify-between p-3 bg-canvas-subdued/30 border border-[#D5DAE1] rounded-[8px]">
+            <div className="flex items-center justify-between p-3 bg-canvas-subdued/30 rounded-[8px]">
               <div className="flex items-center gap-2">
                 <span className="font-mono text-[13px] font-semibold text-ink-tertiary">
                   ID: #{inspectingApp.id}
@@ -434,12 +434,12 @@ export const ManagerApplicationsPage: React.FC = () => {
 
             {/* Photos (Simulated Uploads) */}
             {(inspectingApp.formData?.photoUrl || inspectingApp.formData?.idPhotoUrl) && (
-              <div className="p-4 border border-[#D5DAE1] rounded-[8px] bg-white space-y-3">
-                <div className="flex items-center justify-between border-b border-[#D5DAE1] pb-2">
+              <div className="p-4 rounded-[8px] bg-white space-y-3">
+                <div className="flex items-center justify-between pb-2">
                   <h4 className="font-display text-base font-bold text-ink-primary">
                     Uploaded verification images
                   </h4>
-                  <span className="text-[13px] font-semibold text-role-manager bg-role-managerLight/30 px-2 py-0.5 rounded-[4px] border border-role-manager/30">
+                  <span className="text-[13px] font-semibold text-role-manager bg-role-managerLight/30 px-2 py-0.5 rounded-[4px]">
                     Admissions secure view
                   </span>
                 </div>
@@ -450,7 +450,7 @@ export const ManagerApplicationsPage: React.FC = () => {
                       <span className="text-[13px] font-semibold text-ink-tertiary block">
                         Volunteer profile photo
                       </span>
-                      <div className="w-24 h-24 border border-[#D5DAE1] rounded-[6px] bg-canvas-subdued overflow-hidden">
+                      <div className="w-24 h-24 rounded-[6px] bg-canvas-subdued overflow-hidden">
                         <img
                           src={inspectingApp.formData.photoUrl}
                           alt="Profile Headshot"
@@ -465,7 +465,7 @@ export const ManagerApplicationsPage: React.FC = () => {
                       <span className="text-[13px] font-semibold text-ink-tertiary block">
                         Kebele / National ID card
                       </span>
-                      <div className="w-36 h-24 border border-[#D5DAE1] rounded-[6px] bg-canvas-subdued overflow-hidden">
+                      <div className="w-36 h-24 rounded-[6px] bg-canvas-subdued overflow-hidden">
                         <img
                           src={inspectingApp.formData.idPhotoUrl}
                           alt="ID Document"
@@ -479,7 +479,7 @@ export const ManagerApplicationsPage: React.FC = () => {
             )}
 
             {/* Applicant details */}
-            <div className="p-4 border border-[#D5DAE1] rounded-[8px] bg-white space-y-3">
+            <div className="p-4 rounded-[8px] bg-white space-y-3">
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <span className="text-[13px] font-semibold text-ink-tertiary block">Mobile phone</span>
@@ -503,7 +503,7 @@ export const ManagerApplicationsPage: React.FC = () => {
 
               <div>
                 <span className="text-[13px] font-semibold text-ink-tertiary block">Motivation statement</span>
-                <p className="text-[13px] text-ink-secondary leading-relaxed bg-canvas-subdued/30 p-3 border border-[#D5DAE1] rounded-[6px] mt-1 italic">
+                <p className="text-[13px] text-ink-secondary leading-relaxed bg-canvas-subdued/30 p-3 rounded-[6px] mt-1 italic">
                   "{inspectingApp.formData?.motivation || 'No motivation statement provided.'}"
                 </p>
               </div>
@@ -512,7 +512,7 @@ export const ManagerApplicationsPage: React.FC = () => {
                 <span className="text-[13px] font-semibold text-ink-tertiary block">Skills & capacities</span>
                 <div className="flex flex-wrap gap-1 pt-1">
                   {inspectingApp.formData?.skills?.map((s) => (
-                    <span key={s} className="px-2 py-0.5 bg-canvas-subdued/50 border border-[#D5DAE1] rounded-[4px] text-[13px] font-sans text-ink-primary">
+                    <span key={s} className="px-2 py-0.5 bg-canvas-subdued/50 rounded-[4px] text-[13px] font-sans text-ink-primary">
                       {s}
                     </span>
                   ))}
@@ -520,7 +520,7 @@ export const ManagerApplicationsPage: React.FC = () => {
               </div>
 
               {inspectingApp.formData?.emergencyContact && (
-                <div className="pt-2 border-t border-[#D5DAE1]">
+                <div className="pt-2">
                   <span className="text-[13px] font-semibold text-ink-tertiary block">Emergency contact</span>
                   <span className="text-ink-secondary font-medium">
                     {inspectingApp.formData.emergencyContact.name} ({inspectingApp.formData.emergencyContact.relationship}) •{' '}
@@ -531,8 +531,8 @@ export const ManagerApplicationsPage: React.FC = () => {
             </div>
 
             {/* Internal Staff Notes */}
-            <div className="p-4 border border-[#D5DAE1] rounded-[8px] bg-canvas-subdued/30 space-y-3">
-              <div className="flex items-center justify-between border-b border-[#D5DAE1] pb-2">
+            <div className="p-4 rounded-[8px] bg-canvas-subdued/30 space-y-3">
+              <div className="flex items-center justify-between pb-2">
                 <h4 className="font-display text-sm font-bold text-ink-primary">
                   Internal private notes
                 </h4>
@@ -546,7 +546,7 @@ export const ManagerApplicationsPage: React.FC = () => {
               ) : (
                 <div className="space-y-2">
                   {inspectingApp.notes?.map((n) => (
-                    <div key={n.id} className="p-2.5 bg-white border border-[#D5DAE1] rounded-[6px] space-y-1">
+                    <div key={n.id} className="p-2.5 bg-white rounded-[6px] space-y-1">
                       <div className="flex items-center justify-between">
                         <span className="font-semibold text-ink-primary">{n.authorName}</span>
                         <span className="font-mono text-[13px] text-ink-tertiary">
@@ -565,7 +565,7 @@ export const ManagerApplicationsPage: React.FC = () => {
                   placeholder="Add a private admissions note..."
                   value={privateNote}
                   onChange={(e) => setPrivateNote(e.target.value)}
-                  className="flex-1 bg-white text-[13px] border-[1.5px] border-[#475569] rounded-[8px] p-2 focus:border-ink-primary outline-none"
+                  className="flex-1 bg-white text-[13px] rounded-[8px] p-2 focus:border-ink-primary"
                 />
                 <Button
                   variant="secondary"
@@ -579,14 +579,14 @@ export const ManagerApplicationsPage: React.FC = () => {
             </div>
 
             {/* Decision Actions */}
-            <div className="border border-[#D5DAE1] rounded-[8px] bg-white p-5 space-y-4 shadow-sm">
+            <div className="rounded-[8px] bg-white p-5 space-y-4 shadow-sm">
               <h4 className="font-display text-lg font-bold text-ink-primary">
                 Admissions board action
               </h4>
 
               {/* Expired case: Reopen option */}
               {inspectingApp.status === 'expired' && (
-                <div className="p-3 bg-role-applicantLight/30 border border-role-applicant/40 rounded-[6px] space-y-2">
+                <div className="p-3 bg-role-applicantLight/30 rounded-[6px] space-y-2">
                   <p className="text-[13px] text-ink-primary font-medium">
                     This applicant's payment deadline has expired. You can reopen the window with a fresh 7-day period.
                   </p>
@@ -611,7 +611,7 @@ export const ManagerApplicationsPage: React.FC = () => {
                   value={decisionReason}
                   onChange={(e) => setDecisionReason(e.target.value)}
                   placeholder="e.g. Strong youth outreach background in Bole; candidate profile confirmed..."
-                  className="w-full bg-white text-ink-primary font-sans text-[13px] border-[1.5px] border-[#475569] rounded-[8px] p-2.5 focus:border-ink-primary outline-none"
+                  className="w-full bg-white text-ink-primary font-sans text-[13px] rounded-[8px] p-2.5 focus:border-ink-primary"
                 />
               </div>
 
@@ -672,12 +672,12 @@ export const ManagerApplicationsPage: React.FC = () => {
               value={bulkRejectReason}
               onChange={(e) => setBulkRejectReason(e.target.value)}
               placeholder="e.g. Volunteer quotas for this cycle have reached full capacity..."
-              className="w-full bg-white text-[13px] border-[1.5px] border-[#475569] rounded-[8px] p-2.5 focus:border-ink-primary outline-none"
+              className="w-full bg-white text-[13px] rounded-[8px] p-2.5 focus:border-ink-primary"
               required
             />
           </div>
 
-          <div className="pt-3 flex items-center justify-end gap-2 border-t border-[#D5DAE1]">
+          <div className="pt-3 flex items-center justify-end gap-2">
             <Button
               variant="secondary"
               size="sm"

@@ -60,11 +60,11 @@ export const Avatar: React.FC<AvatarProps> = ({
   }[size];
 
   return (
-    <div className={`relative inline-block ${className}`}>
+    <div className={`relative inline-block ${className} `}>
       <div
-        className={`${sizeStyles} rounded-full flex items-center justify-center font-display font-black select-none overflow-hidden shadow-xs ${
+        className={` ${sizeStyles} rounded-full flex items-center justify-center font-display font-black select-none overflow-hidden shadow-xs ${
           effectivePhoto ? 'bg-[#F1F3F6]' : getColorClass(name || 'Volunteer')
-        }`}
+        } `}
       >
         {effectivePhoto ? (
           <img src={effectivePhoto} alt={name} className="w-full h-full object-cover" />
@@ -76,7 +76,7 @@ export const Avatar: React.FC<AvatarProps> = ({
       {showRankBadge && rank && (
         <span
           title={rank.replace('_', ' ')}
-          className={`absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full ring-2 ring-white ${
+          className={`absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full ${
             rank === 'manager'
               ? 'bg-role-manager'
               : rank === 'team_lead'
@@ -84,7 +84,7 @@ export const Avatar: React.FC<AvatarProps> = ({
               : rank === 'senior_member'
               ? 'bg-role-applicant'
               : 'bg-role-volunteer'
-          }`}
+          } `}
         />
       )}
     </div>

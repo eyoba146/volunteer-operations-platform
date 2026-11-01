@@ -254,8 +254,8 @@ export const AdminSettingsPage: React.FC = () => {
       </button>
 
       {/* Header Card */}
-      <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 space-y-4 shadow-sm">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#D5DAE1] pb-4">
+      <div className="rounded-[10px] bg-white p-6 sm:p-8 space-y-4 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4">
           <div className="space-y-1">
             <h1 className="font-display font-black text-2xl sm:text-3xl tracking-tight text-ink-primary leading-tight">
               Program settings and templates
@@ -281,8 +281,8 @@ export const AdminSettingsPage: React.FC = () => {
 
       {/* TAB 1: Fees & Platform Settings */}
       {activeTab === 'fees' && (
-        <form onSubmit={handleSaveGeneral} className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 space-y-6 shadow-sm">
-          <div className="border-b border-[#D5DAE1] pb-3">
+        <form onSubmit={handleSaveGeneral} className="rounded-[10px] bg-white p-6 sm:p-8 space-y-6 shadow-sm">
+          <div className="pb-3">
             <h3 className="font-display text-xl font-bold text-ink-primary">
               Registration fee and merchant account
             </h3>
@@ -333,7 +333,7 @@ export const AdminSettingsPage: React.FC = () => {
             required
           />
 
-          <div className="pt-3 border-t border-[#D5DAE1] flex justify-end">
+          <div className="pt-3 flex justify-end">
             <Button
               type="submit"
               variant="primary"
@@ -350,8 +350,8 @@ export const AdminSettingsPage: React.FC = () => {
       {activeTab === 'areas' && (
         <div className="space-y-6">
           {/* Areas Editor */}
-          <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 space-y-4 shadow-sm">
-            <div className="border-b border-[#D5DAE1] pb-3">
+          <div className="rounded-[10px] bg-white p-6 sm:p-8 space-y-4 shadow-sm">
+            <div className="pb-3">
               <h3 className="font-display text-xl font-bold text-ink-primary">
                 Operational areas
               </h3>
@@ -364,7 +364,7 @@ export const AdminSettingsPage: React.FC = () => {
               {areas.map((a) => (
                 <span
                   key={a}
-                  className="font-mono text-[13px] font-medium px-3 py-1.5 bg-canvas-subdued rounded-[6px] border border-[#D5DAE1] text-ink-primary flex items-center gap-2"
+                  className="font-mono text-[13px] font-medium px-3 py-1.5 bg-canvas-subdued rounded-[6px] text-ink-primary flex items-center gap-2"
                 >
                   <MapPin className="w-3.5 h-3.5 text-role-manager" weight="bold" />
                   <span>{a}</span>
@@ -397,8 +397,8 @@ export const AdminSettingsPage: React.FC = () => {
           </div>
 
           {/* Skills Catalog */}
-          <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 space-y-4 shadow-sm">
-            <div className="border-b border-[#D5DAE1] pb-3">
+          <div className="rounded-[10px] bg-white p-6 sm:p-8 space-y-4 shadow-sm">
+            <div className="pb-3">
               <h3 className="font-display text-xl font-bold text-ink-primary">
                 Volunteer skills catalog
               </h3>
@@ -411,7 +411,7 @@ export const AdminSettingsPage: React.FC = () => {
               {skills.map((s) => (
                 <span
                   key={s}
-                  className="font-mono text-[13px] font-medium px-3 py-1.5 bg-canvas-subdued rounded-[6px] border border-[#D5DAE1] text-ink-primary flex items-center gap-2"
+                  className="font-mono text-[13px] font-medium px-3 py-1.5 bg-canvas-subdued rounded-[6px] text-ink-primary flex items-center gap-2"
                 >
                   <span>{s}</span>
                   <button
@@ -458,8 +458,8 @@ export const AdminSettingsPage: React.FC = () => {
 
       {/* TAB 3: Certificate Text Template */}
       {activeTab === 'certificates' && (
-        <form onSubmit={handleSaveCertTemplate} className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 space-y-6 shadow-sm">
-          <div className="border-b border-[#D5DAE1] pb-3">
+        <form onSubmit={handleSaveCertTemplate} className="rounded-[10px] bg-white p-6 sm:p-8 space-y-6 shadow-sm">
+          <div className="pb-3">
             <h3 className="font-display text-xl font-bold text-ink-primary">
               Certificate template and signatory
             </h3>
@@ -484,12 +484,12 @@ export const AdminSettingsPage: React.FC = () => {
               rows={4}
               value={certTemplateText}
               onChange={(e) => setCertTemplateText(e.target.value)}
-              className="w-full bg-white text-ink-primary font-sans text-sm border border-[#475569] rounded-[8px] p-3 outline-none focus:ring-1 focus:ring-ink-primary"
+              className="w-full bg-white text-ink-primary font-sans text-sm rounded-[8px] p-3 focus:ring-1 focus:ring-ink-primary"
               required
             />
           </div>
 
-          <div className="pt-3 border-t border-[#D5DAE1] flex justify-end">
+          <div className="pt-3 flex justify-end">
             <Button
               type="submit"
               variant="primary"
@@ -506,8 +506,8 @@ export const AdminSettingsPage: React.FC = () => {
       {activeTab === 'templates' && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Editor Form */}
-          <form onSubmit={handleSaveTemplate} className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 space-y-4 shadow-sm">
-            <div className="border-b border-[#D5DAE1] pb-3">
+          <form onSubmit={handleSaveTemplate} className="rounded-[10px] bg-white p-6 space-y-4 shadow-sm">
+            <div className="pb-3">
               <h3 className="font-display text-xl font-bold text-ink-primary">
                 Email template editor
               </h3>
@@ -524,7 +524,7 @@ export const AdminSettingsPage: React.FC = () => {
               <select
                 value={selectedTemplateId}
                 onChange={(e) => handleSelectTemplate(e.target.value)}
-                className="w-full bg-white text-ink-primary font-sans text-sm border border-[#475569] rounded-[8px] p-2.5 outline-none font-medium focus:ring-1 focus:ring-ink-primary"
+                className="w-full bg-white text-ink-primary font-sans text-sm rounded-[8px] p-2.5 font-medium focus:ring-1 focus:ring-ink-primary"
               >
                 {templates.map((t) => (
                   <option key={t.id} value={t.id}>
@@ -549,19 +549,19 @@ export const AdminSettingsPage: React.FC = () => {
                 rows={10}
                 value={editedBody}
                 onChange={(e) => setEditedBody(e.target.value)}
-                className="w-full bg-white text-ink-primary font-mono text-[13px] border border-[#475569] rounded-[8px] p-3 outline-none leading-relaxed focus:ring-1 focus:ring-ink-primary"
+                className="w-full bg-white text-ink-primary font-mono text-[13px] rounded-[8px] p-3 leading-relaxed focus:ring-1 focus:ring-ink-primary"
                 required
               />
             </div>
 
             {activeTemplate?.variables && (
-              <div className="p-3 bg-canvas-subdued/40 border border-[#D5DAE1] rounded-[8px] space-y-1 text-[13px]">
+              <div className="p-3 bg-canvas-subdued/40 rounded-[8px] space-y-1 text-[13px]">
                 <span className="font-mono text-[13px] font-semibold text-ink-tertiary block">
                   Available template variables:
                 </span>
                 <div className="flex flex-wrap gap-1 font-mono text-[13px]">
                   {activeTemplate.variables.map((v) => (
-                    <span key={v} className="bg-white px-1.5 py-0.5 border border-[#D5DAE1] rounded-[4px] text-ink-primary">
+                    <span key={v} className="bg-white px-1.5 py-0.5 rounded-[4px] text-ink-primary">
                       {`{{${v}}}`}
                     </span>
                   ))}
@@ -569,7 +569,7 @@ export const AdminSettingsPage: React.FC = () => {
               </div>
             )}
 
-            <div className="pt-2 border-t border-[#D5DAE1] flex justify-end">
+            <div className="pt-2 flex justify-end">
               <Button
                 type="submit"
                 variant="primary"
@@ -583,19 +583,19 @@ export const AdminSettingsPage: React.FC = () => {
 
           {/* Live Interactive Preview Card */}
           <div className="space-y-3">
-            <div className="border-b border-[#D5DAE1] pb-2 flex items-center justify-between">
+            <div className="pb-2 flex items-center justify-between">
               <h3 className="font-display text-xl font-bold text-ink-primary flex items-center gap-2">
                 <Eye className="w-5 h-5 text-role-teamlead" weight="bold" />
                 Live inbox preview
               </h3>
-              <span className="font-mono text-[13px] font-medium text-role-teamlead bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-[4px]">
+              <span className="font-mono text-[13px] font-medium text-role-teamlead bg-amber-50 px-2 py-0.5 rounded-[4px]">
                 Interactive sample
               </span>
             </div>
 
-            <div className="border border-[#D5DAE1] rounded-[10px] bg-white shadow-sm overflow-hidden">
+            <div className="rounded-[10px] bg-white shadow-sm overflow-hidden">
               {/* Mail client mock top rail */}
-              <div className="bg-canvas-subdued/40 border-b border-[#D5DAE1] p-3 space-y-1 font-mono text-[13px]">
+              <div className="bg-canvas-subdued/40 p-3 space-y-1 font-mono text-[13px]">
                 <div className="flex justify-between text-[13px] text-ink-tertiary">
                   <span>From: VTS System Notifications &lt;no-reply@vts.et&gt;</span>
                   <span>Just now</span>
@@ -603,7 +603,7 @@ export const AdminSettingsPage: React.FC = () => {
                 <div className="text-[13px] text-ink-tertiary">
                   To: Dawit Bekele &lt;dawit.bekele@example.et&gt;
                 </div>
-                <div className="font-sans font-bold text-ink-primary text-sm pt-1 border-t border-[#D5DAE1] mt-1">
+                <div className="font-sans font-bold text-ink-primary text-sm pt-1 mt-1">
                   Subject: {renderPreviewSubject()}
                 </div>
               </div>
@@ -613,7 +613,7 @@ export const AdminSettingsPage: React.FC = () => {
                 {renderPreviewBody()}
               </div>
 
-              <div className="p-3 bg-canvas-subdued/40 border-t border-[#D5DAE1] text-[13px] text-ink-tertiary font-mono text-center">
+              <div className="p-3 bg-canvas-subdued/40 text-[13px] text-ink-tertiary font-mono text-center">
                 This preview updates in real-time as you type in the editor.
               </div>
             </div>
@@ -623,8 +623,8 @@ export const AdminSettingsPage: React.FC = () => {
 
       {/* TAB 5: Demo Tools */}
       {activeTab === 'demo' && (
-        <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 space-y-6 shadow-sm">
-          <div className="border-b border-[#D5DAE1] pb-3">
+        <div className="rounded-[10px] bg-white p-6 sm:p-8 space-y-6 shadow-sm">
+          <div className="pb-3">
             <h3 className="font-display text-xl font-bold text-ink-primary">
               Demo environment and reset tools
             </h3>
@@ -633,7 +633,7 @@ export const AdminSettingsPage: React.FC = () => {
             </p>
           </div>
 
-          <div className="p-4 bg-amber-50/60 border border-amber-200 rounded-[8px] space-y-2 text-sm">
+          <div className="p-4 bg-amber-50/60 rounded-[8px] space-y-2 text-sm">
             <div className="flex items-center gap-2 text-amber-900 font-bold text-sm">
               <Warning className="w-5 h-5 text-amber-800" weight="fill" />
               <span>Full demo state reset</span>

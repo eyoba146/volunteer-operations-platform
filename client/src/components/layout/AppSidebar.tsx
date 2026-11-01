@@ -255,7 +255,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
       } transition-[width] duration-200 ease-in-out`}
     >
       {/* Top Header Section */}
-      <div className="shrink-0 p-4 border-b border-[#EDEFF2]">
+      <div className="shrink-0 p-4">
         <div className="flex items-center justify-between">
           <button
             onClick={() => {
@@ -363,7 +363,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                               : item.badgeVariant === 'finance'
                               ? 'bg-[#784E0B] text-white'
                               : 'bg-ink-primary text-white'
-                          }`}
+                          } `}
                         >
                           {item.badgeCount}
                         </span>
@@ -377,7 +377,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                               : item.badgeVariant === 'finance'
                               ? 'bg-[#784E0B]'
                               : 'bg-ink-primary'
-                          }`}
+                          } `}
                         />
                       )
                     )}
@@ -390,7 +390,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
       </nav>
 
       {/* Sidebar Footer Section */}
-      <div className="shrink-0 p-3 border-t border-[#EDEFF2] space-y-2 bg-[#F7F8FA]">
+      <div className="shrink-0 p-3 space-y-2 bg-[#F7F8FA]">
         {/* Admin Preview Emails shortcut */}
         {user.role === 'admin' && onOpenEmailInbox && (
           <button
@@ -400,7 +400,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
             }}
             className={`w-full flex items-center min-h-[44px] rounded-[10px] bg-white text-ink-primary text-[13px] font-semibold hover:bg-[#F1F3F6] shadow-[0_1px_2px_rgba(16,24,40,0.04)] transition-colors cursor-pointer ${
               effectiveCollapsed ? 'justify-center p-2' : 'gap-2.5 px-3 py-2'
-            }`}
+            } `}
             title="Preview transactional emails"
           >
             <Envelope className="w-4 h-4 text-ink-secondary" weight="bold" />
@@ -423,7 +423,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
         <div
           className={`flex items-center rounded-[12px] bg-white p-2 shadow-[0_1px_2px_rgba(16,24,40,0.04)] ${
             effectiveCollapsed ? 'justify-center' : 'justify-between'
-          }`}
+          } `}
         >
           <button
             onClick={() => {
@@ -441,7 +441,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                 size="sm"
               />
               <span
-                className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full ring-2 ring-white"
+                className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full"
                 style={{ backgroundColor: roleMeta.color }}
               />
             </div>

@@ -83,7 +83,7 @@ export const VerifyEmailPage: React.FC = () => {
     <PageShell page="public/verify-email" signature="none:verification-form">
       <div className="max-w-lg mx-auto px-4 sm:px-6 py-10 md:py-14 space-y-6">
         {/* Header */}
-        <div className="space-y-2 border-b border-[#EDEFF2] pb-6 text-center">
+        <div className="space-y-2 pb-6 text-center">
           <h1 className="font-display font-bold text-3xl sm:text-4xl tracking-tight text-ink-primary leading-tight">
             Confirm your email
           </h1>
@@ -114,7 +114,7 @@ export const VerifyEmailPage: React.FC = () => {
                   value={code}
                   onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
                   placeholder="000000"
-                  className="w-full text-center font-sans text-3xl sm:text-4xl tracking-widest font-bold py-3 px-4 border border-[#CBD2DA] rounded-[8px] bg-white text-ink-primary focus:border-ink-primary focus:ring-2 focus:ring-ink-primary/10 outline-none"
+                  className="w-full text-center font-sans text-3xl sm:text-4xl tracking-widest font-bold py-3 px-4 rounded-[8px] bg-white text-ink-primary focus:border-ink-primary focus:ring-2 focus:ring-ink-primary/10"
                   autoFocus
                   required
                 />
@@ -146,7 +146,7 @@ export const VerifyEmailPage: React.FC = () => {
                 </button>
               </Panel>
 
-              <div className="pt-2 text-center text-[13px] font-sans text-ink-secondary border-t border-[#EDEFF2] flex items-center justify-between">
+              <div className="pt-2 text-center text-[13px] font-sans text-ink-secondary flex items-center justify-between">
                 <span>Did not receive code?</span>
                 <button
                   type="button"

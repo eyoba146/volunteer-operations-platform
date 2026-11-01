@@ -154,7 +154,7 @@ export const SignInPage: React.FC = () => {
     <PageShell page="public/sign-in" signature="TopoBackdrop">
       <div className="max-w-xl mx-auto px-4 sm:px-6 py-10 md:py-14 space-y-6">
         {/* Editorial Header */}
-        <div className="space-y-2 border-b border-[#EDEFF2] pb-6 text-center">
+        <div className="space-y-2 pb-6 text-center">
           <h1 className="font-display font-bold text-3xl sm:text-4xl text-ink-primary tracking-tight">
             Sign in to your account
           </h1>
@@ -168,7 +168,7 @@ export const SignInPage: React.FC = () => {
           <button
             type="button"
             onClick={() => setDemoPanelOpen(!demoPanelOpen)}
-            className="w-full px-5 py-3.5 bg-[#F1F3F6] border-b border-[#EDEFF2] flex items-center justify-between font-display text-base font-bold text-ink-primary hover:bg-[#E8EBEF] transition-colors cursor-pointer select-none"
+            className="w-full px-5 py-3.5 bg-[#F1F3F6] flex items-center justify-between font-display text-base font-bold text-ink-primary hover:bg-[#E8EBEF] transition-colors cursor-pointer select-none"
           >
             <div className="flex items-center gap-2">
               <Sparkle className="w-4 h-4 text-role-applicant" weight="fill" />
@@ -181,7 +181,7 @@ export const SignInPage: React.FC = () => {
           </button>
 
           {demoPanelOpen && (
-            <div className="p-3 bg-white space-y-1.5 divide-y divide-[#EDEFF2]">
+            <div className="p-3 bg-white space-y-1.5">
               {DEMO_PERSONAS.map((p) => (
                 <button
                   key={p.username}
@@ -189,11 +189,11 @@ export const SignInPage: React.FC = () => {
                   onClick={() => handleSelectDemoAccount(p.username)}
                   className={`w-full pt-2.5 pb-2 text-left flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-2.5 rounded-[8px] hover:bg-[#F7F8FA] transition-colors cursor-pointer ${
                     identifier === p.username ? 'bg-[#F7F8FA] font-semibold' : ''
-                  }`}
+                  } `}
                 >
                   <div className="space-y-0.5">
                     <div className="flex items-center gap-2">
-                      <span className={`text-[13px] font-sans px-2 py-0.5 rounded-[4px] ${p.badgeClass}`}>
+                      <span className={`text-[13px] font-sans px-2 py-0.5 rounded-[4px] ${p.badgeClass} `}>
                         {p.role}
                       </span>
                       <span className="font-sans text-sm font-semibold text-ink-primary">
@@ -292,7 +292,7 @@ export const SignInPage: React.FC = () => {
                 </Button>
               </div>
 
-              <div className="pt-4 text-center text-sm font-sans text-ink-secondary border-t border-[#EDEFF2] flex flex-col sm:flex-row items-center justify-between gap-2">
+              <div className="pt-4 text-center text-sm font-sans text-ink-secondary flex flex-col sm:flex-row items-center justify-between gap-2">
                 <span>New volunteer?</span>
                 <Link to="/register" className="font-semibold text-ink-primary hover:underline">
                   Register a new account →

@@ -154,7 +154,7 @@ export const TeamLeadApproveHoursPage: React.FC = () => {
             {entry.source === 'manual' ? 'Self-reported manual claim' : 'Checked in with the activity code'}
           </span>
           {entry.manualNote && (
-            <p className="text-[13px] text-ink-secondary italic max-w-md bg-canvas-subdued/30 p-2 border border-[#D5DAE1] rounded-[6px]">
+            <p className="text-[13px] text-ink-secondary italic max-w-md bg-canvas-subdued/30 p-2 rounded-[6px]">
               "{entry.manualNote}"
             </p>
           )}
@@ -240,7 +240,7 @@ export const TeamLeadApproveHoursPage: React.FC = () => {
         onPrimaryAction={() => setShowMoment(false)}
       />
       {/* Top Header */}
-      <div className="border-b border-[#EDEFF2] pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div className="pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
           <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
             Approve volunteer hours
@@ -271,7 +271,7 @@ export const TeamLeadApproveHoursPage: React.FC = () => {
           description="There are currently no volunteer hours awaiting your review."
         />
       ) : (
-        <div className="border border-[#D5DAE1] rounded-[10px] bg-white shadow-sm overflow-hidden">
+        <div className="rounded-[10px] bg-white shadow-sm overflow-hidden">
           <LedgerTable
             columns={columns}
             data={pendingHours}
@@ -293,13 +293,13 @@ export const TeamLeadApproveHoursPage: React.FC = () => {
             </p>
 
             {declineError && (
-              <div className="p-3 border border-role-teamlead/30 rounded-[8px] bg-role-teamleadLight/20 text-role-teamlead text-[13px] font-sans font-medium flex items-center gap-2">
+              <div className="p-3 rounded-[8px] bg-role-teamleadLight/20 text-role-teamlead text-[13px] font-sans font-medium flex items-center gap-2">
                 <Warning className="w-4 h-4 shrink-0" weight="bold" />
                 <span>{declineError}</span>
               </div>
             )}
 
-            <div className="border border-[#D5DAE1] rounded-[8px] bg-canvas-subdued/30 p-3 font-mono text-[13px] space-y-1">
+            <div className="rounded-[8px] bg-canvas-subdued/30 p-3 font-mono text-[13px] space-y-1">
               <div>Claim duration: <strong>{Math.round((declineTarget.minutes / 60) * 10) / 10} hours</strong></div>
               <div>Date: {new Date(declineTarget.checkIn).toLocaleDateString()}</div>
               <div>Check-in: {declineTarget.source === 'manual' ? 'Self-reported manual claim' : 'Checked in with the activity code'}</div>
@@ -314,12 +314,12 @@ export const TeamLeadApproveHoursPage: React.FC = () => {
                 value={declineReason}
                 onChange={(e) => setDeclineReason(e.target.value)}
                 placeholder="e.g. Attendance was not verified at duty station A. Please contact team lead to verify logbook records."
-                className="w-full bg-white text-ink-primary font-sans text-[13px] border-[1.5px] border-[#475569] rounded-[8px] p-2.5 focus:outline-none focus:ring-2 focus:ring-role-teamlead"
+                className="w-full bg-white text-ink-primary font-sans text-[13px] rounded-[8px] p-2.5 focus:outline-none focus:ring-2 focus:ring-role-teamlead"
                 required
               />
             </div>
 
-            <div className="flex justify-end gap-2 pt-2 border-t border-[#D5DAE1]">
+            <div className="flex justify-end gap-2 pt-2">
               <Button
                 type="button"
                 variant="secondary"

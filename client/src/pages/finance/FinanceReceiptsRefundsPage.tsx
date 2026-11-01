@@ -275,8 +275,8 @@ export const FinanceReceiptsRefundsPage: React.FC = () => {
   return (
     <div className="space-y-6 text-left">
       {/* Top Header Card */}
-      <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 space-y-5 shadow-sm">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#D5DAE1] pb-4">
+      <div className="rounded-[10px] bg-white p-6 space-y-5 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4">
           <div className="space-y-1">
             <h1 className="font-display font-black text-2xl sm:text-3xl tracking-tight text-ink-primary leading-tight">
               Receipts and refunds
@@ -315,23 +315,21 @@ export const FinanceReceiptsRefundsPage: React.FC = () => {
           </div>
 
           {/* Simple Inline List with dividers */}
-          <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm pt-2 md:pt-0 border-t md:border-t-0 border-[#D5DAE1]">
+          <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm pt-2 md:pt-0">
             <div className="space-y-0.5">
               <span className="text-[13px] text-ink-secondary block">Pending refund claims</span>
               <span className={`text-xl font-bold ${
                 refundRequests.length > 0 ? 'text-role-applicant' : 'text-role-volunteer'
-              }`}>
+              } `}>
                 {refundRequests.length} claims
               </span>
             </div>
-            <div className="w-px h-8 bg-[#D5DAE1] hidden sm:block" />
             <div className="space-y-0.5">
               <span className="text-[13px] text-ink-secondary block">Total reimbursed</span>
               <span className="text-xl font-bold text-red-600">
                 - ETB {totalRefundsETB.toLocaleString()}.00
               </span>
             </div>
-            <div className="w-px h-8 bg-[#D5DAE1] hidden sm:block" />
             <div className="space-y-0.5">
               <span className="text-[13px] text-ink-secondary block">Net settled balance</span>
               <span className="text-xl font-bold text-ink-primary">
@@ -382,12 +380,12 @@ export const FinanceReceiptsRefundsPage: React.FC = () => {
               value={refundReason}
               onChange={(e) => setRefundReason(e.target.value)}
               placeholder="e.g. Accidental double payment confirmed with statement..."
-              className="w-full bg-white text-ink-primary font-sans text-sm border border-[#475569] rounded-[8px] p-2.5 outline-none focus:ring-1 focus:ring-ink-primary"
+              className="w-full bg-white text-ink-primary font-sans text-sm rounded-[8px] p-2.5 focus:ring-1 focus:ring-ink-primary"
               required
             />
           </div>
 
-          <div className="pt-3 border-t border-[#D5DAE1] flex items-center justify-end gap-3">
+          <div className="pt-3 flex items-center justify-end gap-3">
             <Button
               type="button"
               variant="secondary"
@@ -418,8 +416,8 @@ export const FinanceReceiptsRefundsPage: React.FC = () => {
         {viewingReceipt && (
           <div className="space-y-5 text-left font-sans text-sm p-2">
             {/* Printable Receipt Card */}
-            <div className="rounded-[16px] bg-white p-6 space-y-4 shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] border-none">
-              <div className="flex items-start justify-between border-b border-[#EDEFF2] pb-3">
+            <div className="rounded-[16px] bg-white p-6 space-y-4 shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)]">
+              <div className="flex items-start justify-between pb-3">
                 <div>
                   <h3 className="font-display text-xl font-black tracking-tight text-ink-primary">
                     VTS volunteer program
@@ -460,7 +458,7 @@ export const FinanceReceiptsRefundsPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="border-t border-[#D5DAE1] pt-3 text-[13px] text-ink-tertiary text-center font-mono">
+              <div className="pt-3 text-[13px] text-ink-tertiary text-center font-mono">
                 Merchant account: 884120 • Electronic proof of volunteer registration
               </div>
             </div>

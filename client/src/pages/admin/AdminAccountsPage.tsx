@@ -151,7 +151,7 @@ export const AdminAccountsPage: React.FC = () => {
         <select
           value={u.role}
           onChange={(e) => handleRoleChange(u.id, e.target.value as Role)}
-          className="bg-white border border-[#475569] py-1 px-2.5 text-[13px] font-sans font-medium rounded-[6px] cursor-pointer outline-none focus:ring-1 focus:ring-ink-primary"
+          className="bg-white py-1 px-2.5 text-[13px] font-sans font-medium rounded-[6px] cursor-pointer focus:ring-1 focus:ring-ink-primary"
         >
           <option value="applicant">Applicant</option>
           <option value="volunteer">Volunteer (Member)</option>
@@ -201,8 +201,8 @@ export const AdminAccountsPage: React.FC = () => {
       </button>
 
       {/* Header Card */}
-      <div className="border border-[#D5DAE1] rounded-[10px] bg-white p-6 sm:p-8 space-y-4 shadow-sm">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#D5DAE1] pb-4">
+      <div className="rounded-[10px] bg-white p-6 sm:p-8 space-y-4 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4">
           <div className="space-y-1">
             <h1 className="font-display font-black text-2xl sm:text-3xl tracking-tight text-ink-primary leading-tight">
               User accounts and role permissions
@@ -347,7 +347,7 @@ export const AdminAccountsPage: React.FC = () => {
             Password defaults to <strong>Demo@1234</strong>. Email verification is marked active immediately.
           </p>
 
-          <div className="pt-3 border-t border-[#D5DAE1] flex items-center justify-end gap-3">
+          <div className="pt-3 flex items-center justify-end gap-3">
             <Button
               type="button"
               variant="secondary"

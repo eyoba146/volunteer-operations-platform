@@ -53,9 +53,17 @@ Things are separated with **tone and space**, not outlines.
 2. **Panel Tier**: `#F7F8FA` solid fill, zero border, 16 px radius (`rounded-[16px]`), for grouped content and sidebars.
 3. **Raised Tier**: White with a very soft shadow (`0 1px 2px rgba(16,24,40,0.05), 0 8px 24px -12px rgba(16,24,40,0.10)`), zero border, 16 px radius (`rounded-[16px]`). Used exclusively for the page's main hero card, tickets and passes, and floating dialogs/drawers.
 
-### 3.2 Outlines & Dividers
-- **Zero Card Outlines**: All dark, black, or slate borders on cards, panels, and passes are removed.
-- **Allowed Borders**: 1 px `#CBD2DA` on text inputs and selects (with a 2 px focus ring in the role colour), ticket perforations, and 1 px `#EDEFF2` hairline dividers between list rows.
+### 3.2 Zero Borders Everywhere
+- **Zero Borders**: Absolutely no borders anywhere in the UI. Not dark, not light, not 1 px hairlines, not dividers, not on cards, panels, tabs, tables, buttons, chips, avatars, dialogs, menus, sidebar, top header, or breadcrumbs.
+- **Inputs & Selects**: Tonal fill `#F1F3F6`, 12 px radius, no border. Focus only: 2 px brand ring on `:focus-visible`. Errors: red text below field plus light red tonal fill, never a red border.
+- **Buttons**: Filled primary, tonal secondary (`#F1F3F6`, no border), text-link tertiary. No outlined buttons.
+- **Tabs**: No container; active tab indicator is a 2 px bar drawn with a pseudo-element background in the role colour, not a border.
+- **Tables & Lists**: No row lines, no header line. Separate rows with space (4 to 8 px gap) and subtle alternating tonal band on hover only. Section separators: 40 to 56 px space, no divider lines.
+- **Sidebar & Header**: No edge lines; separate by sidebar tint (`#F7F8FA`) and whitespace.
+- **Chips & Status**: Dot plus text, or tonal fill, no border. Avatars: no rings.
+- **Dialogs & Toasts**: Raised soft shadow only.
+- **Tickets**: Notches and dashed perforation drawn as SVG or background image, never as a border.
+- **Dividers Inside Cards**: Deleted; whitespace only.
 - **No Nested Boxes**: Never put a bordered or filled box inside another box.
 
 ### 3.3 Buttons & Actions

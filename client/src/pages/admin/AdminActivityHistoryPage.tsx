@@ -49,7 +49,7 @@ export const AdminActivityHistoryPage: React.FC = () => {
           <span className="font-sans font-semibold text-ink-primary block text-[13px]">
             {entry.actorName}
           </span>
-          <span className="font-mono text-[13px] font-medium px-1.5 py-0.5 bg-canvas-subdued border-[#EDEFF2] rounded-[4px] text-ink-secondary inline-block">
+          <span className="font-mono text-[13px] font-medium px-1.5 py-0.5 bg-canvas-subdued rounded-[4px] text-ink-secondary inline-block">
             {entry.actorRole}
           </span>
         </div>
@@ -66,7 +66,7 @@ export const AdminActivityHistoryPage: React.FC = () => {
     {
       header: 'Subject / Entity',
       cell: (entry) => (
-        <span className="font-mono text-[13px] text-ink-secondary bg-canvas-subdued/40 px-2 py-0.5 border-[#EDEFF2] rounded-[4px] inline-block">
+        <span className="font-mono text-[13px] text-ink-secondary bg-canvas-subdued/40 px-2 py-0.5 rounded-[4px] inline-block">
           {entry.subject}
         </span>
       ),
@@ -84,8 +84,8 @@ export const AdminActivityHistoryPage: React.FC = () => {
       </button>
 
       {/* Header Card */}
-      <div className="rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 sm:p-8 space-y-4 border-none">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#EDEFF2] pb-4">
+      <div className="rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 sm:p-8 space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4">
           <div className="space-y-1">
             <h1 className="font-display font-black text-2xl sm:text-3xl tracking-tight text-ink-primary leading-tight">
               System activity history
@@ -96,7 +96,7 @@ export const AdminActivityHistoryPage: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="font-mono text-[13px] font-medium text-ink-primary bg-canvas-subdued border-[#EDEFF2] px-3 py-1.5 rounded-[8px]">
+            <span className="font-mono text-[13px] font-medium text-ink-primary bg-canvas-subdued px-3 py-1.5 rounded-[8px]">
               Total entries: {filteredLogs.length}
             </span>
           </div>
@@ -126,7 +126,7 @@ export const AdminActivityHistoryPage: React.FC = () => {
             ]}
           />
         </div>
-        <div className="flex items-center gap-2 pt-2 border-t border-[#EDEFF2]">
+        <div className="flex items-center gap-2 pt-2">
           <span className="text-[13px] font-sans text-ink-secondary mr-2">Layout:</span>
           <button
             type="button"
@@ -135,7 +135,7 @@ export const AdminActivityHistoryPage: React.FC = () => {
               viewMode === 'log'
                 ? 'bg-role-admin text-white'
                 : 'bg-[#F7F8FA] text-ink-secondary hover:text-ink-primary'
-            }`}
+            } `}
           >
             Journey timeline
           </button>
@@ -146,7 +146,7 @@ export const AdminActivityHistoryPage: React.FC = () => {
               viewMode === 'table'
                 ? 'bg-role-admin text-white'
                 : 'bg-[#F7F8FA] text-ink-secondary hover:text-ink-primary'
-            }`}
+            } `}
           >
             Ledger table
           </button>
