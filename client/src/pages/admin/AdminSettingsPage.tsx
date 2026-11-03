@@ -297,7 +297,7 @@ export const AdminSettingsPage: React.FC = () => {
               type="number"
               value={fee}
               onChange={(e) => setFee(e.target.value)}
-              hint="One-time applicant fee required to activate Member rank."
+              hint="One-time applicant fee required to activate Volunteer rank."
               required
             />
 
@@ -472,7 +472,7 @@ export const AdminSettingsPage: React.FC = () => {
             label="Authorized signatory name and title"
             value={signatory}
             onChange={(e) => setSignatory(e.target.value)}
-            hint="Printed on all verified certificates of membership and rank advancement."
+            hint="Printed on all verified certificates of volunteer status and rank advancement."
             required
           />
 

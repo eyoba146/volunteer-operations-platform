@@ -154,7 +154,7 @@ export const AdminAccountsPage: React.FC = () => {
           className="bg-white py-1 px-2.5 text-[13px] font-sans font-medium rounded-[6px] cursor-pointer focus:ring-1 focus:ring-ink-primary"
         >
           <option value="applicant">Applicant</option>
-          <option value="volunteer">Volunteer (Member)</option>
+          <option value="volunteer">Volunteer</option>
           <option value="team_lead">Team Lead</option>
           <option value="manager">Program Manager</option>
           <option value="finance">Finance Officer</option>

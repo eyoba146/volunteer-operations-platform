@@ -699,7 +699,7 @@ export const ApplicantApplyPage: React.FC = () => {
                 value={motivation}
                 onChange={(e) => setMotivation(e.target.value)}
                 placeholder="Describe your motivation, community background, or causes you care about..."
-                className="w-full bg-white text-ink-primary font-sans text-base rounded-[8px] p-3 focus:border-ink-primary"
+                className="w-full bg-white text-ink-primary font-sans text-base rounded-[8px] p-3 focus:outline-none focus:ring-2 focus:ring-ink-primary/20"
                 required
               />
             </div>
@@ -745,7 +745,7 @@ export const ApplicantApplyPage: React.FC = () => {
                 Submission confirmation summary:
               </span>
               <p className="text-ink-secondary leading-relaxed">
-                Submitting this application creates your candidate file in the review queue. Once accepted by a Program Manager, you will receive an invitation to activate your membership with a one-time Telebirr registration fee of ETB 200.
+                Submitting this application creates your candidate file in the review queue. Once accepted by a Program Manager, you will receive an invitation to activate your volunteer account with a one-time Telebirr registration fee of ETB 200.
               </p>
             </div>
 

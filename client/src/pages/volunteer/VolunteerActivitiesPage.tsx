@@ -44,8 +44,8 @@ const DATE_OPTIONS = [
 
 const RANK_OPTIONS = [
   { value: 'all', label: 'All ranks allowed' },
-  { value: 'member', label: 'Member' },
-  { value: 'senior_member', label: 'Senior member' },
+  { value: 'volunteer', label: 'Volunteer' },
+  { value: 'senior_volunteer', label: 'Senior volunteer' },
   { value: 'team_lead', label: 'Team lead' },
 ];
 
@@ -96,7 +96,12 @@ export const VolunteerActivitiesPage: React.FC = () => {
     let result = activities;
 
     if (selectedRank !== 'all') {
-      result = result.filter((a) => !a.minRank || a.minRank === selectedRank);
+      result = result.filter((a) => {
+        if (!a.minRank) return true;
+        if (selectedRank === 'volunteer') return a.minRank === 'volunteer' || a.minRank === 'member';
+        if (selectedRank === 'senior_volunteer') return a.minRank === 'senior_volunteer' || a.minRank === 'senior_member';
+        return a.minRank === selectedRank;
+      });
     }
 
     if (selectedDateFilter === 'today') {

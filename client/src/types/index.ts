@@ -9,10 +9,12 @@ export type Role =
   | 'admin';
 
 export type Rank = 
-  | 'member' 
-  | 'senior_member' 
+  | 'volunteer' 
+  | 'senior_volunteer' 
   | 'team_lead' 
-  | 'manager';
+  | 'manager'
+  | 'member' // backwards-compatibility alias during rank rename
+  | 'senior_member'; // backwards-compatibility alias during rank rename
 
 export type AccountStatus = 
   | 'unverified' 
@@ -77,9 +79,103 @@ export type EnrollmentStatus =
   | 'no-show';
 
 export type CertificateKind = 
-  | 'membership' 
+  | 'volunteer' 
   | 'rank' 
-  | 'training';
+  | 'training'
+  | 'membership'; // backwards compatibility alias
+
+// Organisation Structure & Scopes
+export type OrgUnitType = 'head_office' | 'area' | 'branch' | 'location';
+
+export interface OrgUnit {
+  id: string;
+  type: OrgUnitType;
+  name: string;
+  parentId?: string | null;
+  status?: 'active' | 'archived';
+  code?: string;
+  createdAt?: string;
+}
+
+export type ScopeLevel = 'all' | 'area' | 'branch' | 'own';
+
+export interface UserScope {
+  unitId: string;
+  unitName?: string;
+  level: ScopeLevel;
+}
+
+// Permissions System
+export type PermissionModule =
+  | 'applications'
+  | 'volunteers'
+  | 'activities'
+  | 'hours'
+  | 'ratings'
+  | 'promotions'
+  | 'payments'
+  | 'announcements'
+  | 'reports'
+  | 'settings'
+  | 'organisation'
+  | 'accounts';
+
+export type PermissionAction =
+  | 'view'
+  | 'create'
+  | 'edit'
+  | 'delete'
+  | 'submit'
+  | 'review'
+  | 'verify'
+  | 'approve'
+  | 'reject'
+  | 'export';
+
+export interface RolePermissionConfig {
+  role: Role;
+  scopeLevel: ScopeLevel;
+  permissions: Record<PermissionModule, PermissionAction[]>;
+  description: string;
+}
+
+// Sign-In Log Entry
+export interface SignInLogEntry {
+  id: string;
+  userId: string;
+  username: string;
+  role: Role;
+  timestamp: string; // ISO
+  ipAddress?: string;
+  deviceSummary: string; // e.g. "Edge on Windows", "Safari on iPhone"
+  result: 'success' | 'failed' | 'locked';
+  reason?: string;
+}
+
+// Demo SMS Message
+export interface DemoSmsMessage {
+  id: string;
+  toPhone: string;
+  toName: string;
+  body: string;
+  category: 'security' | 'verification' | 'application' | 'payment' | 'hours' | 'promotion' | 'activity';
+  sentAt: string;
+  read?: boolean;
+}
+
+export interface NotificationEventPreferences {
+  inApp: boolean;
+  email: boolean;
+  sms: boolean;
+}
+
+export interface NotificationPreferences {
+  activities: NotificationEventPreferences;
+  hours: NotificationEventPreferences;
+  promotions: NotificationEventPreferences;
+  payments: NotificationEventPreferences;
+  security: NotificationEventPreferences;
+}
 
 // Entities
 export interface User {
@@ -96,6 +192,11 @@ export interface User {
   emailVerifiedAt?: string;
   createdAt: string;
   lastSignInAt?: string;
+  branchId?: string;
+  branchName?: string;
+  areaId?: string;
+  areaName?: string;
+  scope?: UserScope;
 }
 
 export interface EmergencyContact {
@@ -113,6 +214,10 @@ export interface VolunteerProfile {
   avatarUrl?: string;
   dateOfBirth: string; // ISO date YYYY-MM-DD
   area: string; // e.g. "Bole, Addis Ababa"
+  branchId?: string;
+  branchName?: string;
+  areaId?: string;
+  areaName?: string;
   bio: string;
   skills: string[];
   availability: string[]; // e.g. ["Weekend mornings", "Weekday afternoons"]
@@ -121,7 +226,8 @@ export interface VolunteerProfile {
   photoUrl?: string;
   idPhotoUrl?: string;
   rank?: Rank;
-  memberSince?: string;
+  volunteerSince?: string;
+  memberSince?: string; // alias
   volunteerNumber?: string; // e.g. "VTS-AA-2026-084"
   rankHistory?: RankHistoryMilestone[];
 }
@@ -134,10 +240,19 @@ export interface ApplicationNote {
   content: string;
 }
 
+export type ApplicationSource = 'self_registered' | 'staff_assisted';
+
 export interface Application {
   id: string;
   userId: string;
   status: ApplicationStatus;
+  source?: ApplicationSource;
+  createdBy?: string; // Staff ID who registered them
+  createdByName?: string;
+  branchId?: string;
+  branchName?: string;
+  areaId?: string;
+  areaName?: string;
   submittedAt?: string;
   reviewedBy?: string; // user ID of manager
   reviewedAt?: string;
@@ -152,6 +267,10 @@ export interface Application {
     avatarUrl?: string;
     dateOfBirth: string;
     area: string;
+    branchId?: string;
+    branchName?: string;
+    areaId?: string;
+    areaName?: string;
     skills: string[];
     availability: string[];
     motivation: string;
@@ -159,6 +278,7 @@ export interface Application {
     emergencyContact: EmergencyContact;
     photoUrl?: string;
     idPhotoUrl?: string;
+    consentAgreed?: boolean;
   };
 }
 
@@ -177,6 +297,15 @@ export interface Payment {
   refundReason?: string;
   payerPhone?: string;
   payerName?: string;
+  branchId?: string;
+  branchName?: string;
+  areaId?: string;
+  areaName?: string;
+  paymentMethod?: 'telebirr' | 'manual_record';
+  recordedBy?: string;
+  verifiedBy?: string;
+  recordedByName?: string;
+  note?: string;
 }
 
 export interface Activity {
@@ -187,6 +316,10 @@ export interface Activity {
   startsAt: string; // ISO datetime
   endsAt: string;
   area: string; // e.g. "Addis Ababa", "Hawassa"
+  areaId?: string;
+  areaName?: string;
+  branchId?: string;
+  branchName?: string;
   place: string; // Specific location / venue
   capacity: number;
   minRank?: Rank;

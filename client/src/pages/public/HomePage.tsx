@@ -25,14 +25,14 @@ export const HomePage: React.FC = () => {
 
   const RANKS = [
     {
-      id: 'member',
-      name: 'Member',
+      id: 'volunteer',
+      name: 'Volunteer',
       hours: '0 hrs',
       activities: '1 activity',
       rating: 'No minimum',
       course: 'Volunteer Orientation',
       roleColor: '#D97706',
-      badge: 'Member',
+      badge: 'Volunteer',
       summary:
         'The starting waypoint on the trail. Complete your registration, receive your digital volunteer pass, and join your first community project.',
       unlocks: [
@@ -43,19 +43,19 @@ export const HomePage: React.FC = () => {
       ],
     },
     {
-      id: 'senior_member',
-      name: 'Senior Member',
+      id: 'senior_volunteer',
+      name: 'Senior Volunteer',
       hours: '30 hrs',
       activities: '5 activities',
       rating: '4.2 stars',
       course: 'Field Safety & First Aid',
       roleColor: '#16A34A',
-      badge: 'Senior Member',
+      badge: 'Senior Volunteer',
       summary:
-        'A dedicated waypoint reached through consistent service. Senior members take on priority tasks, mentor newcomers, and assist with activity logistics.',
+        'A dedicated waypoint reached through consistent service. Senior volunteers take on priority tasks, mentor newcomers, and assist with activity logistics.',
       unlocks: [
         'Priority enrollment for high-demand community initiatives',
-        'Senior Member service certificate',
+        'Senior Volunteer service certificate',
         'Eligibility to co-lead activity check-in stations',
         'Mentorship recognition on volunteer record',
       ],
@@ -115,7 +115,7 @@ export const HomePage: React.FC = () => {
       num: '03',
       title: 'Receive your verified pass',
       detail:
-        'Upon acceptance, complete your one-time registration pass. You immediately become an active Member with your QR pass.',
+        'Upon acceptance, complete your one-time registration pass. You immediately become an active Volunteer with your QR pass.',
     },
     {
       num: '04',
@@ -196,24 +196,75 @@ export const HomePage: React.FC = () => {
             </h1>
 
             <p className="font-sans text-lg sm:text-xl text-ink-primary font-medium max-w-2xl leading-relaxed">
-              Volunteering is a journey up a trail. Check in at field projects, earn verified hours, and advance from Member to Manager.
+              Volunteering is a journey up a trail. Check in at field projects, earn verified hours, and advance from Volunteer to Manager.
             </p>
 
-            {/* Action Row: Maximum ONE primary black button */}
-            <div className="pt-2 flex flex-wrap items-center gap-3">
-              <Button
-                variant="primary"
-                size="lg"
-                onClick={() => navigate('/register')}
-                rightIcon={<ArrowRight className="w-5 h-5" weight="bold" />}
-              >
-                Start your trail
-              </Button>
+            {/* Access Chooser: Two clear pathways */}
+            <div className="pt-2 grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl">
+              {/* Pathway 1: Community Volunteers */}
+              <div className="p-5 rounded-[16px] bg-white text-left space-y-3 shadow-xs">
+                <span className="font-sans text-[12px] font-bold text-role-volunteer uppercase tracking-wider block">
+                  Community volunteers
+                </span>
+                <h2 className="font-display text-xl font-bold text-ink-primary">
+                  I want to volunteer
+                </h2>
+                <p className="font-sans text-[13px] text-ink-secondary leading-relaxed">
+                  Join community service projects, log your verified hours, and advance your rank along the trail.
+                </p>
+                <div className="pt-1 flex flex-wrap gap-2.5">
+                  <Button
+                    variant="primary"
+                    size="md"
+                    onClick={() => navigate('/register')}
+                    rightIcon={<ArrowRight className="w-4 h-4" weight="bold" />}
+                  >
+                    Register as volunteer
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    size="md"
+                    onClick={() => navigate('/login')}
+                  >
+                    Volunteer sign in
+                  </Button>
+                </div>
+              </div>
+
+              {/* Pathway 2: Program Staff */}
+              <div className="p-5 rounded-[16px] bg-white text-left space-y-3 shadow-xs">
+                <span className="font-sans text-[12px] font-bold text-role-manager uppercase tracking-wider block">
+                  Operations & leadership
+                </span>
+                <h2 className="font-display text-xl font-bold text-ink-primary">
+                  I work with the program
+                </h2>
+                <p className="font-sans text-[13px] text-ink-secondary leading-relaxed">
+                  Team leads, managers, finance officers, and program administrators managing field operations.
+                </p>
+                <div className="pt-1 space-y-2">
+                  <Button
+                    variant="secondary"
+                    size="md"
+                    onClick={() => navigate('/login')}
+                    rightIcon={<ArrowRight className="w-4 h-4" />}
+                  >
+                    Staff sign in
+                  </Button>
+                  <p className="font-sans text-[12px] text-ink-secondary">
+                    Staff accounts are created by an administrator.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Secondary Utility Actions */}
+            <div className="pt-1 flex items-center gap-3">
               <Button
                 variant="secondary"
-                size="lg"
+                size="md"
                 onClick={() => navigate('/check-certificate')}
-                leftIcon={<ShieldCheck className="w-5 h-5 text-role-volunteer" weight="bold" />}
+                leftIcon={<ShieldCheck className="w-4 h-4 text-role-volunteer" weight="bold" />}
               >
                 Verify a certificate
               </Button>
@@ -361,7 +412,7 @@ export const HomePage: React.FC = () => {
                     onClick={() => navigate('/register')}
                     className="text-sm font-bold text-ink-primary hover:underline inline-flex items-center gap-1.5 cursor-pointer bg-transparent"
                   >
-                    <span>Apply to begin with Member status</span>
+                    <span>Apply to begin with Volunteer status</span>
                     <ArrowRight className="w-4 h-4" />
                   </button>
                 </div>

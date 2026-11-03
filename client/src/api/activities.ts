@@ -48,7 +48,12 @@ export async function getActivityById(activityId: string): Promise<Activity | nu
 }
 
 export async function createActivity(
-  data: Omit<Activity, 'id' | 'status' | 'checkInCode' | 'leadId' | 'leadName'>,
+  data: Omit<Activity, 'id' | 'status' | 'checkInCode' | 'leadId' | 'leadName'> & {
+    branchId?: string;
+    branchName?: string;
+    areaId?: string;
+    areaName?: string;
+  },
   leadId: string,
   leadName: string
 ): Promise<Activity> {
@@ -57,11 +62,21 @@ export async function createActivity(
   const id = `act-${Date.now()}`;
   const checkInCode = Math.floor(1000 + Math.random() * 9000).toString();
 
+  const leadUser = state.users.find((u) => u.id === leadId);
+  const branchId = data.branchId || leadUser?.branchId || (leadUser?.scope?.unitId?.startsWith('branch') ? leadUser.scope.unitId : undefined);
+  const branchName = data.branchName || leadUser?.branchName || (leadUser?.scope?.unitName?.includes('Branch') ? leadUser.scope.unitName : undefined);
+  const areaId = data.areaId || leadUser?.areaId || (leadUser?.scope?.unitId?.startsWith('area') ? leadUser.scope.unitId : undefined);
+  const areaName = data.areaName || leadUser?.areaName || (leadUser?.scope?.unitName?.includes('Area') ? leadUser.scope.unitName : undefined) || data.area;
+
   const newActivity: Activity = {
     ...data,
     id,
     leadId,
     leadName,
+    branchId,
+    branchName,
+    areaId,
+    areaName,
     status: 'open',
     checkInCode,
   };

@@ -9,6 +9,7 @@ export const AdminActivityHistoryPage: React.FC = () => {
   const [logs, setLogs] = useState<ActivityLogEntry[]>([]);
   const [search, setSearch] = useState('');
   const [roleFilter, setRoleFilter] = useState('all');
+  const [categoryFilter, setCategoryFilter] = useState<'all' | 'admin' | 'signins' | 'security_alerts'>('all');
   const [isLoading, setIsLoading] = useState(true);
   const [viewMode, setViewMode] = useState<'log' | 'table'>('log');
   const navigate = useNavigate();
@@ -17,8 +18,40 @@ export const AdminActivityHistoryPage: React.FC = () => {
     const load = async () => {
       setIsLoading(true);
       try {
-        const list = await api.getActivityLog(search || undefined);
-        setLogs(list);
+        const [actLogs, signIns] = await Promise.all([
+          api.getActivityLog(search || undefined),
+          api.getSignInLogs(),
+        ]);
+
+        const signInEntries: ActivityLogEntry[] = signIns.map((s) => ({
+          id: s.id,
+          actorId: s.userId || 'anonymous',
+          actorName: s.username,
+          actorRole: s.result === 'locked' ? 'Security Lockout' : s.result === 'failed' ? 'Failed Sign-in' : 'Sign-in',
+          action: s.result === 'locked'
+            ? `Account locked: ${s.reason || 'Multiple failed attempts'} (${s.deviceSummary})`
+            : s.result === 'failed'
+            ? `Failed sign-in attempt: ${s.reason || 'Invalid credentials'} (${s.deviceSummary})`
+            : `Successful sign-in from ${s.deviceSummary} (${s.ipAddress || '196.188.24.1'})`,
+          subject: `IP: ${s.ipAddress || '196.188.24.1'}`,
+          createdAt: s.timestamp,
+        }));
+
+        let combined = [...actLogs, ...signInEntries];
+        combined.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+        if (search) {
+          const q = search.toLowerCase();
+          combined = combined.filter(
+            (l) =>
+              l.action.toLowerCase().includes(q) ||
+              l.actorName.toLowerCase().includes(q) ||
+              l.subject.toLowerCase().includes(q) ||
+              l.actorRole.toLowerCase().includes(q)
+          );
+        }
+
+        setLogs(combined);
       } finally {
         setIsLoading(false);
       }
@@ -27,6 +60,14 @@ export const AdminActivityHistoryPage: React.FC = () => {
   }, [search]);
 
   const filteredLogs = logs.filter((entry) => {
+    if (categoryFilter === 'admin') {
+      if (['Sign-in', 'Failed Sign-in', 'Security Lockout'].includes(entry.actorRole)) return false;
+    } else if (categoryFilter === 'signins') {
+      if (!['Sign-in', 'Failed Sign-in', 'Security Lockout'].includes(entry.actorRole)) return false;
+    } else if (categoryFilter === 'security_alerts') {
+      if (!['Failed Sign-in', 'Security Lockout'].includes(entry.actorRole)) return false;
+    }
+
     if (roleFilter !== 'all' && !entry.actorRole.toLowerCase().includes(roleFilter.toLowerCase())) {
       return false;
     }
@@ -103,7 +144,7 @@ export const AdminActivityHistoryPage: React.FC = () => {
         </div>
 
         {/* Search & Filter Strip */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 pt-1">
           <div className="sm:col-span-2">
             <Input
               placeholder="Search by action, actor name, or subject..."
@@ -114,6 +155,17 @@ export const AdminActivityHistoryPage: React.FC = () => {
           </div>
 
           <Select
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value as any)}
+            options={[
+              { value: 'all', label: 'All event types' },
+              { value: 'admin', label: 'Platform & admin actions' },
+              { value: 'signins', label: 'Sign-in events' },
+              { value: 'security_alerts', label: 'Failed attempts & lockouts' },
+            ]}
+          />
+
+          <Select
             value={roleFilter}
             onChange={(e) => setRoleFilter(e.target.value)}
             options={[
@@ -122,6 +174,8 @@ export const AdminActivityHistoryPage: React.FC = () => {
               { value: 'Manager', label: 'Program Manager' },
               { value: 'Team Lead', label: 'Team Lead' },
               { value: 'Finance', label: 'Finance Officer' },
+              { value: 'Sign-in', label: 'Sign-in events' },
+              { value: 'Security', label: 'Security alerts' },
               { value: 'System', label: 'System Automated' },
             ]}
           />

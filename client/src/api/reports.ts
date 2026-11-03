@@ -16,8 +16,9 @@ export async function getManagerOverviewStats(): Promise<{
   ).length;
 
   const newVolunteersThisMonth = state.profiles.filter((p) => {
-    if (!p.memberSince) return false;
-    return p.memberSince.startsWith('2026-10') || p.memberSince.startsWith('2026-09');
+    const d = p.volunteerSince || p.memberSince;
+    if (!d) return false;
+    return d.startsWith('2026-10') || d.startsWith('2026-09');
   }).length;
 
   const approvedHours = state.hours

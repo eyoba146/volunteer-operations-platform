@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
-import { Application, ApplicationStatus } from '../../types';
+import { Application, ApplicationStatus, ApplicationSource } from '../../types';
 import { 
   LedgerTable, 
   LedgerColumn, 
@@ -18,8 +19,16 @@ import {
   X, 
   Warning, 
   Eye, 
-  ArrowsClockwise
+  ArrowsClockwise,
+  UserPlus,
+  Buildings,
 } from '@phosphor-icons/react';
+
+const SOURCE_FILTERS: { value: ApplicationSource | 'all'; label: string }[] = [
+  { value: 'all', label: 'All sources' },
+  { value: 'self_registered', label: 'Self-registered' },
+  { value: 'staff_assisted', label: 'Staff-assisted' },
+];
 
 const STATUS_FILTERS: { value: ApplicationStatus | 'all'; label: string }[] = [
   { value: 'all', label: 'All statuses' },
@@ -66,8 +75,10 @@ const SORT_OPTIONS: { value: 'newest' | 'oldest' | 'name'; label: string }[] = [
 
 export const ManagerApplicationsPage: React.FC = () => {
   const { user, profile } = useAuth();
+  const navigate = useNavigate();
   const [applications, setApplications] = useState<Application[]>([]);
   const [selectedStatus, setSelectedStatus] = useState<ApplicationStatus | 'all'>('all');
+  const [selectedSource, setSelectedSource] = useState<ApplicationSource | 'all'>('all');
   const [selectedArea, setSelectedArea] = useState('all');
   const [selectedSkill, setSelectedSkill] = useState('all');
   const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'name'>('newest');
@@ -90,6 +101,7 @@ export const ManagerApplicationsPage: React.FC = () => {
     try {
       const list = await api.getAllApplications({
         status: selectedStatus,
+        source: selectedSource !== 'all' ? selectedSource : undefined,
         area: selectedArea !== 'all' ? selectedArea : undefined,
         skill: selectedSkill !== 'all' ? selectedSkill : undefined,
         search: search.trim() || undefined,
@@ -104,7 +116,7 @@ export const ManagerApplicationsPage: React.FC = () => {
 
   useEffect(() => {
     loadData();
-  }, [selectedStatus, selectedArea, selectedSkill, sortBy, search]);
+  }, [selectedStatus, selectedSource, selectedArea, selectedSkill, sortBy, search]);
 
   const toggleSelect = (id: string) => {
     if (selectedIds.includes(id)) {
@@ -292,6 +304,23 @@ export const ManagerApplicationsPage: React.FC = () => {
       ),
     },
     {
+      header: 'Intake source',
+      cell: (app) => (
+        <div>
+          {app.source === 'staff_assisted' ? (
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[4px] bg-[#E8F8F5] text-xs font-semibold text-[#0E6266]">
+              <Buildings className="w-3 h-3" weight="bold" />
+              <span>Registered by {app.createdByName || 'Staff'}</span>
+            </span>
+          ) : (
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[4px] bg-[#F1F3F6] text-xs font-medium text-ink-secondary">
+              Self-registered
+            </span>
+          )}
+        </div>
+      ),
+    },
+    {
       header: 'Submission date',
       cell: (app) => (
         <span className="font-mono text-[13px] text-ink-secondary">
@@ -333,37 +362,47 @@ export const ManagerApplicationsPage: React.FC = () => {
           </p>
         </div>
 
-        {/* Bulk Action Controls */}
-        {selectedIds.length > 0 && (
-          <div className="flex items-center gap-2 bg-role-managerLight/30 rounded-[8px] p-2">
-            <span className="font-mono text-[13px] font-semibold text-ink-primary px-2">
-              {selectedIds.length} selected
-            </span>
-            <Button
-              variant="teal"
-              size="sm"
-              isLoading={isProcessing}
-              onClick={handleBulkAccept}
-              leftIcon={<Check className="w-4 h-4" weight="bold" />}
-            >
-              Bulk accept
-            </Button>
-            <Button
-              variant="danger"
-              size="sm"
-              isLoading={isProcessing}
-              onClick={() => setShowBulkRejectModal(true)}
-              leftIcon={<X className="w-4 h-4" />}
-            >
-              Bulk reject
-            </Button>
-          </div>
-        )}
+        <div className="flex items-center gap-2">
+          <Button
+            variant="teal"
+            onClick={() => navigate('/manager/register-volunteer')}
+            leftIcon={<UserPlus className="w-4 h-4" weight="bold" />}
+          >
+            Register a volunteer
+          </Button>
+
+          {/* Bulk Action Controls */}
+          {selectedIds.length > 0 && (
+            <div className="flex items-center gap-2 bg-role-managerLight/30 rounded-[8px] p-2">
+              <span className="font-mono text-[13px] font-semibold text-ink-primary px-2">
+                {selectedIds.length} selected
+              </span>
+              <Button
+                variant="teal"
+                size="sm"
+                isLoading={isProcessing}
+                onClick={handleBulkAccept}
+                leftIcon={<Check className="w-4 h-4" weight="bold" />}
+              >
+                Bulk accept
+              </Button>
+              <Button
+                variant="danger"
+                size="sm"
+                isLoading={isProcessing}
+                onClick={() => setShowBulkRejectModal(true)}
+                leftIcon={<X className="w-4 h-4" />}
+              >
+                Bulk reject
+              </Button>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Filter and Search Bar */}
       <div className="rounded-[10px] bg-white p-5 space-y-4 shadow-sm">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3">
           <div className="sm:col-span-2">
             <Input
               placeholder="Search by name, phone, area, or skills..."
@@ -377,6 +416,12 @@ export const ManagerApplicationsPage: React.FC = () => {
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value as any)}
             options={STATUS_FILTERS}
+          />
+
+          <Select
+            value={selectedSource}
+            onChange={(e) => setSelectedSource(e.target.value as any)}
+            options={SOURCE_FILTERS}
           />
 
           <Select
@@ -428,6 +473,12 @@ export const ManagerApplicationsPage: React.FC = () => {
                 <span className="font-mono text-[13px] font-semibold text-ink-tertiary">
                   ID: #{inspectingApp.id}
                 </span>
+                {inspectingApp.source === 'staff_assisted' && (
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[4px] bg-[#E8F8F5] text-xs font-semibold text-[#0E6266]">
+                    <Buildings className="w-3 h-3" weight="bold" />
+                    <span>Staff-assisted ({inspectingApp.createdByName || 'Staff'})</span>
+                  </span>
+                )}
               </div>
               <StatusMark status={inspectingApp.status} size="sm" />
             </div>
@@ -565,7 +616,7 @@ export const ManagerApplicationsPage: React.FC = () => {
                   placeholder="Add a private admissions note..."
                   value={privateNote}
                   onChange={(e) => setPrivateNote(e.target.value)}
-                  className="flex-1 bg-white text-[13px] rounded-[8px] p-2 focus:border-ink-primary"
+                  className="flex-1 bg-white text-[13px] rounded-[8px] p-2 focus:outline-none focus:ring-2 focus:ring-ink-primary/20"
                 />
                 <Button
                   variant="secondary"
@@ -611,7 +662,7 @@ export const ManagerApplicationsPage: React.FC = () => {
                   value={decisionReason}
                   onChange={(e) => setDecisionReason(e.target.value)}
                   placeholder="e.g. Strong youth outreach background in Bole; candidate profile confirmed..."
-                  className="w-full bg-white text-ink-primary font-sans text-[13px] rounded-[8px] p-2.5 focus:border-ink-primary"
+                  className="w-full bg-white text-ink-primary font-sans text-[13px] rounded-[8px] p-2.5 focus:outline-none focus:ring-2 focus:ring-ink-primary/20"
                 />
               </div>
 
@@ -672,7 +723,7 @@ export const ManagerApplicationsPage: React.FC = () => {
               value={bulkRejectReason}
               onChange={(e) => setBulkRejectReason(e.target.value)}
               placeholder="e.g. Volunteer quotas for this cycle have reached full capacity..."
-              className="w-full bg-white text-[13px] rounded-[8px] p-2.5 focus:border-ink-primary"
+              className="w-full bg-white text-[13px] rounded-[8px] p-2.5 focus:outline-none focus:ring-2 focus:ring-ink-primary/20"
               required
             />
           </div>

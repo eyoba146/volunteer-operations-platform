@@ -17,7 +17,11 @@ import {
   DemoEmail,
   Rank,
   VolunteerFeedback,
-  EmailTemplate
+  EmailTemplate,
+  OrgUnit,
+  RolePermissionConfig,
+  SignInLogEntry,
+  DemoSmsMessage
 } from '../types';
 
 // Relative date generator so demo dates never become stale or display past dates for today's activities
@@ -38,10 +42,160 @@ export const todayAt = (hour = 9, min = 0) => {
   return dt.toISOString();
 };
 
+// 1. ORGANISATION STRUCTURE (Requirement 2)
+export const SEED_ORG_UNITS: OrgUnit[] = [
+  { id: 'unit-hq', type: 'head_office', name: 'VTS Head Office', parentId: null, status: 'active', code: 'HQ', createdAt: '2025-01-01T00:00:00Z' },
+  // 5 Regional Areas
+  { id: 'area-addis', type: 'area', name: 'Addis Ababa', parentId: 'unit-hq', status: 'active', code: 'AA', createdAt: '2025-01-05T00:00:00Z' },
+  { id: 'area-adama', type: 'area', name: 'Adama', parentId: 'unit-hq', status: 'active', code: 'AD', createdAt: '2025-01-05T00:00:00Z' },
+  { id: 'area-bishoftu', type: 'area', name: 'Bishoftu', parentId: 'unit-hq', status: 'active', code: 'BS', createdAt: '2025-01-05T00:00:00Z' },
+  { id: 'area-hawassa', type: 'area', name: 'Hawassa', parentId: 'unit-hq', status: 'active', code: 'HW', createdAt: '2025-01-05T00:00:00Z' },
+  { id: 'area-bahirdar', type: 'area', name: 'Bahir Dar', parentId: 'unit-hq', status: 'active', code: 'BD', createdAt: '2025-01-05T00:00:00Z' },
+  // 2 Branches per area
+  // Addis Ababa Branches
+  { id: 'branch-kirkos', type: 'branch', name: 'Kirkos Branch', parentId: 'area-addis', status: 'active', code: 'AA-KIR', createdAt: '2025-02-01T00:00:00Z' },
+  { id: 'branch-bole', type: 'branch', name: 'Bole Branch', parentId: 'area-addis', status: 'active', code: 'AA-BOL', createdAt: '2025-02-01T00:00:00Z' },
+  // Adama Branches
+  { id: 'branch-adama-central', type: 'branch', name: 'Adama Central Branch', parentId: 'area-adama', status: 'active', code: 'AD-CEN', createdAt: '2025-02-01T00:00:00Z' },
+  { id: 'branch-wonji-rd', type: 'branch', name: 'Wonji Road Branch', parentId: 'area-adama', status: 'active', code: 'AD-WNJ', createdAt: '2025-02-01T00:00:00Z' },
+  // Bishoftu Branches
+  { id: 'branch-bishoftu-town', type: 'branch', name: 'Bishoftu Town Branch', parentId: 'area-bishoftu', status: 'active', code: 'BS-TWN', createdAt: '2025-02-01T00:00:00Z' },
+  { id: 'branch-lake-hora', type: 'branch', name: 'Lake Hora Branch', parentId: 'area-bishoftu', status: 'active', code: 'BS-HOR', createdAt: '2025-02-01T00:00:00Z' },
+  // Hawassa Branches
+  { id: 'branch-hawassa-city', type: 'branch', name: 'Hawassa City Branch', parentId: 'area-hawassa', status: 'active', code: 'HW-CTY', createdAt: '2025-02-01T00:00:00Z' },
+  { id: 'branch-tabor', type: 'branch', name: 'Mount Tabor Branch', parentId: 'area-hawassa', status: 'active', code: 'HW-TAB', createdAt: '2025-02-01T00:00:00Z' },
+  // Bahir Dar Branches
+  { id: 'branch-tana', type: 'branch', name: 'Lake Tana Branch', parentId: 'area-bahirdar', status: 'active', code: 'BD-TAN', createdAt: '2025-02-01T00:00:00Z' },
+  { id: 'branch-felege-hiwot', type: 'branch', name: 'Felege Hiwot Branch', parentId: 'area-bahirdar', status: 'active', code: 'BD-FLG', createdAt: '2025-02-01T00:00:00Z' },
+  // Locations under branches
+  { id: 'loc-mexico', type: 'location', name: 'Mexico Square Station', parentId: 'branch-kirkos', status: 'active', code: 'LOC-MEX', createdAt: '2025-03-01T00:00:00Z' },
+  { id: 'loc-meskel', type: 'location', name: 'Meskel Flower Center', parentId: 'branch-kirkos', status: 'active', code: 'LOC-MSK', createdAt: '2025-03-01T00:00:00Z' },
+  { id: 'loc-bole-hub', type: 'location', name: 'Bole Community Center', parentId: 'branch-bole', status: 'active', code: 'LOC-BOL', createdAt: '2025-03-01T00:00:00Z' },
+  { id: 'loc-adama-youth', type: 'location', name: 'Adama Youth Center', parentId: 'branch-adama-central', status: 'active', code: 'LOC-AYC', createdAt: '2025-03-01T00:00:00Z' },
+  { id: 'loc-wonji-hub', type: 'location', name: 'Wonji Community Hub', parentId: 'branch-wonji-rd', status: 'active', code: 'LOC-WNJ', createdAt: '2025-03-01T00:00:00Z' },
+];
+
+// 2. INITIAL ROLE PERMISSIONS MATRIX (Requirement 3)
+export const INITIAL_ROLE_PERMISSIONS: RolePermissionConfig[] = [
+  {
+    role: 'applicant',
+    scopeLevel: 'own',
+    description: 'Prospective volunteers completing admissions, payment, and identity verification.',
+    permissions: {
+      applications: ['view', 'create', 'edit'],
+      volunteers: ['view'],
+      activities: ['view'],
+      hours: [],
+      ratings: [],
+      promotions: [],
+      payments: ['view', 'create'],
+      announcements: ['view'],
+      reports: [],
+      settings: [],
+      organisation: [],
+      accounts: ['view', 'edit'],
+    },
+  },
+  {
+    role: 'volunteer',
+    scopeLevel: 'own',
+    description: 'Active field volunteers participating in community activities, logging service hours, and earning rank milestones.',
+    permissions: {
+      applications: ['view'],
+      volunteers: ['view'],
+      activities: ['view'],
+      hours: ['view', 'create', 'submit'],
+      ratings: ['view'],
+      promotions: ['view'],
+      payments: ['view'],
+      announcements: ['view'],
+      reports: [],
+      settings: [],
+      organisation: ['view'],
+      accounts: ['view', 'edit'],
+    },
+  },
+  {
+    role: 'team_lead',
+    scopeLevel: 'branch',
+    description: 'Field squad supervisors who organize branch activities, manage rosters, verify attendance, and approve volunteer hours.',
+    permissions: {
+      applications: ['view'],
+      volunteers: ['view'],
+      activities: ['view', 'create', 'edit'],
+      hours: ['view', 'review', 'verify', 'approve', 'reject'],
+      ratings: ['view', 'create', 'edit'],
+      promotions: ['view', 'create'],
+      payments: [],
+      announcements: ['view', 'create'],
+      reports: ['view'],
+      settings: [],
+      organisation: ['view'],
+      accounts: ['view'],
+    },
+  },
+  {
+    role: 'manager',
+    scopeLevel: 'area',
+    description: 'Territory managers who review applications, evaluate promotion requests, oversee branch activities, and register volunteers.',
+    permissions: {
+      applications: ['view', 'review', 'approve', 'reject'],
+      volunteers: ['view', 'create', 'edit', 'export'],
+      activities: ['view', 'create', 'edit', 'delete'],
+      hours: ['view', 'review', 'approve', 'reject', 'export'],
+      ratings: ['view'],
+      promotions: ['view', 'review', 'approve', 'reject'],
+      payments: ['view'],
+      announcements: ['view', 'create', 'edit', 'delete'],
+      reports: ['view', 'export'],
+      settings: ['view'],
+      organisation: ['view'],
+      accounts: ['view'],
+    },
+  },
+  {
+    role: 'finance',
+    scopeLevel: 'all',
+    description: 'Finance officers handling registration fee reconciliation, manual payment recording, and Telebirr dispute resolution.',
+    permissions: {
+      applications: ['view'],
+      volunteers: ['view'],
+      activities: ['view'],
+      hours: ['view'],
+      ratings: [],
+      promotions: [],
+      payments: ['view', 'create', 'verify', 'approve', 'reject', 'export'],
+      announcements: ['view'],
+      reports: ['view', 'export'],
+      settings: ['view'],
+      organisation: ['view'],
+      accounts: ['view'],
+    },
+  },
+  {
+    role: 'admin',
+    scopeLevel: 'all',
+    description: 'System administrators with governance over security policies, organisation hierarchy, and permission assignments.',
+    permissions: {
+      applications: ['view', 'export'],
+      volunteers: ['view', 'edit', 'export'],
+      activities: ['view', 'delete'],
+      hours: ['view', 'export'],
+      ratings: ['view'],
+      promotions: ['view'],
+      payments: ['view', 'export'],
+      announcements: ['view', 'create', 'edit', 'delete'],
+      reports: ['view', 'export'],
+      settings: ['view', 'edit'],
+      organisation: ['view', 'create', 'edit', 'delete'],
+      accounts: ['view', 'create', 'edit', 'delete'],
+    },
+  },
+];
 
 export const INITIAL_RANK_RULES: RankRule[] = [
   {
-    rank: 'senior_member',
+    rank: 'senior_volunteer',
     minHours: 60,
     minActivities: 8,
     minRating: 4.0,
@@ -74,14 +228,14 @@ export const INITIAL_SETTINGS: Setting[] = [
   { key: 'volunteer_skills', value: 'First Aid & CPR, Environmental Protection, Crowd Management, Youth Mentorship, Event Logistics, Translation (Amharic/Oromo), Data Collection, Community Outreach', label: 'Recognized Volunteer Skills', category: 'program' },
   { key: 'telebirr_merchant_name', value: 'VTS Program - Ethio Telecom', label: 'Telebirr Merchant Name', category: 'payment' },
   { key: 'telebirr_shortcode', value: '884120', label: 'Telebirr Shortcode', category: 'payment' },
-  { key: 'senior_member_min_hours', value: 60, label: 'Senior Member Min Hours', category: 'ranks' },
+  { key: 'senior_volunteer_min_hours', value: 60, label: 'Senior Volunteer Min Hours', category: 'ranks' },
   { key: 'team_lead_min_hours', value: 150, label: 'Team Lead Min Hours', category: 'ranks' },
   { key: 'manager_min_hours', value: 300, label: 'Manager Min Hours', category: 'ranks' },
   { key: 'certificate_signatory', value: 'Ruth Mengistu, Program Director', label: 'Certificate Signatory', category: 'certificates' },
   { key: 'certificate_template_text', value: 'This verifies that the named volunteer has successfully satisfied all verified service hours, merit milestones, and field leadership standards established by the VTS Volunteer Corps.', label: 'Certificate Endorsement Statement', category: 'certificates' },
 ];
 
-// 7 Primary Demo Accounts
+// 9 Primary Demo Accounts (including Adama staff)
 export const DEMO_USERS: User[] = [
   {
     id: 'usr-hana',
@@ -93,6 +247,11 @@ export const DEMO_USERS: User[] = [
     passwordHash: 'Demo@1234',
     role: 'applicant',
     accountStatus: 'active',
+    areaId: 'area-addis',
+    areaName: 'Addis Ababa',
+    branchId: 'branch-bole',
+    branchName: 'Bole Branch',
+    scope: { unitId: 'branch-bole', unitName: 'Bole Branch', level: 'own' },
     emailVerifiedAt: daysAgo(6, 9, 15),
     createdAt: daysAgo(6, 9, 0),
     lastSignInAt: todayAt(1, 30),
@@ -107,6 +266,11 @@ export const DEMO_USERS: User[] = [
     passwordHash: 'Demo@1234',
     role: 'volunteer',
     accountStatus: 'active',
+    areaId: 'area-addis',
+    areaName: 'Addis Ababa',
+    branchId: 'branch-kirkos',
+    branchName: 'Kirkos Branch',
+    scope: { unitId: 'branch-kirkos', unitName: 'Kirkos Branch', level: 'own' },
     emailVerifiedAt: '2026-08-10T14:20:00Z',
     createdAt: '2026-08-10T14:00:00Z',
     lastSignInAt: daysAgo(1, 16, 45),
@@ -121,6 +285,11 @@ export const DEMO_USERS: User[] = [
     passwordHash: 'Demo@1234',
     role: 'volunteer',
     accountStatus: 'active',
+    areaId: 'area-bishoftu',
+    areaName: 'Bishoftu',
+    branchId: 'branch-lake-hora',
+    branchName: 'Lake Hora Branch',
+    scope: { unitId: 'branch-lake-hora', unitName: 'Lake Hora Branch', level: 'own' },
     emailVerifiedAt: '2026-04-01T10:00:00Z',
     createdAt: '2026-04-01T09:45:00Z',
     lastSignInAt: '2026-10-31T02:00:00Z',
@@ -135,6 +304,11 @@ export const DEMO_USERS: User[] = [
     passwordHash: 'Demo@1234',
     role: 'team_lead',
     accountStatus: 'active',
+    areaId: 'area-addis',
+    areaName: 'Addis Ababa',
+    branchId: 'branch-kirkos',
+    branchName: 'Kirkos Branch',
+    scope: { unitId: 'branch-kirkos', unitName: 'Kirkos Branch', level: 'branch' },
     emailVerifiedAt: '2026-01-15T08:30:00Z',
     createdAt: '2026-01-15T08:00:00Z',
     lastSignInAt: '2026-10-31T03:10:00Z',
@@ -149,6 +323,11 @@ export const DEMO_USERS: User[] = [
     passwordHash: 'Demo@1234',
     role: 'manager',
     accountStatus: 'active',
+    areaId: 'area-addis',
+    areaName: 'Addis Ababa',
+    branchId: 'branch-kirkos',
+    branchName: 'Kirkos Branch',
+    scope: { unitId: 'area-addis', unitName: 'Addis Ababa Area', level: 'area' },
     emailVerifiedAt: '2025-11-01T09:00:00Z',
     createdAt: '2025-11-01T08:30:00Z',
     lastSignInAt: '2026-10-31T03:20:00Z',
@@ -163,6 +342,11 @@ export const DEMO_USERS: User[] = [
     passwordHash: 'Demo@1234',
     role: 'finance',
     accountStatus: 'active',
+    areaId: 'area-addis',
+    areaName: 'Addis Ababa',
+    branchId: 'branch-kirkos',
+    branchName: 'Kirkos Branch',
+    scope: { unitId: 'unit-hq', unitName: 'Head Office', level: 'all' },
     emailVerifiedAt: '2025-10-15T11:00:00Z',
     createdAt: '2025-10-15T10:30:00Z',
     lastSignInAt: '2026-10-31T02:50:00Z',
@@ -177,9 +361,53 @@ export const DEMO_USERS: User[] = [
     passwordHash: 'Demo@1234',
     role: 'admin',
     accountStatus: 'active',
+    areaId: 'area-addis',
+    areaName: 'Addis Ababa',
+    branchId: 'branch-kirkos',
+    branchName: 'Kirkos Branch',
+    scope: { unitId: 'unit-hq', unitName: 'Head Office', level: 'all' },
     emailVerifiedAt: '2025-09-01T08:00:00Z',
     createdAt: '2025-09-01T07:30:00Z',
     lastSignInAt: '2026-10-31T03:40:00Z',
+  },
+  // DEMO STAFF FOR ADAMA AREA (Requirement 2)
+  {
+    id: 'usr-tigist',
+    username: 'tigist.wolde',
+    firstName: 'Tigist',
+    lastName: 'Wolde',
+    phone: '+251915678901',
+    email: 'tigist.wolde@example.et',
+    passwordHash: 'Demo@1234',
+    role: 'manager',
+    accountStatus: 'active',
+    areaId: 'area-adama',
+    areaName: 'Adama',
+    branchId: 'branch-adama-central',
+    branchName: 'Adama Central Branch',
+    scope: { unitId: 'area-adama', unitName: 'Adama Area', level: 'area' },
+    emailVerifiedAt: '2025-11-15T09:00:00Z',
+    createdAt: '2025-11-15T08:30:00Z',
+    lastSignInAt: '2026-10-31T04:10:00Z',
+  },
+  {
+    id: 'usr-henok',
+    username: 'henok.assefa',
+    firstName: 'Henok',
+    lastName: 'Assefa',
+    phone: '+251924567890',
+    email: 'henok.assefa@example.et',
+    passwordHash: 'Demo@1234',
+    role: 'team_lead',
+    accountStatus: 'active',
+    areaId: 'area-adama',
+    areaName: 'Adama',
+    branchId: 'branch-adama-central',
+    branchName: 'Adama Central Branch',
+    scope: { unitId: 'branch-adama-central', unitName: 'Adama Central Branch', level: 'branch' },
+    emailVerifiedAt: '2026-01-20T08:30:00Z',
+    createdAt: '2026-01-20T08:00:00Z',
+    lastSignInAt: '2026-10-31T04:25:00Z',
   },
 ];
 
@@ -193,6 +421,10 @@ export const DEMO_PROFILES: VolunteerProfile[] = [
     phone: '+251 91 123 4567',
     dateOfBirth: '2001-04-14',
     area: 'Bole, Addis Ababa',
+    areaId: 'area-addis',
+    areaName: 'Addis Ababa',
+    branchId: 'branch-bole',
+    branchName: 'Bole Branch',
     bio: 'Environmental science student passionate about urban greening and waste recycling programs in Addis Ababa.',
     skills: ['Community Outreach', 'First Aid', 'Event Coordination', 'Documentation'],
     availability: ['Saturday mornings', 'Sunday afternoons'],
@@ -212,6 +444,10 @@ export const DEMO_PROFILES: VolunteerProfile[] = [
     phone: '+251 92 345 6789',
     dateOfBirth: '1998-09-22',
     area: 'Kazanchis, Addis Ababa',
+    areaId: 'area-addis',
+    areaName: 'Addis Ababa',
+    branchId: 'branch-kirkos',
+    branchName: 'Kirkos Branch',
     bio: 'Civil engineer and active community volunteer. Enjoys neighborhood restoration projects and logistics.',
     skills: ['Logistics', 'Construction Support', 'Team Coordination', 'First Aid'],
     availability: ['Weekend mornings', 'Weekday evenings'],
@@ -221,7 +457,8 @@ export const DEMO_PROFILES: VolunteerProfile[] = [
       relationship: 'Sister',
       phone: '+251 92 987 6543',
     },
-    rank: 'member',
+    rank: 'volunteer',
+    volunteerSince: '2026-08-14',
     memberSince: '2026-08-14',
     volunteerNumber: 'VTS-AA-2026-084',
   },
@@ -233,6 +470,10 @@ export const DEMO_PROFILES: VolunteerProfile[] = [
     phone: '+251 93 456 7890',
     dateOfBirth: '1996-03-10',
     area: 'Bishoftu, Oromia',
+    areaId: 'area-bishoftu',
+    areaName: 'Bishoftu',
+    branchId: 'branch-lake-hora',
+    branchName: 'Lake Hora Branch',
     bio: 'Dedicated public health educator with over 160 volunteer hours. Spearheaded clean water field initiatives and peer training.',
     skills: ['Health Education', 'Field Leadership', 'Workshop Facilitation', 'Public Speaking'],
     availability: ['Full weekends', 'Thursday afternoons'],
@@ -242,7 +483,8 @@ export const DEMO_PROFILES: VolunteerProfile[] = [
       relationship: 'Father',
       phone: '+251 93 111 2233',
     },
-    rank: 'senior_member',
+    rank: 'senior_volunteer',
+    volunteerSince: '2026-04-05',
     memberSince: '2026-04-05',
     volunteerNumber: 'VTS-BS-2026-032',
   },
@@ -253,8 +495,12 @@ export const DEMO_PROFILES: VolunteerProfile[] = [
     fullName: 'Yonas Kebede',
     phone: '+251 94 567 8901',
     dateOfBirth: '1993-11-05',
-    area: 'Adama, Oromia',
-    bio: 'Experienced team lead coordinating community clean-ups and educational drives across Adama and Bishoftu corridors.',
+    area: 'Kirkos, Addis Ababa',
+    areaId: 'area-addis',
+    areaName: 'Addis Ababa',
+    branchId: 'branch-kirkos',
+    branchName: 'Kirkos Branch',
+    bio: 'Experienced team lead coordinating community clean-ups and educational drives across Kirkos branch.',
     skills: ['Team Leadership', 'Field Safety', 'Incident Management', 'Project Planning'],
     availability: ['Weekends', 'Flexible week days'],
     languages: ['Amharic', 'Afaan Oromo', 'English'],
@@ -264,8 +510,9 @@ export const DEMO_PROFILES: VolunteerProfile[] = [
       phone: '+251 94 888 7766',
     },
     rank: 'team_lead',
+    volunteerSince: '2026-01-20',
     memberSince: '2026-01-20',
-    volunteerNumber: 'VTS-AD-2026-015',
+    volunteerNumber: 'VTS-AA-2026-015',
   },
   {
     userId: 'usr-marta',
@@ -275,7 +522,11 @@ export const DEMO_PROFILES: VolunteerProfile[] = [
     phone: '+251 91 678 9012',
     dateOfBirth: '1989-07-18',
     area: 'Piassa, Addis Ababa',
-    bio: 'Volunteer program manager overseeing volunteer onboarding, recruitment standards, and promotion boards.',
+    areaId: 'area-addis',
+    areaName: 'Addis Ababa',
+    branchId: 'branch-kirkos',
+    branchName: 'Kirkos Branch',
+    bio: 'Volunteer program manager overseeing Addis Ababa area volunteer onboarding, recruitment standards, and promotion boards.',
     skills: ['Program Management', 'Applicant Review', 'Dispute Resolution', 'Strategic Planning'],
     availability: ['Full time staff'],
     languages: ['Amharic', 'English', 'Tigrinya'],
@@ -285,8 +536,9 @@ export const DEMO_PROFILES: VolunteerProfile[] = [
       phone: '+251 91 333 4455',
     },
     rank: 'manager',
+    volunteerSince: '2025-11-05',
     memberSince: '2025-11-05',
-    volunteerNumber: 'VTS-HQ-2025-004',
+    volunteerNumber: 'VTS-AA-2025-004',
   },
   {
     userId: 'usr-abel',
@@ -296,6 +548,10 @@ export const DEMO_PROFILES: VolunteerProfile[] = [
     phone: '+251 92 789 0123',
     dateOfBirth: '1992-05-12',
     area: 'Bole Medhanealem, Addis Ababa',
+    areaId: 'area-addis',
+    areaName: 'Addis Ababa',
+    branchId: 'branch-kirkos',
+    branchName: 'Kirkos Branch',
     bio: 'Finance Officer in charge of Telebirr reconciliation, registration fee verification, and manual transaction resolution.',
     skills: ['Financial Analysis', 'Telebirr Reconciliation', 'Compliance', 'Reporting'],
     availability: ['Full time staff'],
@@ -305,6 +561,7 @@ export const DEMO_PROFILES: VolunteerProfile[] = [
       relationship: 'Spouse',
       phone: '+251 92 222 3344',
     },
+    volunteerSince: '2025-10-20',
     memberSince: '2025-10-20',
     volunteerNumber: 'VTS-FIN-2025-002',
   },
@@ -316,6 +573,10 @@ export const DEMO_PROFILES: VolunteerProfile[] = [
     phone: '+251 91 890 1234',
     dateOfBirth: '1985-02-28',
     area: 'Kazanchis, Addis Ababa',
+    areaId: 'area-addis',
+    areaName: 'Addis Ababa',
+    branchId: 'branch-kirkos',
+    branchName: 'Kirkos Branch',
     bio: 'System Administrator and Director of Community Partnerships.',
     skills: ['Governance', 'Platform Operations', 'Policy Formation'],
     availability: ['Full time staff'],
@@ -325,8 +586,61 @@ export const DEMO_PROFILES: VolunteerProfile[] = [
       relationship: 'Father',
       phone: '+251 91 555 6677',
     },
+    volunteerSince: '2025-09-01',
     memberSince: '2025-09-01',
     volunteerNumber: 'VTS-ADM-2025-001',
+  },
+  {
+    userId: 'usr-tigist',
+    firstName: 'Tigist',
+    lastName: 'Wolde',
+    fullName: 'Tigist Wolde',
+    phone: '+251 91 567 8901',
+    dateOfBirth: '1988-06-14',
+    area: 'Adama Central, Adama',
+    areaId: 'area-adama',
+    areaName: 'Adama',
+    branchId: 'branch-adama-central',
+    branchName: 'Adama Central Branch',
+    bio: 'Program Manager directing East Shewa community initiatives and Adama area volunteer operations.',
+    skills: ['Field Operations', 'Program Management', 'Community Outreach'],
+    availability: ['Full time staff'],
+    languages: ['Afaan Oromo', 'Amharic', 'English'],
+    emergencyContact: {
+      name: 'Workneh Wolde',
+      relationship: 'Brother',
+      phone: '+251 91 444 3322',
+    },
+    rank: 'manager',
+    volunteerSince: '2025-11-15',
+    memberSince: '2025-11-15',
+    volunteerNumber: 'VTS-AD-2025-002',
+  },
+  {
+    userId: 'usr-henok',
+    firstName: 'Henok',
+    lastName: 'Assefa',
+    fullName: 'Henok Assefa',
+    phone: '+251 92 456 7890',
+    dateOfBirth: '1994-08-20',
+    area: 'Adama Central, Adama',
+    areaId: 'area-adama',
+    areaName: 'Adama',
+    branchId: 'branch-adama-central',
+    branchName: 'Adama Central Branch',
+    bio: 'Team Lead overseeing youth civic action, environmental restoration, and safety logistics across Adama Central.',
+    skills: ['Team Leadership', 'First Aid', 'Logistics', 'Youth Mentorship'],
+    availability: ['Full time staff'],
+    languages: ['Afaan Oromo', 'Amharic', 'English'],
+    emergencyContact: {
+      name: 'Genet Assefa',
+      relationship: 'Sister',
+      phone: '+251 92 666 7788',
+    },
+    rank: 'team_lead',
+    volunteerSince: '2026-01-20',
+    memberSince: '2026-01-20',
+    volunteerNumber: 'VTS-AD-2026-018',
   },
 ];
 
@@ -369,9 +683,97 @@ const ETHIOPIAN_NAMES = [
   { first: 'Blén', last: 'Workineh', area: 'Bole, Addis Ababa', skills: ['Youth Coaching', 'Workshops'] },
 ];
 
+// Dedicated Adama Volunteers (Requirement 2)
+export const ADAMA_VOLUNTEER_SEEDS = [
+  { first: 'Chaltu', last: 'Tolosa', branchId: 'branch-adama-central', branchName: 'Adama Central Branch', rank: 'senior_volunteer' as Rank, hours: 84 },
+  { first: 'Tariku', last: 'Girma', branchId: 'branch-adama-central', branchName: 'Adama Central Branch', rank: 'senior_volunteer' as Rank, hours: 68 },
+  { first: 'Getachew', last: 'Mulugeta', branchId: 'branch-adama-central', branchName: 'Adama Central Branch', rank: 'volunteer' as Rank, hours: 32 },
+  { first: 'Weinshet', last: 'Negash', branchId: 'branch-wonji-rd', branchName: 'Wonji Road Branch', rank: 'volunteer' as Rank, hours: 26 },
+  { first: 'Tolera', last: 'Dida', branchId: 'branch-wonji-rd', branchName: 'Wonji Road Branch', rank: 'volunteer' as Rank, hours: 18 },
+  { first: 'Aster', last: 'Bekele', branchId: 'branch-adama-central', branchName: 'Adama Central Branch', rank: 'volunteer' as Rank, hours: 42 },
+  { first: 'Desta', last: 'Tulu', branchId: 'branch-adama-central', branchName: 'Adama Central Branch', rank: 'volunteer' as Rank, hours: 14 },
+  { first: 'Gudeta', last: 'Feyissa', branchId: 'branch-wonji-rd', branchName: 'Wonji Road Branch', rank: 'volunteer' as Rank, hours: 38 },
+  { first: 'Obsi', last: 'Gemeda', branchId: 'branch-wonji-rd', branchName: 'Wonji Road Branch', rank: 'volunteer' as Rank, hours: 22 },
+  { first: 'Bonsa', last: 'Roba', branchId: 'branch-adama-central', branchName: 'Adama Central Branch', rank: 'volunteer' as Rank, hours: 16 },
+  { first: 'Hawi', last: 'Desta', branchId: 'branch-adama-central', branchName: 'Adama Central Branch', rank: 'volunteer' as Rank, hours: 28 },
+  { first: 'Kumsa', last: 'Bayisa', branchId: 'branch-wonji-rd', branchName: 'Wonji Road Branch', rank: 'volunteer' as Rank, hours: 12 },
+];
+
+export const ADAMA_USERS: User[] = ADAMA_VOLUNTEER_SEEDS.map((vol, idx) => {
+  const num = idx + 1;
+  const username = `${vol.first.toLowerCase()}.${vol.last.toLowerCase()}`;
+  return {
+    id: `usr-adm-${num}`,
+    username,
+    firstName: vol.first,
+    lastName: vol.last,
+    phone: `+25195${(2000000 + num * 31415).toString().slice(0, 7)}`,
+    email: `${username}@example.et`,
+    passwordHash: 'Demo@1234',
+    role: 'volunteer',
+    accountStatus: 'active',
+    areaId: 'area-adama',
+    areaName: 'Adama',
+    branchId: vol.branchId,
+    branchName: vol.branchName,
+    scope: { unitId: vol.branchId, unitName: vol.branchName, level: 'own' },
+    emailVerifiedAt: '2026-05-10T10:00:00Z',
+    createdAt: '2026-05-10T09:30:00Z',
+    lastSignInAt: '2026-10-30T16:00:00Z',
+  };
+});
+
+export const ADAMA_PROFILES: VolunteerProfile[] = ADAMA_VOLUNTEER_SEEDS.map((vol, idx) => {
+  const num = idx + 1;
+  return {
+    userId: `usr-adm-${num}`,
+    firstName: vol.first,
+    lastName: vol.last,
+    fullName: `${vol.first} ${vol.last}`,
+    phone: `+251 95 ${(2000000 + num * 31415).toString().slice(0, 7)}`,
+    dateOfBirth: `199${(num % 9) + 1}-0${(num % 8) + 1}-1${(num % 9)}`,
+    area: 'Adama, Oromia',
+    areaId: 'area-adama',
+    areaName: 'Adama',
+    branchId: vol.branchId,
+    branchName: vol.branchName,
+    bio: `Active Adama community volunteer serving across ${vol.branchName}. Supporting environmental conservation and community literacy programs.`,
+    skills: ['Community Outreach', 'Logistics', 'Youth Mentorship', 'First Aid'],
+    availability: ['Weekends', 'Public holidays'],
+    languages: ['Afaan Oromo', 'Amharic', 'English'],
+    emergencyContact: {
+      name: `${vol.last} Family Contact`,
+      relationship: 'Family Member',
+      phone: `+251 95 ${(8000000 - num * 12345).toString().slice(0, 7)}`,
+    },
+    rank: vol.rank,
+    volunteerSince: `2026-0${(num % 6) + 1}-15`,
+    memberSince: `2026-0${(num % 6) + 1}-15`,
+    volunteerNumber: `VTS-AD-2026-0${num < 10 ? '0' + num : num}`,
+  };
+});
+
 export const ADDITIONAL_USERS: User[] = ETHIOPIAN_NAMES.map((person, index) => {
   const num = index + 1;
   const username = `${person.first.toLowerCase()}.${person.last.toLowerCase()}`;
+  const isAdama = person.area.includes('Adama');
+  const isBishoftu = person.area.includes('Bishoftu');
+  const isHawassa = person.area.includes('Hawassa');
+  const isBahirDar = person.area.includes('Bahir Dar');
+  
+  const areaId = isAdama ? 'area-adama' : isBishoftu ? 'area-bishoftu' : isHawassa ? 'area-hawassa' : isBahirDar ? 'area-bahirdar' : 'area-addis';
+  const areaName = isAdama ? 'Adama' : isBishoftu ? 'Bishoftu' : isHawassa ? 'Hawassa' : isBahirDar ? 'Bahir Dar' : 'Addis Ababa';
+  const branchId = isAdama
+    ? (num % 2 === 0 ? 'branch-adama-central' : 'branch-wonji-rd')
+    : isBishoftu
+    ? 'branch-lake-hora'
+    : isHawassa
+    ? 'branch-hawassa-city'
+    : isBahirDar
+    ? 'branch-tana'
+    : (num % 2 === 0 ? 'branch-kirkos' : 'branch-bole');
+  const branchName = branchId.includes('kirkos') ? 'Kirkos Branch' : branchId.includes('bole') ? 'Bole Branch' : branchId.includes('adama') ? 'Adama Central Branch' : branchId.includes('wonji') ? 'Wonji Road Branch' : 'Regional Branch';
+
   return {
     id: `usr-vol-${num}`,
     username,
@@ -382,6 +784,11 @@ export const ADDITIONAL_USERS: User[] = ETHIOPIAN_NAMES.map((person, index) => {
     passwordHash: 'Demo@1234',
     role: num <= 8 ? 'volunteer' : num <= 14 ? 'volunteer' : num <= 30 ? 'volunteer' : 'applicant',
     accountStatus: 'active',
+    areaId,
+    areaName,
+    branchId,
+    branchName,
+    scope: { unitId: branchId, unitName: branchName, level: 'own' },
     emailVerifiedAt: '2026-06-12T10:00:00Z',
     createdAt: '2026-06-12T09:30:00Z',
     lastSignInAt: '2026-10-28T14:00:00Z',
@@ -390,7 +797,25 @@ export const ADDITIONAL_USERS: User[] = ETHIOPIAN_NAMES.map((person, index) => {
 
 export const ADDITIONAL_PROFILES: VolunteerProfile[] = ETHIOPIAN_NAMES.map((person, index) => {
   const num = index + 1;
-  const rank: Rank = num <= 6 ? 'senior_member' : num <= 28 ? 'member' : 'member';
+  const rank: Rank = num <= 6 ? 'senior_volunteer' : 'volunteer';
+  const isAdama = person.area.includes('Adama');
+  const isBishoftu = person.area.includes('Bishoftu');
+  const isHawassa = person.area.includes('Hawassa');
+  const isBahirDar = person.area.includes('Bahir Dar');
+  
+  const areaId = isAdama ? 'area-adama' : isBishoftu ? 'area-bishoftu' : isHawassa ? 'area-hawassa' : isBahirDar ? 'area-bahirdar' : 'area-addis';
+  const areaName = isAdama ? 'Adama' : isBishoftu ? 'Bishoftu' : isHawassa ? 'Hawassa' : isBahirDar ? 'Bahir Dar' : 'Addis Ababa';
+  const branchId = isAdama
+    ? (num % 2 === 0 ? 'branch-adama-central' : 'branch-wonji-rd')
+    : isBishoftu
+    ? 'branch-lake-hora'
+    : isHawassa
+    ? 'branch-hawassa-city'
+    : isBahirDar
+    ? 'branch-tana'
+    : (num % 2 === 0 ? 'branch-kirkos' : 'branch-bole');
+  const branchName = branchId.includes('kirkos') ? 'Kirkos Branch' : branchId.includes('bole') ? 'Bole Branch' : branchId.includes('adama') ? 'Adama Central Branch' : branchId.includes('wonji') ? 'Wonji Road Branch' : 'Regional Branch';
+
   return {
     userId: `usr-vol-${num}`,
     firstName: person.first,
@@ -399,6 +824,10 @@ export const ADDITIONAL_PROFILES: VolunteerProfile[] = ETHIOPIAN_NAMES.map((pers
     phone: `+251 9${(10000000 + num * 23145).toString().slice(0, 8)}`,
     dateOfBirth: `199${(num % 9) + 1}-0${(num % 8) + 1}-1${(num % 9)}`,
     area: person.area,
+    areaId,
+    areaName,
+    branchId,
+    branchName,
     bio: `Active community volunteer serving in ${person.area}. Committed to sustainable local impact and collective community resilience.`,
     skills: person.skills,
     availability: ['Weekends', 'Public holidays'],
@@ -409,21 +838,27 @@ export const ADDITIONAL_PROFILES: VolunteerProfile[] = ETHIOPIAN_NAMES.map((pers
       phone: `+251 9${(90000000 - num * 12345).toString().slice(0, 8)}`,
     },
     rank,
+    volunteerSince: `2026-0${(num % 7) + 1}-15`,
     memberSince: `2026-0${(num % 7) + 1}-15`,
     volunteerNumber: `VTS-REG-2026-0${num < 10 ? '0' + num : num}`,
   };
 });
 
-export const ALL_USERS: User[] = [...DEMO_USERS, ...ADDITIONAL_USERS];
-export const ALL_PROFILES: VolunteerProfile[] = [...DEMO_PROFILES, ...ADDITIONAL_PROFILES];
+export const ALL_USERS: User[] = [...DEMO_USERS, ...ADAMA_USERS, ...ADDITIONAL_USERS];
+export const ALL_PROFILES: VolunteerProfile[] = [...DEMO_PROFILES, ...ADAMA_PROFILES, ...ADDITIONAL_PROFILES];
 
-// 15 Applications in varying statuses
+// 18 Applications in varying statuses (including staff-assisted)
 export const SEED_APPLICATIONS: Application[] = [
   // 1. Hana Tesfaye - accepted, awaiting payment (within 7 day window)
   {
     id: 'app-hana',
     userId: 'usr-hana',
     status: 'accepted',
+    source: 'self_registered',
+    areaId: 'area-addis',
+    areaName: 'Addis Ababa',
+    branchId: 'branch-bole',
+    branchName: 'Bole Branch',
     submittedAt: '2026-10-26T11:20:00Z',
     reviewedBy: 'usr-marta',
     reviewedAt: '2026-10-28T15:00:00Z',
@@ -443,6 +878,10 @@ export const SEED_APPLICATIONS: Application[] = [
       phone: '+251 91 123 4567',
       dateOfBirth: '2001-04-14',
       area: 'Bole, Addis Ababa',
+      areaId: 'area-addis',
+      areaName: 'Addis Ababa',
+      branchId: 'branch-bole',
+      branchName: 'Bole Branch',
       skills: ['Community Outreach', 'First Aid', 'Event Coordination', 'Documentation'],
       availability: ['Saturday mornings', 'Sunday afternoons'],
       motivation: 'I want to give back to Addis Ababa by helping urban reforestation and neighborhood clean-up campaigns with verifiable impact.',
@@ -452,6 +891,135 @@ export const SEED_APPLICATIONS: Application[] = [
         relationship: 'Father',
         phone: '+251 91 765 4321',
       },
+    },
+  },
+  // Staff-Assisted Application 1: Marta assisted Eden Teshome (accepted, waiting payment)
+  {
+    id: 'app-staff-01',
+    userId: 'usr-vol-21',
+    status: 'accepted',
+    source: 'staff_assisted',
+    createdBy: 'usr-marta',
+    createdByName: 'Marta Girma',
+    areaId: 'area-addis',
+    areaName: 'Addis Ababa',
+    branchId: 'branch-kirkos',
+    branchName: 'Kirkos Branch',
+    submittedAt: daysAgo(2, 10, 0),
+    reviewedBy: 'usr-marta',
+    reviewedAt: daysAgo(2, 10, 30),
+    decisionReason: 'Assisted registration conducted in Kirkos branch. Verified identity documentation and volunteer signed consent.',
+    paymentDeadline: daysAhead(5, 10, 30),
+    notes: [
+      {
+        id: 'note-staff-1',
+        authorId: 'usr-marta',
+        authorName: 'Marta Girma',
+        createdAt: daysAgo(2, 10, 15),
+        content: 'In-person walk-in intake. Confirmed willingness to participate in Kirkos neighborhood clean-ups.',
+      },
+    ],
+    formData: {
+      fullName: 'Eden Teshome',
+      phone: '+251 91 445 5667',
+      dateOfBirth: '1999-07-22',
+      area: 'Kirkos, Addis Ababa',
+      areaId: 'area-addis',
+      areaName: 'Addis Ababa',
+      branchId: 'branch-kirkos',
+      branchName: 'Kirkos Branch',
+      skills: ['Community Outreach', 'Teaching'],
+      availability: ['Weekend mornings'],
+      motivation: 'Assisted registration to join Kirkos volunteer programs.',
+      languages: ['Amharic', 'English'],
+      emergencyContact: {
+        name: 'Teshome Geda',
+        relationship: 'Father',
+        phone: '+251 91 332 2110',
+      },
+      consentAgreed: true,
+    },
+  },
+  // Staff-Assisted Application 2: Marta assisted Biruk Alemayehu (in review)
+  {
+    id: 'app-staff-02',
+    userId: 'usr-vol-22',
+    status: 'in_review',
+    source: 'staff_assisted',
+    createdBy: 'usr-marta',
+    createdByName: 'Marta Girma',
+    areaId: 'area-addis',
+    areaName: 'Addis Ababa',
+    branchId: 'branch-bole',
+    branchName: 'Bole Branch',
+    submittedAt: daysAgo(1, 14, 0),
+    notes: [],
+    formData: {
+      fullName: 'Biruk Alemayehu',
+      phone: '+251 92 889 9001',
+      dateOfBirth: '2001-03-12',
+      area: 'Bole, Addis Ababa',
+      areaId: 'area-addis',
+      areaName: 'Addis Ababa',
+      branchId: 'branch-bole',
+      branchName: 'Bole Branch',
+      skills: ['First Aid', 'IT Support'],
+      availability: ['Flexible week days'],
+      motivation: 'Community IT training and first aid support.',
+      languages: ['Amharic', 'English'],
+      emergencyContact: {
+        name: 'Alemayehu Tadesse',
+        relationship: 'Brother',
+        phone: '+251 92 776 6554',
+      },
+      consentAgreed: true,
+    },
+  },
+  // Staff-Assisted Application 3: Tigist assisted Chala Bekele in Adama (accepted, waiting payment)
+  {
+    id: 'app-staff-03',
+    userId: 'usr-vol-23',
+    status: 'accepted',
+    source: 'staff_assisted',
+    createdBy: 'usr-tigist',
+    createdByName: 'Tigist Wolde',
+    areaId: 'area-adama',
+    areaName: 'Adama',
+    branchId: 'branch-adama-central',
+    branchName: 'Adama Central Branch',
+    submittedAt: daysAgo(3, 9, 30),
+    reviewedBy: 'usr-tigist',
+    reviewedAt: daysAgo(3, 10, 0),
+    decisionReason: 'In-person assisted registration at Adama Youth Center. Consent and national ID card verified.',
+    paymentDeadline: daysAhead(4, 10, 0),
+    notes: [
+      {
+        id: 'note-staff-3',
+        authorId: 'usr-tigist',
+        authorName: 'Tigist Wolde',
+        createdAt: daysAgo(3, 9, 45),
+        content: 'Applicant signed in-person authorization form at Adama Central Branch desk.',
+      },
+    ],
+    formData: {
+      fullName: 'Chala Bekele',
+      phone: '+251 95 112 2334',
+      dateOfBirth: '1997-11-04',
+      area: 'Adama, Oromia',
+      areaId: 'area-adama',
+      areaName: 'Adama',
+      branchId: 'branch-adama-central',
+      branchName: 'Adama Central Branch',
+      skills: ['Tree Planting', 'Field Logistics'],
+      availability: ['Full weekends'],
+      motivation: 'Passionate about Adama urban greening and nursery care.',
+      languages: ['Afaan Oromo', 'Amharic'],
+      emergencyContact: {
+        name: 'Bekele Dida',
+        relationship: 'Father',
+        phone: '+251 95 998 8776',
+      },
+      consentAgreed: true,
     },
   },
   // 2. Draft application
@@ -788,7 +1356,7 @@ export const SEED_ACTIVITIES: Activity[] = [
   },
   {
     id: 'act-05',
-    title: 'Community Safety & Field Ethics (Required for Senior Member)',
+    title: 'Community Safety & Field Ethics (Required for Senior Volunteer)',
     type: 'training',
     description: 'Mandatory 4-hour certification workshop covering risk evaluation, child safeguarding, volunteer duty of care, and emergency protocols.',
     startsAt: '2026-11-14T09:00:00Z',
@@ -1991,7 +2559,7 @@ export const SEED_PROMOTIONS: Promotion[] = [
     userId: 'usr-selam',
     userName: 'Selam Alemu',
     userArea: 'Bishoftu, Oromia',
-    fromRank: 'senior_member',
+    fromRank: 'senior_volunteer',
     toRank: 'team_lead',
     status: 'recommended',
     recommendedBy: 'usr-yonas',
@@ -2011,8 +2579,8 @@ export const SEED_PROMOTIONS: Promotion[] = [
     id: 'prm-yonas-past',
     userId: 'usr-yonas',
     userName: 'Yonas Kebede',
-    userArea: 'Adama, Oromia',
-    fromRank: 'senior_member',
+    userArea: 'Kirkos, Addis Ababa',
+    fromRank: 'senior_volunteer',
     toRank: 'team_lead',
     status: 'approved',
     recommendedBy: 'usr-marta',
@@ -2021,7 +2589,7 @@ export const SEED_PROMOTIONS: Promotion[] = [
     decidedByName: 'Marta Girma',
     decidedAt: '2026-06-15T11:00:00Z',
     createdAt: '2026-06-10T09:00:00Z',
-    note: 'Promoted to Team Lead for the Adama community area.',
+    note: 'Promoted to Team Lead for the Kirkos branch.',
     evidence: {
       approvedHours: 156,
       completedActivities: 21,
@@ -2030,24 +2598,45 @@ export const SEED_PROMOTIONS: Promotion[] = [
       completedTraining: ['Team Leadership & Field Coordination'],
     },
   },
+  // 3. Recommended promotion in Adama Area (for Tigist Wolde to review and approve!)
+  {
+    id: 'prm-tariku',
+    userId: 'usr-adm-2',
+    userName: 'Tariku Girma',
+    userArea: 'Adama, Oromia',
+    fromRank: 'senior_volunteer',
+    toRank: 'team_lead',
+    status: 'recommended',
+    recommendedBy: 'usr-henok',
+    recommendedByName: 'Henok Assefa',
+    createdAt: daysAgo(3, 11, 0),
+    note: 'Tariku has recorded 68 verified hours with 11 completed activities and a 4.8 average rating. He took charge of youth volunteer crews during the Adama Canal rehabilitation.',
+    evidence: {
+      approvedHours: 68,
+      completedActivities: 11,
+      averageRating: 4.8,
+      monthsActive: 4.2,
+      completedTraining: ['Community Safety & Ethics'],
+    },
+  },
 ];
 
 // Certificates
 export const SEED_CERTIFICATES: Certificate[] = [
-  // Dawit Bekele's Member Certificate
+  // Dawit Bekele's Volunteer Certificate
   {
     id: 'cert-dawit-mem',
     userId: 'usr-dawit',
     userName: 'Dawit Bekele',
     volunteerNumber: 'VTS-AA-2026-084',
-    kind: 'membership',
-    title: 'Certificate of Membership',
+    kind: 'volunteer',
+    title: 'Volunteer Certificate',
     issuedAt: '2026-08-14T10:14:00Z',
     verificationCode: 'VTS-CERT-8842-ET',
     issuerName: 'Ruth Mengistu',
     issuerRole: 'Program Director',
     metadata: {
-      rank: 'member',
+      rank: 'volunteer',
     },
   },
   // Dawit's Training Certificate
@@ -2067,20 +2656,20 @@ export const SEED_CERTIFICATES: Certificate[] = [
       hoursRecorded: 4,
     },
   },
-  // Selam Alemu's Senior Member Certificate
+  // Selam Alemu's Senior Volunteer Certificate
   {
     id: 'cert-selam-snr',
     userId: 'usr-selam',
     userName: 'Selam Alemu',
     volunteerNumber: 'VTS-BS-2026-032',
     kind: 'rank',
-    title: 'Senior Member of the Volunteer Corps',
+    title: 'Senior Volunteer of the Volunteer Corps',
     issuedAt: '2026-07-10T16:00:00Z',
     verificationCode: 'VTS-CERT-7731-ET',
     issuerName: 'Ruth Mengistu',
     issuerRole: 'Program Director',
     metadata: {
-      rank: 'senior_member',
+      rank: 'senior_volunteer',
       hoursRecorded: 72,
     },
   },
@@ -2123,7 +2712,7 @@ export const SEED_ANNOUNCEMENTS: Announcement[] = [
     authorRole: 'Program Manager',
     audience: 'all',
     title: 'Upcoming Safety & Field Ethics Workshops for November',
-    body: 'Volunteers planning to qualify for Senior Member rank are encouraged to register for the upcoming Community Safety session on November 14. Registration is open on the activities board.',
+    body: 'Volunteers planning to qualify for Senior Volunteer rank are encouraged to register for the upcoming Community Safety session on November 14. Registration is open on the activities board.',
     createdAt: daysAgo(2, 10, 30),
   },
   {
@@ -2276,7 +2865,7 @@ export const SEED_EMAILS: DemoEmail[] = [
     category: 'payment',
     sentAt: '2026-08-14T10:14:00Z',
     read: true,
-    body: 'Dear Dawit,\n\nWe have received your registration fee of ETB 200 via Telebirr (Reference: TB-2026-0814-8841).\n\nYour receipt number is REC-2026-00084. Your Volunteer ID is VTS-AA-2026-084.\n\nYour account is now activated with Member rank. You can browse and join upcoming volunteer activities immediately.',
+    body: 'Dear Dawit,\n\nWe have received your registration fee of ETB 200 via Telebirr (Reference: TB-2026-0814-8841).\n\nYour receipt number is REC-2026-00084. Your Volunteer ID is VTS-AA-2026-084.\n\nYour account is now activated with Volunteer rank. You can browse and join upcoming volunteer activities immediately.',
     actionLabel: 'View Volunteer ID',
     actionUrl: '/volunteer/id-card',
   },
@@ -2398,7 +2987,7 @@ VTS Operations Desk`,
 
 We are pleased to inform you that your application to join the VTS Volunteer Corps has been accepted.
 
-To activate your membership and receive your volunteer pass and activity access, please complete your one-time registration fee of ETB {{amount}} within {{payment_deadline_days}} days.
+To activate your volunteer account and receive your volunteer pass and activity access, please complete your one-time registration fee of ETB {{amount}} within {{payment_deadline_days}} days.
 
 You can pay securely via Telebirr directly inside the platform:
 {{payment_url}}
@@ -2419,7 +3008,7 @@ We have received your registration fee of ETB {{amount}} via Telebirr (Reference
 
 Your receipt number is {{receipt_number}}. Your Volunteer ID is {{volunteer_number}}.
 
-Your account is now activated with Member rank. You can view your volunteer ID pass, sign up for field activities, and begin logging verified service hours.
+Your account is now activated with Volunteer rank. You can view your volunteer ID pass, sign up for field activities, and begin logging verified service hours.
 
 Warm regards,
 VTS Operations`,
@@ -2458,6 +3047,199 @@ Your team lead is {{lead_name}}. You can check in at the muster point using 4-di
 Warm regards,
 VTS Field Operations`,
     variables: ['volunteer_name', 'activity_title', 'activity_date', 'activity_place', 'lead_name', 'check_in_code'],
+  },
+];
+
+// 6. SEED SIGN-IN LOGS (Requirement 6)
+export const SEED_SIGN_IN_LOGS: SignInLogEntry[] = [
+  {
+    id: 'log-sign-01',
+    userId: 'usr-dawit',
+    username: 'dawit.bekele',
+    role: 'volunteer',
+    timestamp: todayAt(8, 15),
+    ipAddress: '197.156.104.22',
+    deviceSummary: 'Chrome 122 on Windows 11',
+    result: 'success',
+  },
+  {
+    id: 'log-sign-02',
+    userId: 'usr-dawit',
+    username: 'dawit.bekele',
+    role: 'volunteer',
+    timestamp: daysAgo(1, 16, 45),
+    ipAddress: '197.156.104.22',
+    deviceSummary: 'Chrome 122 on Windows 11',
+    result: 'success',
+  },
+  {
+    id: 'log-sign-03',
+    userId: 'usr-dawit',
+    username: 'dawit.bekele',
+    role: 'volunteer',
+    timestamp: daysAgo(2, 9, 30),
+    ipAddress: '197.156.88.14',
+    deviceSummary: 'Safari on iPhone 15',
+    result: 'success',
+  },
+  {
+    id: 'log-sign-04',
+    userId: 'usr-dawit',
+    username: 'dawit.bekele',
+    role: 'volunteer',
+    timestamp: daysAgo(2, 9, 28),
+    ipAddress: '197.156.88.14',
+    deviceSummary: 'Safari on iPhone 15',
+    result: 'failed',
+    reason: 'Invalid password credential',
+  },
+  {
+    id: 'log-sign-05',
+    userId: 'usr-marta',
+    username: 'marta.girma',
+    role: 'manager',
+    timestamp: todayAt(7, 45),
+    ipAddress: '196.188.22.40',
+    deviceSummary: 'Edge 121 on macOS Sonoma',
+    result: 'success',
+  },
+  {
+    id: 'log-sign-06',
+    userId: 'usr-yonas',
+    username: 'yonas.kebede',
+    role: 'team_lead',
+    timestamp: todayAt(7, 30),
+    ipAddress: '197.156.92.10',
+    deviceSummary: 'Firefox 123 on Ubuntu Linux',
+    result: 'success',
+  },
+  {
+    id: 'log-sign-07',
+    userId: 'usr-tigist',
+    username: 'tigist.wolde',
+    role: 'manager',
+    timestamp: todayAt(8, 0),
+    ipAddress: '196.189.44.12',
+    deviceSummary: 'Chrome 122 on Windows 10',
+    result: 'success',
+  },
+  {
+    id: 'log-sign-08',
+    userId: 'usr-henok',
+    username: 'henok.assefa',
+    role: 'team_lead',
+    timestamp: todayAt(8, 10),
+    ipAddress: '196.189.44.15',
+    deviceSummary: 'Samsung Internet on Android 14',
+    result: 'success',
+  },
+  {
+    id: 'log-sign-09',
+    userId: 'usr-ruth',
+    username: 'ruth.mengistu',
+    role: 'admin',
+    timestamp: todayAt(7, 0),
+    ipAddress: '197.156.100.5',
+    deviceSummary: 'Safari 17 on macOS',
+    result: 'success',
+  },
+  {
+    id: 'log-sign-10',
+    userId: 'usr-ruth',
+    username: 'ruth.mengistu',
+    role: 'admin',
+    timestamp: daysAgo(1, 19, 12),
+    ipAddress: '197.156.100.5',
+    deviceSummary: 'Safari 17 on macOS',
+    result: 'success',
+  },
+  {
+    id: 'log-sign-11',
+    userId: 'usr-unknown',
+    username: 'root.admin',
+    role: 'admin',
+    timestamp: daysAgo(1, 23, 40),
+    ipAddress: '185.220.101.5',
+    deviceSummary: 'Automated Client / cURL',
+    result: 'locked',
+    reason: 'Multiple failed attempts; IP temporarily locked out by rate limiter',
+  },
+  {
+    id: 'log-sign-12',
+    userId: 'usr-abel',
+    username: 'abel.hailu',
+    role: 'finance',
+    timestamp: todayAt(8, 5),
+    ipAddress: '197.156.100.8',
+    deviceSummary: 'Chrome 122 on Windows 11',
+    result: 'success',
+  },
+];
+
+// 7. SEED SMS MESSAGES (Requirement 7)
+export const SEED_SMS_MESSAGES: DemoSmsMessage[] = [
+  {
+    id: 'sms-01',
+    toPhone: '+251 91 123 4567',
+    toName: 'Hana Tesfaye',
+    category: 'verification',
+    body: 'VTS Corps: Your verification code is 849102. Valid for 10 minutes. Do not share this code.',
+    sentAt: daysAgo(6, 9, 15),
+    read: true,
+  },
+  {
+    id: 'sms-02',
+    toPhone: '+251 91 123 4567',
+    toName: 'Hana Tesfaye',
+    category: 'application',
+    body: 'VTS Corps: Your application has been accepted! Open the app to complete your Telebirr registration fee of ETB 200 within 7 days.',
+    sentAt: daysAgo(4, 15, 0),
+    read: true,
+  },
+  {
+    id: 'sms-03',
+    toPhone: '+251 92 345 6789',
+    toName: 'Dawit Bekele',
+    category: 'payment',
+    body: 'VTS Corps: Telebirr payment of ETB 200 confirmed. Receipt: REC-2026-00084. Your Volunteer Pass ID is VTS-AA-2026-084.',
+    sentAt: '2026-08-14T10:14:00Z',
+    read: true,
+  },
+  {
+    id: 'sms-04',
+    toPhone: '+251 92 345 6789',
+    toName: 'Dawit Bekele',
+    category: 'activity',
+    body: 'VTS Corps: Reminder — Meskel Square Clean-up starts tomorrow at 8:00 AM. Check-in code is 4821.',
+    sentAt: daysAgo(1, 18, 0),
+    read: true,
+  },
+  {
+    id: 'sms-05',
+    toPhone: '+251 93 456 7890',
+    toName: 'Selam Alemu',
+    category: 'promotion',
+    body: 'VTS Corps: Team Lead Yonas has recommended you for promotion to Team Lead rank. Check your status in the portal.',
+    sentAt: daysAgo(5, 14, 5),
+    read: true,
+  },
+  {
+    id: 'sms-06',
+    toPhone: '+251 91 890 1234',
+    toName: 'Ruth Mengistu',
+    category: 'security',
+    body: 'VTS Security: New sign-in detected on Safari (macOS) from 197.156.100.5. If this was not you, change your password immediately.',
+    sentAt: todayAt(7, 0),
+    read: false,
+  },
+  {
+    id: 'sms-07',
+    toPhone: '+251 91 567 8901',
+    toName: 'Tigist Wolde',
+    category: 'security',
+    body: 'VTS Security: Successful manager sign-in to Adama area console.',
+    sentAt: todayAt(8, 0),
+    read: true,
   },
 ];
 

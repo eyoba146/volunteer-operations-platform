@@ -24,12 +24,12 @@ export async function getRankProgress(userId: string): Promise<RankProgressData>
   await delay(300, 600);
   const state = store.getState();
   const profile = state.profiles.find((p) => p.userId === userId);
-  const currentRank: Rank = profile?.rank || 'member';
+  const currentRank: Rank = profile?.rank || 'volunteer';
 
   // Determine next rank
   let nextRank: Rank | null = null;
-  if (currentRank === 'member') nextRank = 'senior_member';
-  else if (currentRank === 'senior_member') nextRank = 'team_lead';
+  if (currentRank === 'volunteer' || currentRank === 'member') nextRank = 'senior_volunteer';
+  else if (currentRank === 'senior_volunteer' || currentRank === 'senior_member') nextRank = 'team_lead';
   else if (currentRank === 'team_lead') nextRank = 'manager';
 
   // Hours calculation
@@ -53,8 +53,8 @@ export async function getRankProgress(userId: string): Promise<RankProgressData>
       : 5.0;
 
   // Months active
-  const memberSince = profile?.memberSince ? new Date(profile.memberSince) : new Date();
-  const diffTime = Math.abs(Date.now() - memberSince.getTime());
+  const volunteerSinceDate = profile?.volunteerSince || profile?.memberSince ? new Date(profile.volunteerSince || profile.memberSince!) : new Date();
+  const diffTime = Math.abs(Date.now() - volunteerSinceDate.getTime());
   const monthsActive = Math.round((diffTime / (1000 * 60 * 60 * 24 * 30)) * 10) / 10;
 
   // Completed training certificates
@@ -135,7 +135,7 @@ export async function recommendPromotion(
   await delay(350, 750);
   const state = store.getState();
   const profile = state.profiles.find((p) => p.userId === userId);
-  const fromRank: Rank = profile?.rank || 'member';
+  const fromRank: Rank = profile?.rank || 'volunteer';
 
   const progress = await getRankProgress(userId);
 
@@ -213,8 +213,8 @@ export async function decidePromotion(
     const profile = state.profiles.find((p) => p.userId === promo.userId);
     const certCode = `VTS-CERT-${Math.floor(1000 + Math.random() * 9000)}-ET`;
     const rankTitle =
-      promo.toRank === 'senior_member'
-        ? 'Senior Member of the Volunteer Corps'
+      promo.toRank === 'senior_volunteer' || promo.toRank === 'senior_member'
+        ? 'Senior Volunteer of the Volunteer Corps'
         : promo.toRank === 'team_lead'
         ? 'Team Lead Credential of the Volunteer Corps'
         : 'Manager Credential of the Volunteer Corps';

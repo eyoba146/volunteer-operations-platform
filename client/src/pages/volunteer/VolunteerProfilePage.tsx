@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
-import { VolunteerProfile } from '../../types';
+import { VolunteerProfile, SignInLogEntry } from '../../types';
 import { Input, Select, Button, StatusMark, Tabs, Skeleton, Avatar, ProfilePhotoModal } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
 import { 
   Camera, 
   FloppyDisk, 
-  Heart
+  Heart,
+  ShieldCheck,
+  DeviceMobile,
+  Envelope,
+  Bell,
+  Check,
 } from '@phosphor-icons/react';
 
 const ETHIOPIAN_AREAS = [
@@ -25,7 +30,7 @@ const ETHIOPIAN_AREAS = [
 
 export const VolunteerProfilePage: React.FC = () => {
   const { user, profile, refreshUser } = useAuth();
-  const [activeTab, setActiveTab] = useState<'profile' | 'notifications'>('profile');
+  const [activeTab, setActiveTab] = useState<'profile' | 'notifications' | 'security'>('profile');
   const [photoModalOpen, setPhotoModalOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const toast = useToast();
@@ -43,11 +48,21 @@ export const VolunteerProfilePage: React.FC = () => {
   const [contactRel, setContactRel] = useState(profile?.emergencyContact?.relationship || 'Parent');
   const [contactPhone, setContactPhone] = useState(profile?.emergencyContact?.phone || '');
 
-  // Notifications
-  const [notifyActivityReminders, setNotifyActivityReminders] = useState(true);
-  const [notifyHoursDecisions, setNotifyHoursDecisions] = useState(true);
-  const [notifyPromotionUpdates, setNotifyPromotionUpdates] = useState(true);
-  const [notifyCommunityNotices, setNotifyCommunityNotices] = useState(true);
+  // Multi-channel notifications preferences
+  const [channels, setChannels] = useState<{
+    activity: { email: boolean; sms: boolean };
+    hours: { email: boolean; sms: boolean };
+    promotions: { email: boolean; sms: boolean };
+    announcements: { email: boolean; sms: boolean };
+  }>({
+    activity: { email: true, sms: true },
+    hours: { email: true, sms: true },
+    promotions: { email: true, sms: false },
+    announcements: { email: true, sms: false },
+  });
+
+  // Sign-in history
+  const [signInLogs, setSignInLogs] = useState<SignInLogEntry[]>([]);
 
   useEffect(() => {
     if (profile) {
@@ -63,7 +78,19 @@ export const VolunteerProfilePage: React.FC = () => {
         setContactPhone(profile.emergencyContact.phone);
       }
     }
-  }, [profile]);
+
+    const loadSecurityLogs = async () => {
+      try {
+        const logs = await api.getSignInLogs(user?.id);
+        setSignInLogs(logs.slice(0, 10));
+      } catch {
+        // fallback
+      }
+    };
+    if (user) {
+      loadSecurityLogs();
+    }
+  }, [profile, user]);
 
   const handleSaveProfile = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -149,10 +176,10 @@ export const VolunteerProfilePage: React.FC = () => {
             <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink-primary tracking-tight">
               {profile.fullName}
             </h2>
-            <StatusMark status={profile.rank || 'member'} size="sm" />
+            <StatusMark status={profile.rank || 'volunteer'} size="sm" />
           </div>
           <p className="font-sans text-[13px] font-bold text-ink-secondary">
-            Pass ID: {profile.volunteerNumber} • Registered: {profile.memberSince || 'Aug 2026'}
+            Pass ID: {profile.volunteerNumber} • Registered: {profile.volunteerSince || profile.memberSince || 'Aug 2026'}
           </p>
           <p className="font-sans text-[13px] text-ink-secondary">
             Username: <span className="font-bold text-ink-primary">{user?.username}</span> • Email: <span className="font-bold text-ink-primary">{user?.email}</span>
@@ -164,7 +191,8 @@ export const VolunteerProfilePage: React.FC = () => {
       <Tabs
         tabs={[
           { id: 'profile', label: 'Personal information' },
-          { id: 'notifications', label: 'Notification settings' },
+          { id: 'notifications', label: 'Notification channels' },
+          { id: 'security', label: 'Security & sign-in history' },
         ]}
         activeTab={activeTab}
         onChange={(id) => setActiveTab(id as any)}
@@ -218,7 +246,7 @@ export const VolunteerProfilePage: React.FC = () => {
               rows={3}
               value={bio}
               onChange={(e) => setBio(e.target.value)}
-              className="w-full bg-white text-ink-primary font-sans text-base rounded-[8px] p-2.5 focus:border-ink-primary"
+              className="w-full bg-white text-ink-primary font-sans text-base rounded-[8px] p-2.5 focus:outline-none focus:ring-2 focus:ring-ink-primary/20"
             />
           </div>
 
@@ -271,89 +299,153 @@ export const VolunteerProfilePage: React.FC = () => {
         </form>
       )}
 
-      {/* TAB 2: NOTIFICATION PREFERENCES */}
+      {/* TAB 2: MULTI-CHANNEL NOTIFICATION PREFERENCES */}
       {activeTab === 'notifications' && (
         <form onSubmit={handleSaveNotifications} className="rounded-[10px] bg-white p-6 sm:p-8 space-y-6">
           <div className="pb-3">
             <h3 className="font-display text-xl font-bold text-ink-primary">
-              Email and alert preferences
+              Multi-channel alert preferences
             </h3>
             <p className="font-sans text-sm text-ink-secondary mt-1">
-              Select which notifications you want to receive. Account security notices (password resets, verification codes) are always sent.
+              Select which notifications you receive across In-app, Email, and SMS text messages. Account security notices (password resets, login verifications) are mandatory and always sent.
             </p>
           </div>
 
-          <div className="space-y-4">
-            <label className="flex items-start gap-3 pt-3 first:pt-0 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={notifyActivityReminders}
-                onChange={(e) => setNotifyActivityReminders(e.target.checked)}
-                className="w-5 h-5 mt-0.5 accent-role-volunteer cursor-pointer"
-              />
-              <div className="space-y-0.5">
-                <span className="font-sans text-sm font-bold text-ink-primary block">
-                  Activity reminders and schedule changes
-                </span>
-                <span className="font-sans text-[13px] text-ink-secondary block">
-                  Receive alerts before your upcoming shifts and whenever location or timing changes.
-                </span>
-              </div>
-            </label>
+          <div className="overflow-x-auto rounded-[12px] bg-[#F7F8FA]">
+            <table className="w-full text-left text-xs">
+              <thead className="bg-[#F1F3F6] text-ink-secondary">
+                <tr>
+                  <th className="py-3 px-4 font-semibold text-ink-primary">Event notification type</th>
+                  <th className="py-3 px-3 text-center font-semibold text-ink-primary">In-app</th>
+                  <th className="py-3 px-3 text-center font-semibold text-ink-primary">Email</th>
+                  <th className="py-3 px-3 text-center font-semibold text-ink-primary">SMS Text</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[#E8EBEF]">
+                <tr className="hover:bg-white/60 transition-colors">
+                  <td className="py-3.5 px-4 font-medium text-ink-primary">
+                    <span className="font-semibold block text-sm">Activity reminders & schedule changes</span>
+                    <span className="text-xs text-ink-tertiary">Alerts before scheduled shifts and when venue or timing changes</span>
+                  </td>
+                  <td className="py-3.5 px-3 text-center">
+                    <input type="checkbox" checked disabled className="w-4 h-4 accent-role-volunteer cursor-not-allowed opacity-70" />
+                  </td>
+                  <td className="py-3.5 px-3 text-center">
+                    <input
+                      type="checkbox"
+                      checked={channels.activity.email}
+                      onChange={(e) => setChannels((p) => ({ ...p, activity: { ...p.activity, email: e.target.checked } }))}
+                      className="w-4 h-4 accent-role-volunteer cursor-pointer"
+                    />
+                  </td>
+                  <td className="py-3.5 px-3 text-center">
+                    <input
+                      type="checkbox"
+                      checked={channels.activity.sms}
+                      onChange={(e) => setChannels((p) => ({ ...p, activity: { ...p.activity, sms: e.target.checked } }))}
+                      className="w-4 h-4 accent-role-volunteer cursor-pointer"
+                    />
+                  </td>
+                </tr>
 
-            <label className="flex items-start gap-3 pt-4 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={notifyHoursDecisions}
-                onChange={(e) => setNotifyHoursDecisions(e.target.checked)}
-                className="w-5 h-5 mt-0.5 accent-role-volunteer cursor-pointer"
-              />
-              <div className="space-y-0.5">
-                <span className="font-sans text-sm font-bold text-ink-primary block">
-                  Hours approvals and decision notices
-                </span>
-                <span className="font-sans text-[13px] text-ink-secondary block">
-                  Be notified as soon as a Team Lead approves or provides feedback on your service hours.
-                </span>
-              </div>
-            </label>
+                <tr className="hover:bg-white/60 transition-colors">
+                  <td className="py-3.5 px-4 font-medium text-ink-primary">
+                    <span className="font-semibold block text-sm">Hours approvals & decisions</span>
+                    <span className="text-xs text-ink-tertiary">Real-time alerts when service hours are verified by Team Leads</span>
+                  </td>
+                  <td className="py-3.5 px-3 text-center">
+                    <input type="checkbox" checked disabled className="w-4 h-4 accent-role-volunteer cursor-not-allowed opacity-70" />
+                  </td>
+                  <td className="py-3.5 px-3 text-center">
+                    <input
+                      type="checkbox"
+                      checked={channels.hours.email}
+                      onChange={(e) => setChannels((p) => ({ ...p, hours: { ...p.hours, email: e.target.checked } }))}
+                      className="w-4 h-4 accent-role-volunteer cursor-pointer"
+                    />
+                  </td>
+                  <td className="py-3.5 px-3 text-center">
+                    <input
+                      type="checkbox"
+                      checked={channels.hours.sms}
+                      onChange={(e) => setChannels((p) => ({ ...p, hours: { ...p.hours, sms: e.target.checked } }))}
+                      className="w-4 h-4 accent-role-volunteer cursor-pointer"
+                    />
+                  </td>
+                </tr>
 
-            <label className="flex items-start gap-3 pt-4 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={notifyPromotionUpdates}
-                onChange={(e) => setNotifyPromotionUpdates(e.target.checked)}
-                className="w-5 h-5 mt-0.5 accent-role-volunteer cursor-pointer"
-              />
-              <div className="space-y-0.5">
-                <span className="font-sans text-sm font-bold text-ink-primary block">
-                  Rank milestones and promotion announcements
-                </span>
-                <span className="font-sans text-[13px] text-ink-secondary block">
-                  Updates when you meet rank thresholds or your promotion candidacy is decided.
-                </span>
-              </div>
-            </label>
+                <tr className="hover:bg-white/60 transition-colors">
+                  <td className="py-3.5 px-4 font-medium text-ink-primary">
+                    <span className="font-semibold block text-sm">Rank progress & promotion milestones</span>
+                    <span className="text-xs text-ink-tertiary">Notices when threshold criteria are unlocked or promotions awarded</span>
+                  </td>
+                  <td className="py-3.5 px-3 text-center">
+                    <input type="checkbox" checked disabled className="w-4 h-4 accent-role-volunteer cursor-not-allowed opacity-70" />
+                  </td>
+                  <td className="py-3.5 px-3 text-center">
+                    <input
+                      type="checkbox"
+                      checked={channels.promotions.email}
+                      onChange={(e) => setChannels((p) => ({ ...p, promotions: { ...p.promotions, email: e.target.checked } }))}
+                      className="w-4 h-4 accent-role-volunteer cursor-pointer"
+                    />
+                  </td>
+                  <td className="py-3.5 px-3 text-center">
+                    <input
+                      type="checkbox"
+                      checked={channels.promotions.sms}
+                      onChange={(e) => setChannels((p) => ({ ...p, promotions: { ...p.promotions, sms: e.target.checked } }))}
+                      className="w-4 h-4 accent-role-volunteer cursor-pointer"
+                    />
+                  </td>
+                </tr>
 
-            <label className="flex items-start gap-3 pt-4 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={notifyCommunityNotices}
-                onChange={(e) => setNotifyCommunityNotices(e.target.checked)}
-                className="w-5 h-5 mt-0.5 accent-role-volunteer cursor-pointer"
-              />
-              <div className="space-y-0.5">
-                <span className="font-sans text-sm font-bold text-ink-primary block">
-                  Team lead bulletins and general notices
-                </span>
-                <span className="font-sans text-[13px] text-ink-secondary block">
-                  Notices broadcast to all volunteers by Team Leads and Program Managers.
-                </span>
-              </div>
-            </label>
+                <tr className="hover:bg-white/60 transition-colors">
+                  <td className="py-3.5 px-4 font-medium text-ink-primary">
+                    <span className="font-semibold block text-sm">Team lead announcements & emergency notices</span>
+                    <span className="text-xs text-ink-tertiary">Operational bulletins broadcast to your branch or activity roster</span>
+                  </td>
+                  <td className="py-3.5 px-3 text-center">
+                    <input type="checkbox" checked disabled className="w-4 h-4 accent-role-volunteer cursor-not-allowed opacity-70" />
+                  </td>
+                  <td className="py-3.5 px-3 text-center">
+                    <input
+                      type="checkbox"
+                      checked={channels.announcements.email}
+                      onChange={(e) => setChannels((p) => ({ ...p, announcements: { ...p.announcements, email: e.target.checked } }))}
+                      className="w-4 h-4 accent-role-volunteer cursor-pointer"
+                    />
+                  </td>
+                  <td className="py-3.5 px-3 text-center">
+                    <input
+                      type="checkbox"
+                      checked={channels.announcements.sms}
+                      onChange={(e) => setChannels((p) => ({ ...p, announcements: { ...p.announcements, sms: e.target.checked } }))}
+                      className="w-4 h-4 accent-role-volunteer cursor-pointer"
+                    />
+                  </td>
+                </tr>
+
+                <tr className="bg-[#F1F3F6]/50">
+                  <td className="py-3.5 px-4 font-medium text-ink-primary">
+                    <span className="font-semibold block text-sm">Account security & payment receipts</span>
+                    <span className="text-xs text-ink-tertiary">Password resets, verification codes, and official Telebirr payment receipts</span>
+                  </td>
+                  <td className="py-3.5 px-3 text-center">
+                    <input type="checkbox" checked disabled className="w-4 h-4 accent-role-volunteer cursor-not-allowed opacity-70" />
+                  </td>
+                  <td className="py-3.5 px-3 text-center">
+                    <input type="checkbox" checked disabled className="w-4 h-4 accent-role-volunteer cursor-not-allowed opacity-70" />
+                  </td>
+                  <td className="py-3.5 px-3 text-center">
+                    <input type="checkbox" checked disabled className="w-4 h-4 accent-role-volunteer cursor-not-allowed opacity-70" />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
 
-          <div className="pt-4 flex justify-end">
+          <div className="pt-2 flex justify-end">
             <Button
               type="submit"
               variant="primary"
@@ -365,6 +457,79 @@ export const VolunteerProfilePage: React.FC = () => {
             </Button>
           </div>
         </form>
+      )}
+
+      {/* TAB 3: SECURITY & RECENT SIGN-IN HISTORY */}
+      {activeTab === 'security' && (
+        <div className="rounded-[10px] bg-white p-6 sm:p-8 space-y-6 text-left">
+          <div className="pb-3">
+            <h3 className="font-display text-xl font-bold text-ink-primary">
+              Security and sign-in activity history
+            </h3>
+            <p className="font-sans text-sm text-ink-secondary mt-1">
+              Review recent sign-in sessions, device summaries, and security alert events on your account.
+            </p>
+          </div>
+
+          <div className="overflow-x-auto rounded-[12px] bg-[#F7F8FA]">
+            {signInLogs.length === 0 ? (
+              <div className="p-8 text-center text-sm text-ink-secondary">
+                No recent sign-in history logged yet.
+              </div>
+            ) : (
+              <table className="w-full text-left text-xs">
+                <thead className="bg-[#F1F3F6] text-ink-secondary">
+                  <tr>
+                    <th className="py-3 px-4 font-semibold text-ink-primary">Time</th>
+                    <th className="py-3 px-3 font-semibold text-ink-primary">Device & Browser</th>
+                    <th className="py-3 px-3 font-semibold text-ink-primary">IP Address</th>
+                    <th className="py-3 px-4 font-semibold text-ink-primary text-right">Result</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#E8EBEF]">
+                  {signInLogs.map((log) => {
+                    const isSuccess = log.result === 'success';
+                    const isLocked = log.result === 'locked';
+
+                    return (
+                      <tr key={log.id} className="hover:bg-white/60 transition-colors">
+                        <td className="py-3 px-4 font-mono text-ink-primary">
+                          {new Date(log.timestamp).toLocaleString()}
+                        </td>
+                        <td className="py-3 px-3 font-sans text-ink-primary font-medium">
+                          {log.deviceSummary || 'Web Browser'}
+                        </td>
+                        <td className="py-3 px-3 font-mono text-ink-secondary">
+                          {log.ipAddress || '196.188.24.1'}
+                        </td>
+                        <td className="py-3 px-4 text-right">
+                          <span
+                            className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-[4px] font-semibold text-[11px] ${
+                              isSuccess
+                                ? 'bg-role-volunteer/15 text-role-volunteer'
+                                : isLocked
+                                ? 'bg-[#D63927]/20 text-[#D63927]'
+                                : 'bg-[#E58B05]/20 text-[#E58B05]'
+                            }`}
+                          >
+                            {isSuccess ? 'Success' : isLocked ? 'Locked' : 'Failed'}
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            )}
+          </div>
+
+          <div className="p-4 rounded-[12px] bg-[#F7F8FA] text-xs text-ink-secondary space-y-1">
+            <span className="font-semibold text-ink-primary block">Account security policy</span>
+            <p>
+              Security alerts for new devices or failed attempts are delivered via SMS to <strong>{profile.phone}</strong> and email to <strong>{user?.email}</strong>. If you notice unfamiliar activity, please notify program management immediately.
+            </p>
+          </div>
+        </div>
       )}
 
       {/* Profile Photo Cropper Modal */}

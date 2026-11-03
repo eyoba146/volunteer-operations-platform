@@ -17,6 +17,10 @@ import {
   DemoEmail,
   VolunteerFeedback,
   EmailTemplate,
+  OrgUnit,
+  RolePermissionConfig,
+  SignInLogEntry,
+  DemoSmsMessage,
 } from '../types';
 
 import {
@@ -38,10 +42,14 @@ import {
   SEED_EMAILS,
   SEED_FEEDBACK,
   INITIAL_EMAIL_TEMPLATES,
+  SEED_ORG_UNITS,
+  INITIAL_ROLE_PERMISSIONS,
+  SEED_SIGN_IN_LOGS,
+  SEED_SMS_MESSAGES,
 } from './seedData';
 
-const STORAGE_KEY = 'vts_operations_storage_v2';
-const CURRENT_USER_KEY = 'vts_current_user_v2';
+const STORAGE_KEY = 'vts_operations_storage_v4';
+const CURRENT_USER_KEY = 'vts_current_user_v4';
 
 export interface VtsDatabaseState {
   users: User[];
@@ -62,6 +70,10 @@ export interface VtsDatabaseState {
   emails: DemoEmail[];
   feedback: VolunteerFeedback[];
   emailTemplates: EmailTemplate[];
+  orgUnits: OrgUnit[];
+  rolePermissions: RolePermissionConfig[];
+  signInLogs: SignInLogEntry[];
+  smsMessages: DemoSmsMessage[];
 }
 
 function getInitialState(): VtsDatabaseState {
@@ -84,6 +96,10 @@ function getInitialState(): VtsDatabaseState {
     emails: SEED_EMAILS,
     feedback: SEED_FEEDBACK,
     emailTemplates: INITIAL_EMAIL_TEMPLATES,
+    orgUnits: SEED_ORG_UNITS,
+    rolePermissions: INITIAL_ROLE_PERMISSIONS,
+    signInLogs: SEED_SIGN_IN_LOGS,
+    smsMessages: SEED_SMS_MESSAGES,
   };
 }
 
@@ -108,6 +124,10 @@ class Store {
           settings: parsed.settings && parsed.settings.length >= fresh.settings.length ? parsed.settings : fresh.settings,
           feedback: parsed.feedback && parsed.feedback.length ? parsed.feedback : fresh.feedback,
           emailTemplates: parsed.emailTemplates && parsed.emailTemplates.length ? parsed.emailTemplates : fresh.emailTemplates,
+          orgUnits: parsed.orgUnits && parsed.orgUnits.length ? parsed.orgUnits : fresh.orgUnits,
+          rolePermissions: parsed.rolePermissions && parsed.rolePermissions.length ? parsed.rolePermissions : fresh.rolePermissions,
+          signInLogs: parsed.signInLogs && parsed.signInLogs.length ? parsed.signInLogs : fresh.signInLogs,
+          smsMessages: parsed.smsMessages && parsed.smsMessages.length ? parsed.smsMessages : fresh.smsMessages,
         };
       }
     } catch {

@@ -46,6 +46,7 @@ import { TeamLeadAnnouncementsPage } from './pages/team-lead/TeamLeadAnnouncemen
 // Manager Pages
 import { ManagerDashboardPage } from './pages/manager/ManagerDashboardPage';
 import { ManagerApplicationsPage } from './pages/manager/ManagerApplicationsPage';
+import { ManagerRegisterVolunteerPage } from './pages/manager/ManagerRegisterVolunteerPage';
 import { ManagerVolunteersPage } from './pages/manager/ManagerVolunteersPage';
 import { ManagerActivitiesPage } from './pages/manager/ManagerActivitiesPage';
 import { ManagerPromotionsPage } from './pages/manager/ManagerPromotionsPage';
@@ -62,6 +63,8 @@ import { FinanceReportsPage } from './pages/finance/FinanceReportsPage';
 
 // Admin Pages
 import { AdminOverviewPage } from './pages/admin/AdminOverviewPage';
+import { AdminOrganisationPage } from './pages/admin/AdminOrganisationPage';
+import { AdminRolesPermissionsPage } from './pages/admin/AdminRolesPermissionsPage';
 import { AdminSettingsPage } from './pages/admin/AdminSettingsPage';
 import { AdminRankRulesPage } from './pages/admin/AdminRankRulesPage';
 import { AdminAccountsPage } from './pages/admin/AdminAccountsPage';
@@ -157,6 +160,7 @@ export const router = createBrowserRouter([
       { index: true, element: <Navigate to="/manager/dashboard" replace /> },
       { path: 'dashboard', element: <PageTransition><ManagerDashboardPage /></PageTransition> },
       { path: 'applications', element: <PageTransition><ManagerApplicationsPage /></PageTransition> },
+      { path: 'register-volunteer', element: <PageTransition><ManagerRegisterVolunteerPage /></PageTransition> },
       { path: 'volunteers', element: <PageTransition><ManagerVolunteersPage /></PageTransition> },
       { path: 'activities', element: <PageTransition><ManagerActivitiesPage /></PageTransition> },
       { path: 'promotions', element: <PageTransition><ManagerPromotionsPage /></PageTransition> },
@@ -195,6 +199,8 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <Navigate to="/admin/overview" replace /> },
       { path: 'overview', element: <PageTransition><AdminOverviewPage /></PageTransition> },
+      { path: 'organisation', element: <PageTransition><AdminOrganisationPage /></PageTransition> },
+      { path: 'roles-permissions', element: <PageTransition><AdminRolesPermissionsPage /></PageTransition> },
       { path: 'settings', element: <PageTransition><AdminSettingsPage /></PageTransition> },
       { path: 'rank-rules', element: <PageTransition><AdminRankRulesPage /></PageTransition> },
       { path: 'accounts', element: <PageTransition><AdminAccountsPage /></PageTransition> },

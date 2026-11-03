@@ -28,8 +28,8 @@ export const ManagerReportsPage: React.FC = () => {
       '',
       'SECTION 2: CORPS DISTRIBUTION BY RANK',
       'Rank,Count,Rank Threshold,Status',
-      'Member,28,0 hrs,Active Volunteer',
-      'Senior Member,10,60 hrs,Elevated',
+      'Volunteer,28,0 hrs,Active Volunteer',
+      'Senior Volunteer,10,60 hrs,Elevated',
       'Team Lead,3,150 hrs,Field Officer',
       'Manager,1,300 hrs,Operations Desk',
       '',
@@ -205,7 +205,7 @@ export const ManagerReportsPage: React.FC = () => {
               { label: 'Stage 1: Registered accounts', count: 48, pct: 100, note: 'Unique account signups', color: 'bg-ink-primary' },
               { label: 'Stage 2: Completed applications', count: 40, pct: 83, note: 'Submitted background details', color: 'bg-role-applicant' },
               { label: 'Stage 3: Accepted candidates', count: 32, pct: 67, note: 'Reviewed by admissions desk', color: 'bg-role-teamlead' },
-              { label: 'Stage 4: Activated members', count: 28, pct: 58, note: 'Confirmed Telebirr & Member badge', color: 'bg-role-volunteer' },
+              { label: 'Stage 4: Activated volunteers', count: 28, pct: 58, note: 'Confirmed Telebirr & Volunteer pass', color: 'bg-role-volunteer' },
             ].map((wp, idx) => (
               <div key={idx} className="p-3 rounded-[8px] bg-canvas-subdued/30 space-y-1.5">
                 <div className="flex items-center justify-between">
@@ -244,11 +244,11 @@ export const ManagerReportsPage: React.FC = () => {
 
           <div className="space-y-3 font-sans text-[13px] pt-2">
             {[
-              { area: 'Addis Ababa (Central Area)', count: 24, pct: 57, ranks: '16 Members • 6 Seniors • 2 Leads' },
-              { area: 'Adama (East Shewa Area)', count: 7, pct: 17, ranks: '5 Members • 1 Senior • 1 Lead' },
-              { area: 'Bishoftu (Lakeside Environmental)', count: 5, pct: 12, ranks: '3 Members • 2 Seniors' },
-              { area: 'Hawassa (Sidama Regional Corridor)', count: 4, pct: 9, ranks: '3 Members • 1 Senior' },
-              { area: 'Bahir Dar (Tana Conservation)', count: 2, pct: 5, ranks: '2 Members' },
+              { area: 'Addis Ababa (Central Area)', count: 24, pct: 57, ranks: '16 Volunteers • 6 Seniors • 2 Leads' },
+              { area: 'Adama (East Shewa Area)', count: 7, pct: 17, ranks: '5 Volunteers • 1 Senior • 1 Lead' },
+              { area: 'Bishoftu (Lakeside Environmental)', count: 5, pct: 12, ranks: '3 Volunteers • 2 Seniors' },
+              { area: 'Hawassa (Sidama Regional Corridor)', count: 4, pct: 9, ranks: '3 Volunteers • 1 Senior' },
+              { area: 'Bahir Dar (Tana Conservation)', count: 2, pct: 5, ranks: '2 Volunteers' },
             ].map((reg) => (
               <div key={reg.area} className="p-3 rounded-[8px] bg-canvas-subdued/30 space-y-1">
                 <div className="flex justify-between items-baseline">
@@ -324,9 +324,9 @@ export const ManagerReportsPage: React.FC = () => {
             {[
               { rankNum: 1, name: 'Yonas Kebede', role: 'Team Lead', hours: 192.5, acts: 24, rating: 4.9, area: 'Adama' },
               { rankNum: 2, name: 'Selam Alemu', role: 'Team Lead Candidate', hours: 168.0, acts: 22, rating: 4.9, area: 'Bishoftu' },
-              { rankNum: 3, name: 'Biruk Tadesse', role: 'Senior Member', hours: 82.0, acts: 11, rating: 4.8, area: 'Addis Ababa' },
-              { rankNum: 4, name: 'Almaz Fikre', role: 'Senior Member', hours: 74.5, acts: 9, rating: 4.7, area: 'Addis Ababa' },
-              { rankNum: 5, name: 'Dawit Bekele', role: 'Member', hours: 36.5, acts: 5, rating: 4.8, area: 'Addis Ababa' },
+              { rankNum: 3, name: 'Biruk Tadesse', role: 'Senior Volunteer', hours: 82.0, acts: 11, rating: 4.8, area: 'Addis Ababa' },
+              { rankNum: 4, name: 'Almaz Fikre', role: 'Senior Volunteer', hours: 74.5, acts: 9, rating: 4.7, area: 'Addis Ababa' },
+              { rankNum: 5, name: 'Dawit Bekele', role: 'Volunteer', hours: 36.5, acts: 5, rating: 4.8, area: 'Addis Ababa' },
             ].map((v) => (
               <div key={v.rankNum} className="p-3 flex items-center justify-between gap-3 text-[13px]">
                 <div className="flex items-center gap-3">

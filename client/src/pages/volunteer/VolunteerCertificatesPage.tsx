@@ -59,7 +59,7 @@ export const VolunteerCertificatesPage: React.FC = () => {
           Certificates and credentials
         </h1>
         <p className="font-sans text-sm text-ink-secondary mt-1">
-          Verified certificates awarded for membership activation, earned rank milestones, and completed training courses.
+          Verified certificates awarded for volunteer activation, earned rank milestones, and completed training courses.
         </p>
       </div>
 
@@ -67,7 +67,7 @@ export const VolunteerCertificatesPage: React.FC = () => {
         <EmptyState
           icon={<CertIcon className="w-8 h-8 text-ink-secondary" weight="bold" />}
           title="No certificates issued yet"
-          description="Upon activating your membership or qualifying for advanced ranks, verified certificates will appear here."
+          description="Upon activating your volunteer status or qualifying for advanced ranks, verified certificates will appear here."
         />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

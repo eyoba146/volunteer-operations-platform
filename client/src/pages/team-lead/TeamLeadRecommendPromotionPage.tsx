@@ -5,13 +5,14 @@ import * as api from '../../api';
 import { VolunteerProfile, Rank } from '../../types';
 import { Select, Button, Skeleton } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
+import { formatRank } from '../../utils/format';
 import { ChartLineUp, Warning } from '@phosphor-icons/react';
 
 export const TeamLeadRecommendPromotionPage: React.FC = () => {
   const { user, profile } = useAuth();
   const [volunteers, setVolunteers] = useState<VolunteerProfile[]>([]);
   const [selectedUserId, setSelectedUserId] = useState('');
-  const [targetRank, setTargetRank] = useState<Rank>('senior_member');
+  const [targetRank, setTargetRank] = useState<Rank>('senior_volunteer');
   const [recommendationNote, setRecommendationNote] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -32,7 +33,7 @@ export const TeamLeadRecommendPromotionPage: React.FC = () => {
           const preferred = profiles.find((p) => p.fullName.includes('Dawit') || p.fullName.includes('Selam'));
           const chosen = preferred || profiles[0];
           setSelectedUserId(chosen.userId);
-          setTargetRank(chosen.rank === 'senior_member' ? 'team_lead' : 'senior_member');
+          setTargetRank(chosen.rank === 'senior_volunteer' || chosen.rank === 'senior_member' ? 'team_lead' : 'senior_volunteer');
           setRecommendationNote(
             'Demonstrated remarkable reliability, initiative, and team safety awareness during multiple community field missions.'
           );
@@ -112,12 +113,12 @@ export const TeamLeadRecommendPromotionPage: React.FC = () => {
             onChange={(e) => {
               setSelectedUserId(e.target.value);
               const v = volunteers.find((item) => item.userId === e.target.value);
-              if (v?.rank === 'senior_member') setTargetRank('team_lead');
-              else setTargetRank('senior_member');
+              if (v?.rank === 'senior_volunteer' || v?.rank === 'senior_member') setTargetRank('team_lead');
+              else setTargetRank('senior_volunteer');
             }}
             options={volunteers.map((v) => ({
               value: v.userId,
-              label: `${v.fullName} (Current: ${v.rank?.replace('_', ' ') || 'member'})`,
+              label: `${v.fullName} (Current: ${formatRank(v.rank)})`,
             }))}
             required
           />
@@ -134,7 +135,7 @@ export const TeamLeadRecommendPromotionPage: React.FC = () => {
             value={targetRank}
             onChange={(e) => setTargetRank(e.target.value as Rank)}
             options={[
-              { value: 'senior_member', label: 'Senior member' },
+              { value: 'senior_volunteer', label: 'Senior volunteer' },
               { value: 'team_lead', label: 'Team lead' },
             ]}
             required

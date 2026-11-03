@@ -41,7 +41,7 @@ export const UnauthorizedPage: React.FC = () => {
               Access restricted
             </h1>
             <p className="font-sans text-sm sm:text-base text-ink-secondary leading-relaxed">
-              This area is reserved for specific roles within the volunteer program. Your account is signed in as an active {user?.role.replace('_', ' ') || 'member'}.
+              This area is reserved for specific roles within the volunteer program. Your account is signed in as an active {user?.role.replace('_', ' ') || 'volunteer'}.
             </p>
           </div>
 

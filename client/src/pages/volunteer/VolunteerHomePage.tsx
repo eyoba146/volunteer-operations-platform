@@ -35,7 +35,7 @@ export const VolunteerHomePage: React.FC = () => {
           api.getRankProgress(user.id),
           api.getAllActivities(),
           api.getEnrollmentsForUser(user.id),
-          api.getAnnouncements(profile?.rank || 'member'),
+          api.getAnnouncements(profile?.rank || 'volunteer'),
         ]);
 
         setProgress(prog);
@@ -81,7 +81,7 @@ export const VolunteerHomePage: React.FC = () => {
             <Avatar
               name={profile?.fullName || user?.username || 'Volunteer'}
               photoUrl={profile?.photoUrl}
-              rank={profile?.rank || 'member'}
+              rank={profile?.rank || 'volunteer'}
               size="lg"
               showRankBadge
             />
@@ -90,7 +90,7 @@ export const VolunteerHomePage: React.FC = () => {
                 Good morning, {profile?.fullName || user?.username}
               </h1>
               <div className="flex flex-wrap items-center gap-2 pt-1 text-sm">
-                <StatusMark status={profile?.rank || 'member'} size="sm" />
+                <StatusMark status={profile?.rank || 'volunteer'} size="sm" />
                 <span className="font-semibold text-ink-secondary text-[13px]">
                   ID: {profile?.volunteerNumber || 'VTS-AA-2026'}
                 </span>
@@ -139,7 +139,7 @@ export const VolunteerHomePage: React.FC = () => {
           <TrailMeter
             variant="full"
             currentHours={progress?.approvedHours || 16.5}
-            currentRank={profile?.rank || 'member'}
+            currentRank={profile?.rank || 'volunteer'}
             userName={profile?.fullName}
           />
         </div>

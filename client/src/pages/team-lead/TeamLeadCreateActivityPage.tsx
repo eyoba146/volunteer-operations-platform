@@ -177,8 +177,8 @@ export const TeamLeadCreateActivityPage: React.FC = () => {
               onChange={(e) => setMinRank(e.target.value)}
               options={[
                 { value: 'none', label: 'Open to all volunteers' },
-                { value: 'member', label: 'Member' },
-                { value: 'senior_member', label: 'Senior member' },
+                { value: 'volunteer', label: 'Volunteer' },
+                { value: 'senior_volunteer', label: 'Senior volunteer' },
               ]}
             />
           </div>

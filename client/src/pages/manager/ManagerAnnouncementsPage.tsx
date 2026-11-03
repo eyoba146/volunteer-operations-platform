@@ -11,7 +11,7 @@ export const ManagerAnnouncementsPage: React.FC = () => {
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [activities, setActivities] = useState<Activity[]>([]);
   const [audienceType, setAudienceType] = useState<'all' | 'rank' | 'area' | 'activity'>('all');
-  const [selectedRank, setSelectedRank] = useState<Rank>('member');
+  const [selectedRank, setSelectedRank] = useState<Rank>('volunteer');
   const [selectedArea, setSelectedArea] = useState('Addis Ababa');
   const [selectedActivityId, setSelectedActivityId] = useState('');
   const [title, setTitle] = useState('');
@@ -151,8 +151,8 @@ export const ManagerAnnouncementsPage: React.FC = () => {
                   value={selectedRank}
                   onChange={(e) => setSelectedRank(e.target.value as Rank)}
                   options={[
-                    { value: 'member', label: 'Members' },
-                    { value: 'senior_member', label: 'Senior members' },
+                    { value: 'volunteer', label: 'Volunteers' },
+                    { value: 'senior_volunteer', label: 'Senior volunteers' },
                     { value: 'team_lead', label: 'Team leads' },
                   ]}
                 />

@@ -4,12 +4,13 @@
  */
 
 export function formatRank(rank?: string): string {
-  if (!rank) return 'Member';
+  if (!rank) return 'Volunteer';
   const clean = rank.toLowerCase().trim();
   switch (clean) {
-    case 'senior_member':
-    case 'senior member':
-      return 'Senior Member';
+    case 'senior_volunteer':
+    case 'senior volunteer':
+    case 'senior_member': // legacy alias
+      return 'Senior Volunteer';
     case 'team_lead':
     case 'team lead':
       return 'Team Lead';
@@ -21,9 +22,10 @@ export function formatRank(rank?: string): string {
       return 'Finance Officer';
     case 'admin':
       return 'Super Admin';
+    case 'volunteer':
     case 'member':
     default:
-      return 'Member';
+      return 'Volunteer';
   }
 }
 

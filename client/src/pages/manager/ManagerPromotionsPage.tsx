@@ -105,7 +105,7 @@ export const ManagerPromotionsPage: React.FC = () => {
               Volunteer promotion board
             </h1>
             <p className="font-sans text-[13px] sm:text-sm text-ink-secondary mt-1">
-              Review candidates nominated for Senior Member and Team Lead. Confirm verified service evidence before awarding credentials.
+              Review candidates nominated for Senior Volunteer and Team Lead. Confirm verified service evidence before awarding credentials.
             </p>
           </div>
 

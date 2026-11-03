@@ -18,7 +18,7 @@ export const VolunteerCard: React.FC<VolunteerCardProps> = ({
   completedActivities = 4,
   className = '',
 }) => {
-  const rank: Rank = profile.rank || 'member';
+  const rank: Rank = profile.rank || 'volunteer';
   const displayName = profile.fullName || `${profile.firstName || ''} ${profile.lastName || ''}`.trim() || 'Volunteer';
 
   return (

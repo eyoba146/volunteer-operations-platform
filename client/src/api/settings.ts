@@ -200,7 +200,7 @@ export async function createStaffAccount(params: {
     phone: params.phone || '+251 91 100 0000',
     dateOfBirth: '1998-05-10',
     area: params.area || 'Addis Ababa',
-    bio: `${params.role} staff member in the VTS program.`,
+    bio: `${params.role} staff in the VTS program.`,
     skills: ['Program Coordination', 'Community Outreach'],
     availability: ['Full-time'],
     languages: ['Amharic', 'English'],
@@ -209,6 +209,7 @@ export async function createStaffAccount(params: {
       relationship: 'Family',
       phone: '+251 91 200 0000',
     },
+    volunteerSince: now.slice(0, 10),
     memberSince: now.slice(0, 10),
     volunteerNumber: `VTS-STAFF-2026-${Math.floor(100 + Math.random() * 900)}`,
   };

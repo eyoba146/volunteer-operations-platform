@@ -22,8 +22,8 @@ interface TrailLineProps {
 export const TrailLine: React.FC<TrailLineProps> = ({
   waypoints = [
     { id: 'start', label: 'Start', threshold: 'Registration', isCompleted: true },
-    { id: 'member', label: 'Member', threshold: '0 hrs • Verified', isCompleted: true },
-    { id: 'senior', label: 'Senior Member', threshold: '60 hrs • 8 acts', isCurrent: true },
+    { id: 'volunteer', label: 'Volunteer', threshold: '0 hrs • Verified', isCompleted: true },
+    { id: 'senior', label: 'Senior Volunteer', threshold: '60 hrs • 8 acts', isCurrent: true },
     { id: 'lead', label: 'Team Lead', threshold: '150 hrs • 20 acts' },
     { id: 'manager', label: 'Manager', threshold: '300 hrs • 30 acts' },
   ],

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { ShieldCheck, Star, Sparkle, Trophy } from '@phosphor-icons/react';
 
-export type ApplicantStage = 'applied' | 'reviewed' | 'accepted' | 'paid' | 'member';
+export type ApplicantStage = 'applied' | 'reviewed' | 'accepted' | 'paid' | 'volunteer' | 'member';
 
 export interface TrailMeterProps {
   currentHours?: number;
-  currentRank?: 'member' | 'senior_member' | 'team_lead' | 'manager';
+  currentRank?: 'volunteer' | 'senior_volunteer' | 'team_lead' | 'manager' | 'member' | 'senior_member';
   avatarUrl?: string;
   userName?: string;
   variant?: 'full' | 'compact' | 'summit';
@@ -22,8 +22,8 @@ interface Station {
 }
 
 const RANK_STATIONS: Station[] = [
-  { id: 'member', title: 'Member', hours: 0, perks: 'Access to community volunteer activities & digital ID pass' },
-  { id: 'senior_member', title: 'Senior Member', hours: 40, perks: 'Eligible for complex projects & specialized field tasks' },
+  { id: 'volunteer', title: 'Volunteer', hours: 0, perks: 'Access to community volunteer activities & digital ID pass' },
+  { id: 'senior_volunteer', title: 'Senior Volunteer', hours: 40, perks: 'Eligible for complex projects & specialized field tasks' },
   { id: 'team_lead', title: 'Team Lead', hours: 100, perks: 'Lead squads, verify roster attendance & approve service hours' },
   { id: 'manager', title: 'Manager', hours: 250, perks: 'Full operations desk, review applications & manage territory' },
 ];
@@ -33,7 +33,7 @@ const APPLICANT_STATIONS: Station[] = [
   { id: 'reviewed', title: 'Reviewed', hours: 1, perks: 'Admissions team evaluates regional volunteer intake' },
   { id: 'accepted', title: 'Accepted', hours: 2, perks: 'Offer letter issued; Telebirr activation unlocked' },
   { id: 'paid', title: 'Paid', hours: 3, perks: 'ETB 200 fee verified and receipt confirmed' },
-  { id: 'member', title: 'Member', hours: 4, perks: 'Volunteer ID pass active; open activities accessible' },
+  { id: 'volunteer', title: 'Volunteer', hours: 4, perks: 'Volunteer ID pass active; open activities accessible' },
 ];
 
 export const TrailMeter: React.FC<TrailMeterProps> = ({
@@ -60,7 +60,7 @@ export const TrailMeter: React.FC<TrailMeterProps> = ({
   const clampedHours = Math.min(Math.max(currentHours, 0), maxHours);
 
   // Station positions on a 0..100 percentage scale
-  // Member: 0%, Senior Member: 30%, Team Lead: 65%, Manager: 100%
+  // Volunteer: 0%, Senior Volunteer: 30%, Team Lead: 65%, Manager: 100%
   const getStationPercent = (h: number) => {
     if (isApplicant) {
       return (h / (APPLICANT_STATIONS.length - 1)) * 100;
@@ -85,7 +85,7 @@ export const TrailMeter: React.FC<TrailMeterProps> = ({
     else if (applicantStage === 'reviewed') calloutText = 'Reviewed • Decision pending';
     else if (applicantStage === 'accepted') calloutText = 'Accepted • Ready for Telebirr';
     else if (applicantStage === 'paid') calloutText = 'Payment verified • Pass ready';
-    else calloutText = 'Member of the trail';
+    else calloutText = 'Active volunteer on the trail';
   } else {
     if (clampedHours < 40) {
       nextStation = RANK_STATIONS[1];
@@ -200,8 +200,8 @@ export const TrailMeter: React.FC<TrailMeterProps> = ({
                     : 'bg-[#E5E8EB] text-ink-tertiary border-none'
                 } `}
               >
-                {!isApplicant && station.id === 'member' && <span className="w-2 h-2 rounded-full bg-current" />}
-                {!isApplicant && station.id === 'senior_member' && <Star className="w-3 h-3" weight="fill" />}
+                {!isApplicant && (station.id === 'volunteer' || station.id === 'member') && <span className="w-2 h-2 rounded-full bg-current" />}
+                {!isApplicant && (station.id === 'senior_volunteer' || station.id === 'senior_member') && <Star className="w-3 h-3" weight="fill" />}
                 {!isApplicant && station.id === 'team_lead' && <ShieldCheck className="w-3.5 h-3.5" weight="fill" />}
                 {!isApplicant && station.id === 'manager' && <Sparkle className="w-3.5 h-3.5" weight="fill" />}
                 {isApplicant && <span className="w-2 h-2 rounded-full bg-current" />}

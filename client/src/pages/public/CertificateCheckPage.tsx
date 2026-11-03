@@ -5,7 +5,7 @@ import { PageShell, Input, Button, Raised, Panel, TopoBackdrop } from '../../com
 import { ShieldCheck, CheckCircle, Warning, MagnifyingGlass } from '@phosphor-icons/react';
 
 const SAMPLE_CODES = [
-  { code: 'VTS-CERT-2026-001', label: 'Biruk Tadesse (Senior Member)' },
+  { code: 'VTS-CERT-2026-001', label: 'Biruk Tadesse (Senior Volunteer)' },
   { code: 'VTS-CERT-2026-002', label: 'Selam Alemu (Community Service)' },
 ];
 

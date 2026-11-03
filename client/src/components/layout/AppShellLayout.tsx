@@ -16,11 +16,13 @@ import {
   Gear,
   UsersThree,
   Bell,
+  Buildings,
 } from '@phosphor-icons/react';
 import { AppSidebar } from './AppSidebar';
 import { ProfilePhotoModal } from '../ui/ProfilePhotoModal';
 import { DemoEmailInbox } from '../demo/DemoEmailInbox';
 import { useToast } from '../ui/ToastContext';
+import { getScopeLabel } from '../../utils/scoping';
 import * as api from '../../api';
 
 export const AppShellLayout: React.FC = () => {
@@ -160,6 +162,7 @@ export const AppShellLayout: React.FC = () => {
       // Manager
       '/manager/dashboard': 'Operations desk',
       '/manager/applications': 'Application queue',
+      '/manager/register-volunteer': 'Register a volunteer',
       '/manager/promotions': 'Promotions',
       '/manager/activities': 'All activities',
       '/manager/volunteers': 'Volunteer directory',
@@ -174,6 +177,8 @@ export const AppShellLayout: React.FC = () => {
       '/finance/reports': 'Financial reports',
       // Admin
       '/admin/overview': 'Platform overview',
+      '/admin/organisation': 'Organisation units',
+      '/admin/roles-permissions': 'Roles and permissions',
       '/admin/settings': 'Settings and emails',
       '/admin/rank-rules': 'Rank rules',
       '/admin/accounts': 'Accounts and roles',
@@ -357,6 +362,9 @@ export const AppShellLayout: React.FC = () => {
             <span className="text-[13px] font-semibold text-ink-primary truncate max-w-[120px]">
               {profile?.fullName || user.username}
             </span>
+            <span className="text-[11px] font-medium text-ink-tertiary px-1.5 py-0.5 rounded-[4px] bg-[#F1F3F6] hidden sm:inline">
+              {getScopeLabel(user)}
+            </span>
           </button>
         </div>
       </header>
@@ -417,6 +425,14 @@ export const AppShellLayout: React.FC = () => {
 
             {/* Quick Context & Simulator Trigger */}
             <div className="flex items-center gap-3 shrink-0">
+              <span
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-[6px] bg-[#F1F3F6] text-[12px] font-medium text-ink-secondary select-none"
+                title="Current operational scope"
+              >
+                <Buildings className="w-3.5 h-3.5 text-ink-tertiary" weight="bold" />
+                <span>{getScopeLabel(user)}</span>
+              </span>
+
               {user.role === 'admin' && (
                 <button
                   onClick={() => setEmailInboxOpen(true)}

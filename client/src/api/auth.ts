@@ -1,4 +1,4 @@
-import { User, VolunteerProfile } from '../types';
+import { User, VolunteerProfile, SignInLogEntry } from '../types';
 import { store } from './store';
 import { delay } from './delay';
 import { validateAndNormalizeEthiopianPhone } from '../utils/phone';
@@ -44,12 +44,42 @@ export async function signIn(identifier: string, password: string): Promise<User
   await delay(350, 700);
   const state = store.getState();
   const lower = identifier.trim().toLowerCase();
+  const now = new Date().toISOString();
+  const device = typeof navigator !== 'undefined' && navigator.userAgent.includes('Windows')
+    ? 'Chrome 122 on Windows 11'
+    : 'Mobile Browser';
   
   const user = state.users.find(
     (u) => (u.username.toLowerCase() === lower || u.email.toLowerCase() === lower)
   );
 
   if (!user) {
+    const failedLog: SignInLogEntry = {
+      id: `log-sign-${Date.now()}`,
+      userId: 'unknown',
+      username: lower,
+      role: 'applicant',
+      timestamp: now,
+      deviceSummary: device,
+      result: 'failed',
+      reason: 'Unknown user identifier',
+    };
+    store.setState((prev) => ({
+      ...prev,
+      signInLogs: [failedLog, ...(prev.signInLogs || [])],
+      activityLog: [
+        {
+          id: `log-${Date.now()}`,
+          actorId: 'system',
+          actorName: lower,
+          actorRole: 'applicant',
+          action: 'Failed sign-in attempt (account not found)',
+          subject: lower,
+          createdAt: now,
+        },
+        ...prev.activityLog,
+      ],
+    }));
     throw new Error('We could not find an account with that email or username.');
   }
 
@@ -59,18 +89,67 @@ export async function signIn(identifier: string, password: string): Promise<User
 
   // Password check: in demo, Demo@1234 works for all, or exact match
   if (user.passwordHash && user.passwordHash !== password && password !== 'Demo@1234') {
+    const failedLog: SignInLogEntry = {
+      id: `log-sign-${Date.now()}`,
+      userId: user.id,
+      username: user.username,
+      role: user.role,
+      timestamp: now,
+      deviceSummary: device,
+      result: 'failed',
+      reason: 'Incorrect password',
+    };
+    store.setState((prev) => ({
+      ...prev,
+      signInLogs: [failedLog, ...(prev.signInLogs || [])],
+      activityLog: [
+        {
+          id: `log-${Date.now()}`,
+          actorId: user.id,
+          actorName: `${user.firstName} ${user.lastName}`,
+          actorRole: user.role,
+          action: 'Failed sign-in attempt (incorrect password)',
+          subject: user.email,
+          createdAt: now,
+        },
+        ...prev.activityLog,
+      ],
+    }));
     throw new Error('The password you entered is incorrect. Please try again.');
   }
 
-  // Update lastSignInAt
+  // Success: Update lastSignInAt & record sign-in log
   const updatedUser: User = {
     ...user,
-    lastSignInAt: new Date().toISOString(),
+    lastSignInAt: now,
+  };
+
+  const successLog: SignInLogEntry = {
+    id: `log-sign-${Date.now()}`,
+    userId: user.id,
+    username: user.username,
+    role: user.role,
+    timestamp: now,
+    deviceSummary: device,
+    result: 'success',
   };
 
   store.setState((prev) => ({
     ...prev,
     users: prev.users.map((u) => (u.id === user.id ? updatedUser : u)),
+    signInLogs: [successLog, ...(prev.signInLogs || [])],
+    activityLog: [
+      {
+        id: `log-${Date.now()}`,
+        actorId: user.id,
+        actorName: `${user.firstName} ${user.lastName}`,
+        actorRole: user.role,
+        action: 'User signed in',
+        subject: user.email,
+        createdAt: now,
+      },
+      ...prev.activityLog,
+    ],
   }));
 
   store.setCurrentUser(updatedUser);
@@ -142,6 +221,7 @@ export async function register(
       relationship: '',
       phone: '',
     },
+    volunteerSince: now.slice(0, 10),
     memberSince: now.slice(0, 10),
   };
 
@@ -365,5 +445,29 @@ export async function getCurrentUser(): Promise<User | null> {
 export async function signOut(): Promise<void> {
   await delay(150, 300);
   store.setCurrentUser(null);
+}
+
+export async function getSignInLogs(userId?: string): Promise<SignInLogEntry[]> {
+  const state = store.getState();
+  const logs = state.signInLogs || [];
+  if (userId) {
+    return logs.filter((l) => l.userId === userId);
+  }
+  return logs;
+}
+
+export async function recordSignInLog(entry: Omit<SignInLogEntry, 'id' | 'timestamp'>): Promise<SignInLogEntry> {
+  const log: SignInLogEntry = {
+    ...entry,
+    id: `log-sign-${Date.now()}`,
+    timestamp: new Date().toISOString(),
+  };
+
+  store.setState((prev) => ({
+    ...prev,
+    signInLogs: [log, ...(prev.signInLogs || [])],
+  }));
+
+  return log;
 }
 

@@ -136,7 +136,7 @@ export const ApplicantStatusPage: React.FC = () => {
   // Map to ApplicantStage for TrailMeter
   let applicantStage: ApplicantStage = 'applied';
   if (isPaid || user?.role === 'volunteer') {
-    applicantStage = 'member';
+    applicantStage = 'volunteer';
   } else if (isAccepted) {
     applicantStage = 'accepted';
   } else if (isInReview) {
@@ -187,15 +187,15 @@ export const ApplicantStatusPage: React.FC = () => {
       description: isPaid
         ? 'Registration fee of ETB 200 received and confirmed via Telebirr.'
         : isAccepted
-        ? 'One-time registration fee of ETB 200 due within 7 days to activate Member rank.'
+        ? 'One-time registration fee of ETB 200 due within 7 days to activate Volunteer rank.'
         : 'Payment becomes available after application acceptance.',
     },
     {
       id: 'step-5',
-      title: 'Activation and member pass issued',
+      title: 'Activation and volunteer pass issued',
       status: isPaid ? 'completed' : 'pending',
       description: isPaid
-        ? 'Account upgraded to Member rank. Volunteer ID and activity roster unlocked.'
+        ? 'Account upgraded to Volunteer rank. Volunteer ID and activity roster unlocked.'
         : 'Volunteer ID pass and activity access issued immediately upon confirmed payment.',
     },
   ];
@@ -236,14 +236,14 @@ export const ApplicantStatusPage: React.FC = () => {
           <div className="flex items-center justify-between pb-4">
             <div>
               <h2 className="font-display text-xl sm:text-2xl font-bold text-ink-primary">
-                Your journey to membership
+                Your journey to volunteer activation
               </h2>
               <p className="font-sans text-sm text-ink-secondary mt-0.5">
-                Follow your milestones from submission to active Member rank.
+                Follow your milestones from submission to active Volunteer rank.
               </p>
             </div>
             <span className="font-sans text-[13px] font-semibold text-role-applicant bg-[#FEF3C7] px-2.5 py-1 rounded-[6px]">
-              {applicantStage === 'member' ? 'Member pass active' : 'Step ' + (['applied', 'reviewed', 'accepted', 'paid', 'member'].indexOf(applicantStage) + 1) + ' of 5'}
+              {applicantStage === 'volunteer' ? 'Volunteer pass active' : 'Step ' + (['applied', 'reviewed', 'accepted', 'paid', 'volunteer'].indexOf(applicantStage) + 1) + ' of 5'}
             </span>
           </div>
 

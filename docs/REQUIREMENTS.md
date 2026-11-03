@@ -22,7 +22,7 @@ Native mobile apps, in-app chat between users, multi-language support (English o
 | ID | Assumption |
 | --- | --- |
 | A1 | The client is a company running a community volunteering program; the exact industry is not yet known, so the prototype uses neutral company-community content. |
-| A2 | Payment happens after acceptance: apply, get reviewed and accepted, pay the registration fee, become a Member. Rejected applicants never pay. (Confirmed by the team leader.) |
+| A2 | Payment happens after acceptance: apply, get reviewed and accepted, pay the registration fee, become a Volunteer. Rejected applicants never pay. (Confirmed by the team leader.) |
 | A3 | The registration fee is one time and a single fixed amount, set by the Super Admin. The prototype uses ETB 200. |
 | A4 | Telebirr confirms payments automatically. A manual Finance review exists only as a fallback. |
 | A5 | Rank thresholds are configurable by the Super Admin; the values in section 5 are the starting defaults. |
@@ -36,11 +36,11 @@ There are six roles. Each person signs in with their own account; there is no ro
 | Role | Who they are | Main responsibilities |
 | --- | --- | --- |
 | Applicant | A registered person who is not yet an active volunteer | Complete the application, track its status, pay the fee once accepted |
-| Volunteer | An active Member or Senior Member | Join activities, check in, log hours, track rank progress, get certificates and ID card |
+| Volunteer | An active Volunteer or Senior Volunteer | Join activities, check in, log hours, track rank progress, get certificates and ID card |
 | Team Lead | A volunteer holding Team Lead rank | Create and run activities, approve hours, rate volunteers, recommend promotions |
-| Manager | Program manager (volunteer holding Manager rank or appointed company staff) | Review applications, manage volunteers, approve promotions, publish announcements, run reports |
-| Finance Officer | Company finance staff | Watch Telebirr payments, handle payments needing review, receipts, refunds, payment reports |
-| Super Admin | System owner | Settings, fee amount, rank rules, create and suspend accounts, assign roles, view the activity history |
+| Manager | Program manager (appointed company staff or regional director) | Review applications, register assisted volunteers, approve promotions, publish announcements, run reports |
+| Finance Officer | Company finance staff | Watch Telebirr payments, record manual receipts, handle review queue, refunds, payment reports |
+| Super Admin | System owner | Settings, fee amount, rank rules, organisation units, roles & permissions matrix, accounts, activity history |
 
 ### 2.1 Permission summary
 
@@ -315,33 +315,36 @@ The prototype must demonstrate every module above with realistic data and workin
 | Role | Name | Username | Situation |
 | --- | --- | --- | --- |
 | Applicant | Hana Tesfaye | hana.tesfaye | Accepted, payment waiting; completes the full upgrade moment |
-| Volunteer (Member) | Dawit Bekele | dawit.bekele | Active, partway to Senior Member |
-| Volunteer (Senior Member) | Selam Alemu | selam.alemu | Meets every Team Lead threshold, promotion waiting |
-| Team Lead | Yonas Kebede | yonas.kebede | Leads activities, hours waiting for approval |
-| Manager | Marta Girma | marta.girma | Applications waiting, promotions waiting |
-| Finance Officer | Abel Hailu | abel.hailu | Two payments needing review, one refund request |
-| Super Admin | Ruth Mengistu | ruth.mengistu | Full settings |
+| Volunteer | Dawit Bekele | dawit.bekele | Active, Kirkos branch (Addis), partway to Senior Volunteer |
+| Senior Volunteer | Selam Alemu | selam.alemu | Meets every Team Lead threshold, promotion waiting |
+| Team Lead (Addis) | Yonas Kebede | yonas.kebede | Kirkos branch scope, leads activities, hours waiting for approval |
+| Team Lead (Adama) | Henok Assefa | henok.assefa | Adama Central branch scope, manages Adama activities and rosters |
+| Manager (Addis) | Marta Girma | marta.girma | Addis Ababa area scope, applications queue, promotions waiting |
+| Manager (Adama) | Tigist Wolde | tigist.wolde | Adama area scope, Adama volunteers and assisted registration |
+| Finance Officer | Abel Hailu | abel.hailu | Head Office scope, review queue, record manual payment receipts |
+| Super Admin | Ruth Mengistu | ruth.mengistu | Head Office scope, organisation units, roles & permissions matrix, audit history |
 
-Also seed about 40 volunteers, 15 applications in different statuses, 25 activities (past, today, upcoming) across Addis Ababa, Adama, Bishoftu, Hawassa and Bahir Dar, 60 payments, hours, ratings, certificates and announcements. Use real-sounding Ethiopian names, areas and ETB amounts.
+Also seed about 50 volunteers (including 12 in Adama area), 18 applications in different statuses (including 3 staff-assisted applications), 25 activities across Addis Ababa, Adama, Bishoftu, Hawassa and Bahir Dar, 60 payments, hours, ratings, certificates, SMS messages, and announcements. Use real-sounding Ethiopian names, areas, and ETB amounts.
 
-### 12.2 Simulated Telebirr
+### 12.2 Simulated Telebirr & Finance Manual Payment
 
-A believable Telebirr step: the person sees the amount and a phone confirmation screen, with options in the demo to succeed, fail, or delay so Finance's needs-review flow can be shown.
+A believable Telebirr step: the person sees the amount and a phone confirmation screen, with options in the demo to succeed, fail, or delay so Finance's needs-review flow can be shown. In addition, Finance Officers can record manual bank or branch cash payments, immediately issuing official receipt numbers and activating accounts.
 
-### 12.3 Simulated email
+### 12.3 Simulated Email & SMS Text Messages
 
-Emails appear in a visible in-app preview inbox for the demo (verification code, receipts, decisions), laid out like the real emails.
+Emails and SMS messages appear in a visible in-app preview dialog for the demo (verification code, receipts, decisions, reminders), with realistic simulated delivery.
 
 ## 13. Demo script (what the evaluator should be able to do)
 
 1. Register as a new person, verify the email code, and submit an application.
-2. Sign in as Marta Girma, accept the application.
-3. Sign in as Hana Tesfaye, pay with Telebirr, and see the welcome and ID card.
-4. Sign in as Dawit Bekele, join an activity, check in, log hours.
-5. Sign in as Yonas Kebede, approve hours, rate volunteers, recommend a promotion.
-6. Sign in as Marta Girma, approve Selam Alemu's promotion.
-7. Sign in as Abel Hailu, resolve a payment needing review and export a report.
-8. Sign in as Ruth Mengistu, change the fee and a rank threshold, and read the activity history.
+2. Sign in as Marta Girma (Manager, Addis Ababa), verify that only Addis Ababa area applications and volunteers appear. Accept an application or register an in-person candidate via assisted intake.
+3. Sign in as Tigist Wolde (Manager, Adama), verify that only Adama area volunteers, branches (Adama Central, Wonji Road), and activities appear.
+4. Sign in as Hana Tesfaye, pay with Telebirr, and see the welcome moment and Volunteer ID pass.
+5. Sign in as Dawit Bekele, join an activity, check in, log hours, view multi-channel alert settings and sign-in history.
+6. Sign in as Yonas Kebede, approve hours (notice that self-approval is forbidden by separation of duties), rate volunteers, recommend a promotion.
+7. Sign in as Marta Girma, approve Selam Alemu's promotion to Team Lead.
+8. Sign in as Abel Hailu (Finance), inspect payment queue, record a manual payment, and export a report.
+9. Sign in as Ruth Mengistu (Super Admin), inspect the 4-tier organisation tree (/admin/organisation), adjust role permission toggles with instant live effect (/admin/roles-permissions), look up individual person authorities, and view security & lockout logs.
 
 ## 14. Open questions for the client
 

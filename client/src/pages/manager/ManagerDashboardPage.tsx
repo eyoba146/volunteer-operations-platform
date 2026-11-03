@@ -114,7 +114,7 @@ export const ManagerDashboardPage: React.FC = () => {
               </span>
             </div>
             <div className="space-y-0.5">
-              <span className="text-[13px] text-ink-secondary block">New members</span>
+              <span className="text-[13px] text-ink-secondary block">New volunteers</span>
               <span className="text-xl font-bold text-role-volunteer">
                 +{stats?.newVolunteersThisMonth || 0}
               </span>

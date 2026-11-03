@@ -1,35 +1,98 @@
 import React, { useState, useEffect } from 'react';
+import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
-import { Payment, PaymentStatus } from '../../types';
+import { Payment, PaymentStatus, Application } from '../../types';
 import { LedgerTable, LedgerColumn, Input, Select, Button, StatusMark, SheetModal, JourneyLog, JourneyItem, TopoBackdrop } from '../../components/ui';
+import { useToast } from '../../components/ui/ToastContext';
 import { 
   MagnifyingGlass, 
   Eye, 
+  Plus,
+  Check,
 } from '@phosphor-icons/react';
 
 export const FinancePaymentsPage: React.FC = () => {
+  const { user, profile } = useAuth();
+  const toast = useToast();
   const [payments, setPayments] = useState<Payment[]>([]);
+  const [waitingApps, setWaitingApps] = useState<Application[]>([]);
   const [selectedStatus, setSelectedStatus] = useState<PaymentStatus | 'all'>('all');
   const [search, setSearch] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [inspecting, setInspecting] = useState<Payment | null>(null);
   const [viewMode, setViewMode] = useState<'table' | 'log'>('log');
 
-  useEffect(() => {
-    const load = async () => {
-      setIsLoading(true);
-      try {
-        const list = await api.getAllPayments({
+  // Record a payment modal
+  const [showRecordModal, setShowRecordModal] = useState(false);
+  const [recordAppId, setRecordAppId] = useState('');
+  const [recordAmount, setRecordAmount] = useState(200);
+  const [recordRef, setRecordRef] = useState('');
+  const [recordNote, setRecordNote] = useState('');
+  const [isRecording, setIsRecording] = useState(false);
+
+  const loadData = async () => {
+    setIsLoading(true);
+    try {
+      const [list, apps] = await Promise.all([
+        api.getAllPayments({
           status: selectedStatus,
           search: search || undefined,
-        });
-        setPayments(list);
-      } finally {
-        setIsLoading(false);
+        }),
+        api.getAllApplications(),
+      ]);
+      setPayments(list);
+      // Filter applications that are accepted or submitted
+      const unconfirmed = apps.filter((a) => a.status === 'accepted' || a.status === 'submitted');
+      setWaitingApps(unconfirmed);
+      if (unconfirmed.length > 0 && !recordAppId) {
+        setRecordAppId(unconfirmed[0].id);
       }
-    };
-    load();
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadData();
   }, [selectedStatus, search]);
+
+  const handleOpenRecordModal = () => {
+    setRecordRef(`TB-MAN-${Date.now().toString().slice(-6)}`);
+    setRecordAmount(200);
+    setRecordNote('');
+    setShowRecordModal(true);
+  };
+
+  const handleRecordSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!recordAppId) {
+      toast.error('Please select an applicant.');
+      return;
+    }
+    if (!recordRef.trim()) {
+      toast.error('Payment reference number is required.');
+      return;
+    }
+
+    setIsRecording(true);
+    try {
+      await api.recordPayment({
+        applicationId: recordAppId,
+        amount: Number(recordAmount),
+        referenceNumber: recordRef.trim(),
+        note: recordNote.trim() || undefined,
+        recordedBy: user?.id || 'usr-abel',
+        recordedByName: profile?.fullName || user?.username || 'Abel Hailu',
+      });
+      toast.success('Payment recorded and Volunteer account activated successfully!');
+      setShowRecordModal(false);
+      await loadData();
+    } catch (err: any) {
+      toast.error(err.message || 'Failed to record payment.');
+    } finally {
+      setIsRecording(false);
+    }
+  };
 
   const columns: LedgerColumn<Payment>[] = [
     {
@@ -109,6 +172,14 @@ export const FinancePaymentsPage: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-2">
+            <Button
+              variant="primary"
+              onClick={handleOpenRecordModal}
+              className="bg-[#111315] hover:bg-black text-white text-xs"
+              leftIcon={<Plus className="w-4 h-4" weight="bold" />}
+            >
+              Record a payment
+            </Button>
             <span className="font-mono text-[13px] font-medium text-ink-primary bg-canvas-subdued px-3 py-1.5 rounded-[8px]">
               Total records: {payments.length}
             </span>
@@ -235,7 +306,7 @@ export const FinancePaymentsPage: React.FC = () => {
                   </div>
                   <p className="text-ink-secondary text-[13px]">
                     {inspecting.receiptNumber
-                      ? 'Member rank credential generated and welcome orientation materials issued.'
+                      ? 'Volunteer rank credential generated and welcome orientation materials issued.'
                       : inspecting.refundReason
                       ? `Note: "${inspecting.refundReason}"`
                       : 'Transaction is undergoing manual reconciliation.'}
@@ -266,6 +337,100 @@ export const FinancePaymentsPage: React.FC = () => {
           </div>
         )}
       </SheetModal>
+
+      {/* Record a Payment Modal */}
+      {showRecordModal && (
+        <SheetModal
+          isOpen={showRecordModal}
+          onClose={() => setShowRecordModal(false)}
+          title="Record a registration payment"
+        >
+          <form onSubmit={handleRecordSubmit} className="space-y-4 text-left">
+            <p className="text-xs text-ink-secondary">
+              Record a direct Telebirr, cash, or bank deposit settlement for an applicant. This immediately issues an official receipt and activates their account with Volunteer rank.
+            </p>
+
+            <div>
+              <label className="block text-xs font-semibold text-ink-secondary uppercase tracking-wider mb-1.5">
+                Select applicant *
+              </label>
+              {waitingApps.length === 0 ? (
+                <div className="p-3 rounded-[8px] bg-[#F1F3F6] text-xs text-ink-tertiary">
+                  No applicants awaiting payment found.
+                </div>
+              ) : (
+                <select
+                  value={recordAppId}
+                  onChange={(e) => setRecordAppId(e.target.value)}
+                  className="w-full px-3 py-2.5 bg-[#F1F3F6] rounded-[10px] text-sm text-ink-primary focus:outline-none"
+                  required
+                >
+                  {waitingApps.map((app) => (
+                    <option key={app.id} value={app.id}>
+                      {app.formData?.fullName || 'Applicant'} ({app.formData?.phone || 'No phone'}) — {app.status}
+                    </option>
+                  ))}
+                </select>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-ink-secondary uppercase tracking-wider mb-1.5">
+                Amount (ETB) *
+              </label>
+              <input
+                type="number"
+                value={recordAmount}
+                onChange={(e) => setRecordAmount(Number(e.target.value))}
+                className="w-full px-3 py-2.5 bg-[#F1F3F6] rounded-[10px] text-sm text-ink-primary font-mono focus:outline-none"
+                required
+                min={1}
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-ink-secondary uppercase tracking-wider mb-1.5">
+                Reference number (Telebirr / Bank transaction ID) *
+              </label>
+              <input
+                type="text"
+                placeholder="e.g. TB-2026-987123"
+                value={recordRef}
+                onChange={(e) => setRecordRef(e.target.value)}
+                className="w-full px-3 py-2.5 bg-[#F1F3F6] rounded-[10px] text-sm text-ink-primary font-mono focus:outline-none"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-ink-secondary uppercase tracking-wider mb-1.5">
+                Accounting note (Optional)
+              </label>
+              <input
+                type="text"
+                placeholder="e.g. Manual branch deposit verified at Kirkos desk"
+                value={recordNote}
+                onChange={(e) => setRecordNote(e.target.value)}
+                className="w-full px-3 py-2.5 bg-[#F1F3F6] rounded-[10px] text-sm text-ink-primary focus:outline-none"
+              />
+            </div>
+
+            <div className="pt-4 flex items-center justify-end gap-3">
+              <Button variant="secondary" onClick={() => setShowRecordModal(false)} disabled={isRecording}>
+                Cancel
+              </Button>
+              <Button
+                variant="primary"
+                type="submit"
+                disabled={isRecording || waitingApps.length === 0}
+                className="bg-[#111315] hover:bg-black text-white"
+              >
+                {isRecording ? 'Recording...' : 'Record and activate volunteer'}
+              </Button>
+            </div>
+          </form>
+        </SheetModal>
+      )}
     </div>
   );
 };

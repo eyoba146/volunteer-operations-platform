@@ -94,7 +94,7 @@ export const AdminOverviewPage: React.FC = () => {
                 Registered volunteers
               </span>
               <span className="text-[13px] text-ink-secondary">
-                Active member profiles across all community branches
+                Active volunteer profiles across all community branches
               </span>
             </div>
           </div>
@@ -246,7 +246,7 @@ export const AdminOverviewPage: React.FC = () => {
                   Accounts and roles
                 </h4>
                 <p className="text-[13px] text-ink-secondary">
-                  Provision staff members and assign operational roles
+                  Provision staff accounts and assign operational roles
                 </p>
               </div>
             </div>

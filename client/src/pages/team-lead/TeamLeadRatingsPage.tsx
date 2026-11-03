@@ -189,8 +189,8 @@ export const TeamLeadRatingsPage: React.FC = () => {
                       type="text"
                       value={currentRating.note}
                       onChange={(e) => handleNoteChange(vol.userId, e.target.value)}
-                      placeholder="e.g. Exhibited strong field initiative; assisted arriving community members promptly."
-                      className="w-full bg-white text-ink-primary font-sans text-[13px] rounded-[8px] p-2 focus:border-ink-primary focus:outline-none"
+                      placeholder="e.g. Exhibited strong field initiative; assisted the local community promptly."
+                      className="w-full bg-white text-ink-primary font-sans text-[13px] rounded-[8px] p-2 focus:outline-none focus:ring-2 focus:ring-ink-primary/20"
                     />
                   </div>
 

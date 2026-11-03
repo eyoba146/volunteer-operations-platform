@@ -81,7 +81,7 @@ export const Avatar: React.FC<AvatarProps> = ({
               ? 'bg-role-manager'
               : rank === 'team_lead'
               ? 'bg-role-teamlead'
-              : rank === 'senior_member'
+              : rank === 'senior_volunteer' || rank === 'senior_member'
               ? 'bg-role-applicant'
               : 'bg-role-volunteer'
           } `}

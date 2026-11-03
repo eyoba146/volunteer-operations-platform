@@ -81,7 +81,7 @@ export const FinanceNeedsReviewPage: React.FC = () => {
       );
 
       if (actionType === 'match') {
-        toast.success(`Payment matched! Reference ${targetPayment.telebirrReference} is confirmed and Member rank activated.`);
+        toast.success(`Payment matched! Reference ${targetPayment.telebirrReference} is confirmed and Volunteer rank activated.`);
       } else {
         toast.info(`Refund of ETB ${targetPayment.amount}.00 processed for reference ${targetPayment.telebirrReference}.`);
       }
@@ -220,7 +220,7 @@ export const FinanceNeedsReviewPage: React.FC = () => {
         <form onSubmit={handleResolveSubmit} className="space-y-4 text-left font-sans text-sm">
           <p className="text-ink-secondary leading-relaxed text-[13px]">
             {actionType === 'match'
-              ? 'This action force-matches the incoming Telebirr reference to the selected applicant record, generates a payment receipt, and immediately activates their Member rank.'
+              ? 'This action force-matches the incoming Telebirr reference to the selected applicant record, generates a payment receipt, and immediately activates their Volunteer rank.'
               : 'This action initiates a refund of ETB 200.00 to the payer’s Telebirr wallet. A written explanation is required.'}
           </p>
 
@@ -290,7 +290,7 @@ export const FinanceNeedsReviewPage: React.FC = () => {
               variant={actionType === 'match' ? 'primary' : 'danger'}
               isLoading={isProcessing}
             >
-              {actionType === 'match' ? 'Confirm match and activate member' : 'Confirm Telebirr refund'}
+              {actionType === 'match' ? 'Confirm match and activate volunteer' : 'Confirm Telebirr refund'}
             </Button>
           </div>
         </form>

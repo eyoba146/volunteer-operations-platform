@@ -4,6 +4,7 @@ import * as api from '../../api';
 import { RankProgressData } from '../../api/promotions';
 import { Button, StatusMark, ProgressMeter, Skeleton, TrailLine, TopoBackdrop, TrailMeter } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
+import { formatRank } from '../../utils/format';
 import {
   Sparkle,
   CheckCircle,
@@ -64,7 +65,9 @@ export const VolunteerRankProgressPage: React.FC = () => {
   }
 
   const rankIndices: Record<string, number> = {
+    volunteer: 1,
     member: 1,
+    senior_volunteer: 2,
     senior_member: 2,
     team_lead: 3,
     manager: 4,
@@ -73,13 +76,13 @@ export const VolunteerRankProgressPage: React.FC = () => {
 
   const waypoints = [
     { id: 'start', label: 'Trailhead', threshold: 'Registration', isCompleted: true },
-    { id: 'member', label: 'Member', threshold: '0 hrs • Verified', isCompleted: true },
+    { id: 'volunteer', label: 'Volunteer', threshold: '0 hrs • Verified', isCompleted: true },
     {
-      id: 'senior_member',
-      label: 'Senior Member',
+      id: 'senior_volunteer',
+      label: 'Senior Volunteer',
       threshold: '60 hrs • 8 acts',
-      isCompleted: progress.currentRank !== 'member',
-      isCurrent: progress.currentRank === 'senior_member',
+      isCompleted: progress.currentRank !== 'volunteer' && progress.currentRank !== 'member',
+      isCurrent: progress.currentRank === 'senior_volunteer' || progress.currentRank === 'senior_member',
     },
     {
       id: 'team_lead',
@@ -202,14 +205,14 @@ export const VolunteerRankProgressPage: React.FC = () => {
 
             <div className="flex items-center gap-3 pb-4">
               <div className="w-12 h-12 bg-role-volunteer text-white rounded-[8px] flex items-center justify-center font-display text-2xl font-bold">
-                {progress.currentRank === 'senior_member' ? 'SM' : progress.currentRank === 'team_lead' ? 'TL' : 'M'}
+                {progress.currentRank === 'senior_volunteer' || progress.currentRank === 'senior_member' ? 'SV' : progress.currentRank === 'team_lead' ? 'TL' : progress.currentRank === 'manager' ? 'M' : 'V'}
               </div>
               <div>
                 <h3 className="font-display text-2xl font-bold text-ink-primary">
-                  {progress.currentRank.replace('_', ' ')}
+                  {formatRank(progress.currentRank)}
                 </h3>
                 <span className="font-sans text-[13px] text-ink-secondary">
-                  Member since {profile?.memberSince ? new Date(profile.memberSince).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : 'Aug 2026'}
+                  Volunteer since {profile?.volunteerSince || profile?.memberSince ? new Date(profile.volunteerSince || profile.memberSince!).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : 'Aug 2026'}
                 </span>
               </div>
             </div>
@@ -241,11 +244,11 @@ export const VolunteerRankProgressPage: React.FC = () => {
                 Target rank
               </span>
               <h4 className="font-display text-2xl font-bold text-ink-primary">
-                {progress.nextRank.replace('_', ' ')}
+                {formatRank(progress.nextRank)}
               </h4>
               <p className="font-sans text-sm text-ink-secondary leading-relaxed">
-                {progress.nextRank === 'senior_member'
-                  ? 'Unlocks priority activity booking, peer mentorship responsibilities, and Senior Member credential.'
+                {progress.nextRank === 'senior_volunteer' || progress.nextRank === 'senior_member'
+                  ? 'Unlocks priority activity booking, peer mentorship responsibilities, and Senior Volunteer credential.'
                   : progress.nextRank === 'team_lead'
                     ? 'Unlocks field coordination authority, activity creation, hours approval desk, and volunteer ratings.'
                     : 'Unlocks program operations, recruitment review, and policy coordination.'}

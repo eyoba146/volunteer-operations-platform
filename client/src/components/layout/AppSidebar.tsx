@@ -24,11 +24,15 @@ import {
   ChatCircleText,
   PlusCircle,
   Star,
+  Buildings,
+  ShieldCheck,
+  UserPlus,
 } from '@phosphor-icons/react';
 import { Avatar } from '../ui/Avatar';
 import { TrailMeter } from '../signature';
 import { formatRank, formatRole } from '../../utils/format';
-import { User, VolunteerProfile } from '../../types';
+import { User, VolunteerProfile, PermissionModule, PermissionAction } from '../../types';
+import { can } from '../../utils/permissions';
 
 export interface NavGroupConfig {
   title?: string;
@@ -38,6 +42,8 @@ export interface NavGroupConfig {
     icon: React.ReactNode;
     badgeCount?: number;
     badgeVariant?: 'teamlead' | 'manager' | 'finance' | 'neutral';
+    module?: PermissionModule;
+    action?: PermissionAction;
   }[];
 }
 
@@ -179,6 +185,15 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                 icon: <ClipboardText className="w-5 h-5" weight="bold" />,
                 badgeCount: badgeCounts.applicationsWaiting,
                 badgeVariant: 'manager',
+                module: 'applications',
+                action: 'view',
+              },
+              {
+                to: '/manager/register-volunteer',
+                label: 'Register volunteer',
+                icon: <UserPlus className="w-5 h-5" weight="bold" />,
+                module: 'volunteers',
+                action: 'create',
               },
               {
                 to: '/manager/promotions',
@@ -186,17 +201,19 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                 icon: <ChartLineUp className="w-5 h-5" weight="bold" />,
                 badgeCount: badgeCounts.promotionsWaiting,
                 badgeVariant: 'manager',
+                module: 'promotions',
+                action: 'approve',
               },
-              { to: '/manager/activities', label: 'All activities', icon: <Calendar className="w-5 h-5" weight="bold" /> },
+              { to: '/manager/activities', label: 'All activities', icon: <Calendar className="w-5 h-5" weight="bold" />, module: 'activities', action: 'view' },
             ],
           },
           {
             title: 'Community and impact',
             items: [
-              { to: '/manager/volunteers', label: 'Volunteer directory', icon: <UsersThree className="w-5 h-5" weight="bold" /> },
-              { to: '/manager/feedback', label: 'Feedback inbox', icon: <ChatCircleText className="w-5 h-5" weight="bold" /> },
-              { to: '/manager/reports', label: 'Reports', icon: <ChartBar className="w-5 h-5" weight="bold" /> },
-              { to: '/manager/announcements', label: 'Announcements', icon: <Megaphone className="w-5 h-5" weight="bold" /> },
+              { to: '/manager/volunteers', label: 'Volunteer directory', icon: <UsersThree className="w-5 h-5" weight="bold" />, module: 'volunteers', action: 'view' },
+              { to: '/manager/feedback', label: 'Feedback inbox', icon: <ChatCircleText className="w-5 h-5" weight="bold" />, module: 'volunteers', action: 'view' },
+              { to: '/manager/reports', label: 'Reports', icon: <ChartBar className="w-5 h-5" weight="bold" />, module: 'reports', action: 'view' },
+              { to: '/manager/announcements', label: 'Announcements', icon: <Megaphone className="w-5 h-5" weight="bold" />, module: 'announcements', action: 'create' },
             ],
           },
         ];
@@ -207,16 +224,18 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
             title: 'Settlement ledger',
             items: [
               { to: '/finance/overview', label: 'Finance desk', icon: <House className="w-5 h-5" weight="bold" /> },
-              { to: '/finance/payments', label: 'All payments', icon: <Money className="w-5 h-5" weight="bold" /> },
+              { to: '/finance/payments', label: 'All payments', icon: <Money className="w-5 h-5" weight="bold" />, module: 'payments', action: 'view' },
               {
                 to: '/finance/needs-review',
                 label: 'Review queue',
                 icon: <ArrowsClockwise className="w-5 h-5" weight="bold" />,
                 badgeCount: badgeCounts.needsReview,
                 badgeVariant: 'finance',
+                module: 'payments',
+                action: 'verify',
               },
-              { to: '/finance/receipts-refunds', label: 'Receipts and refunds', icon: <Scroll className="w-5 h-5" weight="bold" /> },
-              { to: '/finance/reports', label: 'Financial reports', icon: <ChartBar className="w-5 h-5" weight="bold" /> },
+              { to: '/finance/receipts-refunds', label: 'Receipts and refunds', icon: <Scroll className="w-5 h-5" weight="bold" />, module: 'payments', action: 'view' },
+              { to: '/finance/reports', label: 'Financial reports', icon: <ChartBar className="w-5 h-5" weight="bold" />, module: 'reports', action: 'view' },
             ],
           },
         ];
@@ -227,15 +246,17 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
             title: 'Platform desk',
             items: [
               { to: '/admin/overview', label: 'Admin home', icon: <House className="w-5 h-5" weight="bold" /> },
-              { to: '/admin/settings', label: 'Settings and emails', icon: <Gear className="w-5 h-5" weight="bold" /> },
-              { to: '/admin/rank-rules', label: 'Rank rules', icon: <ChartLineUp className="w-5 h-5" weight="bold" /> },
+              { to: '/admin/organisation', label: 'Organisation units', icon: <Buildings className="w-5 h-5" weight="bold" />, module: 'organisation', action: 'view' },
+              { to: '/admin/roles-permissions', label: 'Roles and permissions', icon: <ShieldCheck className="w-5 h-5" weight="bold" />, module: 'settings', action: 'view' },
+              { to: '/admin/settings', label: 'Settings and emails', icon: <Gear className="w-5 h-5" weight="bold" />, module: 'settings', action: 'edit' },
+              { to: '/admin/rank-rules', label: 'Rank rules', icon: <ChartLineUp className="w-5 h-5" weight="bold" />, module: 'settings', action: 'edit' },
             ],
           },
           {
             title: 'Management and history',
             items: [
-              { to: '/admin/accounts', label: 'Accounts and roles', icon: <UsersThree className="w-5 h-5" weight="bold" /> },
-              { to: '/admin/activity-history', label: 'Activity history', icon: <Scroll className="w-5 h-5" weight="bold" /> },
+              { to: '/admin/accounts', label: 'Accounts and roles', icon: <UsersThree className="w-5 h-5" weight="bold" />, module: 'accounts', action: 'edit' },
+              { to: '/admin/activity-history', label: 'Activity history', icon: <Scroll className="w-5 h-5" weight="bold" />, module: 'settings', action: 'view' },
             ],
           },
         ];
@@ -245,7 +266,12 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
     }
   };
 
-  const navGroups = getNavGroups();
+  const navGroups = getNavGroups()
+    .map((g) => ({
+      ...g,
+      items: g.items.filter((item) => !item.module || can(user, item.module, item.action || 'view')),
+    }))
+    .filter((g) => g.items.length > 0);
   const effectiveCollapsed = isCollapsed && !isMobileDrawer;
 
   return (
@@ -413,8 +439,8 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
           <div className="bg-white p-3 rounded-[12px] shadow-[0_1px_2px_rgba(16,24,40,0.04)]">
             <TrailMeter
               variant="compact"
-              currentHours={user.role === 'team_lead' ? 120 : (profile?.rank === 'senior_member' ? 52.5 : 16.5)}
-              currentRank={profile?.rank || 'member'}
+              currentHours={user.role === 'team_lead' ? 120 : (profile?.rank === 'senior_volunteer' || profile?.rank === 'senior_member' ? 52.5 : 16.5)}
+              currentRank={profile?.rank || 'volunteer'}
             />
           </div>
         )}

@@ -106,7 +106,7 @@ export const ApplicantPaymentPage: React.FC = () => {
         await refreshUser();
         setSimulationState('success');
         setShowMoment(true);
-        toast.success('Telebirr payment confirmed! Your member pass is active.');
+        toast.success('Telebirr payment confirmed! Your volunteer pass is active.');
       } else if (outcome === 'delay') {
         const updated = await api.processTelebirrOutcome(payment.id, 'delay');
         setPayment(updated);
@@ -144,7 +144,7 @@ export const ApplicantPaymentPage: React.FC = () => {
     dateOfBirth: '2001-01-01',
     area: application?.formData?.area || 'Bole, Addis Ababa',
     bio: 'Active volunteer',
-    rank: 'member',
+    rank: 'volunteer',
     volunteerNumber: 'VTS-AA-2026-084',
     photoUrl: application?.formData?.photoUrl || user?.avatarUrl,
     skills: application?.formData?.skills || ['Community outreach'],
@@ -167,7 +167,7 @@ export const ApplicantPaymentPage: React.FC = () => {
           onDismiss={() => setShowMoment(false)}
           type="payment"
           title="Welcome to the trail!"
-          subtitle="Your registration fee is confirmed. You are now an active Member."
+          subtitle="Your registration fee is confirmed. You are now an active Volunteer."
           primaryActionLabel="Explore activities →"
           onPrimaryAction={() => {
             setShowMoment(false);
@@ -185,7 +185,7 @@ export const ApplicantPaymentPage: React.FC = () => {
               Welcome to the trail!
             </h1>
             <p className="font-sans text-base text-ink-secondary max-w-lg mx-auto leading-relaxed">
-              Your registration fee of <strong className="font-bold text-ink-primary">ETB 200.00</strong> has been confirmed. You are now an active <strong className="text-role-volunteer">Member</strong> of the Volunteer Tracking System.
+              Your registration fee of <strong className="font-bold text-ink-primary">ETB 200.00</strong> has been confirmed. You are now an active <strong className="text-role-volunteer">Volunteer</strong> of the Volunteer Tracking System.
             </p>
             <div className="pt-2 flex flex-wrap justify-center gap-3">
               <Button
@@ -289,7 +289,7 @@ export const ApplicantPaymentPage: React.FC = () => {
             Registration fee payment
           </h1>
           <p className="font-sans text-sm text-ink-secondary mt-1">
-            Ethio Telecom Telebirr integration • Activate your member pass on the trail.
+            Ethio Telecom Telebirr integration • Activate your volunteer pass on the trail.
           </p>
         </div>
         {timeLeft && (
@@ -311,7 +311,7 @@ export const ApplicantPaymentPage: React.FC = () => {
                 One-time activation fee
               </span>
               <h3 className="font-display text-2xl font-bold text-ink-primary">
-                Membership fee
+                Registration fee
               </h3>
             </div>
 
@@ -328,7 +328,7 @@ export const ApplicantPaymentPage: React.FC = () => {
                 <li>Volunteer ID pass with verifiable QR code</li>
                 <li>Access to open field activity rosters and check-in codes</li>
                 <li>Personal service hours recording and verification</li>
-                <li>Digital certificate of membership upon activation</li>
+                <li>Digital certificate of volunteer status upon activation</li>
               </ul>
             </div>
 
@@ -413,7 +413,7 @@ export const ApplicantPaymentPage: React.FC = () => {
                   <span className="text-base font-bold">Duplicate payment flagged</span>
                 </div>
                 <p className="leading-relaxed">
-                  A duplicate payment of ETB 200.00 was detected. The system has confirmed your primary membership activation and automatically routed the secondary transaction to Finance for an immediate refund.
+                  A duplicate payment of ETB 200.00 was detected. The system has confirmed your primary volunteer activation and automatically routed the secondary transaction to Finance for an immediate refund.
                 </p>
                 <div className="pt-2">
                   <Button

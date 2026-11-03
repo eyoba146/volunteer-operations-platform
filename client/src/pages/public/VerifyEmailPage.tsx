@@ -114,7 +114,7 @@ export const VerifyEmailPage: React.FC = () => {
                   value={code}
                   onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
                   placeholder="000000"
-                  className="w-full text-center font-sans text-3xl sm:text-4xl tracking-widest font-bold py-3 px-4 rounded-[8px] bg-white text-ink-primary focus:border-ink-primary focus:ring-2 focus:ring-ink-primary/10"
+                  className="w-full text-center font-sans text-3xl sm:text-4xl tracking-widest font-bold py-3 px-4 rounded-[8px] bg-white text-ink-primary focus:outline-none focus:ring-2 focus:ring-ink-primary/20"
                   autoFocus
                   required
                 />

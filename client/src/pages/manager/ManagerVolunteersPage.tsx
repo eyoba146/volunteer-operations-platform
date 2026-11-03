@@ -74,10 +74,10 @@ export const ManagerVolunteersPage: React.FC = () => {
           note: 'Exemplary leadership demonstrated in regional clean-up and trail restoration.',
         });
       }
-      if (item.profile.rank === 'senior_member' || item.profile.rank === 'team_lead' || item.profile.rank === 'manager') {
+      if (item.profile.rank === 'senior_volunteer' || item.profile.rank === 'senior_member' || item.profile.rank === 'team_lead' || item.profile.rank === 'manager') {
         milestones.push({
-          rank: 'senior_member',
-          rankTitle: 'Senior Member Promotion',
+          rank: 'senior_volunteer',
+          rankTitle: 'Senior Volunteer Promotion',
           achievedAt: '2026-04-10',
           hoursRecorded: 64,
           approvedBy: 'Marta Girma',
@@ -86,9 +86,9 @@ export const ManagerVolunteersPage: React.FC = () => {
         });
       }
       milestones.push({
-        rank: 'member',
-        rankTitle: 'Corps Induction & Membership',
-        achievedAt: item.profile.memberSince || '2026-01-15',
+        rank: 'volunteer',
+        rankTitle: 'Corps Induction & Activation',
+        achievedAt: item.profile.volunteerSince || item.profile.memberSince || '2026-01-15',
         hoursRecorded: 0,
         approvedBy: 'Admissions Desk',
         certificateCode: 'VTS-CERT-1002-ET',
@@ -133,14 +133,14 @@ export const ManagerVolunteersPage: React.FC = () => {
     {
       header: 'Current rank',
       cell: ({ profile }) => (
-        <StatusMark status={profile.rank || 'member'} size="sm" />
+        <StatusMark status={profile.rank || 'volunteer'} size="sm" />
       ),
     },
     {
-      header: 'Member since',
+      header: 'Volunteer since',
       cell: ({ profile }) => (
         <span className="font-mono text-[13px] text-ink-tertiary">
-          {profile.memberSince || '2026-10-31'}
+          {profile.volunteerSince || profile.memberSince || '2026-10-31'}
         </span>
       ),
     },
@@ -195,9 +195,10 @@ export const ManagerVolunteersPage: React.FC = () => {
             onChange={(e) => setRankFilter(e.target.value)}
             options={[
               { value: 'all', label: 'All ranks' },
-              { value: 'member', label: 'Member' },
-              { value: 'senior_member', label: 'Senior member' },
+              { value: 'volunteer', label: 'Volunteer' },
+              { value: 'senior_volunteer', label: 'Senior volunteer' },
               { value: 'team_lead', label: 'Team lead' },
+              { value: 'manager', label: 'Manager' },
               { value: 'manager', label: 'Manager' },
             ]}
           />
@@ -250,9 +251,9 @@ export const ManagerVolunteersPage: React.FC = () => {
                   {inspecting.profile.fullName}
                 </h3>
                 <div className="flex items-center gap-2">
-                  <StatusMark status={inspecting.profile.rank || 'member'} size="sm" />
+                  <StatusMark status={inspecting.profile.rank || 'volunteer'} size="sm" />
                   <span className="font-mono text-ink-tertiary text-[13px]">
-                    Since {inspecting.profile.memberSince || '2026-08'}
+                    Since {inspecting.profile.volunteerSince || inspecting.profile.memberSince || '2026-08'}
                   </span>
                 </div>
               </div>
