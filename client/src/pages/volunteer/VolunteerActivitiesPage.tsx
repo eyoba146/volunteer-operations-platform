@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import * as api from '../../api';
-import { Activity, ActivityType, ActivityStatus, Rank } from '../../types';
-import { Input, Select, Button, StatusMark, Skeleton, EmptyState } from '../../components/ui';
+import { useAuth } from '../../context/AuthContext';
+import { Activity, ActivityType } from '../../types';
+import { Input, Select, Button, StatusMark, Skeleton, EmptyState, TicketCard, PageShell } from '../../components/ui';
 import { 
   Calendar as CalendarIcon, 
   MapPin, 
@@ -12,22 +13,21 @@ import {
   ArrowRight,
   ListDashes,
   CalendarBlank,
-  Funnel,
   ShieldCheck,
   X
 } from '@phosphor-icons/react';
 
 const ACTIVITY_TYPES: { value: ActivityType | 'all'; label: string }[] = [
-  { value: 'all', label: 'All Activity Types' },
-  { value: 'field_task', label: 'Field Task (Community Service)' },
-  { value: 'event', label: 'Event Marshalling' },
-  { value: 'project', label: 'Community Project' },
-  { value: 'shift', label: 'Field Logistics Shift' },
-  { value: 'training', label: 'Training Session' },
+  { value: 'all', label: 'All activity types' },
+  { value: 'field_task', label: 'Field task (community service)' },
+  { value: 'event', label: 'Event marshalling' },
+  { value: 'project', label: 'Community project' },
+  { value: 'shift', label: 'Field logistics shift' },
+  { value: 'training', label: 'Training session' },
 ];
 
 const AREA_OPTIONS = [
-  { value: 'all', label: 'All Cities & Regions' },
+  { value: 'all', label: 'All cities & regions' },
   { value: 'Addis Ababa', label: 'Addis Ababa' },
   { value: 'Adama', label: 'Adama' },
   { value: 'Bishoftu', label: 'Bishoftu' },
@@ -36,26 +36,30 @@ const AREA_OPTIONS = [
 ];
 
 const DATE_OPTIONS = [
-  { value: 'all', label: 'All Upcoming Dates' },
-  { value: 'today', label: 'Today Only' },
-  { value: 'this_week', label: 'This Week' },
-  { value: 'this_month', label: 'This Month' },
+  { value: 'all', label: 'All upcoming dates' },
+  { value: 'today', label: 'Today only' },
+  { value: 'this_week', label: 'This week' },
+  { value: 'this_month', label: 'This month' },
 ];
 
 const RANK_OPTIONS = [
-  { value: 'all', label: 'All Ranks Allowed' },
-  { value: 'member', label: 'Member' },
-  { value: 'senior_member', label: 'Senior Member' },
-  { value: 'team_lead', label: 'Team Lead' },
+  { value: 'all', label: 'All ranks allowed' },
+  { value: 'volunteer', label: 'Volunteer' },
+  { value: 'senior_volunteer', label: 'Senior volunteer' },
+  { value: 'team_lead', label: 'Team lead' },
 ];
 
 export const VolunteerActivitiesPage: React.FC = () => {
+  const { user } = useAuth();
   const [activities, setActivities] = useState<Activity[]>([]);
+  const [userEnrollments, setUserEnrollments] = useState<string[]>([]);
   const [search, setSearch] = useState('');
   const [selectedType, setSelectedType] = useState<ActivityType | 'all'>('all');
   const [selectedArea, setSelectedArea] = useState('all');
   const [selectedDateFilter, setSelectedDateFilter] = useState('all');
   const [selectedRank, setSelectedRank] = useState('all');
+  const [scopeTab, setScopeTab] = useState<'upcoming' | 'my' | 'past'>('upcoming');
+  const [showAll, setShowAll] = useState(false);
   const [viewMode, setViewMode] = useState<'list' | 'calendar'>('list');
   const [selectedCalendarDate, setSelectedCalendarDate] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -79,12 +83,25 @@ export const VolunteerActivitiesPage: React.FC = () => {
     load();
   }, [selectedType, selectedArea, search]);
 
+  useEffect(() => {
+    if (user) {
+      api.getEnrollmentsForUser(user.id).then((enrs: any[]) => {
+        setUserEnrollments(enrs.map((e: any) => e.activityId));
+      }).catch(() => {});
+    }
+  }, [user]);
+
   // Client-side date and rank filter
   const filteredActivities = useMemo(() => {
     let result = activities;
 
     if (selectedRank !== 'all') {
-      result = result.filter((a) => !a.minRank || a.minRank === selectedRank);
+      result = result.filter((a) => {
+        if (!a.minRank) return true;
+        if (selectedRank === 'volunteer') return a.minRank === 'volunteer' || a.minRank === 'member';
+        if (selectedRank === 'senior_volunteer') return a.minRank === 'senior_volunteer' || a.minRank === 'senior_member';
+        return a.minRank === selectedRank;
+      });
     }
 
     if (selectedDateFilter === 'today') {
@@ -107,6 +124,54 @@ export const VolunteerActivitiesPage: React.FC = () => {
 
     return result;
   }, [activities, selectedRank, selectedDateFilter, selectedCalendarDate]);
+
+  // Segmented control scope filtering: upcoming (default), my activities, past
+  const scopedActivities = useMemo(() => {
+    let list = filteredActivities;
+    if (scopeTab === 'upcoming') {
+      list = list.filter((a) => a.status !== 'completed' && a.status !== 'cancelled');
+    } else if (scopeTab === 'my') {
+      list = list.filter((a) => userEnrollments.includes(a.id));
+    } else if (scopeTab === 'past') {
+      list = list.filter((a) => a.status === 'completed');
+    }
+    return list;
+  }, [filteredActivities, scopeTab, userEnrollments]);
+
+  // Grouping for upcoming: This week, Next week, Later
+  const groupedUpcoming = useMemo(() => {
+    if (scopeTab !== 'upcoming') return null;
+
+    const now = new Date('2026-10-31T08:00:00Z').getTime();
+    const oneWeek = 7 * 24 * 60 * 60 * 1000;
+    const twoWeeks = 14 * 24 * 60 * 60 * 1000;
+
+    const thisWeek: Activity[] = [];
+    const nextWeek: Activity[] = [];
+    const later: Activity[] = [];
+
+    scopedActivities.forEach((act) => {
+      const actTime = new Date(act.startsAt).getTime();
+      const diff = actTime - now;
+      if (diff <= oneWeek) {
+        thisWeek.push(act);
+      } else if (diff <= twoWeeks) {
+        nextWeek.push(act);
+      } else {
+        later.push(act);
+      }
+    });
+
+    return { thisWeek, nextWeek, later };
+  }, [scopedActivities, scopeTab]);
+
+  // Limit to max 8 items unless expanded
+  const visibleActivities = useMemo(() => {
+    if (showAll || scopedActivities.length <= 8) {
+      return scopedActivities;
+    }
+    return scopedActivities.slice(0, 8);
+  }, [scopedActivities, showAll]);
 
   // Calendar dates generation (November 2026)
   const calendarDays = useMemo(() => {
@@ -135,53 +200,97 @@ export const VolunteerActivitiesPage: React.FC = () => {
   };
 
   return (
+    <PageShell page="volunteer/activities" signature="TicketCard">
     <div className="space-y-6">
       {/* Top Header Banner */}
-      <div className="border-b-2 border-border pb-5 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div className="pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <span className="font-sans text-xs font-bold text-role-volunteer uppercase tracking-tight block">
-            Field Roster & Assignments
-          </span>
-          <h1 className="font-display text-4xl sm:text-5xl font-black uppercase tracking-tight text-ink-primary leading-none mt-1">
-            Browse Volunteer Activities
+          <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
+            Browse volunteer activities
           </h1>
-          <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1 max-w-2xl">
+          <p className="font-sans text-[13px] sm:text-sm text-ink-secondary mt-1 max-w-2xl">
             Find community initiatives in your city, join duty rosters, and earn verified service hours.
           </p>
         </div>
 
         {/* View Switcher: List vs Calendar */}
-        <div className="flex items-center gap-1 bg-white p-1 border-2 border-ink-primary shadow-ticket self-start sm:self-end">
+        <div className="flex items-center gap-1 bg-[#F1F3F6] p-1 rounded-[10px] self-start sm:self-end">
           <button
             onClick={() => {
               setViewMode('list');
               setSelectedCalendarDate(null);
             }}
-            className={`flex items-center gap-1.5 px-3 py-1.5 font-sans text-xs font-bold uppercase cursor-pointer transition-colors ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] font-sans text-[13px] font-medium cursor-pointer transition-colors ${
               viewMode === 'list'
-                ? 'bg-ink-primary text-white'
-                : 'text-ink-secondary hover:text-ink-primary hover:bg-canvas'
-            }`}
+                ? 'bg-white text-ink-primary shadow-[0_1px_2px_rgba(16,24,40,0.06)]'
+                : 'text-ink-secondary hover:text-ink-primary'
+            } `}
           >
             <ListDashes className="w-4 h-4" weight="bold" />
-            <span>List View</span>
+            <span>List view</span>
           </button>
           <button
             onClick={() => setViewMode('calendar')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 font-sans text-xs font-bold uppercase cursor-pointer transition-colors ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] font-sans text-[13px] font-medium cursor-pointer transition-colors ${
               viewMode === 'calendar'
-                ? 'bg-ink-primary text-white'
-                : 'text-ink-secondary hover:text-ink-primary hover:bg-canvas'
-            }`}
+                ? 'bg-white text-ink-primary shadow-[0_1px_2px_rgba(16,24,40,0.06)]'
+                : 'text-ink-secondary hover:text-ink-primary'
+            } `}
           >
             <CalendarBlank className="w-4 h-4" weight="bold" />
-            <span>Calendar View</span>
+            <span>Calendar view</span>
           </button>
         </div>
       </div>
 
+      {/* Scope Segmented Control: Upcoming (default), My activities, Past */}
+      <div className="flex items-center gap-1 bg-[#F1F3F6] p-1 rounded-[10px] w-fit">
+        <button
+          type="button"
+          onClick={() => {
+            setScopeTab('upcoming');
+            setShowAll(false);
+          }}
+          className={`px-4 py-2 rounded-[8px] font-sans text-[13px] font-semibold transition-colors cursor-pointer ${
+            scopeTab === 'upcoming'
+              ? 'bg-white text-ink-primary shadow-[0_1px_2px_rgba(16,24,40,0.06)]'
+              : 'text-ink-secondary hover:text-ink-primary'
+          } `}
+        >
+          Upcoming
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setScopeTab('my');
+            setShowAll(false);
+          }}
+          className={`px-4 py-2 rounded-[8px] font-sans text-[13px] font-semibold transition-colors cursor-pointer ${
+            scopeTab === 'my'
+              ? 'bg-white text-ink-primary shadow-[0_1px_2px_rgba(16,24,40,0.06)]'
+              : 'text-ink-secondary hover:text-ink-primary'
+          } `}
+        >
+          My activities {userEnrollments.length > 0 && `(${userEnrollments.length})`}
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setScopeTab('past');
+            setShowAll(false);
+          }}
+          className={`px-4 py-2 rounded-[8px] font-sans text-[13px] font-semibold transition-colors cursor-pointer ${
+            scopeTab === 'past'
+              ? 'bg-white text-ink-primary shadow-[0_1px_2px_rgba(16,24,40,0.06)]'
+              : 'text-ink-secondary hover:text-ink-primary'
+          } `}
+        >
+          Past
+        </button>
+      </div>
+
       {/* Filter and Search Bar */}
-      <div className="border-2 border-ink-primary bg-white p-4 shadow-ticket space-y-3">
+      <div className="bg-[#F7F8FA] rounded-[16px] p-4 space-y-3">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           <Input
             placeholder="Search title, place, skills..."
@@ -209,19 +318,19 @@ export const VolunteerActivitiesPage: React.FC = () => {
           />
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-border text-xs">
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-2 text-[13px]">
           <div className="flex items-center gap-3">
-            <span className="font-sans font-bold text-ink-tertiary uppercase">Filter by Rank:</span>
+            <span className="font-sans font-medium text-ink-tertiary">Filter by rank:</span>
             <div className="flex flex-wrap gap-1.5">
               {RANK_OPTIONS.map((opt) => (
                 <button
                   key={opt.value}
                   onClick={() => setSelectedRank(opt.value)}
-                  className={`px-2.5 py-1 font-sans text-xs font-semibold cursor-pointer border transition-colors ${
+                  className={`px-2.5 py-1 rounded-[6px] font-sans text-[13px] font-medium cursor-pointer transition-colors ${
                     selectedRank === opt.value
-                      ? 'border-ink-primary bg-role-volunteer text-white'
-                      : 'border-border bg-canvas hover:border-ink-secondary text-ink-secondary'
-                  }`}
+                      ? 'bg-ink-primary text-white'
+                      : 'bg-[#F1F3F6] hover:bg-[#E8EBEF] text-ink-secondary'
+                  } `}
                 >
                   {opt.label}
                 </button>
@@ -232,7 +341,7 @@ export const VolunteerActivitiesPage: React.FC = () => {
           {(search || selectedType !== 'all' || selectedArea !== 'all' || selectedDateFilter !== 'all' || selectedRank !== 'all' || selectedCalendarDate) && (
             <button
               onClick={resetFilters}
-              className="text-xs font-bold text-role-teamlead hover:underline flex items-center gap-1 cursor-pointer"
+              className="text-[13px] font-medium text-role-teamlead hover:underline flex items-center gap-1 cursor-pointer"
             >
               <X className="w-3.5 h-3.5" weight="bold" />
               <span>Reset all filters</span>
@@ -243,24 +352,24 @@ export const VolunteerActivitiesPage: React.FC = () => {
 
       {/* CALENDAR VIEW MODE */}
       {viewMode === 'calendar' && (
-        <div className="border-2 border-ink-primary bg-white p-6 shadow-ticket space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b-2 border-border pb-3">
+        <div className="bg-white rounded-[16px] shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3">
             <div>
-              <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
-                Activity Calendar: November 2026
+              <h3 className="font-display text-xl sm:text-2xl font-bold text-ink-primary">
+                Activity calendar: November 2026
               </h3>
-              <p className="font-sans text-xs text-ink-secondary">
+              <p className="font-sans text-[13px] text-ink-secondary">
                 Click any highlighted date to filter scheduled activities.
               </p>
             </div>
             {selectedCalendarDate && (
-              <div className="flex items-center gap-2 bg-canvas px-3 py-1 border border-border">
-                <span className="font-mono text-xs font-bold text-ink-primary">
+              <div className="flex items-center gap-2 bg-[#F1F3F6] px-3 py-1 rounded-[6px]">
+                <span className="font-mono text-[13px] font-medium text-ink-primary">
                   Selected: {selectedCalendarDate}
                 </span>
                 <button
                   onClick={() => setSelectedCalendarDate(null)}
-                  className="text-ink-tertiary hover:text-ink-primary cursor-pointer text-xs font-bold"
+                  className="text-ink-tertiary hover:text-ink-primary cursor-pointer text-[13px] font-medium"
                 >
                   Show all &times;
                 </button>
@@ -271,14 +380,14 @@ export const VolunteerActivitiesPage: React.FC = () => {
           {/* Calendar Grid */}
           <div className="grid grid-cols-7 gap-2 pt-2">
             {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((d) => (
-              <div key={d} className="text-center font-sans text-xs font-bold uppercase text-ink-tertiary pb-1">
+              <div key={d} className="text-center font-sans text-[13px] font-medium text-ink-tertiary pb-1">
                 {d}
               </div>
             ))}
 
             {/* Empty slots for month start (November 2026 starts on Sunday, so 6 empty slots for Mon-first) */}
             {[...Array(6)].map((_, i) => (
-              <div key={`empty-${i}`} className="h-16 bg-canvas/40 border border-border/50 rounded-none opacity-40" />
+              <div key={`empty-${i}`} className="h-16 bg-[#F7F8FA] rounded-[8px] opacity-40" />
             ))}
 
             {calendarDays.map((d) => {
@@ -287,17 +396,17 @@ export const VolunteerActivitiesPage: React.FC = () => {
                 <button
                   key={d.dateStr}
                   onClick={() => setSelectedCalendarDate(isSelected ? null : d.dateStr)}
-                  className={`h-16 border-2 p-1.5 flex flex-col justify-between text-left transition-all cursor-pointer ${
+                  className={`h-16 rounded-[8px] p-1.5 flex flex-col justify-between text-left transition-all cursor-pointer ${
                     isSelected
-                      ? 'border-role-volunteer bg-role-volunteerLight ring-2 ring-role-volunteer'
+                      ? 'bg-role-volunteerLight ring-2 ring-role-volunteer'
                       : d.hasActivities
-                      ? 'border-ink-primary bg-white hover:bg-canvas'
-                      : 'border-border bg-canvas/30 text-ink-tertiary'
-                  }`}
+                      ? 'bg-white hover:bg-[#F7F8FA] shadow-[0_1px_2px_rgba(16,24,40,0.04)]'
+                      : 'bg-[#F7F8FA] text-ink-tertiary'
+                  } `}
                 >
-                  <span className="font-mono text-xs font-bold">{d.dayNumber}</span>
+                  <span className="font-mono text-[13px] font-medium">{d.dayNumber}</span>
                   {d.hasActivities && (
-                    <div className="flex items-center gap-1 font-mono text-[10px] font-bold text-white bg-role-volunteer px-1.5 py-0.5 self-start">
+                    <div className="flex items-center gap-1 font-mono text-[13px] font-medium text-white bg-role-volunteer px-1.5 py-0.5 rounded-[4px] self-start">
                       <span>{d.count} session{d.count > 1 ? 's' : ''}</span>
                     </div>
                   )}
@@ -308,97 +417,109 @@ export const VolunteerActivitiesPage: React.FC = () => {
         </div>
       )}
 
-      {/* ACTIVITIES LIST VIEW (Notched Ticket Silhouette) */}
+      {/* ACTIVITIES LIST VIEW */}
       {isLoading ? (
         <div className="space-y-4">
           {[1, 2, 3].map((i) => (
-            <Skeleton key={i} variant="rect" className="h-28" />
+            <Skeleton key={i} variant="rect" className="h-28 rounded-[16px]" />
           ))}
         </div>
-      ) : filteredActivities.length === 0 ? (
+      ) : scopedActivities.length === 0 ? (
         <EmptyState
           icon={<CalendarIcon className="w-8 h-8 text-ink-secondary" weight="bold" />}
-          title="No activities match your filters"
-          description="Try broadening your city or activity type selections to explore more open opportunities."
-          actionLabel="Reset Filters"
+          title={
+            scopeTab === 'my'
+              ? 'No joined activities'
+              : scopeTab === 'past'
+              ? 'No past completed activities'
+              : 'No activities match your filters'
+          }
+          description={
+            scopeTab === 'my'
+              ? 'Browse upcoming opportunities and enroll in an activity to join a duty roster.'
+              : 'Try broadening your city or activity type selections to explore more open opportunities.'
+          }
+          actionLabel="Reset filters"
           onAction={resetFilters}
         />
       ) : (
-        <div className="space-y-4">
-          {filteredActivities.map((act) => (
-            <div
-              key={act.id}
-              className="border-2 border-ink-primary bg-white p-5 sm:p-6 shadow-ticket hover:-rotate-[0.3deg] hover:translate-y-[-1px] transition-transform duration-150 flex flex-col md:flex-row md:items-center justify-between gap-6"
-              style={{
-                clipPath: 'polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%)',
-              }}
-            >
-              <div className="space-y-2 flex-1">
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="font-mono text-xs font-bold uppercase px-2 py-0.5 bg-canvas border border-ink-primary text-ink-primary">
-                    {act.type.replace('_', ' ')}
-                  </span>
-                  <StatusMark status={act.status} size="sm" />
-                  {act.minRank && (
-                    <span className="font-mono text-xs font-bold text-ink-tertiary flex items-center gap-1">
-                      <ShieldCheck className="w-3.5 h-3.5 text-role-volunteer" weight="bold" />
-                      <span>{act.minRank.replace('_', ' ').toUpperCase()} required</span>
-                    </span>
-                  )}
+        <div className="space-y-6">
+          {scopeTab === 'upcoming' && groupedUpcoming ? (
+            <div className="space-y-8">
+              {/* Group 1: This week */}
+              {groupedUpcoming.thisWeek.length > 0 && (
+                <div className="space-y-3">
+                  <h3 className="font-display text-xl font-bold text-ink-primary">
+                    This week
+                  </h3>
+                  <div className="space-y-3">
+                    {groupedUpcoming.thisWeek
+                      .filter((act) => visibleActivities.some((v) => v.id === act.id))
+                      .map((act) => renderActivityCard(act))}
+                  </div>
                 </div>
+              )}
 
-                <Link
-                  to={`/volunteer/activities/${act.id}`}
-                  className="font-display text-2xl sm:text-3xl font-black uppercase text-ink-primary hover:text-role-volunteer transition-colors block leading-tight"
-                >
-                  {act.title}
-                </Link>
-
-                <p className="font-sans text-xs sm:text-sm text-ink-secondary line-clamp-2 max-w-3xl leading-relaxed">
-                  {act.description}
-                </p>
-
-                <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-ink-secondary pt-1">
-                  <span className="flex items-center gap-1.5">
-                    <Clock className="w-4 h-4 text-ink-tertiary" />
-                    <span>
-                      {new Date(act.startsAt).toLocaleString('en-US', {
-                        weekday: 'short',
-                        month: 'short',
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                      })}
-                    </span>
-                  </span>
-
-                  <span className="flex items-center gap-1.5">
-                    <MapPin className="w-4 h-4 text-ink-tertiary" />
-                    <span>{act.place}, {act.area}</span>
-                  </span>
-
-                  <span className="flex items-center gap-1.5">
-                    <UsersThree className="w-4 h-4 text-ink-tertiary" />
-                    <span>Capacity: <strong>{act.capacity} volunteers</strong></span>
-                  </span>
+              {/* Group 2: Next week */}
+              {groupedUpcoming.nextWeek.length > 0 && (
+                <div className="space-y-3">
+                  <h3 className="font-display text-xl font-bold text-ink-primary">
+                    Next week
+                  </h3>
+                  <div className="space-y-3">
+                    {groupedUpcoming.nextWeek
+                      .filter((act) => visibleActivities.some((v) => v.id === act.id))
+                      .map((act) => renderActivityCard(act))}
+                  </div>
                 </div>
-              </div>
+              )}
 
-              {/* Action Button */}
-              <div className="shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-dashed border-border flex items-center justify-end">
-                <Button
-                  variant="primary"
-                  size="md"
-                  rightIcon={<ArrowRight className="w-4 h-4" weight="bold" />}
-                  onClick={() => navigate(`/volunteer/activities/${act.id}`)}
-                >
-                  View Details & Join
-                </Button>
-              </div>
+              {/* Group 3: Later */}
+              {groupedUpcoming.later.length > 0 && (
+                <div className="space-y-3">
+                  <h3 className="font-display text-xl font-bold text-ink-primary">
+                    Later
+                  </h3>
+                  <div className="space-y-3">
+                    {groupedUpcoming.later
+                      .filter((act) => visibleActivities.some((v) => v.id === act.id))
+                      .map((act) => renderActivityCard(act))}
+                  </div>
+                </div>
+              )}
             </div>
-          ))}
+          ) : (
+            <div className="space-y-3">
+              {visibleActivities.map((act) => renderActivityCard(act))}
+            </div>
+          )}
+
+          {/* Show more button if over 8 items */}
+          {scopedActivities.length > 8 && !showAll && (
+            <div className="pt-2 text-center">
+              <Button
+                variant="secondary"
+                size="md"
+                onClick={() => setShowAll(true)}
+              >
+                Show all {scopedActivities.length} activities
+              </Button>
+            </div>
+          )}
         </div>
       )}
     </div>
+    </PageShell>
   );
+
+  function renderActivityCard(act: Activity) {
+    const isEnrolled = userEnrollments.includes(act.id);
+    return (
+      <TicketCard
+        key={act.id}
+        activity={act}
+        enrolledStatus={isEnrolled ? 'Enrolled' : undefined}
+      />
+    );
+  }
 };

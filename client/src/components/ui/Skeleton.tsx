@@ -9,7 +9,7 @@ export const Skeleton: React.FC<SkeletonProps> = ({
   className = '',
   variant = 'rect',
 }) => {
-  const base = 'animate-pulse bg-[#EFECE4] border border-[#E5E0D4]/60';
+  const base = 'animate-pulse bg-[#EFECE4] rounded-[12px]';
 
   const variants = {
     text: 'h-4 w-full rounded-none',
@@ -18,6 +18,6 @@ export const Skeleton: React.FC<SkeletonProps> = ({
     row: 'h-12 w-full rounded-none',
   }[variant];
 
-  return <div className={`${base} ${variants} ${className}`} />;
+  return <div className={` ${base}  ${variants}  ${className} `} />;
 };
 

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
-import { Application, ApplicationStatus } from '../../types';
+import { Application, ApplicationStatus, ApplicationSource, ApplicationDocument } from '../../types';
 import { 
   LedgerTable, 
   LedgerColumn, 
@@ -9,40 +10,40 @@ import {
   StatusMark, 
   SheetModal, 
   Input, 
-  Select, 
-  Skeleton,
-  EmptyState
+  Select
 } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
 import { 
-  ClipboardText, 
   MagnifyingGlass, 
   Check, 
   X, 
   Warning, 
   Eye, 
-  ChatText,
-  User,
-  IdentificationCard,
-  ShieldCheck,
   ArrowsClockwise,
-  EnvelopeSimple,
-  Trash
+  UserPlus,
+  Buildings,
+  FileText,
 } from '@phosphor-icons/react';
 
+const SOURCE_FILTERS: { value: ApplicationSource | 'all'; label: string }[] = [
+  { value: 'all', label: 'All sources' },
+  { value: 'self_registered', label: 'Self-registered' },
+  { value: 'staff_assisted', label: 'Staff-assisted' },
+];
+
 const STATUS_FILTERS: { value: ApplicationStatus | 'all'; label: string }[] = [
-  { value: 'all', label: 'All Statuses' },
-  { value: 'submitted', label: 'Submitted (Awaiting Review)' },
-  { value: 'in_review', label: 'In Review' },
-  { value: 'more_info_needed', label: 'More Information Needed' },
-  { value: 'accepted', label: 'Accepted (Awaiting Payment)' },
+  { value: 'all', label: 'All statuses' },
+  { value: 'submitted', label: 'Submitted (awaiting review)' },
+  { value: 'in_review', label: 'In review' },
+  { value: 'more_info_needed', label: 'More information needed' },
+  { value: 'accepted', label: 'Accepted (awaiting payment)' },
   { value: 'rejected', label: 'Rejected' },
-  { value: 'expired', label: 'Window Expired' },
+  { value: 'expired', label: 'Window expired' },
   { value: 'withdrawn', label: 'Withdrawn' },
 ];
 
 const AREA_FILTERS = [
-  { value: 'all', label: 'All Regions' },
+  { value: 'all', label: 'All areas' },
   { value: 'Bole', label: 'Bole, Addis Ababa' },
   { value: 'Kazanchis', label: 'Kazanchis, Addis Ababa' },
   { value: 'Piassa', label: 'Piassa, Addis Ababa' },
@@ -56,27 +57,29 @@ const AREA_FILTERS = [
 ];
 
 const SKILL_FILTERS = [
-  { value: 'all', label: 'All Skills' },
-  { value: 'First Aid', label: 'First Aid' },
-  { value: 'Community Outreach', label: 'Community Outreach' },
-  { value: 'Event Coordination', label: 'Event Coordination' },
+  { value: 'all', label: 'All skills' },
+  { value: 'First Aid', label: 'First aid' },
+  { value: 'Community Outreach', label: 'Community outreach' },
+  { value: 'Event Coordination', label: 'Event coordination' },
   { value: 'Documentation', label: 'Documentation' },
   { value: 'Logistics', label: 'Logistics' },
   { value: 'Teaching', label: 'Teaching' },
-  { value: 'Tree Planting', label: 'Tree Planting' },
-  { value: 'IT Support', label: 'IT Support' },
+  { value: 'Tree Planting', label: 'Tree planting' },
+  { value: 'IT Support', label: 'IT support' },
 ];
 
 const SORT_OPTIONS: { value: 'newest' | 'oldest' | 'name'; label: string }[] = [
-  { value: 'newest', label: 'Newest Submissions First' },
-  { value: 'oldest', label: 'Oldest Submissions First' },
-  { value: 'name', label: 'Applicant Name (A–Z)' },
+  { value: 'newest', label: 'Newest submissions first' },
+  { value: 'oldest', label: 'Oldest submissions first' },
+  { value: 'name', label: 'Applicant name (A–Z)' },
 ];
 
 export const ManagerApplicationsPage: React.FC = () => {
   const { user, profile } = useAuth();
+  const navigate = useNavigate();
   const [applications, setApplications] = useState<Application[]>([]);
   const [selectedStatus, setSelectedStatus] = useState<ApplicationStatus | 'all'>('all');
+  const [selectedSource, setSelectedSource] = useState<ApplicationSource | 'all'>('all');
   const [selectedArea, setSelectedArea] = useState('all');
   const [selectedSkill, setSelectedSkill] = useState('all');
   const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'name'>('newest');
@@ -89,17 +92,42 @@ export const ManagerApplicationsPage: React.FC = () => {
   const [inspectingApp, setInspectingApp] = useState<Application | null>(null);
   const [decisionReason, setDecisionReason] = useState('');
   const [privateNote, setPrivateNote] = useState('');
-  const [showRejectModal, setShowRejectModal] = useState(false);
   const [showBulkRejectModal, setShowBulkRejectModal] = useState(false);
   const [bulkRejectReason, setBulkRejectReason] = useState('');
+  const [appDocuments, setAppDocuments] = useState<ApplicationDocument[]>([]);
+  const [correctingDocId, setCorrectingDocId] = useState<string | null>(null);
+  const [correctionNote, setCorrectionNote] = useState('');
 
   const toast = useToast();
+
+  const handleReviewDoc = async (docId: string, status: 'accepted' | 'returned_for_correction', note?: string) => {
+    if (status === 'returned_for_correction' && !note?.trim()) {
+      toast.error('A note explaining what needs correction is required');
+      return;
+    }
+    setIsProcessing(true);
+    try {
+      await api.reviewApplicationDocument(docId, status, note);
+      if (inspectingApp) {
+        const docs = await api.getApplicationDocuments(inspectingApp.id);
+        setAppDocuments(docs);
+      }
+      setCorrectingDocId(null);
+      setCorrectionNote('');
+      toast.success(status === 'accepted' ? 'Document verified' : 'Returned for correction with instructions');
+    } catch (err: any) {
+      toast.error(err.message || 'Failed to update document status');
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
   const loadData = async () => {
     setIsLoading(true);
     try {
       const list = await api.getAllApplications({
         status: selectedStatus,
+        source: selectedSource !== 'all' ? selectedSource : undefined,
         area: selectedArea !== 'all' ? selectedArea : undefined,
         skill: selectedSkill !== 'all' ? selectedSkill : undefined,
         search: search.trim() || undefined,
@@ -114,7 +142,7 @@ export const ManagerApplicationsPage: React.FC = () => {
 
   useEffect(() => {
     loadData();
-  }, [selectedStatus, selectedArea, selectedSkill, sortBy, search]);
+  }, [selectedStatus, selectedSource, selectedArea, selectedSkill, sortBy, search]);
 
   const toggleSelect = (id: string) => {
     if (selectedIds.includes(id)) {
@@ -150,41 +178,18 @@ export const ManagerApplicationsPage: React.FC = () => {
         profile?.fullName || user.username,
         privateNote.trim() || undefined
       );
-
-      if (decision === 'accepted') {
-        toast.success(`Accepted ${inspectingApp.formData?.fullName || 'Applicant'}. Payment invitation email sent to demo inbox!`);
-      } else if (decision === 'more_info_needed') {
-        toast.info('Clarification request sent to applicant.');
-      } else {
-        toast.warning('Application rejected and applicant notified.');
-      }
-
+      toast.success(
+        decision === 'accepted'
+          ? 'Application accepted. Telebirr payment voucher invitation sent.'
+          : decision === 'more_info_needed'
+          ? 'Candidate notified that additional information is needed.'
+          : 'Application marked as declined.'
+      );
       setInspectingApp(null);
       setDecisionReason('');
-      setPrivateNote('');
-      setShowRejectModal(false);
       await loadData();
     } catch (err: any) {
-      toast.error(err.message || 'Could not update application decision.');
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
-  const handleReopen = async () => {
-    if (!user || !inspectingApp) return;
-    setIsProcessing(true);
-    try {
-      await api.reopenApplication(
-        inspectingApp.id,
-        user.id,
-        profile?.fullName || user.username
-      );
-      toast.success('Expired application reopened with a fresh 7-day payment window.');
-      setInspectingApp(null);
-      await loadData();
-    } catch (err: any) {
-      toast.error(err.message || 'Could not reopen application.');
+      toast.error(err.message || 'Could not update application status.');
     } finally {
       setIsProcessing(false);
     }
@@ -202,9 +207,10 @@ export const ManagerApplicationsPage: React.FC = () => {
       );
       setInspectingApp(updated);
       setPrivateNote('');
-      toast.success('Internal note added.');
+      toast.success('Private admissions note recorded.');
+      await loadData();
     } catch (err: any) {
-      toast.error(err.message || 'Could not save note.');
+      toast.error(err.message || 'Could not record note.');
     } finally {
       setIsProcessing(false);
     }
@@ -212,31 +218,57 @@ export const ManagerApplicationsPage: React.FC = () => {
 
   const handleBulkAccept = async () => {
     if (!user || selectedIds.length === 0) return;
-    if (!window.confirm(`Accept ${selectedIds.length} selected applications and send payment invitations?`)) return;
+    if (!window.confirm(`Accept ${selectedIds.length} candidate applications?`)) return;
 
     setIsProcessing(true);
     try {
       await api.bulkReviewApplications(selectedIds, 'accepted', 'Bulk review acceptance.', user.id);
-      toast.success(`Accepted ${selectedIds.length} applications. Payment invitations sent to demo inbox!`);
+      toast.success(`Accepted ${selectedIds.length} candidates. Telebirr fee invitations issued.`);
+      setSelectedIds([]);
       await loadData();
+    } catch (err: any) {
+      toast.error(err.message || 'Could not complete bulk acceptance.');
     } finally {
       setIsProcessing(false);
     }
   };
 
   const handleBulkReject = async () => {
-    if (!user || selectedIds.length === 0 || !bulkRejectReason.trim()) {
-      toast.error('A rejection reason is required for bulk actions.');
+    if (!user || selectedIds.length === 0) return;
+    if (!bulkRejectReason.trim()) {
+      toast.error('Please specify a rejection reason.');
       return;
     }
 
     setIsProcessing(true);
     try {
       await api.bulkReviewApplications(selectedIds, 'rejected', bulkRejectReason.trim(), user.id);
-      toast.warning(`Rejected ${selectedIds.length} applications with reason provided.`);
+      toast.info(`${selectedIds.length} applications marked as rejected.`);
+      setSelectedIds([]);
       setShowBulkRejectModal(false);
       setBulkRejectReason('');
       await loadData();
+    } catch (err: any) {
+      toast.error(err.message || 'Could not complete bulk rejection.');
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const handleReopen = async () => {
+    if (!user || !inspectingApp) return;
+    setIsProcessing(true);
+    try {
+      const updated = await api.reopenApplication(
+        inspectingApp.id,
+        user.id,
+        profile?.fullName || user.username
+      );
+      setInspectingApp(updated);
+      toast.success('Payment window extended for 7 additional days.');
+      await loadData();
+    } catch (err: any) {
+      toast.error(err.message || 'Could not reopen application window.');
     } finally {
       setIsProcessing(false);
     }
@@ -250,7 +282,7 @@ export const ManagerApplicationsPage: React.FC = () => {
           checked={applications.length > 0 && selectedIds.length === applications.length}
           onChange={handleSelectAll}
           className="w-4 h-4 cursor-pointer accent-ink-primary"
-          title="Select all applications"
+          title="Select all"
         />
       ),
       cell: (app) => (
@@ -263,34 +295,34 @@ export const ManagerApplicationsPage: React.FC = () => {
       ),
     },
     {
-      header: 'Applicant',
+      header: 'Applicant name & contact',
       cell: (app) => (
         <div className="space-y-0.5">
-          <span className="font-sans font-bold text-ink-primary block">
-            {app.formData?.fullName || 'Applicant'}
+          <span className="font-sans font-semibold text-ink-primary block">
+            {app.formData?.fullName || 'Untitled applicant'}
           </span>
-          <span className="font-mono text-[11px] text-ink-tertiary block">
-            Phone: {app.formData?.phone || '—'}
+          <span className="font-mono text-[13px] text-ink-secondary block">
+            {app.formData?.phone || 'No phone provided'}
           </span>
         </div>
       ),
     },
     {
-      header: 'Region & Capacities',
+      header: 'Area & key skills',
       cell: (app) => (
         <div className="space-y-1">
-          <span className="font-sans text-xs text-ink-secondary block font-semibold">
-            {app.formData?.area || '—'}
+          <span className="font-sans text-[13px] font-semibold text-ink-primary block">
+            {app.formData?.area || 'Addis Ababa'}
           </span>
           <div className="flex flex-wrap gap-1">
-            {app.formData?.skills?.slice(0, 3).map((s) => (
-              <span key={s} className="px-1.5 py-0.5 bg-canvas-subdued border border-border text-[11px] font-sans text-ink-primary">
+            {app.formData?.skills?.slice(0, 2).map((s) => (
+              <span key={s} className="px-2 py-0.5 bg-canvas-subdued/50 rounded-[4px] text-[13px] font-mono text-ink-primary">
                 {s}
               </span>
             ))}
-            {(app.formData?.skills?.length || 0) > 3 && (
-              <span className="text-[11px] text-ink-tertiary">
-                +{(app.formData?.skills?.length || 0) - 3} more
+            {(app.formData?.skills?.length || 0) > 2 && (
+              <span className="text-[13px] text-ink-tertiary">
+                +{(app.formData?.skills?.length || 0) - 2} more
               </span>
             )}
           </div>
@@ -298,33 +330,50 @@ export const ManagerApplicationsPage: React.FC = () => {
       ),
     },
     {
-      header: 'Submission Date',
+      header: 'Intake source',
       cell: (app) => (
-        <span className="font-mono text-xs text-ink-tertiary">
+        <div>
+          {app.source === 'staff_assisted' ? (
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[4px] bg-[#E8F8F5] text-xs font-semibold text-[#0E6266]">
+              <Buildings className="w-3 h-3" weight="bold" />
+              <span>Registered by {app.createdByName || 'Staff'}</span>
+            </span>
+          ) : (
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[4px] bg-[#F1F3F6] text-xs font-medium text-ink-secondary">
+              Self-registered
+            </span>
+          )}
+        </div>
+      ),
+    },
+    {
+      header: 'Submission date',
+      cell: (app) => (
+        <span className="font-mono text-[13px] text-ink-secondary">
           {app.submittedAt ? new Date(app.submittedAt).toLocaleDateString() : 'Draft'}
         </span>
       ),
     },
     {
-      header: 'Status',
-      cell: (app) => <StatusMark status={app.status} size="sm" />,
-    },
-    {
-      header: 'Action',
-      align: 'right',
+      header: 'Status & decisions',
       cell: (app) => (
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={() => {
-            setInspectingApp(app);
-            setDecisionReason(app.decisionReason || '');
-            setPrivateNote('');
-          }}
-          leftIcon={<Eye className="w-3.5 h-3.5" />}
-        >
-          Review
-        </Button>
+        <div className="flex items-center gap-3">
+          <StatusMark status={app.status} size="sm" />
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => {
+              setInspectingApp(app);
+    if (app) {
+      api.getApplicationDocuments(app.id).then(setAppDocuments).catch(console.error);
+    }
+              setDecisionReason(app.decisionReason || '');
+            }}
+            leftIcon={<Eye className="w-3.5 h-3.5" />}
+          >
+            Review
+          </Button>
+        </div>
       ),
     },
   ];
@@ -332,47 +381,57 @@ export const ManagerApplicationsPage: React.FC = () => {
   return (
     <div className="space-y-6 max-w-5xl mx-auto">
       {/* Header */}
-      <div className="border-b-2 border-ink-primary pb-5 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div className="pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <h1 className="font-display font-black text-4xl sm:text-5xl uppercase tracking-tight text-ink-primary leading-none">
-            Admissions Board
+          <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
+            Candidate applications
           </h1>
-          <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
-            Review applicant qualifications, issue Telebirr registration fee invitations, or request clarification.
+          <p className="font-sans text-[13px] sm:text-sm text-ink-secondary mt-1">
+            Review applicant profiles, issue Telebirr registration fee invitations, or request clarification.
           </p>
         </div>
 
-        {/* Bulk Action Controls */}
-        {selectedIds.length > 0 && (
-          <div className="flex items-center gap-2 bg-role-managerLight border-2 border-role-manager p-2">
-            <span className="font-mono text-xs font-bold text-ink-primary px-2">
-              {selectedIds.length} Selected
-            </span>
-            <Button
-              variant="teal"
-              size="sm"
-              isLoading={isProcessing}
-              onClick={handleBulkAccept}
-              leftIcon={<Check className="w-4 h-4" weight="bold" />}
-            >
-              Bulk Accept
-            </Button>
-            <Button
-              variant="danger"
-              size="sm"
-              isLoading={isProcessing}
-              onClick={() => setShowBulkRejectModal(true)}
-              leftIcon={<X className="w-4 h-4" />}
-            >
-              Bulk Reject
-            </Button>
-          </div>
-        )}
+        <div className="flex items-center gap-2">
+          <Button
+            variant="teal"
+            onClick={() => navigate('/manager/register-volunteer')}
+            leftIcon={<UserPlus className="w-4 h-4" weight="bold" />}
+          >
+            Register a volunteer
+          </Button>
+
+          {/* Bulk Action Controls */}
+          {selectedIds.length > 0 && (
+            <div className="flex items-center gap-2 bg-role-managerLight/30 rounded-[8px] p-2">
+              <span className="font-mono text-[13px] font-semibold text-ink-primary px-2">
+                {selectedIds.length} selected
+              </span>
+              <Button
+                variant="teal"
+                size="sm"
+                isLoading={isProcessing}
+                onClick={handleBulkAccept}
+                leftIcon={<Check className="w-4 h-4" weight="bold" />}
+              >
+                Bulk accept
+              </Button>
+              <Button
+                variant="danger"
+                size="sm"
+                isLoading={isProcessing}
+                onClick={() => setShowBulkRejectModal(true)}
+                leftIcon={<X className="w-4 h-4" />}
+              >
+                Bulk reject
+              </Button>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="border-2 border-ink-primary bg-white p-5 space-y-4 shadow-ticket">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+      <div className="rounded-[10px] bg-white p-5 space-y-4 shadow-sm">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3">
           <div className="sm:col-span-2">
             <Input
               placeholder="Search by name, phone, area, or skills..."
@@ -389,22 +448,28 @@ export const ManagerApplicationsPage: React.FC = () => {
           />
 
           <Select
+            value={selectedSource}
+            onChange={(e) => setSelectedSource(e.target.value as any)}
+            options={SOURCE_FILTERS}
+          />
+
+          <Select
             value={selectedArea}
             onChange={(e) => setSelectedArea(e.target.value)}
             options={AREA_FILTERS}
           />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-border">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
           <Select
-            label="Filter by Specific Skill"
+            label="Filter by specific skill"
             value={selectedSkill}
             onChange={(e) => setSelectedSkill(e.target.value)}
             options={SKILL_FILTERS}
           />
 
           <Select
-            label="Sort Application Queue"
+            label="Sort application queue"
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as any)}
             options={SORT_OPTIONS}
@@ -413,52 +478,59 @@ export const ManagerApplicationsPage: React.FC = () => {
       </div>
 
       {/* Ledger Table */}
-      <LedgerTable
-        data={applications}
-        columns={columns}
-        keyExtractor={(item) => item.id}
-        isLoading={isLoading}
-      />
+      <div className="rounded-[10px] bg-white shadow-sm overflow-hidden">
+        <LedgerTable
+          data={applications}
+          columns={columns}
+          keyExtractor={(item) => item.id}
+          isLoading={isLoading}
+        />
+      </div>
 
       {/* Detail & Decision Drawer Sheet */}
       <SheetModal
         isOpen={inspectingApp !== null}
         onClose={() => setInspectingApp(null)}
-        title={inspectingApp?.formData?.fullName || 'Application Review'}
+        title={inspectingApp?.formData?.fullName || 'Application review'}
         subtitle={`Submitted: ${inspectingApp?.submittedAt ? new Date(inspectingApp.submittedAt).toLocaleString() : 'In draft'}`}
-        mode="sheet"
       >
         {inspectingApp && (
-          <div className="space-y-6 text-left font-sans text-xs">
+          <div className="space-y-6 text-left font-sans text-[13px]">
             {/* Status & ID Banner */}
-            <div className="flex items-center justify-between p-3 bg-canvas-subdued border border-border">
+            <div className="flex items-center justify-between p-3 bg-canvas-subdued/30 rounded-[8px]">
               <div className="flex items-center gap-2">
-                <span className="font-mono text-xs font-bold text-ink-tertiary">
+                <span className="font-mono text-[13px] font-semibold text-ink-tertiary">
                   ID: #{inspectingApp.id}
                 </span>
+                {inspectingApp.source === 'staff_assisted' && (
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-[4px] bg-[#E8F8F5] text-xs font-semibold text-[#0E6266]">
+                    <Buildings className="w-3 h-3" weight="bold" />
+                    <span>Staff-assisted ({inspectingApp.createdByName || 'Staff'})</span>
+                  </span>
+                )}
               </div>
               <StatusMark status={inspectingApp.status} size="sm" />
             </div>
 
             {/* Photos (Simulated Uploads) */}
             {(inspectingApp.formData?.photoUrl || inspectingApp.formData?.idPhotoUrl) && (
-              <div className="p-4 border-2 border-ink-primary bg-white space-y-3">
-                <div className="flex items-center justify-between border-b border-border pb-2">
-                  <h4 className="font-display text-lg font-black uppercase text-ink-primary">
-                    Uploaded Verification Images
+              <div className="p-4 rounded-[8px] bg-white space-y-3">
+                <div className="flex items-center justify-between pb-2">
+                  <h4 className="font-display text-base font-bold text-ink-primary">
+                    Uploaded verification images
                   </h4>
-                  <span className="text-[11px] font-bold text-role-manager bg-role-managerLight px-2 py-0.5 border border-role-manager">
-                    Admissions Secure View
+                  <span className="text-[13px] font-semibold text-role-manager bg-role-managerLight/30 px-2 py-0.5 rounded-[4px]">
+                    Admissions secure view
                   </span>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {inspectingApp.formData?.photoUrl && (
                     <div className="space-y-1">
-                      <span className="text-[11px] font-bold text-ink-tertiary block">
-                        Volunteer Profile Photo
+                      <span className="text-[13px] font-semibold text-ink-tertiary block">
+                        Volunteer profile photo
                       </span>
-                      <div className="w-24 h-24 border border-border bg-canvas-subdued overflow-hidden">
+                      <div className="w-24 h-24 rounded-[6px] bg-canvas-subdued overflow-hidden">
                         <img
                           src={inspectingApp.formData.photoUrl}
                           alt="Profile Headshot"
@@ -470,10 +542,10 @@ export const ManagerApplicationsPage: React.FC = () => {
 
                   {inspectingApp.formData?.idPhotoUrl && (
                     <div className="space-y-1">
-                      <span className="text-[11px] font-bold text-ink-tertiary block">
-                        Kebele / National ID Card
+                      <span className="text-[13px] font-semibold text-ink-tertiary block">
+                        Kebele / National ID card
                       </span>
-                      <div className="w-36 h-24 border border-border bg-canvas-subdued overflow-hidden">
+                      <div className="w-36 h-24 rounded-[6px] bg-canvas-subdued overflow-hidden">
                         <img
                           src={inspectingApp.formData.idPhotoUrl}
                           alt="ID Document"
@@ -486,41 +558,117 @@ export const ManagerApplicationsPage: React.FC = () => {
               </div>
             )}
 
+            {/* Required Verification Documents */}
+            <div className="p-4 rounded-[8px] bg-white space-y-3">
+              <div className="flex items-center justify-between pb-1">
+                <h4 className="font-display text-sm font-bold text-ink-primary">
+                  Required applicant documents
+                </h4>
+                <span className="text-[13px] text-ink-secondary">
+                  {appDocuments.length} uploaded
+                </span>
+              </div>
+
+              {appDocuments.length === 0 ? (
+                <p className="text-[13px] text-ink-tertiary">No uploaded documents on record.</p>
+              ) : (
+                <div className="space-y-3">
+                  {appDocuments.map((doc) => (
+                    <div key={doc.id} className="p-3 bg-canvas-subdued/30 rounded-[8px] space-y-2">
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <FileText className="w-5 h-5 text-ink-secondary shrink-0" />
+                          <div className="min-w-0">
+                            <span className="font-semibold text-ink-primary text-sm block truncate">{doc.name}</span>
+                            <span className="text-xs text-ink-tertiary font-mono block">
+                              {doc.fileName} • {(doc.fileSize / 1024).toFixed(0)} KB
+                            </span>
+                          </div>
+                        </div>
+                        <StatusMark 
+                          status={doc.status === 'accepted' ? 'approved' : doc.status === 'returned_for_correction' ? 'declined' : 'waiting'} 
+                          label={doc.status === 'accepted' ? 'Accepted' : doc.status === 'returned_for_correction' ? 'Needs correction' : 'Pending review'} 
+                        />
+                      </div>
+
+                      {doc.reviewNote && (
+                        <div className="text-xs bg-amber-50 text-amber-900 p-2 rounded-[6px]">
+                          <span className="font-semibold">Review note: </span>{doc.reviewNote}
+                        </div>
+                      )}
+
+                      {correctingDocId === doc.id ? (
+                        <div className="pt-2 space-y-2">
+                          <textarea
+                            placeholder="Explain clearly what needs to be fixed..."
+                            value={correctionNote}
+                            onChange={(e) => setCorrectionNote(e.target.value)}
+                            className="w-full text-xs p-2 rounded-[6px] bg-white focus:outline-none focus:ring-1 focus:ring-ink-primary"
+                            rows={2}
+                          />
+                          <div className="flex gap-2 justify-end">
+                            <Button size="sm" variant="secondary" onClick={() => setCorrectingDocId(null)}>Cancel</Button>
+                            <Button size="sm" variant="danger" onClick={() => handleReviewDoc(doc.id, 'returned_for_correction', correctionNote)}>
+                              Send correction notice
+                            </Button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex gap-2 pt-1">
+                          <Button size="sm" variant="secondary" onClick={() => window.open(doc.fileUrl, '_blank')}>View file</Button>
+                          {doc.status !== 'accepted' && (
+                            <Button size="sm" variant="secondary" onClick={() => handleReviewDoc(doc.id, 'accepted')}>
+                              Accept
+                            </Button>
+                          )}
+                          {doc.status !== 'returned_for_correction' && (
+                            <Button size="sm" variant="secondary" onClick={() => { setCorrectingDocId(doc.id); setCorrectionNote(''); }}>
+                              Return for correction
+                            </Button>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
             {/* Applicant details */}
-            <div className="p-4 border-2 border-ink-primary bg-white space-y-3 shadow-sm">
+            <div className="p-4 rounded-[8px] bg-white space-y-3">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <span className="text-[11px] font-bold text-ink-tertiary block">Mobile Phone</span>
-                  <span className="font-mono text-xs font-bold text-ink-primary">{inspectingApp.formData?.phone || '—'}</span>
+                  <span className="text-[13px] font-semibold text-ink-tertiary block">Mobile phone</span>
+                  <span className="font-mono text-[13px] font-semibold text-ink-primary">{inspectingApp.formData?.phone || '—'}</span>
                 </div>
                 <div>
-                  <span className="text-[11px] font-bold text-ink-tertiary block">Date of Birth</span>
-                  <span className="font-mono text-xs font-bold text-ink-primary">{inspectingApp.formData?.dateOfBirth || '—'}</span>
+                  <span className="text-[13px] font-semibold text-ink-tertiary block">Date of birth</span>
+                  <span className="font-mono text-[13px] font-semibold text-ink-primary">{inspectingApp.formData?.dateOfBirth || '—'}</span>
                 </div>
               </div>
 
               <div>
-                <span className="text-[11px] font-bold text-ink-tertiary block">Service Region</span>
-                <span className="text-xs font-bold text-ink-primary">{inspectingApp.formData?.area || '—'}</span>
+                <span className="text-[13px] font-semibold text-ink-tertiary block">Community area</span>
+                <span className="text-[13px] font-semibold text-ink-primary">{inspectingApp.formData?.area || '—'}</span>
               </div>
 
               <div>
-                <span className="text-[11px] font-bold text-ink-tertiary block">Languages</span>
-                <span className="text-xs text-ink-secondary">{inspectingApp.formData?.languages?.join(', ') || '—'}</span>
+                <span className="text-[13px] font-semibold text-ink-tertiary block">Languages</span>
+                <span className="text-[13px] text-ink-secondary">{inspectingApp.formData?.languages?.join(', ') || '—'}</span>
               </div>
 
               <div>
-                <span className="text-[11px] font-bold text-ink-tertiary block">Motivation Statement</span>
-                <p className="text-xs text-ink-secondary leading-relaxed bg-canvas-subdued p-3 border border-border mt-1 italic">
+                <span className="text-[13px] font-semibold text-ink-tertiary block">Motivation statement</span>
+                <p className="text-[13px] text-ink-secondary leading-relaxed bg-canvas-subdued/30 p-3 rounded-[6px] mt-1 italic">
                   "{inspectingApp.formData?.motivation || 'No motivation statement provided.'}"
                 </p>
               </div>
 
               <div>
-                <span className="text-[11px] font-bold text-ink-tertiary block">Skills & Capacities</span>
+                <span className="text-[13px] font-semibold text-ink-tertiary block">Skills & capacities</span>
                 <div className="flex flex-wrap gap-1 pt-1">
                   {inspectingApp.formData?.skills?.map((s) => (
-                    <span key={s} className="px-2 py-0.5 bg-canvas-subdued border border-border text-[11px] font-sans text-ink-primary">
+                    <span key={s} className="px-2 py-0.5 bg-canvas-subdued/50 rounded-[4px] text-[13px] font-sans text-ink-primary">
                       {s}
                     </span>
                   ))}
@@ -528,8 +676,8 @@ export const ManagerApplicationsPage: React.FC = () => {
               </div>
 
               {inspectingApp.formData?.emergencyContact && (
-                <div className="pt-2 border-t border-border">
-                  <span className="text-[11px] font-bold text-ink-tertiary block">Emergency Contact</span>
+                <div className="pt-2">
+                  <span className="text-[13px] font-semibold text-ink-tertiary block">Emergency contact</span>
                   <span className="text-ink-secondary font-medium">
                     {inspectingApp.formData.emergencyContact.name} ({inspectingApp.formData.emergencyContact.relationship}) •{' '}
                     <span className="font-mono">{inspectingApp.formData.emergencyContact.phone}</span>
@@ -539,29 +687,29 @@ export const ManagerApplicationsPage: React.FC = () => {
             </div>
 
             {/* Internal Staff Notes */}
-            <div className="p-4 border-2 border-border bg-canvas-subdued space-y-3">
-              <div className="flex items-center justify-between border-b border-border pb-2">
-                <h4 className="font-display text-base font-black uppercase text-ink-primary">
-                  Internal Private Notes
+            <div className="p-4 rounded-[8px] bg-canvas-subdued/30 space-y-3">
+              <div className="flex items-center justify-between pb-2">
+                <h4 className="font-display text-sm font-bold text-ink-primary">
+                  Internal private notes
                 </h4>
-                <span className="text-[11px] text-ink-tertiary">
-                  Visible to Managers only
+                <span className="text-[13px] text-ink-tertiary">
+                  Visible to managers only
                 </span>
               </div>
 
               {inspectingApp.notes?.length === 0 ? (
-                <p className="text-xs text-ink-tertiary">No private notes recorded yet.</p>
+                <p className="text-[13px] text-ink-tertiary">No private notes recorded yet.</p>
               ) : (
                 <div className="space-y-2">
                   {inspectingApp.notes?.map((n) => (
-                    <div key={n.id} className="p-2.5 bg-white border border-border space-y-1">
+                    <div key={n.id} className="p-2.5 bg-white rounded-[6px] space-y-1">
                       <div className="flex items-center justify-between">
-                        <span className="font-bold text-ink-primary">{n.authorName}</span>
-                        <span className="font-mono text-[10px] text-ink-tertiary">
+                        <span className="font-semibold text-ink-primary">{n.authorName}</span>
+                        <span className="font-mono text-[13px] text-ink-tertiary">
                           {new Date(n.createdAt).toLocaleDateString()}
                         </span>
                       </div>
-                      <p className="text-xs text-ink-secondary">{n.content}</p>
+                      <p className="text-[13px] text-ink-secondary">{n.content}</p>
                     </div>
                   ))}
                 </div>
@@ -573,7 +721,7 @@ export const ManagerApplicationsPage: React.FC = () => {
                   placeholder="Add a private admissions note..."
                   value={privateNote}
                   onChange={(e) => setPrivateNote(e.target.value)}
-                  className="flex-1 bg-white text-xs border border-border p-2 focus:border-ink-primary outline-none"
+                  className="flex-1 bg-white text-[13px] rounded-[8px] p-2 focus:outline-none focus:ring-2 focus:ring-ink-primary/20"
                 />
                 <Button
                   variant="secondary"
@@ -581,21 +729,21 @@ export const ManagerApplicationsPage: React.FC = () => {
                   onClick={handleAddPrivateNote}
                   isLoading={isProcessing}
                 >
-                  Add Note
+                  Add note
                 </Button>
               </div>
             </div>
 
             {/* Decision Actions */}
-            <div className="border-4 border-ink-primary bg-white p-5 space-y-4 shadow-ticket">
-              <h4 className="font-display text-xl font-black uppercase text-ink-primary">
-                Admissions Board Action
+            <div className="rounded-[8px] bg-white p-5 space-y-4 shadow-sm">
+              <h4 className="font-display text-lg font-bold text-ink-primary">
+                Admissions board action
               </h4>
 
               {/* Expired case: Reopen option */}
               {inspectingApp.status === 'expired' && (
-                <div className="p-3 bg-role-applicantLight border border-role-applicant space-y-2">
-                  <p className="text-xs text-ink-primary font-semibold">
+                <div className="p-3 bg-role-applicantLight/30 rounded-[6px] space-y-2">
+                  <p className="text-[13px] text-ink-primary font-medium">
                     This applicant's payment deadline has expired. You can reopen the window with a fresh 7-day period.
                   </p>
                   <Button
@@ -605,21 +753,21 @@ export const ManagerApplicationsPage: React.FC = () => {
                     isLoading={isProcessing}
                     leftIcon={<ArrowsClockwise className="w-4 h-4" />}
                   >
-                    Reopen Acceptance (7-Day Extension)
+                    Reopen acceptance (7-day extension)
                   </Button>
                 </div>
               )}
 
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold text-ink-primary">
-                  Decision Message (Included in notice email to applicant)
+                <label className="block text-[13px] font-medium text-ink-primary">
+                  Decision message (included in notice email to applicant)
                 </label>
                 <textarea
                   rows={2}
                   value={decisionReason}
                   onChange={(e) => setDecisionReason(e.target.value)}
                   placeholder="e.g. Strong youth outreach background in Bole; candidate profile confirmed..."
-                  className="w-full bg-canvas-subdued text-ink-primary font-sans text-xs border border-border p-2.5 focus:border-ink-primary outline-none"
+                  className="w-full bg-white text-ink-primary font-sans text-[13px] rounded-[8px] p-2.5 focus:outline-none focus:ring-2 focus:ring-ink-primary/20"
                 />
               </div>
 
@@ -632,7 +780,7 @@ export const ManagerApplicationsPage: React.FC = () => {
                   onClick={() => handleDecision('accepted')}
                   leftIcon={<Check className="w-4 h-4" weight="bold" />}
                 >
-                  Accept & Send Telebirr Invite (ETB 200)
+                  Accept & send Telebirr invite (ETB 200)
                 </Button>
 
                 <Button
@@ -642,7 +790,7 @@ export const ManagerApplicationsPage: React.FC = () => {
                   onClick={() => handleDecision('more_info_needed')}
                   leftIcon={<Warning className="w-4 h-4" />}
                 >
-                  Request More Info
+                  Request more info
                 </Button>
 
                 <Button
@@ -652,7 +800,7 @@ export const ManagerApplicationsPage: React.FC = () => {
                   onClick={() => handleDecision('rejected')}
                   leftIcon={<X className="w-4 h-4" />}
                 >
-                  Reject Application
+                  Reject application
                 </Button>
               </div>
             </div>
@@ -664,30 +812,28 @@ export const ManagerApplicationsPage: React.FC = () => {
       <SheetModal
         isOpen={showBulkRejectModal}
         onClose={() => setShowBulkRejectModal(false)}
-        title={`Reject ${selectedIds.length} Applications?`}
-        subtitle="Every applicant will receive a written explanation notice."
-        mode="modal"
+        title={`Reject ${selectedIds.length} applications?`}
       >
-        <div className="space-y-4 text-xs font-sans text-left">
+        <div className="space-y-4 text-[13px] font-sans text-left">
           <p className="text-ink-secondary leading-relaxed">
             Please provide a respectful, transparent reason for declining these applications. This text will be included in the automated notice email sent to each candidate.
           </p>
 
           <div className="space-y-1.5">
-            <label className="block text-xs font-bold text-ink-primary">
-              Rejection Reason (Required)
+            <label className="block text-[13px] font-medium text-ink-primary">
+              Rejection reason (required)
             </label>
             <textarea
               rows={3}
               value={bulkRejectReason}
               onChange={(e) => setBulkRejectReason(e.target.value)}
-              placeholder="e.g. Regional volunteer quotas for this cycle have reached full capacity..."
-              className="w-full bg-white text-xs border border-border p-2.5 focus:border-ink-primary outline-none"
+              placeholder="e.g. Volunteer quotas for this cycle have reached full capacity..."
+              className="w-full bg-white text-[13px] rounded-[8px] p-2.5 focus:outline-none focus:ring-2 focus:ring-ink-primary/20"
               required
             />
           </div>
 
-          <div className="pt-3 flex items-center justify-end gap-2 border-t border-border">
+          <div className="pt-3 flex items-center justify-end gap-2">
             <Button
               variant="secondary"
               size="sm"
@@ -701,7 +847,7 @@ export const ManagerApplicationsPage: React.FC = () => {
               isLoading={isProcessing}
               onClick={handleBulkReject}
             >
-              Confirm Bulk Reject
+              Confirm bulk reject
             </Button>
           </div>
         </div>

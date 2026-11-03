@@ -2,19 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as api from '../../api';
 import { Activity, ActivityStatus, Enrollment, User, VolunteerProfile } from '../../types';
-import { LedgerTable, LedgerColumn, Input, Select, Button, StatusMark, SheetModal, Skeleton } from '../../components/ui';
+import { LedgerTable, LedgerColumn, Input, Select, Button, StatusMark, SheetModal, TicketCard } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
 import { 
-  Calendar, 
   Plus, 
   UsersThree, 
-  Key, 
   MapPin, 
-  Clock, 
   CheckCircle, 
-  XCircle, 
-  Eye, 
-  Funnel 
+  XCircle 
 } from '@phosphor-icons/react';
 
 export const ManagerActivitiesPage: React.FC = () => {
@@ -26,6 +21,7 @@ export const ManagerActivitiesPage: React.FC = () => {
   const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
   const [roster, setRoster] = useState<Array<{ enrollment: Enrollment; profile?: VolunteerProfile; user?: User }>>([]);
   const [isLoadingRoster, setIsLoadingRoster] = useState(false);
+  const [viewMode, setViewMode] = useState<'tickets' | 'table'>('tickets');
 
   const navigate = useNavigate();
   const toast = useToast();
@@ -80,13 +76,13 @@ export const ManagerActivitiesPage: React.FC = () => {
 
   const columns: LedgerColumn<Activity>[] = [
     {
-      header: 'Activity & Field Location',
+      header: 'Activity & field location',
       cell: (act) => (
         <div className="space-y-1">
-          <span className="font-sans font-bold text-ink-primary text-sm block">
+          <span className="font-sans font-semibold text-ink-primary text-sm block">
             {act.title}
           </span>
-          <div className="flex items-center gap-2 text-xs text-ink-secondary">
+          <div className="flex items-center gap-2 text-[13px] text-ink-secondary">
             <MapPin className="w-3.5 h-3.5 text-ink-tertiary" />
             <span>{act.place}, {act.area}</span>
           </div>
@@ -94,28 +90,28 @@ export const ManagerActivitiesPage: React.FC = () => {
       ),
     },
     {
-      header: 'Start Schedule',
+      header: 'Start schedule',
       cell: (act) => (
-        <div className="space-y-0.5 font-mono text-xs text-ink-primary">
+        <div className="space-y-0.5 font-mono text-[13px] text-ink-primary">
           <span>{new Date(act.startsAt).toLocaleDateString()}</span>
-          <span className="text-ink-tertiary text-[11px] block">
+          <span className="text-ink-tertiary text-[13px] block">
             {new Date(act.startsAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
           </span>
         </div>
       ),
     },
     {
-      header: 'Field Leader',
+      header: 'Field leader',
       cell: (act) => (
-        <span className="font-sans text-xs font-semibold text-ink-primary">
+        <span className="font-sans text-[13px] font-semibold text-ink-primary">
           {act.leadName || 'Assigned Lead'}
         </span>
       ),
     },
     {
-      header: 'Check-In Code',
+      header: 'Check-in code',
       cell: (act) => (
-        <span className="font-mono text-xs font-bold px-2 py-0.5 bg-canvas-subdued border border-border text-ink-primary">
+        <span className="font-mono text-[13px] font-semibold px-2 py-0.5 bg-canvas-subdued/50 rounded-[4px] text-ink-primary">
           {act.checkInCode}
         </span>
       ),
@@ -145,33 +141,25 @@ export const ManagerActivitiesPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Editorial Header */}
-      <div
-        className="border-4 border-ink-primary bg-white p-6 sm:p-8 space-y-4 shadow-ticket"
-        style={{
-          clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)',
-        }}
-      >
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b-2 border-ink-primary pb-5">
+      <div className="rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 sm:p-8 space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-5">
           <div className="space-y-1">
-            <span className="font-sans text-xs font-bold text-role-manager uppercase tracking-tight block">
-              Central Field Coordination
-            </span>
-            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-ink-primary leading-none">
-              All Field Activities
+            <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight">
+              All field activities
             </h1>
-            <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
-              Supervise all volunteer deployments, inspect team rosters, verify muster codes, and update activity states.
+            <p className="font-sans text-[13px] sm:text-sm text-ink-secondary mt-1">
+              Supervise volunteer deployments, inspect team rosters, verify check-in codes, and update activity states.
             </p>
           </div>
 
           <div className="flex items-center gap-2">
             <Button
-              variant="teal"
+              variant="primary"
               size="sm"
               leftIcon={<Plus className="w-4 h-4" weight="bold" />}
               onClick={() => navigate('/team-lead/create-activity')}
             >
-              Create Activity
+              Create activity
             </Button>
           </div>
         </div>
@@ -188,10 +176,10 @@ export const ManagerActivitiesPage: React.FC = () => {
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
             options={[
-              { value: 'all', label: 'All Statuses' },
-              { value: 'open', label: 'Open for Registration' },
-              { value: 'in_progress', label: 'In Progress (Active Now)' },
-              { value: 'full', label: 'Roster Full' },
+              { value: 'all', label: 'All statuses' },
+              { value: 'open', label: 'Open for registration' },
+              { value: 'in_progress', label: 'In progress (active now)' },
+              { value: 'full', label: 'Roster full' },
               { value: 'completed', label: 'Completed' },
               { value: 'cancelled', label: 'Cancelled' },
             ]}
@@ -201,7 +189,7 @@ export const ManagerActivitiesPage: React.FC = () => {
             value={areaFilter}
             onChange={(e) => setAreaFilter(e.target.value)}
             options={[
-              { value: 'all', label: 'All Operational Areas' },
+              { value: 'all', label: 'All operational areas' },
               { value: 'Addis Ababa', label: 'Addis Ababa' },
               { value: 'Adama', label: 'Adama' },
               { value: 'Bishoftu', label: 'Bishoftu' },
@@ -213,28 +201,29 @@ export const ManagerActivitiesPage: React.FC = () => {
       </div>
 
       {/* Ledger Table */}
-      <LedgerTable
-        data={activities}
-        columns={columns}
-        keyExtractor={(act) => act.id}
-        isLoading={isLoading}
-      />
+      <div className="rounded-[10px] bg-white shadow-sm overflow-hidden">
+        <LedgerTable
+          data={activities}
+          columns={columns}
+          keyExtractor={(act) => act.id}
+          isLoading={isLoading}
+        />
+      </div>
 
       {/* Activity Roster Drawer */}
       <SheetModal
         isOpen={selectedActivity !== null}
         onClose={() => setSelectedActivity(null)}
-        title={selectedActivity?.title || 'Activity Roster'}
-        subtitle={`Check-In Code: ${selectedActivity?.checkInCode || ''} • Capacity: ${selectedActivity?.capacity || 0} volunteers`}
-        mode="sheet"
+        title={selectedActivity?.title || 'Activity roster'}
+        subtitle={`Check-in code: ${selectedActivity?.checkInCode || ''} • Capacity: ${selectedActivity?.capacity || 0} volunteers`}
       >
         {selectedActivity && (
-          <div className="space-y-6 text-left font-sans text-xs">
+          <div className="space-y-6 text-left font-sans text-[13px]">
             {/* Status & Control Banner */}
-            <div className="p-4 border-2 border-ink-primary bg-white shadow-ticket space-y-3">
+            <div className="p-4 rounded-[8px] bg-white space-y-3">
               <div className="flex items-center justify-between">
                 <div>
-                  <span className="text-[10px] uppercase text-ink-tertiary block">Current State</span>
+                  <span className="text-[13px] text-ink-tertiary block">Current state</span>
                   <StatusMark status={selectedActivity.status} size="md" />
                 </div>
                 <div className="flex items-center gap-2">
@@ -243,9 +232,9 @@ export const ManagerActivitiesPage: React.FC = () => {
                       variant="secondary"
                       size="sm"
                       onClick={() => handleStatusChange(selectedActivity.id, 'completed')}
-                      leftIcon={<CheckCircle className="w-3.5 h-3.5 text-civic-green" weight="bold" />}
+                      leftIcon={<CheckCircle className="w-3.5 h-3.5 text-role-volunteer" weight="bold" />}
                     >
-                      Mark Completed
+                      Mark completed
                     </Button>
                   )}
                   {selectedActivity.status !== 'cancelled' && (
@@ -255,42 +244,42 @@ export const ManagerActivitiesPage: React.FC = () => {
                       onClick={() => handleStatusChange(selectedActivity.id, 'cancelled')}
                       leftIcon={<XCircle className="w-3.5 h-3.5" />}
                     >
-                      Cancel Activity
+                      Cancel activity
                     </Button>
                   )}
                 </div>
               </div>
-              <p className="text-ink-secondary text-xs">
+              <p className="text-ink-secondary text-[13px]">
                 {selectedActivity.description}
               </p>
             </div>
 
             {/* Enrolled Volunteers List */}
             <div className="space-y-3">
-              <div className="flex items-center justify-between border-b-2 border-border pb-2">
-                <span className="font-display text-lg font-black uppercase text-ink-primary">
-                  Enrolled Roster ({roster.length} / {selectedActivity.capacity})
+              <div className="flex items-center justify-between pb-2">
+                <span className="font-display text-base font-bold text-ink-primary">
+                  Enrolled roster ({roster.length} / {selectedActivity.capacity})
                 </span>
               </div>
 
               {isLoadingRoster ? (
                 <div className="space-y-2 py-4">
-                  <Skeleton variant="text" className="h-6 w-full" />
-                  <Skeleton variant="text" className="h-6 w-full" />
+                  <div className="h-6 bg-canvas-subdued animate-pulse rounded-[4px]" />
+                  <div className="h-6 bg-canvas-subdued animate-pulse rounded-[4px]" />
                 </div>
               ) : roster.length === 0 ? (
-                <p className="text-ink-tertiary py-8 text-center text-xs">
+                <p className="text-ink-tertiary py-8 text-center text-[13px]">
                   No volunteers currently enrolled for this shift.
                 </p>
               ) : (
-                <div className="divide-y divide-border border-2 border-border bg-white">
+                <div className="rounded-[8px] bg-white overflow-hidden space-y-2">
                   {roster.map(({ enrollment, profile, user }) => (
                     <div key={enrollment.id} className="p-3 flex items-center justify-between gap-3">
                       <div>
-                        <span className="font-bold text-ink-primary text-sm block">
-                          {profile?.fullName || user?.username || 'Enrolled Volunteer'}
+                        <span className="font-semibold text-ink-primary text-sm block">
+                          {profile?.fullName || user?.username || 'Enrolled volunteer'}
                         </span>
-                        <div className="flex items-center gap-2 text-[11px] text-ink-secondary">
+                        <div className="flex items-center gap-2 text-[13px] text-ink-secondary">
                           <span className="font-mono text-ink-tertiary">
                             {profile?.volunteerNumber || 'VTS-2026'}
                           </span>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import * as api from '../../api';
-import { Input, Button } from '../../components/ui';
+import { PageShell, Input, Button, Raised, TopoBackdrop } from '../../components/ui';
 import { Envelope, ArrowLeft, CheckCircle } from '@phosphor-icons/react';
 import { DemoEmailInbox } from '../../components/demo/DemoEmailInbox';
 
@@ -25,92 +25,88 @@ export const ForgotPasswordPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto px-4 sm:px-6 py-12 md:py-16 space-y-8">
-      <div className="space-y-2 border-b-2 border-ink-primary pb-6 text-center">
-        <h1 className="font-display font-black text-5xl sm:text-6xl uppercase tracking-tight text-ink-primary leading-none">
-          Recover Password
-        </h1>
-        <p className="font-sans text-sm sm:text-base text-ink-secondary">
-          Enter your email address and we will send you a link to choose a new password.
-        </p>
-      </div>
+    <PageShell page="public/forgot-password" signature="none:recovery-form">
+      <div className="max-w-lg mx-auto px-4 sm:px-6 py-10 md:py-14 space-y-6">
+        <div className="space-y-2 pb-6 text-center">
+          <h1 className="font-display font-bold text-3xl sm:text-4xl tracking-tight text-ink-primary leading-tight">
+            Recover password
+          </h1>
+          <p className="font-sans text-base text-ink-secondary">
+            Enter your email address and we will send you a link to choose a new password.
+          </p>
+        </div>
 
-      <div
-        className="bg-white border-2 border-ink-primary p-6 sm:p-8 shadow-ticket space-y-5"
-        style={{
-          clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)',
-        }}
-      >
-        {isSubmitted ? (
-          <div className="space-y-4 text-center py-4">
-            <div className="w-14 h-14 mx-auto bg-green-50 text-role-volunteer border-2 border-role-volunteer flex items-center justify-center">
-              <CheckCircle className="w-8 h-8" weight="fill" />
-            </div>
-            <h3 className="font-display text-3xl font-black uppercase text-ink-primary">
-              Check Your Email
-            </h3>
-            <p className="font-sans text-xs sm:text-sm text-ink-secondary leading-relaxed">
-              If an account exists for <strong className="font-mono text-ink-primary">{email}</strong>, we have sent a reset link to your inbox.
-            </p>
-            <div className="pt-2 flex flex-col gap-2">
-              <Button
-                variant="secondary"
-                size="md"
-                onClick={() => setEmailInboxOpen(true)}
-              >
-                Preview Reset Email
-              </Button>
-              <Link
-                to="/sign-in"
-                className="font-sans text-xs font-bold text-ink-secondary hover:text-ink-primary pt-2 block"
-              >
-                &larr; Back to sign in
-              </Link>
-            </div>
+        <Raised className="relative overflow-hidden p-6 sm:p-8 space-y-5">
+          <TopoBackdrop color="#16A34A" opacity={0.05} />
+          <div className="relative z-10">
+            {isSubmitted ? (
+              <div className="space-y-4 text-center py-2">
+                <div className="w-12 h-12 mx-auto bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center">
+                  <CheckCircle className="w-6 h-6" weight="fill" />
+                </div>
+                <h3 className="font-display text-2xl font-bold text-ink-primary">
+                  Check your email
+                </h3>
+                <p className="font-sans text-sm text-ink-secondary leading-relaxed">
+                  If an account exists for <strong className="font-sans font-bold text-ink-primary">{email}</strong>, we have sent a reset link to your inbox.
+                </p>
+                <div className="pt-2 flex flex-col gap-2">
+                  <Button
+                    variant="secondary"
+                    size="md"
+                    onClick={() => setEmailInboxOpen(true)}
+                  >
+                    Preview reset email
+                  </Button>
+                  <Link
+                    to="/sign-in"
+                    className="font-sans text-[13px] font-semibold text-ink-secondary hover:text-ink-primary pt-2 block"
+                  >
+                    &larr; Back to sign in
+                  </Link>
+                </div>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <Input
+                  label="Email address"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="e.g. dawit@example.com"
+                  leftIcon={<Envelope className="w-4 h-4 text-ink-secondary" />}
+                  required
+                />
+
+                <Button
+                  type="submit"
+                  variant="primary"
+                  size="lg"
+                  className="w-full"
+                  isLoading={isLoading}
+                >
+                  Send reset link
+                </Button>
+
+                <div className="pt-2 text-center">
+                  <Link
+                    to="/sign-in"
+                    className="font-sans text-[13px] font-semibold text-ink-secondary hover:text-ink-primary inline-flex items-center gap-1"
+                  >
+                    <ArrowLeft className="w-3.5 h-3.5" />
+                    <span>Back to sign in</span>
+                  </Link>
+                </div>
+              </form>
+            )}
           </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div className="space-y-1.5">
-              <label className="block font-sans text-xs font-bold uppercase tracking-tight text-ink-primary">
-                Email Address
-              </label>
-              <Input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="e.g. dawit@example.com"
-                leftIcon={<Envelope className="w-4 h-4 text-ink-secondary" />}
-                required
-              />
-            </div>
+        </Raised>
 
-            <Button
-              type="submit"
-              variant="primary"
-              size="lg"
-              className="w-full text-base font-bold"
-              isLoading={isLoading}
-            >
-              Send Reset Link
-            </Button>
-
-            <div className="pt-2 text-center border-t border-border">
-              <Link
-                to="/sign-in"
-                className="font-sans text-xs font-bold text-ink-secondary hover:text-ink-primary inline-flex items-center gap-1"
-              >
-                <ArrowLeft className="w-3.5 h-3.5" />
-                <span>Back to sign in</span>
-              </Link>
-            </div>
-          </form>
-        )}
+        <DemoEmailInbox
+          isOpen={emailInboxOpen}
+          onClose={() => setEmailInboxOpen(false)}
+        />
       </div>
-
-      <DemoEmailInbox
-        isOpen={emailInboxOpen}
-        onClose={() => setEmailInboxOpen(false)}
-      />
-    </div>
+    </PageShell>
   );
 };

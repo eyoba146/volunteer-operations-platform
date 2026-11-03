@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
 import { HoursEntry } from '../../types';
-import { LedgerTable, LedgerColumn, Button, StatusMark, SheetModal, Skeleton, EmptyState } from '../../components/ui';
+import { LedgerTable, LedgerColumn, Button, SheetModal, Skeleton, EmptyState, MomentOverlay } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
-import { Check, CheckCircle, X, CheckSquare, Clock, Warning } from '@phosphor-icons/react';
+import { Check, CheckCircle, X, Clock, Warning } from '@phosphor-icons/react';
 
 export const TeamLeadApproveHoursPage: React.FC = () => {
   const { user } = useAuth();
@@ -17,6 +17,9 @@ export const TeamLeadApproveHoursPage: React.FC = () => {
   const [declineTarget, setDeclineTarget] = useState<HoursEntry | null>(null);
   const [declineReason, setDeclineReason] = useState('');
   const [declineError, setDeclineError] = useState('');
+  const [showMoment, setShowMoment] = useState(false);
+  const [inspectingEvidence, setInspectingEvidence] = useState<HoursEntry | null>(null);
+  const [momentText, setMomentText] = useState('');
 
   const toast = useToast();
 
@@ -57,6 +60,8 @@ export const TeamLeadApproveHoursPage: React.FC = () => {
     setIsProcessing(true);
     try {
       await api.approveHours(hoursId, user.id);
+      setMomentText('1 volunteer service session verified');
+      setShowMoment(true);
       toast.success('Hours approved and added to volunteer service record.');
       await loadData();
     } catch (err: any) {
@@ -71,6 +76,8 @@ export const TeamLeadApproveHoursPage: React.FC = () => {
     setIsProcessing(true);
     try {
       await api.bulkApproveHours(selectedIds, user.id);
+      setMomentText(`${selectedIds.length} volunteer service sessions verified`);
+      setShowMoment(true);
       toast.success(`Successfully approved ${selectedIds.length} volunteer service records.`);
       await loadData();
     } catch (err: any) {
@@ -124,13 +131,13 @@ export const TeamLeadApproveHoursPage: React.FC = () => {
       ),
     },
     {
-      header: 'Volunteer Name & Date',
+      header: 'Volunteer name & date',
       cell: (entry) => (
         <div className="space-y-0.5">
-          <span className="font-sans font-bold text-ink-primary block">
+          <span className="font-sans font-semibold text-ink-primary block">
             {entry.userName || 'Volunteer'}
           </span>
-          <span className="font-mono text-xs text-ink-secondary block">
+          <span className="font-mono text-[13px] text-ink-secondary block">
             Date: {new Date(entry.checkIn).toLocaleDateString()} (
             {new Date(entry.checkIn).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })})
           </span>
@@ -138,47 +145,87 @@ export const TeamLeadApproveHoursPage: React.FC = () => {
       ),
     },
     {
-      header: 'Activity Assignment & Claim Notes',
+      header: 'Activity assignment & claim notes',
       cell: (entry) => (
         <div className="space-y-1">
-          <span className="font-sans text-xs font-bold text-ink-primary block">
+          <span className="font-sans text-[13px] font-semibold text-ink-primary block">
             {entry.activityTitle}
           </span>
-          <span className="font-mono text-[10px] uppercase font-bold text-ink-tertiary block">
-            Source: {entry.source === 'manual' ? 'Manual claim' : 'On-site code scan'}
+          <span className="font-mono text-[13px] font-medium text-ink-tertiary block">
+            {entry.source === 'manual' ? 'Self-reported manual claim' : 'Checked in with the activity code'}
           </span>
           {entry.manualNote && (
-            <p className="text-xs text-ink-secondary italic max-w-md bg-canvas p-2 border border-border">
+            <p className="text-[13px] text-ink-secondary italic max-w-md bg-canvas-subdued/30 p-2 rounded-[6px]">
               "{entry.manualNote}"
             </p>
+          )}
+          {entry.evidenceUrl && (
+            <div className="pt-1">
+              <button
+                type="button"
+                onClick={() => setInspectingEvidence(entry)}
+                className="inline-flex items-center gap-2 p-1.5 rounded-[8px] bg-[#F1F3F6] hover:bg-[#E8EBEF] transition-colors cursor-pointer text-left"
+              >
+                <img
+                  src={entry.evidenceThumbnail || entry.evidenceUrl}
+                  alt="Field Evidence"
+                  className="w-10 h-10 object-cover rounded-[6px]"
+                />
+                <div>
+                  <span className="text-xs font-sans font-semibold text-ink-primary block">
+                    Field photo evidence attached
+                  </span>
+                  <span className="text-[11px] font-sans text-ink-secondary block">
+                    Click to inspect full image
+                  </span>
+                </div>
+              </button>
+            </div>
           )}
         </div>
       ),
     },
     {
       header: 'Duration',
-      cell: (entry) => (
-        <span className="font-mono text-xs font-bold text-ink-primary">
-          {Math.round((entry.minutes / 60) * 10) / 10} hrs{' '}
-          <span className="text-[11px] text-ink-tertiary font-normal">({entry.minutes}m)</span>
-        </span>
-      ),
+      cell: (entry) => {
+        if (!entry.checkOut || entry.checkOut === '') {
+          return (
+            <span className="font-sans text-[13px] font-medium text-amber-800 block">
+              Checked in, not checked out
+            </span>
+          );
+        }
+
+        const isQuickLook = entry.manualNote?.includes('Needs a quick look');
+        return (
+          <div className="space-y-0.5">
+            <span className="font-mono text-[13px] font-semibold text-ink-primary">
+              {Math.round((entry.minutes / 60) * 10) / 10} hrs
+            </span>
+            {isQuickLook && (
+              <span className="inline-block px-1.5 py-0.5 text-[11px] font-medium bg-amber-50 text-amber-900 rounded-[4px]">
+                Needs a quick look
+              </span>
+            )}
+          </div>
+        );
+      },
     },
     {
-      header: 'Review Actions',
+      header: 'Review actions',
       cell: (entry) => (
         <div className="flex items-center gap-2">
           <Button
-            variant="primary"
+            variant="secondary"
             size="sm"
-            leftIcon={<Check className="w-3.5 h-3.5" weight="bold" />}
+            leftIcon={<Check className="w-3.5 h-3.5 text-role-volunteer" weight="bold" />}
             onClick={() => handleApproveSingle(entry.id)}
             disabled={isProcessing}
           >
             Approve
           </Button>
           <Button
-            variant="secondary"
+            variant="ghost"
             size="sm"
             leftIcon={<X className="w-3.5 h-3.5" weight="bold" />}
             onClick={() => {
@@ -199,25 +246,31 @@ export const TeamLeadApproveHoursPage: React.FC = () => {
     return (
       <div className="space-y-6">
         <Skeleton variant="text" className="h-8 w-1/3" />
-        <Skeleton variant="rect" className="h-20" />
-        <Skeleton variant="rect" className="h-64" />
+        <Skeleton variant="rect" className="h-20 rounded-[10px]" />
+        <Skeleton variant="rect" className="h-64 rounded-[10px]" />
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
+      <MomentOverlay
+        show={showMoment}
+        onDismiss={() => setShowMoment(false)}
+        type="hours"
+        title="Hours approved!"
+        subtitle={`${momentText || 'Service hours verified'} and credited toward trail advancement.`}
+        primaryActionLabel="Continue reviewing →"
+        onPrimaryAction={() => setShowMoment(false)}
+      />
       {/* Top Header */}
-      <div className="border-b-2 border-border pb-5 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div className="pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <span className="font-sans text-xs font-bold text-role-teamlead uppercase tracking-tight block">
-            Attendance Verification Desk
-          </span>
-          <h1 className="font-display text-4xl sm:text-5xl font-black uppercase tracking-tight text-ink-primary leading-none mt-1">
-            Approve Volunteer Hours
+          <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
+            Approve volunteer hours
           </h1>
-          <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
-            Verify volunteer session claims. Approved hours count toward rank altitude; declining requires a written explanation.
+          <p className="font-sans text-[13px] sm:text-sm text-ink-secondary mt-1">
+            Verify volunteer session claims. Approved hours count toward rank advancement; declining requires a written explanation.
           </p>
         </div>
 
@@ -229,7 +282,7 @@ export const TeamLeadApproveHoursPage: React.FC = () => {
             onClick={handleBulkApprove}
             isLoading={isProcessing}
           >
-            Approve Selected ({selectedIds.length})
+            Approve selected ({selectedIds.length})
           </Button>
         )}
       </div>
@@ -242,7 +295,7 @@ export const TeamLeadApproveHoursPage: React.FC = () => {
           description="There are currently no volunteer hours awaiting your review."
         />
       ) : (
-        <div className="border-2 border-ink-primary bg-white shadow-ticket">
+        <div className="rounded-[10px] bg-white shadow-sm overflow-hidden">
           <LedgerTable
             columns={columns}
             data={pendingHours}
@@ -255,42 +308,42 @@ export const TeamLeadApproveHoursPage: React.FC = () => {
       <SheetModal
         isOpen={Boolean(declineTarget)}
         onClose={() => setDeclineTarget(null)}
-        title="Decline Volunteer Hours"
+        title="Decline volunteer hours"
       >
         {declineTarget && (
           <form onSubmit={handleDeclineSubmit} className="space-y-5">
-            <p className="font-sans text-xs text-ink-secondary leading-relaxed">
+            <p className="font-sans text-[13px] text-ink-secondary leading-relaxed">
               To decline hours for <strong className="text-ink-primary">{declineTarget.userName}</strong> on <em>{declineTarget.activityTitle}</em>, you must provide a constructive written explanation. The volunteer will read this feedback directly.
             </p>
 
             {declineError && (
-              <div className="p-3 border-2 border-role-teamlead bg-role-teamleadLight text-role-teamlead text-xs font-sans font-bold flex items-center gap-2">
+              <div className="p-3 rounded-[8px] bg-role-teamleadLight/20 text-role-teamlead text-[13px] font-sans font-medium flex items-center gap-2">
                 <Warning className="w-4 h-4 shrink-0" weight="bold" />
                 <span>{declineError}</span>
               </div>
             )}
 
-            <div className="border-2 border-ink-primary bg-canvas p-3 font-mono text-xs space-y-1">
-              <div>Claim Duration: <strong>{Math.round((declineTarget.minutes / 60) * 10) / 10} hours</strong></div>
+            <div className="rounded-[8px] bg-canvas-subdued/30 p-3 font-mono text-[13px] space-y-1">
+              <div>Claim duration: <strong>{Math.round((declineTarget.minutes / 60) * 10) / 10} hours</strong></div>
               <div>Date: {new Date(declineTarget.checkIn).toLocaleDateString()}</div>
-              <div>Source: {declineTarget.source === 'manual' ? 'Manual submission' : 'Session check-in'}</div>
+              <div>Check-in: {declineTarget.source === 'manual' ? 'Self-reported manual claim' : 'Checked in with the activity code'}</div>
             </div>
 
             <div className="space-y-1.5 text-left">
-              <label className="block text-xs font-bold uppercase text-ink-primary">
-                Mandatory Reason for Decline
+              <label className="block text-[13px] font-medium text-ink-primary">
+                Mandatory reason for decline
               </label>
               <textarea
                 rows={4}
                 value={declineReason}
                 onChange={(e) => setDeclineReason(e.target.value)}
                 placeholder="e.g. Attendance was not verified at duty station A. Please contact team lead to verify logbook records."
-                className="w-full bg-canvas text-ink-primary font-sans text-xs border-2 border-ink-primary p-2.5 focus:outline-none focus:ring-2 focus:ring-role-teamlead"
+                className="w-full bg-white text-ink-primary font-sans text-[13px] rounded-[8px] p-2.5 focus:outline-none focus:ring-2 focus:ring-role-teamlead"
                 required
               />
             </div>
 
-            <div className="flex justify-end gap-2 pt-2 border-t border-border">
+            <div className="flex justify-end gap-2 pt-2">
               <Button
                 type="button"
                 variant="secondary"
@@ -303,7 +356,7 @@ export const TeamLeadApproveHoursPage: React.FC = () => {
                 variant="primary"
                 isLoading={isProcessing}
               >
-                Confirm Decline & Notify Volunteer
+                Confirm decline & notify volunteer
               </Button>
             </div>
           </form>

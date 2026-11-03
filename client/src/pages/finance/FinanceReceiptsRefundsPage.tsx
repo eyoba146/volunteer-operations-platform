@@ -2,16 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
 import { Payment } from '../../types';
-import { LedgerTable, LedgerColumn, Tabs, Button, StatusMark, SheetModal, Skeleton, EmptyState } from '../../components/ui';
+import { LedgerTable, LedgerColumn, Tabs, Button, SheetModal } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
 import { 
-  Receipt, 
   ArrowCounterClockwise, 
   Printer, 
   DownloadSimple, 
-  ShieldCheck, 
-  Check, 
-  Clock 
 } from '@phosphor-icons/react';
 
 export const FinanceReceiptsRefundsPage: React.FC = () => {
@@ -56,7 +52,7 @@ export const FinanceReceiptsRefundsPage: React.FC = () => {
     if (!user || !targetRefundPayment) return;
 
     if (!refundReason.trim()) {
-      toast.error('A written explanation is mandatory for processing a refund.');
+      toast.error('A written explanation is required for processing a refund.');
       return;
     }
 
@@ -82,9 +78,9 @@ export const FinanceReceiptsRefundsPage: React.FC = () => {
 
   const handleExportCSV = () => {
     const rows = [
-      'VTS REVENUE & SETTLEMENT LEDGER',
-      `Exported At,${new Date().toISOString()}`,
-      `Tab,${activeTab.toUpperCase()}`,
+      'VTS REVENUE AND SETTLEMENT LEDGER',
+      `Exported at,${new Date().toISOString()}`,
+      `Tab,${activeTab}`,
       '',
       'Receipt/Refund ID,Telebirr Reference,Payer Name,Payer Phone,Amount (ETB),Date,Status,Notes/Reason',
     ];
@@ -109,34 +105,34 @@ export const FinanceReceiptsRefundsPage: React.FC = () => {
 
   const receiptColumns: LedgerColumn<Payment>[] = [
     {
-      header: 'Receipt Number',
+      header: 'Receipt number',
       cell: (p) => (
-        <span className="font-mono text-xs font-bold text-ink-primary">
+        <span className="font-mono text-[13px] font-semibold text-ink-primary">
           {p.receiptNumber}
         </span>
       ),
     },
     {
-      header: 'Telebirr Reference',
+      header: 'Telebirr reference',
       cell: (p) => (
-        <span className="font-mono text-xs text-ink-secondary">
+        <span className="font-mono text-[13px] text-ink-secondary">
           {p.telebirrReference}
         </span>
       ),
     },
     {
-      header: 'Issued To',
+      header: 'Issued to',
       cell: (p) => (
-        <div className="font-sans text-xs">
+        <div className="font-sans text-[13px]">
           <span className="font-semibold text-ink-primary block">{p.payerName || 'Applicant'}</span>
-          <span className="font-mono text-ink-tertiary text-[11px] block">{p.payerPhone || '—'}</span>
+          <span className="font-mono text-ink-tertiary text-[13px] block">{p.payerPhone || '—'}</span>
         </div>
       ),
     },
     {
-      header: 'Date Confirmed',
+      header: 'Date confirmed',
       cell: (p) => (
-        <span className="font-mono text-xs text-ink-tertiary">
+        <span className="font-mono text-[13px] text-ink-tertiary">
           {p.confirmedAt ? new Date(p.confirmedAt).toLocaleDateString() : '—'}
         </span>
       ),
@@ -145,13 +141,13 @@ export const FinanceReceiptsRefundsPage: React.FC = () => {
       header: 'Amount',
       align: 'right',
       cell: (p) => (
-        <span className="font-mono text-xs font-bold text-civic-green">
+        <span className="font-mono text-[13px] font-semibold text-role-volunteer">
           ETB {p.amount}.00
         </span>
       ),
     },
     {
-      header: 'Receipt Pass',
+      header: 'Receipt pass',
       align: 'right',
       cell: (p) => (
         <Button
@@ -160,7 +156,7 @@ export const FinanceReceiptsRefundsPage: React.FC = () => {
           onClick={() => setViewingReceipt(p)}
           leftIcon={<Printer className="w-3.5 h-3.5" />}
         >
-          View Receipt
+          View receipt
         </Button>
       ),
     },
@@ -168,42 +164,42 @@ export const FinanceReceiptsRefundsPage: React.FC = () => {
 
   const refundColumns: LedgerColumn<Payment>[] = [
     {
-      header: 'Telebirr Reference',
+      header: 'Telebirr reference',
       cell: (p) => (
-        <span className="font-mono text-xs font-bold text-ink-primary">
+        <span className="font-mono text-[13px] font-semibold text-ink-primary">
           {p.telebirrReference}
         </span>
       ),
     },
     {
-      header: 'Refunded To',
+      header: 'Refunded to',
       cell: (p) => (
-        <span className="font-sans text-xs text-ink-primary font-semibold">
+        <span className="font-sans text-[13px] text-ink-primary font-semibold">
           {p.payerName || 'Applicant'}
         </span>
       ),
     },
     {
-      header: 'Mandatory Audit Reason',
+      header: 'Refund reason',
       cell: (p) => (
-        <span className="font-sans text-xs text-civic-rust max-w-sm block">
-          {p.refundReason || 'Refund processed by Finance.'}
+        <span className="font-sans text-[13px] text-role-applicant max-w-sm block">
+          {p.refundReason || 'Refund processed by finance.'}
         </span>
       ),
     },
     {
-      header: 'Refund Date',
+      header: 'Refund date',
       cell: (p) => (
-        <span className="font-mono text-xs text-ink-tertiary">
+        <span className="font-mono text-[13px] text-ink-tertiary">
           {p.refundedAt ? new Date(p.refundedAt).toLocaleDateString() : '—'}
         </span>
       ),
     },
     {
-      header: 'Amount Refunded',
+      header: 'Amount refunded',
       align: 'right',
       cell: (p) => (
-        <span className="font-mono text-xs font-bold text-red-600">
+        <span className="font-mono text-[13px] font-semibold text-red-600">
           - ETB {p.amount}.00
         </span>
       ),
@@ -212,26 +208,26 @@ export const FinanceReceiptsRefundsPage: React.FC = () => {
 
   const requestColumns: LedgerColumn<Payment>[] = [
     {
-      header: 'Telebirr Reference',
+      header: 'Telebirr reference',
       cell: (p) => (
-        <span className="font-mono text-xs font-bold text-ink-primary">
+        <span className="font-mono text-[13px] font-semibold text-ink-primary">
           {p.telebirrReference}
         </span>
       ),
     },
     {
-      header: 'Applicant Payer',
+      header: 'Applicant payer',
       cell: (p) => (
-        <div className="font-sans text-xs">
+        <div className="font-sans text-[13px]">
           <span className="font-semibold text-ink-primary block">{p.payerName}</span>
-          <span className="font-mono text-ink-tertiary text-[11px] block">{p.payerPhone}</span>
+          <span className="font-mono text-ink-tertiary text-[13px] block">{p.payerPhone}</span>
         </div>
       ),
     },
     {
-      header: 'Refund Request Explanation',
+      header: 'Refund request explanation',
       cell: (p) => (
-        <span className="font-sans text-xs text-[#784E0B] max-w-sm block">
+        <span className="font-sans text-[13px] text-role-applicant max-w-sm block">
           {p.refundReason || 'Applicant formally submitted refund request.'}
         </span>
       ),
@@ -240,13 +236,13 @@ export const FinanceReceiptsRefundsPage: React.FC = () => {
       header: 'Amount',
       align: 'right',
       cell: (p) => (
-        <span className="font-mono text-xs font-bold text-ink-primary">
+        <span className="font-mono text-[13px] font-semibold text-ink-primary">
           ETB {p.amount}.00
         </span>
       ),
     },
     {
-      header: 'Audit Action',
+      header: 'Action',
       align: 'right',
       cell: (p) => (
         <Button
@@ -258,7 +254,7 @@ export const FinanceReceiptsRefundsPage: React.FC = () => {
           }}
           leftIcon={<ArrowCounterClockwise className="w-3.5 h-3.5" />}
         >
-          Process Refund
+          Process refund
         </Button>
       ),
     },
@@ -278,23 +274,15 @@ export const FinanceReceiptsRefundsPage: React.FC = () => {
 
   return (
     <div className="space-y-6 text-left">
-      {/* Top Header */}
-      <div
-        className="border-4 border-ink-primary bg-white p-6 sm:p-8 space-y-4 shadow-ticket"
-        style={{
-          clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)',
-        }}
-      >
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b-2 border-ink-primary pb-5">
+      {/* Top Header Card */}
+      <div className="rounded-[10px] bg-white p-6 space-y-5 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4">
           <div className="space-y-1">
-            <span className="font-sans text-xs font-bold text-ink-primary uppercase tracking-tight block">
-              Official Accounting Ledger
-            </span>
-            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-ink-primary leading-none">
-              Receipts & Refunds
+            <h1 className="font-display font-black text-2xl sm:text-3xl tracking-tight text-ink-primary leading-tight">
+              Receipts and refunds
             </h1>
-            <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
-              Audit official registration fee tax receipts, review pending refund claims, and record mandatory reimbursement justifications.
+            <p className="font-sans text-sm text-ink-secondary mt-1">
+              Review registration fee receipts, process pending refund claims, and record reimbursement explanations.
             </p>
           </div>
 
@@ -305,54 +293,58 @@ export const FinanceReceiptsRefundsPage: React.FC = () => {
               leftIcon={<DownloadSimple className="w-4 h-4" weight="bold" />}
               onClick={handleExportCSV}
             >
-              Export {activeTab.toUpperCase()} CSV
+              Export CSV
             </Button>
           </div>
         </div>
 
-        {/* Daily & Monthly Totals Banner */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 font-sans text-xs">
-          <div className="p-3 border-2 border-border bg-canvas-subdued space-y-0.5">
-            <span className="text-[10px] text-ink-tertiary uppercase font-mono block">Confirmed Receipts MTD</span>
-            <span className="font-display text-2xl font-black text-civic-green block leading-none">
-              ETB {totalReceiptsETB.toLocaleString()}.00
+        {/* Lead Numeral + Inline List (R5 Compliant: Replaces 4-tile row) */}
+        <div className="flex flex-col md:flex-row md:items-baseline justify-between gap-6 pt-1">
+          <div>
+            <span className="text-[13px] font-mono text-ink-secondary block">
+              Confirmed receipts MTD
             </span>
-            <span className="text-[11px] text-ink-secondary font-mono">{receipts.length} official receipts</span>
+            <div className="flex items-baseline gap-3 mt-0.5">
+              <span className="font-display text-4xl sm:text-5xl font-black text-ink-primary tracking-tight leading-none">
+                ETB {totalReceiptsETB.toLocaleString()}.00
+              </span>
+              <span className="font-mono text-[13px] text-ink-tertiary">
+                ({receipts.length} confirmed receipts)
+              </span>
+            </div>
           </div>
 
-          <div className="p-3 border-2 border-border bg-canvas-subdued space-y-0.5">
-            <span className="text-[10px] text-ink-tertiary uppercase font-mono block">Refund Claims Pending</span>
-            <span className={`font-display text-2xl font-black block leading-none ${
-              refundRequests.length > 0 ? 'text-[#784E0B]' : 'text-civic-green'
-            }`}>
-              {refundRequests.length} <span className="text-xs font-mono font-normal text-ink-tertiary">claims</span>
-            </span>
-            <span className="text-[11px] text-ink-secondary font-mono">Requires finance approval</span>
-          </div>
-
-          <div className="p-3 border-2 border-border bg-canvas-subdued space-y-0.5">
-            <span className="text-[10px] text-ink-tertiary uppercase font-mono block">Total Reimbursed</span>
-            <span className="font-display text-2xl font-black text-red-600 block leading-none">
-              - ETB {totalRefundsETB.toLocaleString()}.00
-            </span>
-            <span className="text-[11px] text-ink-secondary font-mono">{refunds.length} processed refunds</span>
-          </div>
-
-          <div className="p-3 border-2 border-border bg-canvas-subdued space-y-0.5">
-            <span className="text-[10px] text-ink-tertiary uppercase font-mono block">Net Retained Fee</span>
-            <span className="font-display text-2xl font-black text-ink-primary block leading-none">
-              ETB {(totalReceiptsETB - totalRefundsETB).toLocaleString()}.00
-            </span>
-            <span className="text-[11px] text-ink-secondary font-mono">Audited merchant balance</span>
+          {/* Simple Inline List with dividers */}
+          <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm pt-2 md:pt-0">
+            <div className="space-y-0.5">
+              <span className="text-[13px] text-ink-secondary block">Pending refund claims</span>
+              <span className={`text-xl font-bold ${
+                refundRequests.length > 0 ? 'text-role-applicant' : 'text-role-volunteer'
+              } `}>
+                {refundRequests.length} claims
+              </span>
+            </div>
+            <div className="space-y-0.5">
+              <span className="text-[13px] text-ink-secondary block">Total reimbursed</span>
+              <span className="text-xl font-bold text-red-600">
+                - ETB {totalRefundsETB.toLocaleString()}.00
+              </span>
+            </div>
+            <div className="space-y-0.5">
+              <span className="text-[13px] text-ink-secondary block">Net settled balance</span>
+              <span className="text-xl font-bold text-ink-primary">
+                ETB {(totalReceiptsETB - totalRefundsETB).toLocaleString()}.00
+              </span>
+            </div>
           </div>
         </div>
       </div>
 
       <Tabs
         tabs={[
-          { id: 'receipts', label: 'Issued Receipts', count: receipts.length },
-          { id: 'requests', label: 'Refund Requests', count: refundRequests.length },
-          { id: 'refunds', label: 'Processed Refunds', count: refunds.length },
+          { id: 'receipts', label: 'Issued receipts', count: receipts.length },
+          { id: 'requests', label: 'Refund requests', count: refundRequests.length },
+          { id: 'refunds', label: 'Processed refunds', count: refunds.length },
         ]}
         activeTab={activeTab}
         onChange={setActiveTab}
@@ -369,31 +361,31 @@ export const FinanceReceiptsRefundsPage: React.FC = () => {
       <SheetModal
         isOpen={targetRefundPayment !== null}
         onClose={() => setTargetRefundPayment(null)}
-        title="Approve & Process Telebirr Refund"
+        title="Approve and process Telebirr refund"
         subtitle={`Payer: ${targetRefundPayment?.payerName || 'Applicant'} • Amount: ETB ${targetRefundPayment?.amount}.00`}
         mode="modal"
         maxWidth="md"
       >
-        <form onSubmit={handleProcessRefund} className="space-y-4 text-left font-sans text-xs">
-          <p className="text-ink-secondary leading-relaxed">
-            This will initiate a reverse settlement through Ethio Telecom Telebirr, refunding ETB {targetRefundPayment?.amount}.00 to phone {targetRefundPayment?.payerPhone || 'the payer handset'}.
+        <form onSubmit={handleProcessRefund} className="space-y-4 text-left font-sans text-sm">
+          <p className="text-ink-secondary leading-relaxed text-[13px]">
+            This will initiate a reverse settlement through Telebirr, refunding ETB {targetRefundPayment?.amount}.00 to phone {targetRefundPayment?.payerPhone || 'the payer handset'}.
           </p>
 
           <div className="space-y-1">
-            <label className="block text-xs font-bold uppercase tracking-tight text-ink-primary">
-              Mandatory Written Explanation (Audit Requirement)
+            <label className="block text-[13px] font-semibold text-ink-primary">
+              Written explanation for refund
             </label>
             <textarea
               rows={3}
               value={refundReason}
               onChange={(e) => setRefundReason(e.target.value)}
-              placeholder="e.g. Accidental double payment confirmed with Ethio Telecom statement..."
-              className="w-full bg-white text-ink-primary font-sans text-xs border-2 border-ink-primary p-2.5 outline-none"
+              placeholder="e.g. Accidental double payment confirmed with statement..."
+              className="w-full bg-white text-ink-primary font-sans text-sm rounded-[8px] p-2.5 focus:ring-1 focus:ring-ink-primary"
               required
             />
           </div>
 
-          <div className="pt-3 border-t-2 border-border flex items-center justify-end gap-3">
+          <div className="pt-3 flex items-center justify-end gap-3">
             <Button
               type="button"
               variant="secondary"
@@ -406,7 +398,7 @@ export const FinanceReceiptsRefundsPage: React.FC = () => {
               variant="danger"
               isLoading={isProcessing}
             >
-              Confirm and Issue Refund
+              Confirm and issue refund
             </Button>
           </div>
         </form>
@@ -416,57 +408,58 @@ export const FinanceReceiptsRefundsPage: React.FC = () => {
       <SheetModal
         isOpen={viewingReceipt !== null}
         onClose={() => setViewingReceipt(null)}
-        title="Official Registration Receipt"
+        title="Registration receipt"
         subtitle={`Number: ${viewingReceipt?.receiptNumber || ''}`}
         mode="modal"
         maxWidth="md"
       >
         {viewingReceipt && (
-          <div className="space-y-5 text-left font-sans text-xs p-2">
-            <div className="border-4 border-ink-primary bg-white p-6 space-y-4 shadow-ticket">
-              <div className="flex items-start justify-between border-b-2 border-ink-primary pb-3">
+          <div className="space-y-5 text-left font-sans text-sm p-2">
+            {/* Printable Receipt Card */}
+            <div className="rounded-[16px] bg-white p-6 space-y-4 shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)]">
+              <div className="flex items-start justify-between pb-3">
                 <div>
-                  <h3 className="font-display text-2xl font-black uppercase tracking-tight text-ink-primary">
-                    VTS Volunteer Program
+                  <h3 className="font-display text-xl font-black tracking-tight text-ink-primary">
+                    VTS volunteer program
                   </h3>
-                  <span className="font-mono text-[10px] text-ink-tertiary block">
-                    Tax Registration Receipt • Ethio Telecom Telebirr
+                  <span className="font-mono text-[13px] text-ink-tertiary block">
+                    Registration receipt • Telebirr settlement
                   </span>
                 </div>
-                <span className="font-mono text-xs font-bold bg-ink-primary text-white px-2 py-1">
-                  PAID
+                <span className="font-mono text-[13px] font-bold bg-ink-primary text-white px-2 py-0.5 rounded-[4px]">
+                  Paid
                 </span>
               </div>
 
-              <div className="grid grid-cols-2 gap-3 font-mono text-xs py-2">
+              <div className="grid grid-cols-2 gap-3 font-mono text-[13px] py-2">
                 <div>
-                  <span className="text-[10px] text-ink-tertiary uppercase block">Receipt Number</span>
+                  <span className="text-ink-tertiary block">Receipt number</span>
                   <span className="font-bold text-ink-primary">{viewingReceipt.receiptNumber}</span>
                 </div>
                 <div>
-                  <span className="text-[10px] text-ink-tertiary uppercase block">Telebirr Ref</span>
+                  <span className="text-ink-tertiary block">Telebirr ref</span>
                   <span className="font-bold text-ink-primary">{viewingReceipt.telebirrReference}</span>
                 </div>
                 <div>
-                  <span className="text-[10px] text-ink-tertiary uppercase block">Issued To</span>
+                  <span className="text-ink-tertiary block">Issued to</span>
                   <span className="font-bold text-ink-primary font-sans">{viewingReceipt.payerName}</span>
                 </div>
                 <div>
-                  <span className="text-[10px] text-ink-tertiary uppercase block">Payer Phone</span>
+                  <span className="text-ink-tertiary block">Payer phone</span>
                   <span className="font-bold text-ink-primary">{viewingReceipt.payerPhone}</span>
                 </div>
                 <div>
-                  <span className="text-[10px] text-ink-tertiary uppercase block">Date Settled</span>
+                  <span className="text-ink-tertiary block">Date settled</span>
                   <span className="text-ink-secondary">{new Date(viewingReceipt.confirmedAt || viewingReceipt.createdAt).toLocaleDateString()}</span>
                 </div>
                 <div>
-                  <span className="text-[10px] text-ink-tertiary uppercase block">Fee Amount</span>
-                  <span className="font-bold text-civic-green text-sm">ETB {viewingReceipt.amount}.00</span>
+                  <span className="text-ink-tertiary block">Fee amount</span>
+                  <span className="font-bold text-role-volunteer text-sm">ETB {viewingReceipt.amount}.00</span>
                 </div>
               </div>
 
-              <div className="border-t border-border pt-3 text-[10px] text-ink-tertiary text-center font-mono">
-                Ethio Telecom Merchant Account: 884120 • Electronic Proof of Volunteer Registration
+              <div className="pt-3 text-[13px] text-ink-tertiary text-center font-mono">
+                Merchant account: 884120 • Electronic proof of volunteer registration
               </div>
             </div>
 
@@ -484,7 +477,7 @@ export const FinanceReceiptsRefundsPage: React.FC = () => {
                 leftIcon={<Printer className="w-3.5 h-3.5" />}
                 onClick={() => window.print()}
               >
-                Print Receipt
+                Print receipt
               </Button>
             </div>
           </div>

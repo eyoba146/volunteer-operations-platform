@@ -18,13 +18,13 @@ export const StatNumber: React.FC<StatNumberProps> = ({
   className = '',
 }) => {
   return (
-    <div className={`space-y-1 ${className}`}>
+    <div className={`space-y-1 ${className} `}>
       <div className="flex items-baseline">
-        <span className={`font-display text-5xl sm:text-6xl md:text-7xl font-black tracking-tight leading-none ${color}`}>
+        <span className={`font-display text-5xl sm:text-6xl md:text-7xl font-black tracking-tight leading-none ${color} `}>
           {number}
         </span>
         {unit && (
-          <span className="font-display text-2xl sm:text-3xl font-bold text-ink-secondary ml-1.5 uppercase">
+          <span className="font-display text-2xl sm:text-3xl font-bold text-ink-secondary ml-1.5">
             {unit}
           </span>
         )}
@@ -34,7 +34,7 @@ export const StatNumber: React.FC<StatNumberProps> = ({
           {label}
         </span>
         {sublabel && (
-          <span className="font-sans text-xs text-ink-tertiary block mt-0.5">
+          <span className="font-sans text-[13px] text-ink-secondary block mt-0.5">
             {sublabel}
           </span>
         )}
@@ -42,4 +42,3 @@ export const StatNumber: React.FC<StatNumberProps> = ({
     </div>
   );
 };
-

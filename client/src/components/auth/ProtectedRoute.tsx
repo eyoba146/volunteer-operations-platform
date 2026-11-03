@@ -1,17 +1,22 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { Role } from '../../types';
+import { Role, PermissionModule, PermissionAction } from '../../types';
+import { can } from '../../utils/permissions';
 import { Skeleton } from '../ui';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
   allowedRoles?: Role[];
+  requiredModule?: PermissionModule;
+  requiredAction?: PermissionAction;
 }
 
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   children,
   allowedRoles,
+  requiredModule,
+  requiredAction,
 }) => {
   const { user, isLoading } = useAuth();
   const location = useLocation();
@@ -33,6 +38,10 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   }
 
   if (allowedRoles && !allowedRoles.includes(user.role)) {
+    return <Navigate to="/unauthorized" replace />;
+  }
+
+  if (requiredModule && !can(user, requiredModule, requiredAction || 'view')) {
     return <Navigate to="/unauthorized" replace />;
   }
 

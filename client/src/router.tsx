@@ -14,6 +14,7 @@ import { ForgotPasswordPage } from './pages/public/ForgotPasswordPage';
 import { ResetPasswordPage } from './pages/public/ResetPasswordPage';
 import { CertificateCheckPage } from './pages/public/CertificateCheckPage';
 import { UnauthorizedPage } from './pages/public/UnauthorizedPage';
+import { NotFoundPage } from './pages/public/NotFoundPage';
 
 // Applicant Pages
 import { ApplicantStatusPage } from './pages/applicant/ApplicantStatusPage';
@@ -32,6 +33,7 @@ import { VolunteerRankProgressPage } from './pages/volunteer/VolunteerRankProgre
 import { VolunteerCertificatesPage } from './pages/volunteer/VolunteerCertificatesPage';
 import { VolunteerIdCardPage } from './pages/volunteer/VolunteerIdCardPage';
 import { VolunteerProfilePage } from './pages/volunteer/VolunteerProfilePage';
+import { VolunteerAllowancesPage } from './pages/volunteer/VolunteerAllowancesPage';
 
 // Team Lead Pages
 import { TeamLeadHomePage } from './pages/team-lead/TeamLeadHomePage';
@@ -41,16 +43,22 @@ import { TeamLeadCreateActivityPage } from './pages/team-lead/TeamLeadCreateActi
 import { TeamLeadRatingsPage } from './pages/team-lead/TeamLeadRatingsPage';
 import { TeamLeadRecommendPromotionPage } from './pages/team-lead/TeamLeadRecommendPromotionPage';
 import { TeamLeadAnnouncementsPage } from './pages/team-lead/TeamLeadAnnouncementsPage';
+import { TeamLeadMyVolunteersPage } from './pages/team-lead/TeamLeadMyVolunteersPage';
+import { TeamLeadVerifyAllowancesPage } from './pages/team-lead/TeamLeadVerifyAllowancesPage';
 
 // Manager Pages
 import { ManagerDashboardPage } from './pages/manager/ManagerDashboardPage';
 import { ManagerApplicationsPage } from './pages/manager/ManagerApplicationsPage';
+import { ManagerRegisterVolunteerPage } from './pages/manager/ManagerRegisterVolunteerPage';
 import { ManagerVolunteersPage } from './pages/manager/ManagerVolunteersPage';
 import { ManagerActivitiesPage } from './pages/manager/ManagerActivitiesPage';
 import { ManagerPromotionsPage } from './pages/manager/ManagerPromotionsPage';
 import { ManagerAnnouncementsPage } from './pages/manager/ManagerAnnouncementsPage';
 import { ManagerFeedbackPage } from './pages/manager/ManagerFeedbackPage';
 import { ManagerReportsPage } from './pages/manager/ManagerReportsPage';
+import { ManagerProjectsPage } from './pages/manager/ManagerProjectsPage';
+import { ManagerProjectDetailPage } from './pages/manager/ManagerProjectDetailPage';
+import { ManagerAllowancesPage } from './pages/manager/ManagerAllowancesPage';
 
 // Finance Pages
 import { FinanceOverviewPage } from './pages/finance/FinanceOverviewPage';
@@ -58,13 +66,17 @@ import { FinancePaymentsPage } from './pages/finance/FinancePaymentsPage';
 import { FinanceNeedsReviewPage } from './pages/finance/FinanceNeedsReviewPage';
 import { FinanceReceiptsRefundsPage } from './pages/finance/FinanceReceiptsRefundsPage';
 import { FinanceReportsPage } from './pages/finance/FinanceReportsPage';
+import { FinanceAllowancesPage } from './pages/finance/FinanceAllowancesPage';
 
 // Admin Pages
 import { AdminOverviewPage } from './pages/admin/AdminOverviewPage';
+import { AdminOrganisationPage } from './pages/admin/AdminOrganisationPage';
+import { AdminRolesPermissionsPage } from './pages/admin/AdminRolesPermissionsPage';
 import { AdminSettingsPage } from './pages/admin/AdminSettingsPage';
 import { AdminRankRulesPage } from './pages/admin/AdminRankRulesPage';
 import { AdminAccountsPage } from './pages/admin/AdminAccountsPage';
 import { AdminActivityHistoryPage } from './pages/admin/AdminActivityHistoryPage';
+import { AdminAllowancesPage } from './pages/admin/AdminAllowancesPage';
 
 export const router = createBrowserRouter([
   // Public Layout routes
@@ -80,6 +92,7 @@ export const router = createBrowserRouter([
       { path: 'reset-password', element: <PageTransition><ResetPasswordPage /></PageTransition> },
       { path: 'check-certificate', element: <PageTransition><CertificateCheckPage /></PageTransition> },
       { path: 'unauthorized', element: <PageTransition><UnauthorizedPage /></PageTransition> },
+      { path: '404', element: <PageTransition><NotFoundPage /></PageTransition> },
     ],
   },
 
@@ -120,6 +133,7 @@ export const router = createBrowserRouter([
       { path: 'certificates', element: <PageTransition><VolunteerCertificatesPage /></PageTransition> },
       { path: 'id-card', element: <PageTransition><VolunteerIdCardPage /></PageTransition> },
       { path: 'profile', element: <PageTransition><VolunteerProfilePage /></PageTransition> },
+      { path: 'allowances', element: <PageTransition><VolunteerAllowancesPage /></PageTransition> },
     ],
   },
 
@@ -134,9 +148,11 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <Navigate to="/team-lead/home" replace /> },
       { path: 'home', element: <PageTransition><TeamLeadHomePage /></PageTransition> },
-      { path: 'approve-hours', element: <PageTransition><TeamLeadApproveHoursPage /></PageTransition> },
+      { path: 'volunteers', element: <PageTransition><TeamLeadMyVolunteersPage /></PageTransition> },
       { path: 'activities', element: <PageTransition><TeamLeadActivitiesPage /></PageTransition> },
       { path: 'create-activity', element: <PageTransition><TeamLeadCreateActivityPage /></PageTransition> },
+      { path: 'approve-hours', element: <PageTransition><TeamLeadApproveHoursPage /></PageTransition> },
+      { path: 'allowances', element: <PageTransition><TeamLeadVerifyAllowancesPage /></PageTransition> },
       { path: 'ratings', element: <PageTransition><TeamLeadRatingsPage /></PageTransition> },
       { path: 'recommend-promotion', element: <PageTransition><TeamLeadRecommendPromotionPage /></PageTransition> },
       { path: 'announcements', element: <PageTransition><TeamLeadAnnouncementsPage /></PageTransition> },
@@ -154,7 +170,11 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <Navigate to="/manager/dashboard" replace /> },
       { path: 'dashboard', element: <PageTransition><ManagerDashboardPage /></PageTransition> },
+      { path: 'projects', element: <PageTransition><ManagerProjectsPage /></PageTransition> },
+      { path: 'projects/:id', element: <PageTransition><ManagerProjectDetailPage /></PageTransition> },
+      { path: 'allowances', element: <PageTransition><ManagerAllowancesPage /></PageTransition> },
       { path: 'applications', element: <PageTransition><ManagerApplicationsPage /></PageTransition> },
+      { path: 'register-volunteer', element: <PageTransition><ManagerRegisterVolunteerPage /></PageTransition> },
       { path: 'volunteers', element: <PageTransition><ManagerVolunteersPage /></PageTransition> },
       { path: 'activities', element: <PageTransition><ManagerActivitiesPage /></PageTransition> },
       { path: 'promotions', element: <PageTransition><ManagerPromotionsPage /></PageTransition> },
@@ -175,6 +195,7 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <Navigate to="/finance/overview" replace /> },
       { path: 'overview', element: <PageTransition><FinanceOverviewPage /></PageTransition> },
+      { path: 'allowances', element: <PageTransition><FinanceAllowancesPage /></PageTransition> },
       { path: 'payments', element: <PageTransition><FinancePaymentsPage /></PageTransition> },
       { path: 'needs-review', element: <PageTransition><FinanceNeedsReviewPage /></PageTransition> },
       { path: 'receipts-refunds', element: <PageTransition><FinanceReceiptsRefundsPage /></PageTransition> },
@@ -193,6 +214,9 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <Navigate to="/admin/overview" replace /> },
       { path: 'overview', element: <PageTransition><AdminOverviewPage /></PageTransition> },
+      { path: 'allowances', element: <PageTransition><AdminAllowancesPage /></PageTransition> },
+      { path: 'organisation', element: <PageTransition><AdminOrganisationPage /></PageTransition> },
+      { path: 'roles-permissions', element: <PageTransition><AdminRolesPermissionsPage /></PageTransition> },
       { path: 'settings', element: <PageTransition><AdminSettingsPage /></PageTransition> },
       { path: 'rank-rules', element: <PageTransition><AdminRankRulesPage /></PageTransition> },
       { path: 'accounts', element: <PageTransition><AdminAccountsPage /></PageTransition> },
@@ -203,6 +227,6 @@ export const router = createBrowserRouter([
   // Fallback Catch-all
   {
     path: '*',
-    element: <Navigate to="/" replace />,
+    element: <PageTransition><NotFoundPage /></PageTransition>,
   },
 ]);

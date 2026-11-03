@@ -17,6 +17,16 @@ import {
   DemoEmail,
   VolunteerFeedback,
   EmailTemplate,
+  OrgUnit,
+  RolePermissionConfig,
+  SignInLogEntry,
+  DemoSmsMessage,
+  Project,
+  Assignment,
+  RequiredDocumentConfig,
+  ApplicationDocument,
+  CompletedActivitySubmission,
+  AllowanceRequest,
 } from '../types';
 
 import {
@@ -38,10 +48,20 @@ import {
   SEED_EMAILS,
   SEED_FEEDBACK,
   INITIAL_EMAIL_TEMPLATES,
+  SEED_ORG_UNITS,
+  INITIAL_ROLE_PERMISSIONS,
+  SEED_SIGN_IN_LOGS,
+  SEED_SMS_MESSAGES,
+  SEED_PROJECTS,
+  SEED_ASSIGNMENTS,
+  SEED_REQUIRED_DOCUMENTS,
+  SEED_APPLICATION_DOCUMENTS,
+  SEED_COMPLETED_SUBMISSIONS,
+  SEED_ALLOWANCES,
 } from './seedData';
 
-const STORAGE_KEY = 'vts_civic_ledger_storage_v1';
-const CURRENT_USER_KEY = 'vts_civic_current_user_v1';
+const STORAGE_KEY = 'vts_operations_storage_v5';
+const CURRENT_USER_KEY = 'vts_current_user_v5';
 
 export interface VtsDatabaseState {
   users: User[];
@@ -62,6 +82,16 @@ export interface VtsDatabaseState {
   emails: DemoEmail[];
   feedback: VolunteerFeedback[];
   emailTemplates: EmailTemplate[];
+  orgUnits: OrgUnit[];
+  rolePermissions: RolePermissionConfig[];
+  signInLogs: SignInLogEntry[];
+  smsMessages: DemoSmsMessage[];
+  projects: Project[];
+  assignments: Assignment[];
+  requiredDocuments: RequiredDocumentConfig[];
+  applicationDocuments: ApplicationDocument[];
+  completedSubmissions: CompletedActivitySubmission[];
+  allowances: AllowanceRequest[];
 }
 
 function getInitialState(): VtsDatabaseState {
@@ -84,6 +114,16 @@ function getInitialState(): VtsDatabaseState {
     emails: SEED_EMAILS,
     feedback: SEED_FEEDBACK,
     emailTemplates: INITIAL_EMAIL_TEMPLATES,
+    orgUnits: SEED_ORG_UNITS,
+    rolePermissions: INITIAL_ROLE_PERMISSIONS,
+    signInLogs: SEED_SIGN_IN_LOGS,
+    smsMessages: SEED_SMS_MESSAGES,
+    projects: SEED_PROJECTS,
+    assignments: SEED_ASSIGNMENTS,
+    requiredDocuments: SEED_REQUIRED_DOCUMENTS,
+    applicationDocuments: SEED_APPLICATION_DOCUMENTS,
+    completedSubmissions: SEED_COMPLETED_SUBMISSIONS,
+    allowances: SEED_ALLOWANCES,
   };
 }
 
@@ -108,6 +148,16 @@ class Store {
           settings: parsed.settings && parsed.settings.length >= fresh.settings.length ? parsed.settings : fresh.settings,
           feedback: parsed.feedback && parsed.feedback.length ? parsed.feedback : fresh.feedback,
           emailTemplates: parsed.emailTemplates && parsed.emailTemplates.length ? parsed.emailTemplates : fresh.emailTemplates,
+          orgUnits: parsed.orgUnits && parsed.orgUnits.length ? parsed.orgUnits : fresh.orgUnits,
+          rolePermissions: parsed.rolePermissions && parsed.rolePermissions.length ? parsed.rolePermissions : fresh.rolePermissions,
+          signInLogs: parsed.signInLogs && parsed.signInLogs.length ? parsed.signInLogs : fresh.signInLogs,
+          smsMessages: parsed.smsMessages && parsed.smsMessages.length ? parsed.smsMessages : fresh.smsMessages,
+          projects: parsed.projects && parsed.projects.length ? parsed.projects : fresh.projects,
+          assignments: parsed.assignments && parsed.assignments.length ? parsed.assignments : fresh.assignments,
+          requiredDocuments: parsed.requiredDocuments && parsed.requiredDocuments.length ? parsed.requiredDocuments : fresh.requiredDocuments,
+          applicationDocuments: parsed.applicationDocuments && parsed.applicationDocuments.length ? parsed.applicationDocuments : fresh.applicationDocuments,
+          completedSubmissions: parsed.completedSubmissions && parsed.completedSubmissions.length ? parsed.completedSubmissions : fresh.completedSubmissions,
+          allowances: parsed.allowances && parsed.allowances.length ? parsed.allowances : fresh.allowances,
         };
       }
     } catch {
@@ -173,4 +223,3 @@ class Store {
 }
 
 export const store = new Store();
-

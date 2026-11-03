@@ -10,6 +10,7 @@ interface TabsProps {
   tabs: TabItem[];
   activeTab: string;
   onChange: (tabId: string) => void;
+  accentColor?: string;
   className?: string;
 }
 
@@ -17,11 +18,12 @@ export const Tabs: React.FC<TabsProps> = ({
   tabs,
   activeTab,
   onChange,
+  accentColor = '#111111',
   className = '',
 }) => {
   return (
     <div
-      className={`flex items-center gap-1 border-b border-border overflow-x-auto no-scrollbar ${className}`}
+      className={`flex items-center gap-6 overflow-x-auto no-scrollbar select-none ${className} `}
       role="tablist"
     >
       {tabs.map((tab) => {
@@ -32,23 +34,30 @@ export const Tabs: React.FC<TabsProps> = ({
             role="tab"
             aria-selected={isActive}
             onClick={() => onChange(tab.id)}
-            className={`flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold uppercase tracking-wider transition-colors duration-150 border-b-2 -mb-[1px] whitespace-nowrap cursor-pointer ${
+            className={`relative flex items-center gap-2 py-3 px-1 text-sm font-sans tracking-tight transition-colors whitespace-nowrap cursor-pointer ${
               isActive
-                ? 'border-ink-primary text-ink-primary bg-canvas-raised'
-                : 'border-transparent text-ink-tertiary hover:text-ink-primary hover:border-border'
-            }`}
+                ? 'font-bold text-ink-primary'
+                : 'font-medium text-ink-secondary hover:text-ink-primary'
+            } `}
           >
             <span>{tab.label}</span>
             {tab.count !== undefined && (
               <span
-                className={`font-mono text-[11px] px-1.5 py-0.2 rounded-none border ${
+                className={`text-[13px] px-2 py-0.5 rounded-full font-bold leading-none ${
                   isActive
-                    ? 'border-ink-primary bg-canvas-inset text-ink-primary font-bold'
-                    : 'border-border bg-canvas-subdued text-ink-secondary'
-                }`}
+                    ? 'bg-ink-primary text-white'
+                    : 'bg-[#F1F3F6] text-ink-secondary'
+                } `}
               >
                 {tab.count}
               </span>
+            )}
+            {/* 2px Underline indicator */}
+            {isActive && (
+              <span
+                className="absolute bottom-0 left-0 right-0 h-[2px] rounded-full"
+                style={{ backgroundColor: accentColor }}
+              />
             )}
           </button>
         );
@@ -56,4 +65,3 @@ export const Tabs: React.FC<TabsProps> = ({
     </div>
   );
 };
-

@@ -1,4 +1,6 @@
-import { Application, ApplicationStatus, ApplicationNote } from '../types';
+import { Application, ApplicationStatus, ApplicationNote, User } from '../types';
+import { filterByScope } from '../utils/scoping';
+import { daysAhead } from './seedData';
 import { store } from './store';
 import { delay } from './delay';
 
@@ -21,11 +23,28 @@ export async function getAllApplications(filters?: {
   search?: string;
   area?: string;
   skill?: string;
+  source?: 'all' | 'self_registered' | 'staff_assisted';
   sortBy?: 'newest' | 'oldest' | 'name';
 }): Promise<Application[]> {
   await delay(350, 750);
   const state = store.getState();
+  const currentUser = store.getCurrentUser();
   let list = [...state.applications];
+
+  // Scope filter: Team Leads & Managers only see in-scope applications
+  if (currentUser && currentUser.role !== 'admin' && currentUser.role !== 'finance') {
+    list = filterByScope(currentUser, list, (a) => ({
+      branchId: a.branchId || a.formData?.branchId,
+      areaId: a.areaId || a.formData?.areaId,
+      branchName: a.branchName || a.formData?.branchName,
+      areaName: a.areaName || a.formData?.areaName,
+      area: a.formData?.area,
+    }));
+  }
+
+  if (filters?.source && filters.source !== 'all') {
+    list = list.filter((a) => (a.source || 'self_registered') === filters.source);
+  }
 
   if (filters?.status && filters.status !== 'all') {
     list = list.filter((a) => a.status === filters.status);
@@ -50,6 +69,7 @@ export async function getAllApplications(filters?: {
         a.formData?.fullName.toLowerCase().includes(q) ||
         a.formData?.phone.toLowerCase().includes(q) ||
         a.formData?.area.toLowerCase().includes(q) ||
+        (a.createdByName && a.createdByName.toLowerCase().includes(q)) ||
         a.formData?.skills?.some((s) => s.toLowerCase().includes(q))
     );
   }
@@ -249,7 +269,7 @@ export async function reviewApplication(
         category: 'application',
         sentAt: now,
         read: false,
-        body: `Dear ${app.formData?.fullName || applicantUser.username},\n\nWe are pleased to inform you that your application to join the VTS Volunteer Corps has been accepted.\n\nPlease complete your one-time registration fee of ETB 200 within 7 days using Telebirr to activate your membership and unlock volunteer activities.\n\nWarm regards,\nVTS Operations`,
+        body: `Dear ${app.formData?.fullName || applicantUser.username},\n\nWe are pleased to inform you that your application to join the VTS Volunteer Corps has been accepted.\n\nPlease complete your one-time registration fee of ETB 200 within 7 days using Telebirr to activate your volunteer account and unlock volunteer activities.\n\nWarm regards,\nVTS Operations`,
         actionLabel: 'Pay with Telebirr',
         actionUrl: '/applicant/payment',
       });
@@ -420,3 +440,168 @@ export async function reopenApplication(
 }
 
 
+
+export async function registerVolunteerAssisted(data: {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  email: string;
+  dateOfBirth: string;
+  areaId: string;
+  areaName: string;
+  branchId: string;
+  branchName: string;
+  skills: string[];
+  availability: string[];
+  languages: string[];
+  motivation?: string;
+  emergencyContact: { name: string; relationship: string; phone: string };
+  consentAgreed: boolean;
+  photoUrl?: string;
+  idPhotoUrl?: string;
+}): Promise<{ user: User; application: Application }> {
+  await delay(400, 800);
+  const currentUser = store.getCurrentUser();
+  if (!currentUser) throw new Error('Not authenticated');
+
+  const now = new Date().toISOString();
+  const userId = `usr-assisted-${Date.now()}`;
+  const username = `${data.firstName.toLowerCase()}.${data.lastName.toLowerCase()}.${Math.floor(10 + Math.random() * 90)}`;
+  const fullName = `${data.firstName} ${data.lastName}`.trim();
+
+  // 1. Create invited/unverified user
+  const newUser: User = {
+    id: userId,
+    username,
+    firstName: data.firstName,
+    lastName: data.lastName,
+    phone: data.phone,
+    email: data.email,
+    passwordHash: 'Demo@1234',
+    role: 'applicant',
+    accountStatus: 'unverified',
+    areaId: data.areaId,
+    areaName: data.areaName,
+    branchId: data.branchId,
+    branchName: data.branchName,
+    scope: { unitId: data.branchId, unitName: data.branchName, level: 'own' },
+    createdAt: now,
+  };
+
+  // 2. Create staff-assisted application
+  const appId = `app-staff-${Date.now()}`;
+  const staffName = `${currentUser.firstName} ${currentUser.lastName}`.trim() || currentUser.username;
+
+  const newApp: Application = {
+    id: appId,
+    userId,
+    status: 'accepted',
+    source: 'staff_assisted',
+    createdBy: currentUser.id,
+    createdByName: staffName,
+    areaId: data.areaId,
+    areaName: data.areaName,
+    branchId: data.branchId,
+    branchName: data.branchName,
+    submittedAt: now,
+    reviewedBy: currentUser.id,
+    reviewedAt: now,
+    decisionReason: `Staff-assisted registration completed by ${staffName}. Verified identity documentation and volunteer agreement.`,
+    paymentDeadline: daysAhead(7, 12, 0),
+    notes: [
+      {
+        id: `note-${Date.now()}`,
+        authorId: currentUser.id,
+        authorName: staffName,
+        createdAt: now,
+        content: `Assisted registration intake completed. Consent confirmed.`,
+      },
+    ],
+    formData: {
+      fullName,
+      phone: data.phone,
+      dateOfBirth: data.dateOfBirth,
+      area: `${data.branchName}, ${data.areaName}`,
+      areaId: data.areaId,
+      areaName: data.areaName,
+      branchId: data.branchId,
+      branchName: data.branchName,
+      skills: data.skills,
+      availability: data.availability,
+      motivation: data.motivation || 'Community volunteer registration via staff-assisted intake.',
+      languages: data.languages,
+      emergencyContact: data.emergencyContact,
+      consentAgreed: data.consentAgreed,
+      photoUrl: data.photoUrl,
+      idPhotoUrl: data.idPhotoUrl,
+    },
+  };
+
+  // 3. Create payment record in waiting status
+  const newPayment = {
+    id: `pay-staff-${Date.now()}`,
+    userId,
+    applicationId: appId,
+    amount: 200,
+    currency: 'ETB' as const,
+    telebirrReference: `TB-ASST-${Math.floor(1000 + Math.random() * 9000)}`,
+    status: 'waiting' as const,
+    createdAt: now,
+    payerName: fullName,
+    payerPhone: data.phone,
+    branchId: data.branchId,
+    branchName: data.branchName,
+    areaId: data.areaId,
+    areaName: data.areaName,
+  };
+
+  // 4. Invitation email in preview inbox with link to set password
+  const inviteToken = `inv-${Math.floor(100000 + Math.random() * 900000)}`;
+  const inviteEmail = {
+    id: `em-inv-${Date.now()}`,
+    to: data.email,
+    toName: fullName,
+    subject: `You have been registered for the VTS Volunteer Corps by ${staffName}`,
+    category: 'verification' as const,
+    sentAt: now,
+    read: false,
+    code: inviteToken,
+    body: `Dear ${fullName},\n\n${staffName} has registered you as a candidate for the VTS Volunteer Corps at ${data.branchName}.\n\nPlease set your account password and review your volunteer profile using the link below:\n\nOnce set up, your registration fee can be settled via Telebirr or in-person at the branch desk.\n\nWarm regards,\nVTS Operations`,
+    actionLabel: 'Set Password & View Profile',
+    actionUrl: `/reset-password?token=${inviteToken}&email=${encodeURIComponent(data.email)}`,
+  };
+
+  // 5. Send SMS notification
+  const inviteSms = {
+    id: `sms-${Date.now()}`,
+    toPhone: data.phone,
+    toName: fullName,
+    category: 'application' as const,
+    body: `VTS Corps: ${staffName} has registered you for the volunteer corps. Check your email ${data.email} to set your password and activate your pass.`,
+    sentAt: now,
+    read: false,
+  };
+
+  store.setState((prev) => ({
+    ...prev,
+    users: [newUser, ...prev.users],
+    applications: [newApp, ...prev.applications],
+    payments: [newPayment, ...prev.payments],
+    emails: [inviteEmail, ...prev.emails],
+    smsMessages: [inviteSms, ...(prev.smsMessages || [])],
+    activityLog: [
+      {
+        id: `log-${Date.now()}`,
+        actorId: currentUser.id,
+        actorName: staffName,
+        actorRole: currentUser.role,
+        action: `Assisted registration of volunteer: ${fullName}`,
+        subject: `Application #${appId}`,
+        createdAt: now,
+      },
+      ...prev.activityLog,
+    ],
+  }));
+
+  return { user: newUser, application: newApp };
+}

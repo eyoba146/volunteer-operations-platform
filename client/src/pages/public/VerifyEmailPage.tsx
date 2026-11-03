@@ -1,33 +1,40 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams, useNavigate, Link } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import * as api from '../../api';
 import { useAuth } from '../../context/AuthContext';
-import { Button } from '../../components/ui';
+import { PageShell, Button, Raised, Panel, TopoBackdrop } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
-import { Envelope, ArrowClockwise, Check, ArrowRight } from '@phosphor-icons/react';
+import { Envelope, ArrowRight } from '@phosphor-icons/react';
 import { DemoEmailInbox } from '../../components/demo/DemoEmailInbox';
 
 export const VerifyEmailPage: React.FC = () => {
-  const { refreshUser } = useAuth();
   const [searchParams] = useSearchParams();
-  const [email, setEmail] = useState(searchParams.get('email') || '');
-  const [code, setCode] = useState(searchParams.get('code') || '');
+  const emailParam = searchParams.get('email') || '';
+  const codeParam = searchParams.get('code') || '';
+
+  const [email] = useState(emailParam);
+  const [code, setCode] = useState(codeParam);
   const [isLoading, setIsLoading] = useState(false);
   const [isResending, setIsResending] = useState(false);
-  const [resendCountdown, setResendCountdown] = useState(60);
   const [errorMessage, setErrorMessage] = useState('');
+  const [resendCountdown, setResendCountdown] = useState(0);
   const [emailInboxOpen, setEmailInboxOpen] = useState(false);
 
+  const { refreshUser } = useAuth();
   const navigate = useNavigate();
   const toast = useToast();
 
   useEffect(() => {
-    let timer: any;
-    if (resendCountdown > 0) {
-      timer = setInterval(() => {
-        setResendCountdown((prev) => prev - 1);
-      }, 1000);
+    if (codeParam) {
+      setCode(codeParam);
     }
+  }, [codeParam]);
+
+  useEffect(() => {
+    if (resendCountdown <= 0) return;
+    const timer = setInterval(() => {
+      setResendCountdown((prev) => prev - 1);
+    }, 1000);
     return () => clearInterval(timer);
   }, [resendCountdown]);
 
@@ -44,118 +51,121 @@ export const VerifyEmailPage: React.FC = () => {
     try {
       await api.verifyEmail(email, code.trim());
       await refreshUser();
-      toast.success('Your email is confirmed. Welcome to the trail!');
-      navigate('/applicant/apply');
+      toast.success('Your email has been verified. Welcome!');
+      navigate('/applicant/status');
     } catch (err: any) {
-      setErrorMessage(err.message || 'The verification code you entered is invalid or expired.');
+      setErrorMessage(err.message || 'Verification failed. Please check the code and try again.');
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleResend = async () => {
-    if (resendCountdown > 0 || isResending) return;
+    if (resendCountdown > 0) return;
     setIsResending(true);
     setErrorMessage('');
 
     try {
-      const newCode = await api.resendVerificationCode(email);
+      const codeResult = await api.resendVerificationCode(email);
       setResendCountdown(60);
-      setCode(newCode);
-      toast.success(`A fresh 6-digit code (${newCode}) has been dispatched.`);
+      toast.success(
+        `New verification code (${codeResult}) generated. Check the preview email inbox.`,
+        'Code Resent'
+      );
     } catch (err: any) {
-      setErrorMessage(err.message || 'Could not resend verification email.');
+      setErrorMessage(err.message || 'Could not resend verification code. Please try again.');
     } finally {
       setIsResending(false);
     }
   };
 
   return (
-    <div className="max-w-lg mx-auto px-4 sm:px-6 py-12 md:py-16 space-y-8">
-      {/* Header */}
-      <div className="space-y-2 border-b-2 border-ink-primary pb-6 text-center">
-        <h1 className="font-display font-black text-5xl sm:text-6xl uppercase tracking-tight text-ink-primary leading-none">
-          Confirm Your Email
-        </h1>
-        <p className="font-sans text-sm sm:text-base text-ink-secondary">
-          We sent a 6-digit code to <strong className="font-mono text-ink-primary">{email || 'your email'}</strong>.
-        </p>
+    <PageShell page="public/verify-email" signature="none:verification-form">
+      <div className="max-w-lg mx-auto px-4 sm:px-6 py-10 md:py-14 space-y-6">
+        {/* Header */}
+        <div className="space-y-2 pb-6 text-center">
+          <h1 className="font-display font-bold text-3xl sm:text-4xl tracking-tight text-ink-primary leading-tight">
+            Confirm your email
+          </h1>
+          <p className="font-sans text-base text-ink-secondary">
+            Enter the 6-digit verification code sent to{' '}
+            <strong className="text-ink-primary">{email || 'your email'}</strong>.
+          </p>
+        </div>
+
+        {/* Verification Card */}
+        <Raised className="relative overflow-hidden p-6 sm:p-8 space-y-6">
+          <TopoBackdrop color="#16A34A" opacity={0.05} />
+          <div className="relative z-10">
+            <form onSubmit={handleVerify} className="space-y-5">
+              {errorMessage && (
+                <div className="p-3.5 bg-rose-50 rounded-[8px] text-rose-700 text-sm font-semibold">
+                  {errorMessage}
+                </div>
+              )}
+
+              <div className="space-y-2">
+                <label className="block font-sans text-sm font-bold tracking-tight text-ink-primary">
+                  6-digit verification code
+                </label>
+                <input
+                  type="text"
+                  maxLength={6}
+                  value={code}
+                  onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
+                  placeholder="000000"
+                  className="w-full text-center font-sans text-3xl sm:text-4xl tracking-widest font-bold py-3 px-4 rounded-[8px] bg-white text-ink-primary focus:outline-none focus:ring-2 focus:ring-ink-primary/20"
+                  autoFocus
+                  required
+                />
+              </div>
+
+              <Button
+                type="submit"
+                variant="primary"
+                size="lg"
+                className="w-full"
+                isLoading={isLoading}
+                rightIcon={<ArrowRight className="w-5 h-5" weight="bold" />}
+              >
+                Confirm and continue
+              </Button>
+
+              {/* Quick Evaluator Simulator Helper */}
+              <Panel padding="sm" className="flex items-center justify-between text-[13px]">
+                <span className="font-sans font-semibold text-ink-secondary">
+                  Need to see the simulated email?
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setEmailInboxOpen(true)}
+                  className="text-ink-primary font-bold hover:underline flex items-center gap-1 cursor-pointer"
+                >
+                  <Envelope className="w-4 h-4 text-role-applicant" weight="bold" />
+                  <span>Preview emails</span>
+                </button>
+              </Panel>
+
+              <div className="pt-2 text-center text-[13px] font-sans text-ink-secondary flex items-center justify-between">
+                <span>Did not receive code?</span>
+                <button
+                  type="button"
+                  onClick={handleResend}
+                  disabled={resendCountdown > 0 || isResending}
+                  className="font-bold text-ink-primary disabled:text-ink-tertiary cursor-pointer hover:underline"
+                >
+                  {resendCountdown > 0 ? `Resend in ${resendCountdown}s` : 'Resend code'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </Raised>
+
+        <DemoEmailInbox
+          isOpen={emailInboxOpen}
+          onClose={() => setEmailInboxOpen(false)}
+        />
       </div>
-
-      {/* Ticket Container */}
-      <div
-        className="bg-white border-2 border-ink-primary p-6 sm:p-8 shadow-ticket space-y-6"
-        style={{
-          clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)',
-        }}
-      >
-        <form onSubmit={handleVerify} className="space-y-6">
-          {errorMessage && (
-            <div className="p-4 bg-red-50 border-2 border-role-teamlead text-role-teamlead text-xs font-sans font-bold">
-              {errorMessage}
-            </div>
-          )}
-
-          <div className="space-y-2 text-center">
-            <label className="block font-sans text-xs font-bold uppercase tracking-tight text-ink-primary">
-              6-Digit Verification Code
-            </label>
-            <input
-              type="text"
-              maxLength={6}
-              value={code}
-              onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
-              placeholder="000000"
-              className="w-full text-center font-mono text-3xl sm:text-4xl tracking-widest font-black py-3 px-4 border-2 border-ink-primary bg-canvas-inset text-ink-primary focus:border-role-applicant outline-none"
-              autoFocus
-              required
-            />
-          </div>
-
-          <Button
-            type="submit"
-            variant="saffron"
-            size="lg"
-            className="w-full text-base font-bold"
-            isLoading={isLoading}
-            rightIcon={<ArrowRight className="w-4 h-4" weight="bold" />}
-          >
-            Confirm & Continue
-          </Button>
-
-          {/* Quick Evaluator Simulator Helper */}
-          <div className="p-3 bg-canvas-subdued border border-border flex items-center justify-between text-xs">
-            <span className="font-sans font-bold text-ink-secondary">
-              Need to see the simulated email?
-            </span>
-            <button
-              type="button"
-              onClick={() => setEmailInboxOpen(true)}
-              className="text-role-applicant font-bold hover:underline flex items-center gap-1 cursor-pointer"
-            >
-              <Envelope className="w-4 h-4" weight="bold" />
-              <span>Preview Emails</span>
-            </button>
-          </div>
-
-          <div className="pt-2 text-center text-xs font-sans text-ink-secondary border-t border-border flex items-center justify-between">
-            <span>Did not receive code?</span>
-            <button
-              type="button"
-              onClick={handleResend}
-              disabled={resendCountdown > 0 || isResending}
-              className="font-bold text-ink-primary disabled:text-ink-tertiary cursor-pointer hover:underline"
-            >
-              {resendCountdown > 0 ? `Resend in ${resendCountdown}s` : 'Resend Code'}
-            </button>
-          </div>
-        </form>
-      </div>
-
-      <DemoEmailInbox
-        isOpen={emailInboxOpen}
-        onClose={() => setEmailInboxOpen(false)}
-      />
-    </div>
+    </PageShell>
   );
 };

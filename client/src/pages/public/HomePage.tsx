@@ -1,367 +1,612 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'motion/react';
+import {
+  PageShell,
+  Button,
+  TrailLine,
+  TicketPass,
+  Raised,
+  Panel,
+  TopoBackdrop,
+} from '../../components/ui';
 import {
   ArrowRight,
   ShieldCheck,
-  Calendar,
-  MapPin,
-  Clock,
-  Users,
   CheckCircle,
+  Calendar,
+  Users,
+  Clock,
   Sparkle,
-  TrendUp,
 } from '@phosphor-icons/react';
-import { Button, TrailLine, TicketPass, StatNumber } from '../../components/ui';
 
 export const HomePage: React.FC = () => {
   const navigate = useNavigate();
+  const [activeRankIndex, setActiveRankIndex] = useState(0);
 
-  const RANKS_TRAIL = [
+  const RANKS = [
     {
-      altitude: '0 hrs',
-      title: 'Member',
-      badge: 'Basecamp',
-      color: 'bg-role-volunteer text-white',
-      desc: 'Pay once via Telebirr. Unlock your volunteer ID pass, join upcoming activities, and record attendance with short check-in codes.',
-      unlocks: ['Official Volunteer ID Pass', 'Activity Roster Access', 'Duty Insurance Coverage'],
+      id: 'volunteer',
+      name: 'Volunteer',
+      hours: '0 hrs',
+      activities: '1 activity',
+      rating: 'No minimum',
+      course: 'Volunteer Orientation',
+      roleColor: '#D97706',
+      badge: 'Volunteer',
+      summary:
+        'The starting waypoint on the trail. Complete your registration, receive your digital volunteer pass, and join your first community project.',
+      unlocks: [
+        'Personal Volunteer Pass and QR verification code',
+        'Enrollment in all public field and logistics activities',
+        'Record of verified volunteer service hours',
+        'Eligibility for community training workshops',
+      ],
     },
     {
-      altitude: '60 hrs',
-      title: 'Senior Member',
-      badge: 'Elevation 60m',
-      color: 'bg-amber-600 text-white',
-      desc: 'Complete 8 activities with a 4.0+ rating and take the safety workshop. Unlocks specialized tasks and peer mentorship.',
-      unlocks: ['Field Leadership Prep', 'Senior Volunteer Pin', 'Specialized Projects'],
+      id: 'senior_volunteer',
+      name: 'Senior Volunteer',
+      hours: '30 hrs',
+      activities: '5 activities',
+      rating: '4.2 stars',
+      course: 'Field Safety & First Aid',
+      roleColor: '#16A34A',
+      badge: 'Senior Volunteer',
+      summary:
+        'A dedicated waypoint reached through consistent service. Senior volunteers take on priority tasks, mentor newcomers, and assist with activity logistics.',
+      unlocks: [
+        'Priority enrollment for high-demand community initiatives',
+        'Senior Volunteer service certificate',
+        'Eligibility to co-lead activity check-in stations',
+        'Mentorship recognition on volunteer record',
+      ],
     },
     {
-      altitude: '150 hrs',
-      title: 'Team Lead',
-      badge: 'Elevation 150m',
-      color: 'bg-role-teamlead text-white',
-      desc: 'Lead field crews. Organize activities, generate 4-digit check-in pins, verify attendance hours, and rate volunteer work.',
-      unlocks: ['Create & Run Activities', 'Approve Volunteer Hours', 'Recommend Promotions'],
+      id: 'team_lead',
+      name: 'Team Lead',
+      hours: '75 hrs',
+      activities: '12 activities',
+      rating: '4.5 stars',
+      course: 'Team Leadership & Coordination',
+      roleColor: '#DC2626',
+      badge: 'Team Lead',
+      summary:
+        'An operational leadership waypoint. Team Leads create activities, supervise field rosters, verify participant attendance, and recommend outstanding volunteers.',
+      unlocks: [
+        'Creation and scheduling of field activities and workshops',
+        'Direct check-in roster management and session code issuance',
+        'Single and bulk service hours approval authority',
+        'Authority to submit promotion recommendations',
+      ],
     },
     {
-      altitude: '300 hrs',
-      title: 'Manager',
-      badge: 'Summit 300m',
-      color: 'bg-role-manager text-white',
-      desc: 'Summit the trail. Review incoming applicants, decide promotion boards, schedule regional programs, and guide city coordinators.',
-      unlocks: ['Approve Promotions', 'Applicant Review Board', 'Regional Program Planning'],
+      id: 'manager',
+      name: 'Manager',
+      hours: '150 hrs',
+      activities: '25 activities',
+      rating: '4.8 stars',
+      course: 'Operations & Community Strategy',
+      roleColor: '#0D9488',
+      badge: 'Manager',
+      summary:
+        'The summit waypoint for program directors. Managers oversee all applications, approve promotions, direct regional activities, and analyze impact reports.',
+      unlocks: [
+        'Full review and decision authority on new applicant queues',
+        'Final approval authority on Team Lead promotion recommendations',
+        'Regional activity oversight across all program cities',
+        'Comprehensive operational reporting and export capabilities',
+      ],
     },
   ];
 
   const JOIN_STEPS = [
     {
       num: '01',
-      title: 'Sign Up Fast',
-      detail: 'Register with your email and confirm your 6-digit verification code. No long paperwork.',
+      title: 'Create your account',
+      detail:
+        'Provide your basic contact details and area. Your account is created in 60 seconds with no complex requirements.',
     },
     {
       num: '02',
-      title: 'Tell Us Your Skills',
-      detail: 'Pick your interests—from environmental planting to logistics, first aid, or youth tutoring.',
+      title: 'Submit your volunteer application',
+      detail:
+        'Share your skills, availability, and residential area. A program manager will review your submission promptly.',
     },
     {
       num: '03',
-      title: 'Pay Once via Telebirr',
-      detail: 'A one-time ETB 200 fee covers your duty insurance and printable volunteer ID pass.',
+      title: 'Receive your verified pass',
+      detail:
+        'Upon acceptance, complete your one-time registration pass. You immediately become an active Volunteer with your QR pass.',
     },
     {
       num: '04',
-      title: 'Hit the Trail',
-      detail: 'Show up at field activities, enter your check-in code, and watch your hours climb automatically.',
+      title: 'Join activities and log hours',
+      detail:
+        'Browse open community activities in your city, check in with the 4-digit code, and watch your hours count toward higher ranks.',
     },
   ];
 
-  const UPCOMING_ACTIVITIES = [
+  const FEATURED_ACTIVITY = {
+    title: 'Meskel Square Community Clean-up & Waste Sort',
+    city: 'Addis Ababa',
+    date: 'Today · 8:00 AM – 12:00 PM',
+    spots: '18 of 25 spots filled',
+    hours: '4.0 verified hours',
+    description:
+      'Quarterly beautification and waste segregation initiative around Meskel Square and the Exhibition Center.',
+  };
+
+  const STRIP_ACTIVITIES = [
     {
-      title: 'Meskel Square Clean-up & Waste Audit',
+      title: 'Bole High School Digital Literacy Mentoring',
+      tag: 'Youth & Education',
       city: 'Addis Ababa',
-      date: 'Sat, Oct 31 • 8:00 AM',
-      spots: '25 spots left',
-      variant: 'volunteer' as const,
-      tag: 'Environment',
-    },
-    {
-      title: 'Hawassa Lake Shore Plastic Clearance',
-      city: 'Hawassa',
-      date: 'Sat, Nov 07 • 7:30 AM',
-      spots: '18 spots left',
+      date: 'Today · 1:30 PM – 5:00 PM',
+      spots: '12 of 15 spots filled',
       variant: 'applicant' as const,
-      tag: 'Water Care',
+      widthClass: 'min-w-[280px] max-w-[320px]',
     },
     {
-      title: 'Entoto Ridge Mountain Trail Care',
+      title: 'Entoto Park Mountain Trail Tree Planting',
+      tag: 'Environment',
       city: 'Addis Ababa',
-      date: 'Sun, Nov 15 • 9:00 AM',
-      spots: '12 spots left',
+      date: 'Next Saturday · 8:00 AM – 1:00 PM',
+      spots: '24 of 30 spots filled',
       variant: 'teamlead' as const,
-      tag: 'Trail Restoration',
+      widthClass: 'min-w-[320px] max-w-[360px]',
     },
     {
-      title: 'Adama Youth Center Library Sorting',
-      city: 'Adama',
-      date: 'Sat, Nov 21 • 10:00 AM',
-      spots: '30 spots left',
+      title: 'Bishoftu Clean Water Facility Support',
+      tag: 'Public Health',
+      city: 'Bishoftu',
+      date: 'Next Sunday · 9:00 AM – 3:00 PM',
+      spots: '8 of 20 spots filled',
       variant: 'manager' as const,
-      tag: 'Education',
+      widthClass: 'min-w-[290px] max-w-[330px]',
+    },
+    {
+      title: 'Adama Youth Center Library Organization',
+      tag: 'Community Education',
+      city: 'Adama',
+      date: 'In 2 weeks · 9:00 AM – 1:00 PM',
+      spots: '15 of 20 spots filled',
+      variant: 'volunteer' as const,
+      widthClass: 'min-w-[300px] max-w-[340px]',
     },
   ];
+
+  const currentRank = RANKS[activeRankIndex];
 
   return (
-    <div className="space-y-0 selection:bg-black selection:text-white">
-      {/* 1. HERO: Full-Bleed Saffron Field with Giant Cropped Condensed Headline */}
-      <section className="relative bg-role-applicant text-ink-primary overflow-hidden border-b-4 border-ink-primary pt-12 md:pt-20 pb-16 md:pb-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto space-y-8 relative z-10">
-          {/* Top Tagline */}
-          <div className="flex items-center gap-2">
-            <span className="w-3 h-3 bg-ink-primary" />
-            <span className="font-display text-xl sm:text-2xl font-black uppercase tracking-tight">
-              Volunteer Tracking System
-            </span>
-          </div>
+    <PageShell page="public/home" signature="TopoBackdrop, TrailMeter, TicketCard">
+      <div className="space-y-0 text-ink-primary">
+        {/* 1. HERO: Saffron Field with High-Contrast Editorial Typography */}
+        <section className="relative overflow-hidden bg-role-applicant text-ink-primary pt-12 md:pt-20 pb-16 md:pb-20 px-4 sm:px-6 lg:px-8">
+          <TopoBackdrop color="#111111" opacity={0.06} />
+          <div className="relative z-10 max-w-7xl mx-auto space-y-6">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white/70 rounded-full text-sm font-semibold">
+              <span className="w-2 h-2 rounded-full bg-ink-primary" />
+              <span>Volunteer Tracking System</span>
+            </div>
 
-          {/* Giant Condensed Headline Cropped/Bleeding Edge */}
-          <div className="overflow-visible">
-            <h1 className="font-display font-black text-6xl sm:text-8xl md:text-9xl tracking-tighter uppercase leading-[0.88] max-w-5xl">
-              YOUR TIME COUNTS. <br />
-              <span className="text-white drop-shadow-sm">NOW IT SHOWS.</span>
+            <h1 className="font-display font-bold text-4xl sm:text-6xl md:text-7xl tracking-tight leading-[1.02] max-w-4xl text-ink-primary">
+              Your time counts. <br />
+              <span className="inline-block bg-ink-primary text-white px-3 py-0.5 rounded-[8px] mt-1">
+                Now it shows.
+              </span>
             </h1>
-          </div>
 
-          <p className="font-sans text-lg sm:text-2xl text-ink-primary font-medium max-w-2xl leading-snug pt-2">
-            Volunteering is a journey up a trail. Check in at field projects, earn verified hours, and climb four ranks from Member to Manager.
-          </p>
+            <p className="font-sans text-lg sm:text-xl text-ink-primary font-medium max-w-2xl leading-relaxed">
+              Volunteering is a journey up a trail. Check in at field projects, earn verified hours, and advance from Volunteer to Manager.
+            </p>
 
-          {/* Action Row */}
-          <div className="pt-4 flex flex-wrap items-center gap-4">
-            <Button
-              variant="primary"
-              size="xl"
-              onClick={() => navigate('/register')}
-              rightIcon={<ArrowRight className="w-5 h-5" weight="bold" />}
-            >
-              Start Your Trail
-            </Button>
-            <Button
-              variant="secondary"
-              size="xl"
-              onClick={() => navigate('/check-certificate')}
-              leftIcon={<ShieldCheck className="w-5 h-5 text-role-volunteer" weight="bold" />}
-            >
-              Verify Certificate
-            </Button>
-          </div>
-        </div>
-
-        {/* Trail Line Drawing Across Hero Base */}
-        <div className="max-w-7xl mx-auto mt-8 relative z-10">
-          <TrailLine
-            currentWaypointIndex={1}
-            strokeColor="#111315"
-            showLabels={false}
-            className="opacity-90"
-          />
-        </div>
-      </section>
-
-      {/* 2. THE ASCENDING TRAIL: 4 Ranks as Waypoints on a Mountain Route */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-12">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b-2 border-ink-primary pb-6">
-          <div>
-            <span className="font-sans text-xs font-bold text-ink-tertiary uppercase tracking-wider block">
-              Ascending Ranks
-            </span>
-            <h2 className="font-display text-4xl sm:text-5xl md:text-6xl font-black tracking-tight uppercase leading-none mt-1">
-              The Four Altitude Stations
-            </h2>
-          </div>
-          <p className="font-sans text-sm sm:text-base text-ink-secondary max-w-md">
-            Rank is not a title; it is altitude earned through hours on the ground and verified by team leads.
-          </p>
-        </div>
-
-        {/* Route Line Across All 4 Ranks */}
-        <div className="hidden md:block">
-          <TrailLine
-            waypoints={[
-              { id: '1', label: 'Member', altitude: '0 hrs • Basecamp' },
-              { id: '2', label: 'Senior Member', altitude: '60 hrs • 8 Acts' },
-              { id: '3', label: 'Team Lead', altitude: '150 hrs • 20 Acts' },
-              { id: '4', label: 'Manager', altitude: '300 hrs • Summit' },
-            ]}
-            currentWaypointIndex={3}
-            strokeColor="#1E824C"
-          />
-        </div>
-
-        {/* 4 Ticket-Styled Rank Passes */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 pt-4">
-          {RANKS_TRAIL.map((rank, idx) => (
-            <div
-              key={rank.title}
-              className="bg-white border-2 border-ink-primary shadow-ticket p-6 space-y-5 flex flex-col justify-between hover:-translate-y-1 transition-transform"
-              style={{
-                clipPath: 'polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)',
-              }}
-            >
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="font-display text-3xl font-black text-ink-primary">
-                    0{idx + 1}
-                  </span>
-                  <span className={`font-mono text-xs px-2 py-0.5 font-bold ${rank.color}`}>
-                    {rank.altitude}
-                  </span>
-                </div>
-
-                <div>
-                  <h3 className="font-display text-3xl font-black uppercase text-ink-primary leading-tight">
-                    {rank.title}
-                  </h3>
-                  <span className="font-sans text-xs font-bold text-ink-tertiary">
-                    {rank.badge}
-                  </span>
-                </div>
-
-                <p className="font-sans text-xs text-ink-secondary leading-relaxed">
-                  {rank.desc}
+            {/* Access Chooser: Two clear pathways */}
+            <div className="pt-2 grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl">
+              {/* Pathway 1: Community Volunteers */}
+              <div className="p-5 rounded-[16px] bg-white text-left space-y-3 shadow-xs">
+                <span className="font-sans text-[12px] font-bold text-role-volunteer uppercase tracking-wider block">
+                  Community volunteers
+                </span>
+                <h2 className="font-display text-xl font-bold text-ink-primary">
+                  I want to volunteer
+                </h2>
+                <p className="font-sans text-[13px] text-ink-secondary leading-relaxed">
+                  Join community service projects, log your verified hours, and advance your rank along the trail.
                 </p>
+                <div className="pt-1 flex flex-wrap gap-2.5">
+                  <Button
+                    variant="primary"
+                    size="md"
+                    onClick={() => navigate('/register')}
+                    rightIcon={<ArrowRight className="w-4 h-4" weight="bold" />}
+                  >
+                    Register as volunteer
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    size="md"
+                    onClick={() => navigate('/login')}
+                  >
+                    Volunteer sign in
+                  </Button>
+                </div>
               </div>
 
-              <div className="pt-4 border-t-2 border-dashed border-border space-y-2">
-                <span className="font-sans text-[11px] font-bold text-ink-primary uppercase tracking-tight block">
-                  What this unlocks:
+              {/* Pathway 2: Program Staff */}
+              <div className="p-5 rounded-[16px] bg-white text-left space-y-3 shadow-xs">
+                <span className="font-sans text-[12px] font-bold text-role-manager uppercase tracking-wider block">
+                  Operations & leadership
                 </span>
-                <ul className="space-y-1">
-                  {rank.unlocks.map((u) => (
-                    <li key={u} className="font-sans text-xs text-ink-secondary flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 bg-ink-primary shrink-0" />
-                      <span>{u}</span>
-                    </li>
-                  ))}
-                </ul>
+                <h2 className="font-display text-xl font-bold text-ink-primary">
+                  I work with the program
+                </h2>
+                <p className="font-sans text-[13px] text-ink-secondary leading-relaxed">
+                  Team leads, managers, finance officers, and program administrators managing field operations.
+                </p>
+                <div className="pt-1 space-y-2">
+                  <Button
+                    variant="secondary"
+                    size="md"
+                    onClick={() => navigate('/login')}
+                    rightIcon={<ArrowRight className="w-4 h-4" />}
+                  >
+                    Staff sign in
+                  </Button>
+                  <p className="font-sans text-[12px] text-ink-secondary">
+                    Staff accounts are created by an administrator.
+                  </p>
+                </div>
               </div>
             </div>
-          ))}
-        </div>
-      </section>
 
-      {/* 3. PINNED HORIZONTAL TRACK: 4 Steps to Join */}
-      <section className="bg-canvas-subdued border-y-2 border-ink-primary py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto space-y-10">
-          <div className="space-y-2">
-            <span className="font-sans text-xs font-bold text-ink-tertiary uppercase tracking-wider block">
-              How To Join
-            </span>
-            <h2 className="font-display text-4xl sm:text-5xl font-black uppercase tracking-tight leading-none">
-              Four Steps. Zero Friction.
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {JOIN_STEPS.map((step) => (
-              <div
-                key={step.num}
-                className="bg-white border-2 border-ink-primary p-6 space-y-4"
+            {/* Secondary Utility Actions */}
+            <div className="pt-1 flex items-center gap-3">
+              <Button
+                variant="secondary"
+                size="md"
+                onClick={() => navigate('/check-certificate')}
+                leftIcon={<ShieldCheck className="w-4 h-4 text-role-volunteer" weight="bold" />}
               >
-                <span className="font-display text-6xl font-black text-role-applicant leading-none block">
-                  {step.num}
-                </span>
-                <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
-                  {step.title}
+                Verify a certificate
+              </Button>
+            </div>
+
+            {/* Trail Line */}
+            <div className="pt-6">
+              <TrailLine
+                currentWaypointIndex={1}
+                strokeColor="#111111"
+                showLabels={false}
+                className="opacity-90 py-2"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* 2. THE TRAIL RANKS: Interactive Waypoint with Single Rich Detail Panel (NO 4-box row) */}
+        <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-10">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6">
+            <div className="space-y-1">
+              <span className="text-sm font-bold text-ink-secondary">
+                Four stages of advancement
+              </span>
+              <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary">
+                Ranks and verified milestones
+              </h2>
+            </div>
+            <p className="text-sm sm:text-base text-ink-secondary max-w-md leading-relaxed">
+              Select a rank along the trail to see what it requires and the verified capabilities it unlocks.
+            </p>
+          </div>
+
+          {/* Interactive Waypoint Trail Line */}
+          <Raised padding="md">
+            <TrailLine
+              waypoints={RANKS.map((r, i) => ({
+                id: r.id,
+                label: r.name,
+                threshold: r.hours,
+                isCompleted: i <= activeRankIndex,
+                isCurrent: i === activeRankIndex,
+              }))}
+              currentWaypointIndex={activeRankIndex}
+              strokeColor={currentRank.roleColor}
+              onSelectWaypoint={(idx) => setActiveRankIndex(idx)}
+            />
+
+            {/* Interactive Rank Selector Buttons for Mobile */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-4 mt-4">
+              {RANKS.map((r, idx) => (
+                <button
+                  key={r.id}
+                  type="button"
+                  onClick={() => setActiveRankIndex(idx)}
+                  className={`py-2 px-3 text-left rounded-[8px] transition-all text-sm cursor-pointer ${
+                    activeRankIndex === idx
+                      ? 'bg-[#F1F3F6] font-bold text-ink-primary'
+                      : 'bg-transparent text-ink-secondary hover:text-ink-primary hover:bg-[#F7F8FA]'
+                  } `}
+                >
+                  <div className="flex items-center gap-1.5">
+                    <span
+                      className="w-2 h-2 rounded-full shrink-0"
+                      style={{ backgroundColor: r.roleColor }}
+                    />
+                    <span>{r.name}</span>
+                  </div>
+                  <div className="text-[13px] font-normal text-ink-secondary mt-0.5">
+                    {r.hours}
+                  </div>
+                </button>
+              ))}
+            </div>
+          </Raised>
+
+          {/* Single Comprehensive Detail Card for Active Rank */}
+          <Raised padding="lg">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+              {/* Left Column: Rank Identity & Thresholds */}
+              <div className="lg:col-span-5 space-y-4">
+                <div className="flex items-center gap-2">
+                  <span
+                    className="px-2.5 py-0.5 rounded-[4px] text-[13px] font-bold text-white"
+                    style={{ backgroundColor: currentRank.roleColor }}
+                  >
+                    {currentRank.badge}
+                  </span>
+                  <span className="text-sm font-semibold text-ink-secondary">
+                    Stage {activeRankIndex + 1} of 4
+                  </span>
+                </div>
+
+                <h3 className="font-display text-3xl sm:text-4xl font-bold text-ink-primary tracking-tight">
+                  {currentRank.name}
                 </h3>
-                <p className="font-sans text-xs text-ink-secondary leading-relaxed">
-                  {step.detail}
+
+                <p className="text-base text-ink-secondary leading-relaxed">
+                  {currentRank.summary}
                 </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* 4. STAGGERED RAIL: Upcoming Activities as Tickets */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-10">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b-2 border-ink-primary pb-6">
-          <div className="space-y-1">
-            <span className="font-sans text-xs font-bold text-ink-tertiary uppercase tracking-wider block">
-              Ready To Volunteer
-            </span>
-            <h2 className="font-display text-4xl sm:text-5xl font-black uppercase tracking-tight leading-none">
-              Upcoming Field Activities
+                <div className="pt-2 space-y-2.5 text-sm">
+                  <div className="flex justify-between py-1">
+                    <span className="text-ink-secondary">Service hours</span>
+                    <span className="font-bold text-ink-primary">{currentRank.hours}</span>
+                  </div>
+                  <div className="flex justify-between py-1">
+                    <span className="text-ink-secondary">Completed activities</span>
+                    <span className="font-bold text-ink-primary">{currentRank.activities}</span>
+                  </div>
+                  <div className="flex justify-between py-1">
+                    <span className="text-ink-secondary">Participant rating</span>
+                    <span className="font-bold text-ink-primary">{currentRank.rating}</span>
+                  </div>
+                  <div className="flex justify-between py-1">
+                    <span className="text-ink-secondary">Training requirement</span>
+                    <span className="font-semibold text-ink-primary text-right max-w-[200px]">
+                      {currentRank.course}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Column: Verified Unlocked Capabilities */}
+              <Panel padding="md" className="lg:col-span-7 space-y-4">
+                <div className="flex items-center gap-2 text-ink-primary font-bold text-base">
+                  <Sparkle className="w-5 h-5 text-role-applicant" weight="fill" />
+                  <span>Verified capabilities unlocked at this rank</span>
+                </div>
+
+                <div className="space-y-3">
+                  {currentRank.unlocks.map((item, idx) => (
+                    <div key={idx} className="flex items-start gap-3 bg-white p-3.5 rounded-[8px]">
+                      <CheckCircle className="w-5 h-5 text-role-volunteer shrink-0 mt-0.5" weight="fill" />
+                      <div>
+                        <p className="text-sm font-semibold text-ink-primary">{item}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="pt-2">
+                  <button
+                    type="button"
+                    onClick={() => navigate('/register')}
+                    className="text-sm font-bold text-ink-primary hover:underline inline-flex items-center gap-1.5 cursor-pointer bg-transparent"
+                  >
+                    <span>Apply to begin with Volunteer status</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </Panel>
+            </div>
+          </Raised>
+        </section>
+
+        {/* 3. HOW TO JOIN: Vertical Numbered Timeline (NO boxes) */}
+        <section className="py-16 md:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div className="lg:col-span-4 space-y-3 sticky top-24">
+              <span className="text-sm font-bold text-ink-secondary">
+                Simple onboarding
+              </span>
+              <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary">
+                How to join the volunteer platform
+              </h2>
+              <p className="text-sm sm:text-base text-ink-secondary leading-relaxed">
+                Every step is clear and straightforward. No physical bureaucracy, no duplicate paperwork.
+              </p>
+              <div className="pt-2">
+                <Button
+                  variant="primary"
+                  size="md"
+                  onClick={() => navigate('/register')}
+                  rightIcon={<ArrowRight className="w-4 h-4" weight="bold" />}
+                >
+                  Start registration
+                </Button>
+              </div>
+            </div>
+
+            <div className="lg:col-span-8 space-y-8 pl-0 lg:pl-6">
+              {JOIN_STEPS.map((step) => (
+                <div
+                  key={step.num}
+                  className="flex items-start gap-6 pb-8 last:pb-0"
+                >
+                  <div className="flex items-center gap-2 shrink-0">
+                    <span className="w-2.5 h-2.5 rounded-full bg-role-applicant" />
+                    <span className="font-display text-4xl sm:text-5xl font-bold text-ink-primary leading-none">
+                      {step.num}
+                    </span>
+                  </div>
+                  <div className="space-y-1.5 pt-1">
+                    <h3 className="font-display text-xl sm:text-2xl font-bold text-ink-primary">
+                      {step.title}
+                    </h3>
+                    <p className="text-sm sm:text-base text-ink-secondary leading-relaxed max-w-xl">
+                      {step.detail}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* 4. UPCOMING ACTIVITIES: One Featured Ticket + Horizontal Scrolling Strip */}
+        <section className="py-16 md:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6">
+            <div className="space-y-1">
+              <span className="text-sm font-bold text-ink-secondary">
+                Community fieldwork
+              </span>
+              <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary">
+                Upcoming field activities
+              </h2>
+            </div>
+            <button
+              type="button"
+              onClick={() => navigate('/register')}
+              className="text-sm font-bold text-ink-primary hover:underline inline-flex items-center gap-1.5 cursor-pointer bg-transparent"
+            >
+              <span>Browse all activities</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Featured Ticket + Horizontal Strip Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+            {/* One Large Featured Ticket Pass */}
+            <div className="lg:col-span-5 flex flex-col">
+              <TicketPass
+                variant="volunteer"
+                title={FEATURED_ACTIVITY.title}
+                subtitle="Featured activity"
+                badge={FEATURED_ACTIVITY.city}
+                stubCode="ACT-FEATURED"
+                className="h-full flex flex-col justify-between"
+                onClick={() => navigate('/register')}
+              >
+                <div className="space-y-3">
+                  <p className="text-sm text-ink-secondary leading-relaxed">
+                    {FEATURED_ACTIVITY.description}
+                  </p>
+
+                  <div className="space-y-1.5 pt-2">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-ink-primary">
+                      <Calendar className="w-4 h-4 text-role-teamlead" weight="bold" />
+                      <span>{FEATURED_ACTIVITY.date}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-ink-secondary">
+                      <Users className="w-4 h-4 text-role-volunteer" weight="bold" />
+                      <span>{FEATURED_ACTIVITY.spots}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-ink-secondary">
+                      <Clock className="w-4 h-4 text-ink-primary" weight="bold" />
+                      <span>{FEATURED_ACTIVITY.hours}</span>
+                    </div>
+                  </div>
+
+                  <div className="pt-2">
+                    <span className="text-sm font-bold text-ink-primary hover:underline inline-flex items-center gap-1">
+                      Sign up for this activity <ArrowRight className="w-4 h-4" />
+                    </span>
+                  </div>
+                </div>
+              </TicketPass>
+            </div>
+
+            {/* Horizontal Scrolling Strip of Tickets with Varied Widths */}
+            <div className="lg:col-span-7 flex flex-col justify-between">
+              <div className="text-sm font-semibold text-ink-secondary mb-2 flex items-center justify-between">
+                <span>More upcoming opportunities</span>
+                <span className="text-[13px] text-ink-secondary">Scroll right →</span>
+              </div>
+
+              <div className="flex gap-4 overflow-x-auto pb-4 pt-1 no-scrollbar">
+                {STRIP_ACTIVITIES.map((act) => (
+                  <div key={act.title} className={` ${act.widthClass} shrink-0`}>
+                    <TicketPass
+                      variant={act.variant}
+                      title={act.title}
+                      subtitle={act.tag}
+                      badge={act.city}
+                      stubCode="ACT-2026"
+                      onClick={() => navigate('/register')}
+                    >
+                      <div className="space-y-2 pt-1 text-[13px]">
+                        <div className="flex items-center gap-1.5 font-semibold text-ink-primary">
+                          <Calendar className="w-4 h-4 text-role-teamlead shrink-0" weight="bold" />
+                          <span className="truncate">{act.date}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5 text-ink-secondary">
+                          <Users className="w-4 h-4 text-role-volunteer shrink-0" weight="bold" />
+                          <span>{act.spots}</span>
+                        </div>
+                      </div>
+                    </TicketPass>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 5. CLOSING CALL TO ACTION: Light Surface with High-Contrast Primary & Secondary Buttons */}
+        <section className="bg-white py-16 md:py-20 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto text-center space-y-5">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#F1F3F6] rounded-full text-[13px] font-semibold text-ink-secondary">
+              <span>Verified community service</span>
+            </div>
+
+            <h2 className="font-display font-bold text-3xl sm:text-5xl tracking-tight text-ink-primary">
+              Ready to hit the trail?
             </h2>
-          </div>
-          <Button
-            variant="secondary"
-            size="md"
-            onClick={() => navigate('/register')}
-            rightIcon={<ArrowRight className="w-4 h-4" />}
-          >
-            Browse All Activities
-          </Button>
-        </div>
 
-        {/* Staggered Grid of Ticket Passes */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {UPCOMING_ACTIVITIES.map((act) => (
-            <TicketPass
-              key={act.title}
-              variant={act.variant}
-              title={act.title}
-              subtitle={act.tag}
-              badge={act.city}
-              stubCode="ACT-2026"
-              onClick={() => navigate('/register')}
-            >
-              <div className="space-y-2 pt-2">
-                <div className="flex items-center gap-2 text-xs font-bold text-ink-primary">
-                  <Calendar className="w-4 h-4 text-role-teamlead" weight="bold" />
-                  <span>{act.date}</span>
-                </div>
-                <div className="flex items-center gap-2 text-xs text-ink-secondary">
-                  <Users className="w-4 h-4 text-role-volunteer" weight="bold" />
-                  <span>{act.spots}</span>
-                </div>
-              </div>
-            </TicketPass>
-          ))}
-        </div>
-      </section>
+            <p className="text-base sm:text-lg text-ink-secondary max-w-xl mx-auto leading-relaxed">
+              Create your account in 60 seconds. Join your local volunteer team in Addis Ababa, Adama, Hawassa, or Bahir Dar.
+            </p>
 
-      {/* 5. BOLD CLOSING BAND: Black & Saffron High-Contrast Field */}
-      <section className="bg-ink-primary text-white border-t-4 border-role-applicant py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-5xl mx-auto text-center space-y-6">
-          <span className="font-mono text-xs px-3 py-1 bg-role-applicant text-ink-primary font-bold uppercase tracking-wider inline-block">
-            One Community • Verified Service
-          </span>
-          <h2 className="font-display font-black text-5xl sm:text-7xl md:text-8xl tracking-tight uppercase leading-none">
-            Ready to hit the trail?
-          </h2>
-          <p className="font-sans text-base sm:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
-            Create your account in 60 seconds. Join your local volunteer team in Addis Ababa, Adama, Hawassa, or Bahir Dar.
-          </p>
-          <div className="pt-4 flex flex-wrap justify-center gap-4">
-            <Button
-              variant="saffron"
-              size="xl"
-              onClick={() => navigate('/register')}
-              rightIcon={<ArrowRight className="w-5 h-5" weight="bold" />}
-            >
-              Join as Volunteer
-            </Button>
-            <Button
-              variant="secondary"
-              size="xl"
-              className="bg-transparent text-white border-2 border-white hover:bg-white hover:text-ink-primary"
-              onClick={() => navigate('/sign-in')}
-            >
-              Sign In to Your Account
-            </Button>
+            {/* Action Buttons: High Contrast, Exactly One Black Button */}
+            <div className="pt-3 flex flex-wrap justify-center items-center gap-3">
+              <Button
+                variant="primary"
+                size="lg"
+                onClick={() => navigate('/register')}
+                rightIcon={<ArrowRight className="w-5 h-5" weight="bold" />}
+              >
+                Join as volunteer
+              </Button>
+              <Button
+                variant="secondary"
+                size="lg"
+                onClick={() => navigate('/sign-in')}
+              >
+                Sign in to your account
+              </Button>
+            </div>
           </div>
-        </div>
-      </section>
-    </div>
+        </section>
+      </div>
+    </PageShell>
   );
 };

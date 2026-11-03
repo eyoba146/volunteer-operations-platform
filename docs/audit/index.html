@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>VTS Completion Audit Report</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f8fafc; color: #0f172a; margin: 0; padding: 24px; }
+    h1 { font-size: 24px; margin-bottom: 8px; }
+    .summary-card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); display: flex; gap: 32px; }
+    .stat { font-size: 28px; font-weight: bold; }
+    .stat.pass { color: #16a34a; }
+    .stat.fail { color: #dc2626; }
+    .role-section { background: white; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+    .role-title { font-size: 18px; font-weight: bold; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 16px; text-transform: capitalize; }
+    .page-row { border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 20px; padding: 16px; }
+    .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .page-name { font-weight: 600; font-size: 16px; }
+    .badge { padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: bold; }
+    .badge.pass { background: #dcfce7; color: #15803d; }
+    .badge.fail { background: #fee2e2; color: #b91c1c; }
+    .screenshots-grid { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 12px; align-items: flex-start; }
+    .shot-box { border: 1px solid #cbd5e1; border-radius: 6px; overflow: hidden; background: #fff; }
+    .shot-box img { display: block; max-height: 480px; width: auto; }
+    .shot-label { padding: 6px 10px; background: #f1f5f9; font-size: 12px; font-weight: 600; }
+    .failures-list { margin-top: 12px; background: #fff1f2; border: 1px solid #fecdd3; border-radius: 6px; padding: 12px; }
+    .failures-list ul { margin: 0; padding-left: 20px; }
+    .failures-list li { font-size: 13px; color: #9f1239; margin-bottom: 4px; }
+  </style>
+</head>
+<body>
+  <h1>VTS Comprehensive Completion Audit</h1>
+  <p>Automated visual and computed style scanner across all 7 demo personas and public routes at 360px & 1440px.</p>
+
+  <div class="summary-card">
+    <div><div>Total Pages Tested</div><div class="stat">48</div></div>
+    <div><div>Passed Pages</div><div class="stat pass">48</div></div>
+    <div><div>Failed Pages</div><div class="stat fail">0</div></div>
+  </div>
+
+  <div class="role-section">
+    <div class="role-title">public Portal (9 pages)</div>
+
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">public/home (/)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="public/home-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="public/home-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">public/sign-in (/sign-in)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="public/sign_in-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="public/sign_in-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">public/register (/register)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="public/register-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="public/register-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">public/verify-email (/verify-email)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="public/verify_email-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="public/verify_email-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">public/forgot-password (/forgot-password)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="public/forgot_password-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="public/forgot_password-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">public/reset-password (/reset-password)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="public/reset_password-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="public/reset_password-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">public/check-certificate (/check-certificate)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="public/check_certificate-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="public/check_certificate-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">public/unauthorized (/unauthorized)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="public/unauthorized-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="public/unauthorized-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">public/404 (/404)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="public/not_found-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="public/not_found-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>  </div>
+  <div class="role-section">
+    <div class="role-title">applicant Portal (4 pages)</div>
+
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">applicant/status (/applicant/status)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="applicant/status-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="applicant/status-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">applicant/apply (/applicant/apply)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="applicant/apply-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="applicant/apply-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">applicant/payment (/applicant/payment)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="applicant/payment-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="applicant/payment-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">applicant/notifications (/applicant/notifications)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="applicant/notifications-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="applicant/notifications-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>  </div>
+  <div class="role-section">
+    <div class="role-title">volunteer Portal (10 pages)</div>
+
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">volunteer/home (/volunteer/home)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="volunteer/home-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="volunteer/home-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">volunteer/activities (/volunteer/activities)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="volunteer/activities-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="volunteer/activities-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">volunteer/activity-detail (/volunteer/activities/act-01)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="volunteer/activity_detail-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="volunteer/activity_detail-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">volunteer/my-activities (/volunteer/my-activities)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="volunteer/my_activities-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="volunteer/my_activities-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">volunteer/check-in (/volunteer/check-in)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="volunteer/check_in-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="volunteer/check_in-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">volunteer/hours (/volunteer/hours)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="volunteer/hours-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="volunteer/hours-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">volunteer/rank-progress (/volunteer/rank-progress)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="volunteer/rank_progress-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="volunteer/rank_progress-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">volunteer/certificates (/volunteer/certificates)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="volunteer/certificates-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="volunteer/certificates-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">volunteer/id-card (/volunteer/id-card)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="volunteer/id_card-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="volunteer/id_card-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">volunteer/profile (/volunteer/profile)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="volunteer/profile-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="volunteer/profile-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>  </div>
+  <div class="role-section">
+    <div class="role-title">team_lead Portal (7 pages)</div>
+
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">team-lead/home (/team-lead/home)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="team_lead/home-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="team_lead/home-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">team-lead/approve-hours (/team-lead/approve-hours)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="team_lead/approve_hours-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="team_lead/approve_hours-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">team-lead/activities (/team-lead/activities)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="team_lead/activities-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="team_lead/activities-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">team-lead/create-activity (/team-lead/create-activity)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="team_lead/create_activity-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="team_lead/create_activity-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">team-lead/ratings (/team-lead/ratings)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="team_lead/ratings-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="team_lead/ratings-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">team-lead/recommend-promotion (/team-lead/recommend-promotion)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="team_lead/recommend_promotion-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="team_lead/recommend_promotion-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">team-lead/announcements (/team-lead/announcements)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="team_lead/announcements-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="team_lead/announcements-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>  </div>
+  <div class="role-section">
+    <div class="role-title">manager Portal (8 pages)</div>
+
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">manager/dashboard (/manager/dashboard)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="manager/dashboard-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="manager/dashboard-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">manager/applications (/manager/applications)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="manager/applications-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="manager/applications-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">manager/volunteers (/manager/volunteers)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="manager/volunteers-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="manager/volunteers-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">manager/activities (/manager/activities)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="manager/activities-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="manager/activities-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">manager/promotions (/manager/promotions)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="manager/promotions-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="manager/promotions-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">manager/announcements (/manager/announcements)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="manager/announcements-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="manager/announcements-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">manager/feedback (/manager/feedback)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="manager/feedback-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="manager/feedback-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">manager/reports (/manager/reports)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="manager/reports-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="manager/reports-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>  </div>
+  <div class="role-section">
+    <div class="role-title">finance Portal (5 pages)</div>
+
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">finance/overview (/finance/overview)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="finance/overview-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="finance/overview-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">finance/payments (/finance/payments)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="finance/payments-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="finance/payments-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">finance/needs-review (/finance/needs-review)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="finance/needs_review-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="finance/needs_review-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">finance/receipts-refunds (/finance/receipts-refunds)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="finance/receipts_refunds-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="finance/receipts_refunds-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">finance/reports (/finance/reports)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="finance/reports-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="finance/reports-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>  </div>
+  <div class="role-section">
+    <div class="role-title">admin Portal (5 pages)</div>
+
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">admin/overview (/admin/overview)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="admin/overview-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="admin/overview-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">admin/settings (/admin/settings)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="admin/settings-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="admin/settings-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">admin/rank-rules (/admin/rank-rules)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="admin/rank_rules-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="admin/rank_rules-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">admin/accounts (/admin/accounts)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="admin/accounts-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="admin/accounts-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>
+    <div class="page-row">
+      <div class="page-header">
+        <div class="page-name">admin/activity-history (/admin/activity-history)</div>
+        <div class="badge pass">PASS</div>
+      </div>
+      <div class="screenshots-grid">
+        <div class="shot-box">
+          <div class="shot-label">Desktop (1440px)</div>
+          <img src="admin/activity_history-1440.png" alt="Desktop screenshot">
+        </div>
+        <div class="shot-box">
+          <div class="shot-label">Mobile (360px)</div>
+          <img src="admin/activity_history-360.png" alt="Mobile screenshot">
+        </div>
+      </div>
+    </div>  </div>
+</body>
+</html>

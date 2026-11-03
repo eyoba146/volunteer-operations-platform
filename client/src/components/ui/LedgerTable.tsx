@@ -24,77 +24,70 @@ export function LedgerTable<T>({
   columns,
   keyExtractor,
   onRowClick,
-  emptyMessage = 'No ledger entries recorded yet.',
+  emptyMessage = 'No records found.',
   isLoading = false,
   className = '',
 }: LedgerTableProps<T>) {
   if (isLoading) {
     return (
-      <div className={`border border-border bg-canvas-raised ${className}`}>
-        <div className="h-10 bg-canvas-subdued border-b border-border" />
-        <div className="p-4 space-y-3">
-          {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="h-10 bg-[#EFECE4] animate-pulse" />
-          ))}
-        </div>
+      <div className={`space-y-2 py-4 ${className} `}>
+        {[1, 2, 3, 4, 5].map((i) => (
+          <div key={i} className="h-12 bg-[#F7F8FA] rounded-[8px] animate-pulse" />
+        ))}
       </div>
     );
   }
 
   if (data.length === 0) {
     return (
-      <div
-        className={`border border-border bg-canvas-raised p-8 text-center text-sm font-sans text-ink-tertiary ${className}`}
-      >
+      <div className={`p-8 text-center text-sm font-sans text-ink-secondary ${className} `}>
         {emptyMessage}
       </div>
     );
   }
 
   return (
-    <div className={`border border-border bg-canvas-raised overflow-x-auto ${className}`}>
+    <div className={`w-full overflow-x-auto ${className} `}>
       <table className="w-full text-left border-collapse">
         <thead>
-          <tr className="border-b border-border bg-canvas-subdued">
+          <tr className="">
             {columns.map((col, idx) => (
               <th
                 key={idx}
-                className={`py-3 px-4 text-xs font-semibold uppercase tracking-wider text-ink-secondary select-none ${
+                className={`py-3 px-4 text-sm font-medium text-slate-500 select-none ${
                   col.align === 'right'
                     ? 'text-right'
                     : col.align === 'center'
                     ? 'text-center'
                     : 'text-left'
-                } ${col.className || ''}`}
+                }  ${col.className || ''} `}
               >
                 {col.header}
               </th>
             ))}
           </tr>
         </thead>
-        <tbody className="divide-y divide-border">
+        <tbody className="">
           {data.map((item, rowIdx) => (
             <tr
               key={keyExtractor(item)}
               onClick={() => onRowClick && onRowClick(item)}
-              className={`transition-colors duration-100 ${
-                onRowClick ? 'cursor-pointer hover:bg-canvas-subdued/80' : ''
-              } ${rowIdx % 2 === 1 ? 'bg-[#FAF8F4]' : 'bg-canvas-raised'}`}
+              className={`transition-colors duration-100 hover:bg-[#F7F8FA] ${
+                onRowClick ? 'cursor-pointer' : ''
+              } `}
             >
               {columns.map((col, colIdx) => {
                 const value = col.accessorKey ? item[col.accessorKey] : undefined;
                 return (
                   <td
                     key={colIdx}
-                    className={`py-3 px-4 text-sm font-sans text-ink-primary ${
-                      col.isMono ? 'font-mono tabular-nums' : ''
-                    } ${
+                    className={`py-3.5 px-4 text-sm font-sans text-ink-primary ${
                       col.align === 'right'
                         ? 'text-right'
                         : col.align === 'center'
                         ? 'text-center'
                         : 'text-left'
-                    } ${col.className || ''}`}
+                    }  ${col.className || ''} `}
                   >
                     {col.cell ? col.cell(item, rowIdx) : (value as React.ReactNode)}
                   </td>
@@ -107,4 +100,3 @@ export function LedgerTable<T>({
     </div>
   );
 }
-

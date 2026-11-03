@@ -4,7 +4,7 @@ import { VolunteerCard, Button, Skeleton } from '../../components/ui';
 import { Printer, DownloadSimple } from '@phosphor-icons/react';
 
 export const VolunteerIdCardPage: React.FC = () => {
-  const { profile, user, isLoading } = useAuth();
+  const { profile, isLoading } = useAuth();
 
   const handlePrint = () => {
     window.print();
@@ -26,14 +26,11 @@ export const VolunteerIdCardPage: React.FC = () => {
   return (
     <div className="max-w-xl mx-auto space-y-8">
       {/* Header */}
-      <div className="border-b-2 border-border pb-5 text-center">
-        <span className="font-sans text-xs font-bold text-role-volunteer uppercase tracking-tight block">
-          Digital Credential
-        </span>
-        <h1 className="font-display text-4xl sm:text-5xl font-black uppercase tracking-tight text-ink-primary leading-none mt-1">
-          Volunteer ID Pass
+      <div className="pb-5 text-center">
+        <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
+          Volunteer ID pass
         </h1>
-        <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
+        <p className="font-sans text-sm text-ink-secondary mt-1">
           Present this verified pass during check-in desks and field assignments.
         </p>
       </div>
@@ -50,7 +47,7 @@ export const VolunteerIdCardPage: React.FC = () => {
           leftIcon={<Printer className="w-4 h-4" weight="bold" />}
           onClick={handlePrint}
         >
-          Print Physical Pass
+          Print physical pass
         </Button>
         <Button
           variant="secondary"

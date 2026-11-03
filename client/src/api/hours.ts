@@ -45,16 +45,11 @@ export async function checkInWithCode(
 
   // If already checked in
   const existing = state.hours.find(
-    (h) => h.userId === userId && h.activityId === activityId && h.status === 'logged'
+    (h) => h.userId === userId && h.activityId === activityId && h.status === 'logged' && (!h.checkOut || h.checkOut === '')
   );
   if (existing) {
     return existing;
   }
-
-  // Calculate default minutes based on activity schedule or 4 hours
-  const start = new Date(activity.startsAt).getTime();
-  const end = new Date(activity.endsAt).getTime();
-  const calculatedMinutes = Math.max(60, Math.round((end - start) / (1000 * 60)));
 
   const newEntry: HoursEntry = {
     id: `hrs-${Date.now()}`,
@@ -63,8 +58,8 @@ export async function checkInWithCode(
     activityId,
     activityTitle: activity.title,
     checkIn: now,
-    checkOut: activity.endsAt,
-    minutes: calculatedMinutes,
+    checkOut: '',
+    minutes: 0,
     source: 'checkin',
     status: 'logged',
     createdAt: now,
@@ -92,12 +87,30 @@ export async function checkOut(hoursId: string): Promise<HoursEntry> {
   const now = new Date().toISOString();
   const start = new Date(entry.checkIn).getTime();
   const end = new Date(now).getTime();
-  const actualMinutes = Math.max(30, Math.round((end - start) / (1000 * 60)));
+  let elapsedMinutes = Math.max(15, Math.round((end - start) / (1000 * 60)));
+
+  const activity = state.activities.find((a) => a.id === entry.activityId);
+  let note = entry.manualNote;
+
+  if (activity) {
+    const actStart = new Date(activity.startsAt).getTime();
+    const actEnd = new Date(activity.endsAt).getTime();
+    const scheduledMinutes = Math.max(30, Math.round((actEnd - actStart) / (1000 * 60)));
+    const maxAllowedMinutes = scheduledMinutes + 60; // capped at activity end time + 1 hour
+
+    if (elapsedMinutes > maxAllowedMinutes) {
+      elapsedMinutes = maxAllowedMinutes;
+      note = note
+        ? `${note} • Needs a quick look: check-out closed late, capped at scheduled end + 1 hr`
+        : 'Needs a quick look: check-out closed late, capped at scheduled end + 1 hr';
+    }
+  }
 
   const updated: HoursEntry = {
     ...entry,
     checkOut: now,
-    minutes: actualMinutes,
+    minutes: elapsedMinutes,
+    manualNote: note,
   };
 
   store.setState((prev) => ({
@@ -116,6 +129,8 @@ export async function submitManualHours(
     hours: number;
     minutes: number;
     note: string;
+    evidenceUrl?: string;
+    evidenceThumbnail?: string;
   }
 ): Promise<HoursEntry> {
   await delay(400, 750);
@@ -137,12 +152,17 @@ export async function submitManualHours(
     userName: profile?.fullName || user?.username || 'Volunteer',
     activityId: data.activityId,
     activityTitle: activity?.title || 'Community Service Activity',
+    projectId: activity?.projectId,
+    projectName: activity?.projectName,
+    branchId: activity?.branchId || user?.branchId || profile?.branchId,
     checkIn: checkInDate,
     checkOut: checkOutDate,
     minutes: totalMinutes,
     source: 'manual',
     status: 'logged',
     manualNote: data.note,
+    evidenceUrl: data.evidenceUrl,
+    evidenceThumbnail: data.evidenceThumbnail,
     createdAt: now,
   };
 

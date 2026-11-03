@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import * as api from '../../api';
 import { VolunteerFeedback } from '../../types';
-import { Input, Select, Button, Skeleton, EmptyState } from '../../components/ui';
+import { Select, Button, Skeleton, EmptyState } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
 import { 
   Star, 
   ChatCircleText, 
-  CheckCircle, 
-  Eye, 
-  MapPin, 
-  Calendar 
+  CheckCircle
 } from '@phosphor-icons/react';
 
 export const ManagerFeedbackPage: React.FC = () => {
@@ -64,8 +61,8 @@ export const ManagerFeedbackPage: React.FC = () => {
     return (
       <div className="space-y-6 max-w-4xl mx-auto">
         <Skeleton variant="text" className="h-8 w-1/3" />
-        <Skeleton variant="rect" className="h-32" />
-        <Skeleton variant="rect" className="h-64" />
+        <Skeleton variant="rect" className="h-32 rounded-[10px]" />
+        <Skeleton variant="rect" className="h-64 rounded-[10px]" />
       </div>
     );
   }
@@ -73,56 +70,48 @@ export const ManagerFeedbackPage: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Header */}
-      <div
-        className="border-4 border-ink-primary bg-white p-6 sm:p-8 space-y-4 shadow-ticket"
-        style={{
-          clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)',
-        }}
-      >
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b-2 border-ink-primary pb-5">
+      <div className="rounded-[10px] bg-white p-6 sm:p-8 space-y-4 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-5">
           <div className="space-y-1">
-            <span className="font-sans text-xs font-bold text-role-manager uppercase tracking-tight block">
-              Volunteer Experience & Satisfaction
-            </span>
-            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-ink-primary leading-none">
-              Activity Feedback Inbox
+            <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight">
+              Activity feedback inbox
             </h1>
-            <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
+            <p className="font-sans text-[13px] sm:text-sm text-ink-secondary mt-1">
               Read direct debrief comments from volunteers after completing assignments and track satisfaction metrics.
             </p>
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="font-mono text-xs font-bold text-white bg-role-manager px-3 py-1.5 shadow-sm uppercase">
+            <span className="font-mono text-[13px] font-semibold text-role-manager bg-role-managerLight/30 px-3 py-1.5 rounded-[6px]">
               Unreviewed: {unreviewedCount}
             </span>
           </div>
         </div>
 
-        {/* Metric Cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
-          <div className="p-3 border-2 border-border bg-canvas-subdued space-y-0.5">
-            <span className="text-[10px] text-ink-tertiary uppercase font-mono block">Average Rating</span>
-            <span className="font-display text-3xl font-black text-[#784E0B] leading-none block">
-              {avgScore} <span className="text-xs font-mono font-normal text-ink-tertiary">/ 5.0</span>
+        {/* Metric Strip */}
+        <div className="rounded-[8px] bg-white grid grid-cols-1 sm:grid-cols-3 overflow-hidden">
+          <div className="p-3 text-center space-y-0.5">
+            <span className="text-[13px] text-ink-tertiary font-mono block">Average rating</span>
+            <span className="font-display text-2xl sm:text-3xl font-bold text-role-applicant leading-none block">
+              {avgScore} <span className="text-[13px] font-mono font-normal text-ink-tertiary">/ 5.0</span>
             </span>
-            <span className="text-[11px] text-ink-secondary">Overall volunteer sentiment</span>
+            <span className="text-[13px] text-ink-secondary">Overall volunteer sentiment</span>
           </div>
 
-          <div className="p-3 border-2 border-border bg-canvas-subdued space-y-0.5">
-            <span className="text-[10px] text-ink-tertiary uppercase font-mono block">Total Debriefs</span>
-            <span className="font-display text-3xl font-black text-ink-primary leading-none block">
+          <div className="p-3 text-center space-y-0.5">
+            <span className="text-[13px] text-ink-tertiary font-mono block">Total debriefs</span>
+            <span className="font-display text-2xl sm:text-3xl font-bold text-ink-primary leading-none block">
               {feedbackList.length}
             </span>
-            <span className="text-[11px] text-ink-secondary">Post-activity submissions</span>
+            <span className="text-[13px] text-ink-secondary">Post-activity submissions</span>
           </div>
 
-          <div className="p-3 border-2 border-border bg-canvas-subdued space-y-0.5 col-span-2 sm:col-span-1">
-            <span className="text-[10px] text-ink-tertiary uppercase font-mono block">Action Required</span>
-            <span className="font-display text-3xl font-black text-role-applicant leading-none block">
+          <div className="p-3 text-center space-y-0.5">
+            <span className="text-[13px] text-ink-tertiary font-mono block">Action required</span>
+            <span className="font-display text-2xl sm:text-3xl font-bold text-role-teamlead leading-none block">
               {unreviewedCount}
             </span>
-            <span className="text-[11px] text-ink-secondary">Awaiting manager review</span>
+            <span className="text-[13px] text-ink-secondary">Awaiting manager review</span>
           </div>
         </div>
 
@@ -132,9 +121,9 @@ export const ManagerFeedbackPage: React.FC = () => {
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value as any)}
             options={[
-              { value: 'all', label: 'All Review States' },
-              { value: 'new', label: 'Unreviewed Only' },
-              { value: 'reviewed', label: 'Reviewed Only' },
+              { value: 'all', label: 'All review states' },
+              { value: 'new', label: 'Unreviewed only' },
+              { value: 'reviewed', label: 'Reviewed only' },
             ]}
           />
 
@@ -142,10 +131,10 @@ export const ManagerFeedbackPage: React.FC = () => {
             value={ratingFilter}
             onChange={(e) => setRatingFilter(e.target.value)}
             options={[
-              { value: 'all', label: 'All Star Ratings' },
-              { value: '5', label: '5 Stars Only' },
-              { value: '4', label: '4 Stars Only' },
-              { value: '3', label: '3 Stars Only' },
+              { value: 'all', label: 'All star ratings' },
+              { value: '5', label: '5 Stars only' },
+              { value: '4', label: '4 Stars only' },
+              { value: '3', label: '3 Stars only' },
             ]}
           />
         </div>
@@ -163,47 +152,44 @@ export const ManagerFeedbackPage: React.FC = () => {
           {filtered.map((fb) => (
             <div
               key={fb.id}
-              className="border-2 border-ink-primary bg-white p-6 space-y-4 shadow-ticket text-left"
-              style={{
-                clipPath: 'polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%)',
-              }}
+              className="rounded-[10px] bg-white p-6 space-y-4 shadow-sm text-left"
             >
-              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 border-b-2 border-border pb-3">
+              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 pb-3">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="font-display text-xl font-black uppercase text-ink-primary">
+                    <span className="font-display text-xl font-bold text-ink-primary">
                       {fb.userName}
                     </span>
                     {fb.userArea && (
-                      <span className="font-mono text-[10px] text-ink-tertiary px-1.5 py-0.5 bg-canvas-subdued border border-border">
+                      <span className="font-mono text-[13px] text-ink-tertiary px-1.5 py-0.5 bg-canvas-subdued/50 rounded-[4px]">
                         {fb.userArea}
                       </span>
                     )}
-                    <span className={`font-mono text-[10px] font-bold px-2 py-0.5 uppercase ${
-                      fb.status === 'new' ? 'bg-amber-100 text-amber-900 border border-amber-300' : 'bg-canvas-subdued text-ink-tertiary border border-border'
-                    }`}>
+                    <span className={`font-mono text-[13px] font-semibold px-2 py-0.5 rounded-[4px] ${
+                      fb.status === 'new' ? 'bg-amber-100 text-amber-900' : 'bg-canvas-subdued/50 text-ink-tertiary'
+                    } `}>
                       {fb.status === 'new' ? 'Unreviewed' : 'Reviewed'}
                     </span>
                   </div>
 
-                  <span className="font-sans text-xs font-semibold text-role-manager block">
+                  <span className="font-sans text-[13px] font-semibold text-role-manager block">
                     {fb.activityTitle}
                   </span>
                 </div>
 
                 <div className="flex items-center gap-3">
                   {/* Star Rating */}
-                  <div className="flex items-center gap-0.5 bg-canvas-subdued px-2.5 py-1 border border-border">
+                  <div className="flex items-center gap-0.5 bg-canvas-subdued/40 px-2.5 py-1 rounded-[6px]">
                     {Array.from({ length: 5 }).map((_, idx) => (
                       <Star
                         key={idx}
                         className={`w-3.5 h-3.5 ${
                           idx < fb.rating ? 'text-amber-500 fill-amber-500' : 'text-gray-300'
-                        }`}
+                        } `}
                         weight={idx < fb.rating ? 'fill' : 'regular'}
                       />
                     ))}
-                    <span className="font-mono text-xs font-bold text-ink-primary ml-1.5">
+                    <span className="font-mono text-[13px] font-bold text-ink-primary ml-1.5">
                       {fb.rating}.0
                     </span>
                   </div>
@@ -223,11 +209,11 @@ export const ManagerFeedbackPage: React.FC = () => {
               </div>
 
               {/* Comment Body */}
-              <p className="font-sans text-xs sm:text-sm text-ink-primary leading-relaxed bg-canvas-subdued p-4 border border-border italic">
+              <p className="font-sans text-[13px] text-ink-primary leading-relaxed bg-canvas-subdued/30 p-4 rounded-[8px] italic">
                 "{fb.comment}"
               </p>
 
-              <div className="flex items-center justify-between text-[11px] font-mono text-ink-tertiary pt-1">
+              <div className="flex items-center justify-between text-[13px] font-mono text-ink-tertiary pt-1">
                 <span>Submitted: {new Date(fb.submittedAt).toLocaleDateString()}</span>
                 <span>Feedback ID: {fb.id}</span>
               </div>

@@ -4,7 +4,7 @@ import { motion } from 'motion/react';
 export interface Waypoint {
   id: string;
   label: string;
-  altitude: string; // e.g. "0m", "60m / 60 hrs"
+  threshold?: string;
   description?: string;
   isCompleted?: boolean;
   isCurrent?: boolean;
@@ -16,23 +16,34 @@ interface TrailLineProps {
   className?: string;
   showLabels?: boolean;
   strokeColor?: string;
+  onSelectWaypoint?: (index: number) => void;
 }
 
 export const TrailLine: React.FC<TrailLineProps> = ({
   waypoints = [
-    { id: 'start', label: 'Start Trail', altitude: 'Base 0m', isCompleted: true },
-    { id: 'member', label: 'Member', altitude: '0 hrs • Activated', isCompleted: true },
-    { id: 'senior', label: 'Senior Member', altitude: '60 hrs • 8 Acts', isCurrent: true },
-    { id: 'lead', label: 'Team Lead', altitude: '150 hrs • 20 Acts' },
-    { id: 'manager', label: 'Manager', altitude: 'Summit 300 hrs' },
+    { id: 'start', label: 'Start', threshold: 'Registration', isCompleted: true },
+    { id: 'volunteer', label: 'Volunteer', threshold: '0 hrs • Verified', isCompleted: true },
+    { id: 'senior', label: 'Senior Volunteer', threshold: '60 hrs • 8 acts', isCurrent: true },
+    { id: 'lead', label: 'Team Lead', threshold: '150 hrs • 20 acts' },
+    { id: 'manager', label: 'Manager', threshold: '300 hrs • 30 acts' },
   ],
   currentWaypointIndex = 2,
   className = '',
   showLabels = true,
   strokeColor = '#111315',
+  onSelectWaypoint,
 }) => {
+  // Coordinate distribution depending on waypoints count
+  const points = waypoints.map((_, i) => {
+    const fraction = i / Math.max(1, waypoints.length - 1);
+    const cx = 50 + fraction * 900;
+    // Gentle curve
+    const cy = 60 - Math.sin(fraction * Math.PI) * 25;
+    return { cx, cy };
+  });
+
   return (
-    <div className={`relative w-full select-none py-6 ${className}`}>
+    <div className={`relative w-full select-none py-6 ${className} `}>
       {/* SVG Canvas for Trail Path */}
       <div className="relative w-full h-24 overflow-visible">
         <svg
@@ -42,58 +53,56 @@ export const TrailLine: React.FC<TrailLineProps> = ({
         >
           {/* Background guide dotted trail */}
           <path
-            d="M 50 70 Q 250 20, 500 60 T 950 30"
+            d={`M 50 60 Q 500 20, 950 40`}
             fill="none"
-            stroke="#DDE1E5"
-            strokeWidth="4"
+            stroke="#D5DAE1"
+            strokeWidth="3"
             strokeDasharray="6 6"
             strokeLinecap="round"
           />
 
           {/* Animated drawn active trail line */}
           <motion.path
-            d="M 50 70 Q 250 20, 500 60 T 950 30"
+            d={`M 50 60 Q 500 20, 950 40`}
             fill="none"
             stroke={strokeColor}
-            strokeWidth="5"
+            strokeWidth="4"
             strokeLinecap="round"
             initial={{ pathLength: 0 }}
-            animate={{ pathLength: currentWaypointIndex / (waypoints.length - 1) }}
-            transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
+            animate={{ pathLength: currentWaypointIndex / Math.max(1, waypoints.length - 1) }}
+            transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
           />
 
           {/* Waypoint Coordinates along the path */}
-          {[
-            { cx: 50, cy: 70 },
-            { cx: 275, cy: 38 },
-            { cx: 500, cy: 60 },
-            { cx: 725, cy: 45 },
-            { cx: 950, cy: 30 },
-          ].map((pt, i) => {
+          {points.map((pt, i) => {
             const isPassed = i <= currentWaypointIndex;
             const isCurrent = i === currentWaypointIndex;
             return (
-              <g key={i}>
+              <g
+                key={i}
+                onClick={() => onSelectWaypoint && onSelectWaypoint(i)}
+                className={onSelectWaypoint ? 'cursor-pointer' : ''}
+              >
                 {isCurrent && (
                   <motion.circle
                     cx={pt.cx}
                     cy={pt.cy}
-                    r="16"
+                    r="15"
                     fill="none"
                     stroke={strokeColor}
                     strokeWidth="2"
                     initial={{ scale: 0.8, opacity: 0.4 }}
-                    animate={{ scale: [1, 1.4, 1], opacity: [0.6, 0.1, 0.6] }}
+                    animate={{ scale: [1, 1.35, 1], opacity: [0.6, 0.1, 0.6] }}
                     transition={{ repeat: Infinity, duration: 2.2 }}
                   />
                 )}
                 <circle
                   cx={pt.cx}
                   cy={pt.cy}
-                  r={isCurrent ? 9 : 7}
+                  r={isCurrent ? 8 : 6}
                   fill={isPassed ? strokeColor : '#FFFFFF'}
                   stroke={strokeColor}
-                  strokeWidth="3"
+                  strokeWidth="2.5"
                 />
               </g>
             );
@@ -108,31 +117,33 @@ export const TrailLine: React.FC<TrailLineProps> = ({
               const isCurrent = idx === currentWaypointIndex;
 
               return (
-                <div
+                <button
+                  type="button"
                   key={wp.id}
+                  onClick={() => onSelectWaypoint && onSelectWaypoint(idx)}
                   className={`flex flex-col ${
                     idx === 0
                       ? 'items-start text-left'
                       : idx === waypoints.length - 1
                       ? 'items-end text-right'
                       : 'items-center text-center'
-                  } max-w-[120px]`}
+                  } max-w-[140px] ${onSelectWaypoint ? 'cursor-pointer hover:opacity-80' : ''} `}
                 >
                   <span
-                    className={`font-display text-lg tracking-tight font-black leading-none uppercase ${
+                    className={`font-display text-base tracking-tight font-bold leading-tight ${
                       isCurrent
-                        ? 'text-ink-primary'
+                        ? 'text-ink-primary font-black underline decoration-2 decoration-role-volunteer underline-offset-4'
                         : isPassed
-                        ? 'text-ink-primary opacity-80'
+                        ? 'text-ink-primary font-bold'
                         : 'text-ink-tertiary'
-                    }`}
+                    } `}
                   >
                     {wp.label}
                   </span>
-                  <span className="font-mono text-[11px] font-semibold text-ink-secondary mt-0.5">
-                    {wp.altitude}
+                  <span className="font-sans text-[13px] font-medium text-ink-secondary mt-1">
+                    {wp.threshold}
                   </span>
-                </div>
+                </button>
               );
             })}
           </div>
@@ -141,4 +152,3 @@ export const TrailLine: React.FC<TrailLineProps> = ({
     </div>
   );
 };
-

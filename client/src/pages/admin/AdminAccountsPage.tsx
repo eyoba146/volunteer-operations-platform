@@ -3,14 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
 import { User, Role, AccountStatus } from '../../types';
-import { LedgerTable, LedgerColumn, Button, StatusMark, Select, SheetModal, Input, Skeleton } from '../../components/ui';
+import { LedgerTable, LedgerColumn, Button, StatusMark, Select, SheetModal, Input } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
 import { 
-  UsersThree, 
   ArrowLeft, 
   UserPlus, 
   MagnifyingGlass, 
-  ShieldCheck, 
   LockKeyOpen, 
   Prohibit 
 } from '@phosphor-icons/react';
@@ -135,28 +133,28 @@ export const AdminAccountsPage: React.FC = () => {
 
   const columns: LedgerColumn<User>[] = [
     {
-      header: 'Username & Email',
+      header: 'Username and email',
       cell: (u) => (
         <div className="space-y-0.5">
-          <span className="font-sans font-bold text-ink-primary block">
+          <span className="font-sans font-semibold text-ink-primary block text-[13px]">
             {u.username}
           </span>
-          <span className="font-mono text-xs text-ink-tertiary block">
+          <span className="font-mono text-[13px] text-ink-tertiary block">
             {u.email}
           </span>
         </div>
       ),
     },
     {
-      header: 'Assigned Role',
+      header: 'Assigned role',
       cell: (u) => (
         <select
           value={u.role}
           onChange={(e) => handleRoleChange(u.id, e.target.value as Role)}
-          className="bg-white border-2 border-ink-primary py-1 px-2 text-xs font-mono font-bold rounded-none cursor-pointer"
+          className="bg-white py-1 px-2.5 text-[13px] font-sans font-medium rounded-[6px] cursor-pointer focus:ring-1 focus:ring-ink-primary"
         >
           <option value="applicant">Applicant</option>
-          <option value="volunteer">Volunteer (Member)</option>
+          <option value="volunteer">Volunteer</option>
           <option value="team_lead">Team Lead</option>
           <option value="manager">Program Manager</option>
           <option value="finance">Finance Officer</option>
@@ -165,19 +163,19 @@ export const AdminAccountsPage: React.FC = () => {
       ),
     },
     {
-      header: 'Account Status',
+      header: 'Account status',
       cell: (u) => <StatusMark status={u.accountStatus} size="sm" />,
     },
     {
-      header: 'Created Date',
+      header: 'Created date',
       cell: (u) => (
-        <span className="font-mono text-xs text-ink-tertiary">
+        <span className="font-mono text-[13px] text-ink-tertiary">
           {new Date(u.createdAt).toLocaleDateString()}
         </span>
       ),
     },
     {
-      header: 'Account Action',
+      header: 'Account action',
       align: 'right',
       cell: (u) => (
         <Button
@@ -186,7 +184,7 @@ export const AdminAccountsPage: React.FC = () => {
           onClick={() => handleToggleStatus(u.id, u.accountStatus)}
           leftIcon={u.accountStatus === 'suspended' ? <LockKeyOpen className="w-3.5 h-3.5" /> : <Prohibit className="w-3.5 h-3.5" />}
         >
-          {u.accountStatus === 'suspended' ? 'Reinstate' : 'Pause Access'}
+          {u.accountStatus === 'suspended' ? 'Reinstate' : 'Pause access'}
         </Button>
       ),
     },
@@ -196,28 +194,20 @@ export const AdminAccountsPage: React.FC = () => {
     <div className="space-y-6 text-left">
       <button
         onClick={() => navigate('/admin/overview')}
-        className="inline-flex items-center gap-1.5 text-xs font-mono font-medium text-ink-tertiary hover:text-ink-primary transition-colors cursor-pointer"
+        className="inline-flex items-center gap-1.5 text-[13px] font-mono font-medium text-ink-tertiary hover:text-ink-primary transition-colors cursor-pointer"
       >
         <ArrowLeft className="w-4 h-4" />
         <span>Return to administration overview</span>
       </button>
 
-      {/* Header */}
-      <div
-        className="border-4 border-ink-primary bg-white p-6 sm:p-8 space-y-4 shadow-ticket"
-        style={{
-          clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)',
-        }}
-      >
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b-2 border-ink-primary pb-5">
+      {/* Header Card */}
+      <div className="rounded-[10px] bg-white p-6 sm:p-8 space-y-4 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4">
           <div className="space-y-1">
-            <span className="font-sans text-xs font-bold text-amber-600 uppercase tracking-tight block">
-              Access Control & Permissions
-            </span>
-            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-ink-primary leading-none">
-              User Accounts & Role Permissions
+            <h1 className="font-display font-black text-2xl sm:text-3xl tracking-tight text-ink-primary leading-tight">
+              User accounts and role permissions
             </h1>
-            <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
+            <p className="font-sans text-sm text-ink-secondary mt-1">
               Provision new company staff accounts, pause volunteer access, and reassign roles across Manager, Finance, and Lead desks.
             </p>
           </div>
@@ -229,13 +219,13 @@ export const AdminAccountsPage: React.FC = () => {
               leftIcon={<UserPlus className="w-4 h-4" weight="bold" />}
               onClick={() => setShowCreateModal(true)}
             >
-              Create Account
+              Create account
             </Button>
           </div>
         </div>
 
         {/* Filter Bar */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
           <Input
             placeholder="Search username or email..."
             value={search}
@@ -247,7 +237,7 @@ export const AdminAccountsPage: React.FC = () => {
             value={roleFilter}
             onChange={(e) => setRoleFilter(e.target.value)}
             options={[
-              { value: 'all', label: 'All Roles' },
+              { value: 'all', label: 'All roles' },
               { value: 'applicant', label: 'Applicant' },
               { value: 'volunteer', label: 'Volunteer' },
               { value: 'team_lead', label: 'Team Lead' },
@@ -261,8 +251,8 @@ export const AdminAccountsPage: React.FC = () => {
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
             options={[
-              { value: 'all', label: 'All Statuses' },
-              { value: 'active', label: 'Active Access' },
+              { value: 'all', label: 'All statuses' },
+              { value: 'active', label: 'Active access' },
               { value: 'suspended', label: 'Paused / Suspended' },
             ]}
           />
@@ -280,14 +270,14 @@ export const AdminAccountsPage: React.FC = () => {
       <SheetModal
         isOpen={showCreateModal}
         onClose={() => setShowCreateModal(false)}
-        title="Provision New Staff Account"
+        title="Provision new staff account"
         subtitle="Create an internal staff account with direct role permissions."
         mode="modal"
         maxWidth="md"
       >
-        <form onSubmit={handleCreateSubmit} className="space-y-4 text-left font-sans text-xs">
+        <form onSubmit={handleCreateSubmit} className="space-y-4 text-left font-sans text-sm">
           <Input
-            label="Full Name"
+            label="Full name"
             value={newFullName}
             onChange={(e) => setNewFullName(e.target.value)}
             placeholder="e.g. Bethlehem Desta"
@@ -304,7 +294,7 @@ export const AdminAccountsPage: React.FC = () => {
             />
 
             <Input
-              label="Email Address"
+              label="Email address"
               type="email"
               value={newEmail}
               onChange={(e) => setNewEmail(e.target.value)}
@@ -315,7 +305,7 @@ export const AdminAccountsPage: React.FC = () => {
 
           <div className="grid grid-cols-2 gap-3">
             <Input
-              label="Phone Number"
+              label="Phone number"
               value={newPhone}
               onChange={(e) => setNewPhone(e.target.value)}
               placeholder="+251 91 100 0000"
@@ -323,7 +313,7 @@ export const AdminAccountsPage: React.FC = () => {
             />
 
             <Select
-              label="Operational Hub Area"
+              label="Operational area"
               value={newArea}
               onChange={(e) => setNewArea(e.target.value)}
               options={[
@@ -337,8 +327,8 @@ export const AdminAccountsPage: React.FC = () => {
           </div>
 
           <div className="space-y-1">
-            <label className="block text-xs font-bold uppercase tracking-tight text-ink-primary">
-              Assigned Role
+            <label className="block text-[13px] font-semibold text-ink-primary">
+              Assigned role
             </label>
             <Select
               value={newRole}
@@ -353,11 +343,11 @@ export const AdminAccountsPage: React.FC = () => {
             />
           </div>
 
-          <p className="text-ink-tertiary text-[11px] pt-1 font-mono">
+          <p className="text-ink-tertiary text-[13px] pt-1 font-mono">
             Password defaults to <strong>Demo@1234</strong>. Email verification is marked active immediately.
           </p>
 
-          <div className="pt-3 border-t-2 border-border flex items-center justify-end gap-3">
+          <div className="pt-3 flex items-center justify-end gap-3">
             <Button
               type="button"
               variant="secondary"
@@ -370,7 +360,7 @@ export const AdminAccountsPage: React.FC = () => {
               variant="primary"
               isLoading={isSubmitting}
             >
-              Provision Account
+              Provision account
             </Button>
           </div>
         </form>

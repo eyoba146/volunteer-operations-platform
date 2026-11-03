@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
 import { Announcement } from '../../types';
-import { Input, Button, Skeleton, EmptyState } from '../../components/ui';
+import { Input, Button, Skeleton } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
-import { Megaphone, Plus } from '@phosphor-icons/react';
+import { Plus } from '@phosphor-icons/react';
 
 export const TeamLeadAnnouncementsPage: React.FC = () => {
   const { user, profile } = useAuth();
@@ -56,7 +56,7 @@ export const TeamLeadAnnouncementsPage: React.FC = () => {
     return (
       <div className="space-y-6 max-w-4xl mx-auto">
         <Skeleton variant="text" className="h-8 w-1/3" />
-        <Skeleton variant="rect" className="h-64" />
+        <Skeleton variant="rect" className="h-64 rounded-[10px]" />
       </div>
     );
   }
@@ -64,35 +64,27 @@ export const TeamLeadAnnouncementsPage: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       {/* Top Header */}
-      <div className="border-b-2 border-border pb-5">
-        <span className="font-sans text-xs font-bold text-role-teamlead uppercase tracking-tight block">
-          Team Dispatch & Notices
-        </span>
-        <h1 className="font-display text-4xl sm:text-5xl font-black uppercase tracking-tight text-ink-primary leading-none mt-1">
-          Broadcast Field Notices
+      <div className="pb-4">
+        <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
+          Broadcast field notices
         </h1>
-        <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
+        <p className="font-sans text-[13px] sm:text-sm text-ink-secondary mt-1">
           Publish field updates, weather alerts, equipment requirements, or roster reminders to your volunteers.
         </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
         {/* Post Form */}
-        <div
-          className="lg:col-span-2 border-2 border-ink-primary bg-white p-6 space-y-4 shadow-ticket h-fit"
-          style={{
-            clipPath: 'polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)',
-          }}
-        >
-          <div className="border-b-2 border-border pb-2">
-            <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
-              Post New Notice
+        <div className="lg:col-span-2 rounded-[10px] bg-white p-6 space-y-4 shadow-sm h-fit">
+          <div className="pb-2">
+            <h3 className="font-display text-xl font-bold text-ink-primary">
+              Post new notice
             </h3>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input
-              label="Notice Headline"
+              label="Notice headline"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="e.g. Bring safety boots for clean-up"
@@ -100,15 +92,15 @@ export const TeamLeadAnnouncementsPage: React.FC = () => {
             />
 
             <div className="space-y-1.5 text-left">
-              <label className="block text-xs font-bold uppercase text-ink-primary">
-                Message Content
+              <label className="block text-[13px] font-medium text-ink-primary">
+                Message content
               </label>
               <textarea
                 rows={4}
                 value={body}
                 onChange={(e) => setBody(e.target.value)}
                 placeholder="Write clear instructions for volunteers..."
-                className="w-full bg-canvas text-ink-primary font-sans text-xs border-2 border-ink-primary p-2.5 focus:outline-none focus:ring-2 focus:ring-role-teamlead"
+                className="w-full bg-white text-ink-primary font-sans text-[13px] rounded-[8px] p-2.5 focus:outline-none focus:ring-2 focus:ring-role-teamlead"
                 required
               />
             </div>
@@ -121,34 +113,34 @@ export const TeamLeadAnnouncementsPage: React.FC = () => {
               isLoading={isSubmitting}
               leftIcon={<Plus className="w-4 h-4" weight="bold" />}
             >
-              Broadcast Notice
+              Broadcast notice
             </Button>
           </form>
         </div>
 
         {/* Existing Notices Feed */}
-        <div className="lg:col-span-3 border-2 border-ink-primary bg-white shadow-ticket divide-y-2 divide-border">
-          <div className="p-4 bg-canvas border-b-2 border-ink-primary font-display text-xl font-black uppercase text-ink-primary">
-            Recent Announcements Stream
+        <div className="lg:col-span-3 rounded-[10px] bg-white shadow-sm overflow-hidden space-y-2">
+          <div className="p-4 bg-canvas-subdued/30 font-display text-lg font-bold text-ink-primary">
+            Recent announcements stream
           </div>
 
           {announcements.length === 0 ? (
-            <div className="p-8 text-center font-sans text-xs text-ink-secondary">
+            <div className="p-8 text-center font-sans text-[13px] text-ink-secondary">
               No announcements published yet.
             </div>
           ) : (
             announcements.map((anc) => (
               <div key={anc.id} className="p-5 space-y-2">
-                <div className="flex items-center justify-between text-xs font-mono text-ink-tertiary">
-                  <span className="font-bold text-role-teamlead">
+                <div className="flex items-center justify-between text-[13px] font-mono text-ink-tertiary">
+                  <span className="font-semibold text-role-teamlead">
                     {anc.authorName} ({anc.authorRole})
                   </span>
                   <span>{new Date(anc.createdAt).toLocaleDateString()}</span>
                 </div>
-                <h4 className="font-display text-2xl font-black uppercase text-ink-primary leading-tight">
+                <h4 className="font-display text-xl font-bold text-ink-primary leading-tight">
                   {anc.title}
                 </h4>
-                <p className="font-sans text-xs text-ink-secondary leading-relaxed whitespace-pre-line">
+                <p className="font-sans text-[13px] text-ink-secondary leading-relaxed whitespace-pre-line">
                   {anc.body}
                 </p>
               </div>

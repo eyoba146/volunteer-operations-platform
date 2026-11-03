@@ -4,23 +4,17 @@ import { useToast } from '../../components/ui/ToastContext';
 import { 
   DownloadSimple, 
   Printer, 
-  ChartLineUp, 
-  UsersThree, 
-  Clock, 
-  CalendarCheck, 
-  Trophy, 
-  MapPin, 
   Star 
 } from '@phosphor-icons/react';
 
 export const ManagerReportsPage: React.FC = () => {
-  const [selectedPeriod, setSelectedPeriod] = useState('2026-10');
+  const [selectedPeriod] = useState('2026-10');
   const toast = useToast();
 
   const handleExportCSV = () => {
     // Generate real CSV content
     const csvContent = [
-      'VTS CIVIC VOLUNTEER PLATFORM - EXECUTIVE MANAGEMENT REPORT',
+      'VTS VOLUNTEER PLATFORM - EXECUTIVE MANAGEMENT REPORT',
       `Generated Date,${new Date().toISOString()}`,
       `Period,${selectedPeriod}`,
       '',
@@ -33,9 +27,9 @@ export const ManagerReportsPage: React.FC = () => {
       'Bahir Dar,2,5%,Active',
       '',
       'SECTION 2: CORPS DISTRIBUTION BY RANK',
-      'Rank,Count,Altitude Threshold,Status',
-      'Member,28,0 hrs,Active Volunteer',
-      'Senior Member,10,60 hrs,Elevated',
+      'Rank,Count,Rank Threshold,Status',
+      'Volunteer,28,0 hrs,Active Volunteer',
+      'Senior Volunteer,10,60 hrs,Elevated',
       'Team Lead,3,150 hrs,Field Officer',
       'Manager,1,300 hrs,Operations Desk',
       '',
@@ -47,13 +41,13 @@ export const ManagerReportsPage: React.FC = () => {
       '',
       'SECTION 4: ACTIVITY ATTENDANCE TURNOUT',
       'Activity Title,Area,Capacity,Attended,Turnout Rate',
-      'Meskel Square Civic Clean-up,Addis Ababa,20,19,95%',
+      'Meskel Square Clean-up,Addis Ababa,20,19,95%',
       'Entoto Forest Ridge Cleanup,Addis Ababa,25,24,96%',
       'Bishoftu Lake Eco Trail Restoration,Bishoftu,15,14,93%',
       'Hawassa Youth Health Outreach,Hawassa,12,11,92%',
       'Adama Youth Mentorship Session,Adama,18,16,89%',
       '',
-      'SECTION 5: SUMMIT CORPS TOP VOLUNTEERS',
+      'SECTION 5: TOP VOLUNTEERS',
       'Rank,Volunteer Name,Verified Hours,Activities Completed,Average Rating',
       '1,Yonas Kebede,192.5 hrs,24,4.9 / 5.0',
       '2,Selam Alemu,168.0 hrs,22,4.9 / 5.0',
@@ -81,22 +75,14 @@ export const ManagerReportsPage: React.FC = () => {
   return (
     <div className="space-y-8 text-left">
       {/* Header */}
-      <div
-        className="border-4 border-ink-primary bg-white p-6 sm:p-8 space-y-4 shadow-ticket"
-        style={{
-          clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)',
-        }}
-      >
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b-2 border-ink-primary pb-5">
+      <div className="rounded-[10px] bg-white p-6 sm:p-8 space-y-4 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-5">
           <div className="space-y-1">
-            <span className="font-sans text-xs font-bold text-role-manager uppercase tracking-tight block">
-              Program Intelligence & Analytics
-            </span>
-            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-ink-primary leading-none">
-              Service Operations Reports
+            <h1 className="font-display font-bold text-3xl sm:text-4xl tracking-tight text-ink-primary leading-tight">
+              Service operations reports
             </h1>
-            <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
-              Topographic elevation models, waypoint funnel conversions, regional footprint, and service hour records.
+            <p className="font-sans text-[13px] sm:text-sm text-ink-secondary mt-1">
+              Service activity models, applicant funnel conversions, territorial footprint, and service hour records.
             </p>
           </div>
 
@@ -121,33 +107,28 @@ export const ManagerReportsPage: React.FC = () => {
         </div>
       </div>
 
-      {/* REPORT 1: Hours by Period (SVG Elevation Ridgeline Profile) */}
-      <div
-        className="border-2 border-ink-primary bg-white p-6 sm:p-8 space-y-5 shadow-ticket"
-        style={{
-          clipPath: 'polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)',
-        }}
-      >
-        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b-2 border-border pb-3">
+      {/* REPORT 1: Hours by Period */}
+      <div className="rounded-[10px] bg-white p-6 sm:p-8 space-y-5 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 pb-3">
           <div>
-            <span className="font-sans text-xs font-bold text-role-manager uppercase tracking-tight block">
-              Report 1 • Service Trajectory
+            <span className="font-sans text-[13px] font-semibold text-role-manager block">
+              Report 1 • Service trajectory
             </span>
-            <h3 className="font-display text-2xl sm:text-3xl font-black uppercase text-ink-primary">
-              Verified Hours by Period (Elevation Ridgeline Profile)
+            <h3 className="font-display text-xl sm:text-2xl font-bold text-ink-primary">
+              Verified hours by period
             </h3>
           </div>
-          <span className="font-mono text-xs font-bold text-civic-green bg-canvas-subdued border border-border px-2.5 py-1">
-            Total Logged: 1,033.0 Verified Hours
+          <span className="font-sans text-[13px] font-semibold text-role-volunteer bg-canvas-subdued/50 px-2.5 py-1 rounded-[4px]">
+            Total logged: 1,033.0 verified hours
           </span>
         </div>
 
-        <p className="text-xs text-ink-secondary font-sans leading-relaxed">
-          Topographic silhouette representing cumulative service hours ascent across the 2026 operating season.
+        <p className="text-[13px] text-ink-secondary font-sans leading-relaxed">
+          Cumulative service hours logged across the operating periods.
         </p>
 
         {/* Custom SVG Ridgeline Profile */}
-        <div className="border-2 border-ink-primary bg-canvas-subdued p-4 overflow-hidden relative">
+        <div className="bg-canvas-subdued/30 rounded-[8px] p-4 overflow-hidden relative">
           <svg viewBox="0 0 800 240" className="w-full h-48 sm:h-60" preserveAspectRatio="none">
             <defs>
               <linearGradient id="ridgeGradient" x1="0" y1="0" x2="0" y2="1">
@@ -156,15 +137,15 @@ export const ManagerReportsPage: React.FC = () => {
               </linearGradient>
             </defs>
 
-            {/* Altitude Contour Grid Lines */}
+            {/* Grid Lines */}
             <line x1="40" y1="40" x2="760" y2="40" stroke="#CBD5E1" strokeDasharray="3 3" strokeWidth="1" />
-            <text x="765" y="44" fill="#94A3B8" fontSize="10" fontFamily="JetBrains Mono">500h (Summit)</text>
+            <text x="765" y="44" fill="#64748B" fontSize="10">500h (Peak)</text>
 
             <line x1="40" y1="100" x2="760" y2="100" stroke="#CBD5E1" strokeDasharray="3 3" strokeWidth="1" />
-            <text x="765" y="104" fill="#94A3B8" fontSize="10" fontFamily="JetBrains Mono">350h (High Camp)</text>
+            <text x="765" y="104" fill="#64748B" fontSize="10">350h</text>
 
             <line x1="40" y1="160" x2="760" y2="160" stroke="#CBD5E1" strokeDasharray="3 3" strokeWidth="1" />
-            <text x="765" y="164" fill="#94A3B8" fontSize="10" fontFamily="JetBrains Mono">200h (Mid-Ridge)</text>
+            <text x="765" y="164" fill="#64748B" fontSize="10">200h</text>
 
             <line x1="40" y1="210" x2="760" y2="210" stroke="#CBD5E1" strokeWidth="1.5" />
 
@@ -184,21 +165,17 @@ export const ManagerReportsPage: React.FC = () => {
             />
 
             {/* Waypoint Peak Pins */}
-            {/* July Basecamp */}
             <circle cx="50" cy="195" r="4.5" fill="#FFFFFF" stroke="#0E6266" strokeWidth="3" />
             <text x="35" y="230" fill="#475569" fontSize="11" fontFamily="JetBrains Mono" fontWeight="bold">JUL (Base)</text>
 
-            {/* August */}
             <circle cx="220" cy="170" r="4.5" fill="#FFFFFF" stroke="#0E6266" strokeWidth="3" />
             <text x="200" y="155" fill="#0E6266" fontSize="10" fontFamily="JetBrains Mono" fontWeight="bold">180.5h</text>
             <text x="205" y="230" fill="#475569" fontSize="11" fontFamily="JetBrains Mono" fontWeight="bold">AUG</text>
 
-            {/* September */}
             <circle cx="430" cy="100" r="5" fill="#FFFFFF" stroke="#0E6266" strokeWidth="3.5" />
             <text x="410" y="85" fill="#0E6266" fontSize="10" fontFamily="JetBrains Mono" fontWeight="bold">340.0h</text>
             <text x="415" y="230" fill="#475569" fontSize="11" fontFamily="JetBrains Mono" fontWeight="bold">SEP</text>
 
-            {/* October Peak */}
             <circle cx="650" cy="42" r="6" fill="#0E6266" stroke="#FFFFFF" strokeWidth="2.5" />
             <text x="615" y="26" fill="#0E6266" fontSize="12" fontFamily="JetBrains Mono" fontWeight="900">512.5h (PEAK)</text>
             <text x="635" y="230" fill="#0E6266" fontSize="11" fontFamily="JetBrains Mono" fontWeight="900">OCT (Now)</text>
@@ -208,46 +185,41 @@ export const ManagerReportsPage: React.FC = () => {
 
       {/* REPORT 2 & 3: 2-Column Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* REPORT 2: Application Funnel (Waypoint Route Ascent) */}
-        <div
-          className="border-2 border-ink-primary bg-white p-6 space-y-4 shadow-ticket"
-          style={{
-            clipPath: 'polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)',
-          }}
-        >
-          <div className="border-b-2 border-border pb-2">
-            <span className="font-sans text-xs font-bold text-role-manager uppercase tracking-tight block">
-              Report 2 • Admissions Pipeline
+        {/* REPORT 2: Application Funnel */}
+        <div className="rounded-[10px] bg-white p-6 space-y-4 shadow-sm">
+          <div className="pb-2">
+            <span className="font-sans text-[13px] font-semibold text-role-manager block">
+              Report 2 • Admissions pipeline
             </span>
-            <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
-              Application Funnel (Waypoint Route)
+            <h3 className="font-display text-xl sm:text-2xl font-bold text-ink-primary">
+              Application funnel (intake to activation)
             </h3>
           </div>
 
-          <p className="text-xs text-ink-secondary leading-relaxed">
-            Ascent from initial platform registration to verified Telebirr fee activation.
+          <p className="text-[13px] text-ink-secondary leading-relaxed">
+            Progress from initial platform registration to verified Telebirr fee activation.
           </p>
 
-          <div className="space-y-3 font-mono text-xs pt-2">
+          <div className="space-y-3 font-mono text-[13px] pt-2">
             {[
-              { label: 'Waypoint 1: Basecamp (Registered)', count: 48, pct: 100, note: 'Unique account signups', color: 'bg-ink-primary' },
-              { label: 'Waypoint 2: Mid-Ridge (Applied)', count: 40, pct: 83, note: 'Completed intake documents', color: 'bg-role-applicant' },
-              { label: 'Waypoint 3: High Camp (Accepted)', count: 32, pct: 67, note: 'Reviewed by Admissions Desk', color: 'bg-role-teamlead' },
-              { label: 'Waypoint 4: Summit (Activated & Paid)', count: 28, pct: 58, note: 'Confirmed Telebirr & Member badge', color: 'bg-civic-green' },
+              { label: 'Stage 1: Registered accounts', count: 48, pct: 100, note: 'Unique account signups', color: 'bg-ink-primary' },
+              { label: 'Stage 2: Completed applications', count: 40, pct: 83, note: 'Submitted background details', color: 'bg-role-applicant' },
+              { label: 'Stage 3: Accepted candidates', count: 32, pct: 67, note: 'Reviewed by admissions desk', color: 'bg-role-teamlead' },
+              { label: 'Stage 4: Activated volunteers', count: 28, pct: 58, note: 'Confirmed Telebirr & Volunteer pass', color: 'bg-role-volunteer' },
             ].map((wp, idx) => (
-              <div key={idx} className="p-3 border-2 border-border bg-canvas-subdued space-y-1.5">
+              <div key={idx} className="p-3 rounded-[8px] bg-canvas-subdued/30 space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <span className="font-sans font-bold text-xs text-ink-primary">
+                  <span className="font-sans font-semibold text-[13px] text-ink-primary">
                     {wp.label}
                   </span>
-                  <span className="font-mono text-xs font-black text-ink-primary">
+                  <span className="font-mono text-[13px] font-bold text-ink-primary">
                     {wp.count} ({wp.pct}%)
                   </span>
                 </div>
-                <div className="w-full h-3 bg-white border border-border overflow-hidden">
-                  <div className={`h-full ${wp.color}`} style={{ width: `${wp.pct}%` }} />
+                <div className="w-full h-2.5 bg-white rounded-[4px] overflow-hidden">
+                  <div className={`h-full ${wp.color} `} style={{ width: `${wp.pct}%` }} />
                 </div>
-                <span className="text-[10px] text-ink-tertiary block font-sans">
+                <span className="text-[13px] text-ink-tertiary block font-sans">
                   {wp.note}
                 </span>
               </div>
@@ -255,43 +227,38 @@ export const ManagerReportsPage: React.FC = () => {
           </div>
         </div>
 
-        {/* REPORT 3: Volunteers by Rank & Area (Elevation Distribution Matrix) */}
-        <div
-          className="border-2 border-ink-primary bg-white p-6 space-y-4 shadow-ticket"
-          style={{
-            clipPath: 'polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)',
-          }}
-        >
-          <div className="border-b-2 border-border pb-2">
-            <span className="font-sans text-xs font-bold text-role-manager uppercase tracking-tight block">
-              Report 3 • Territorial Footprint
+        {/* REPORT 3: Volunteers by Rank & Area */}
+        <div className="rounded-[10px] bg-white p-6 space-y-4 shadow-sm">
+          <div className="pb-2">
+            <span className="font-sans text-[13px] font-semibold text-role-manager block">
+              Report 3 • Territorial footprint
             </span>
-            <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
-              Volunteers by Area & Rank Tier
+            <h3 className="font-display text-xl sm:text-2xl font-bold text-ink-primary">
+              Volunteers by area & rank tier
             </h3>
           </div>
 
-          <p className="text-xs text-ink-secondary leading-relaxed">
-            Geographic corps concentration across the 5 Ethiopian regional corridors.
+          <p className="text-[13px] text-ink-secondary leading-relaxed">
+            Geographic concentration across the 5 Ethiopian regional corridors.
           </p>
 
-          <div className="space-y-3 font-sans text-xs pt-2">
+          <div className="space-y-3 font-sans text-[13px] pt-2">
             {[
-              { area: 'Addis Ababa (Central Hub)', count: 24, pct: 57, ranks: '16 Members • 6 Seniors • 2 Leads' },
-              { area: 'Adama (East Shewa Hub)', count: 7, pct: 17, ranks: '5 Members • 1 Senior • 1 Lead' },
-              { area: 'Bishoftu (Lakeside Environmental)', count: 5, pct: 12, ranks: '3 Members • 2 Seniors' },
-              { area: 'Hawassa (Sidama Regional Corridor)', count: 4, pct: 9, ranks: '3 Members • 1 Senior' },
-              { area: 'Bahir Dar (Tana Conservation)', count: 2, pct: 5, ranks: '2 Members' },
+              { area: 'Addis Ababa (Central Area)', count: 24, pct: 57, ranks: '16 Volunteers • 6 Seniors • 2 Leads' },
+              { area: 'Adama (East Shewa Area)', count: 7, pct: 17, ranks: '5 Volunteers • 1 Senior • 1 Lead' },
+              { area: 'Bishoftu (Lakeside Environmental)', count: 5, pct: 12, ranks: '3 Volunteers • 2 Seniors' },
+              { area: 'Hawassa (Sidama Regional Corridor)', count: 4, pct: 9, ranks: '3 Volunteers • 1 Senior' },
+              { area: 'Bahir Dar (Tana Conservation)', count: 2, pct: 5, ranks: '2 Volunteers' },
             ].map((reg) => (
-              <div key={reg.area} className="p-3 border-2 border-border bg-canvas-subdued space-y-1">
+              <div key={reg.area} className="p-3 rounded-[8px] bg-canvas-subdued/30 space-y-1">
                 <div className="flex justify-between items-baseline">
-                  <span className="font-bold text-xs text-ink-primary">{reg.area}</span>
-                  <span className="font-mono text-xs font-bold text-role-manager">{reg.count} volunteers ({reg.pct}%)</span>
+                  <span className="font-semibold text-[13px] text-ink-primary">{reg.area}</span>
+                  <span className="font-mono text-[13px] font-semibold text-role-manager">{reg.count} volunteers ({reg.pct}%)</span>
                 </div>
-                <div className="w-full h-2 bg-white border border-border">
+                <div className="w-full h-2 bg-white rounded-[4px] overflow-hidden">
                   <div className="h-full bg-role-manager" style={{ width: `${reg.pct}%` }} />
                 </div>
-                <span className="text-[10px] text-ink-tertiary block font-mono">
+                <span className="text-[13px] text-ink-tertiary block font-mono">
                   {reg.ranks}
                 </span>
               </div>
@@ -302,95 +269,85 @@ export const ManagerReportsPage: React.FC = () => {
 
       {/* REPORT 4 & 5: Activity Attendance & Top Volunteers */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* REPORT 4: Activity Attendance (Route Step Graph) */}
-        <div
-          className="border-2 border-ink-primary bg-white p-6 space-y-4 shadow-ticket"
-          style={{
-            clipPath: 'polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)',
-          }}
-        >
-          <div className="border-b-2 border-border pb-2">
-            <span className="font-sans text-xs font-bold text-role-manager uppercase tracking-tight block">
-              Report 4 • Field Turnout
+        {/* REPORT 4: Activity Attendance */}
+        <div className="rounded-[10px] bg-white p-6 space-y-4 shadow-sm">
+          <div className="pb-2">
+            <span className="font-sans text-[13px] font-semibold text-role-manager block">
+              Report 4 • Field turnout
             </span>
-            <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
-              Activity Attendance (Route Step Graph)
+            <h3 className="font-display text-xl sm:text-2xl font-bold text-ink-primary">
+              Activity attendance turnout rate
             </h3>
           </div>
 
-          <p className="text-xs text-ink-secondary leading-relaxed">
+          <p className="text-[13px] text-ink-secondary leading-relaxed">
             Attendance verification comparing enrolled capacity against actual check-ins.
           </p>
 
-          <div className="space-y-3 font-sans text-xs pt-2">
+          <div className="space-y-3 font-sans text-[13px] pt-2">
             {[
-              { title: 'Meskel Square Civic Clean-up', cap: 20, turn: 19, pct: 95 },
+              { title: 'Meskel Square Clean-up', cap: 20, turn: 19, pct: 95 },
               { title: 'Entoto Forest Ridge Cleanup', cap: 25, turn: 24, pct: 96 },
               { title: 'Bishoftu Lake Eco Trail Restoration', cap: 15, turn: 14, pct: 93 },
               { title: 'Hawassa Youth Health Outreach', cap: 12, turn: 11, pct: 92 },
               { title: 'Adama Youth Mentorship Session', cap: 18, turn: 16, pct: 89 },
             ].map((item, idx) => (
-              <div key={idx} className="p-3 border-2 border-border bg-canvas-subdued space-y-1">
+              <div key={idx} className="p-3 rounded-[8px] bg-canvas-subdued/30 space-y-1">
                 <div className="flex justify-between items-baseline">
-                  <span className="font-bold text-xs text-ink-primary">{item.title}</span>
-                  <span className="font-mono text-xs font-bold text-civic-green">{item.pct}% ({item.turn}/{item.cap})</span>
+                  <span className="font-semibold text-[13px] text-ink-primary">{item.title}</span>
+                  <span className="font-mono text-[13px] font-semibold text-role-volunteer">{item.pct}% ({item.turn}/{item.cap})</span>
                 </div>
-                <div className="w-full h-2.5 bg-white border border-border">
-                  <div className="h-full bg-civic-green" style={{ width: `${item.pct}%` }} />
+                <div className="w-full h-2 bg-white rounded-[4px] overflow-hidden">
+                  <div className="h-full bg-role-volunteer" style={{ width: `${item.pct}%` }} />
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* REPORT 5: Top Volunteers (Summit Corps Leaderboard) */}
-        <div
-          className="border-2 border-ink-primary bg-white p-6 space-y-4 shadow-ticket"
-          style={{
-            clipPath: 'polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)',
-          }}
-        >
-          <div className="border-b-2 border-border pb-2">
-            <span className="font-sans text-xs font-bold text-role-manager uppercase tracking-tight block">
-              Report 5 • Altitude Leaderboard
+        {/* REPORT 5: Top Volunteers */}
+        <div className="rounded-[10px] bg-white p-6 space-y-4 shadow-sm">
+          <div className="pb-2">
+            <span className="font-sans text-[13px] font-semibold text-role-manager block">
+              Report 5 • Top contributors
             </span>
-            <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
-              The Summit Corps (Top Volunteers)
+            <h3 className="font-display text-xl sm:text-2xl font-bold text-ink-primary">
+              Top volunteers by service hours
             </h3>
           </div>
 
-          <p className="text-xs text-ink-secondary leading-relaxed">
-            Volunteers who have ascended to highest verified service hours and leadership ratings.
+          <p className="text-[13px] text-ink-secondary leading-relaxed">
+            Volunteers who have achieved highest verified service hours and leadership ratings.
           </p>
 
-          <div className="divide-y divide-border border-2 border-border bg-white pt-1">
+          <div className="rounded-[8px] bg-white overflow-hidden pt-1 space-y-2">
             {[
               { rankNum: 1, name: 'Yonas Kebede', role: 'Team Lead', hours: 192.5, acts: 24, rating: 4.9, area: 'Adama' },
               { rankNum: 2, name: 'Selam Alemu', role: 'Team Lead Candidate', hours: 168.0, acts: 22, rating: 4.9, area: 'Bishoftu' },
-              { rankNum: 3, name: 'Biruk Tadesse', role: 'Senior Member', hours: 82.0, acts: 11, rating: 4.8, area: 'Addis Ababa' },
-              { rankNum: 4, name: 'Almaz Fikre', role: 'Senior Member', hours: 74.5, acts: 9, rating: 4.7, area: 'Addis Ababa' },
-              { rankNum: 5, name: 'Dawit Bekele', role: 'Member', hours: 36.5, acts: 5, rating: 4.8, area: 'Addis Ababa' },
+              { rankNum: 3, name: 'Biruk Tadesse', role: 'Senior Volunteer', hours: 82.0, acts: 11, rating: 4.8, area: 'Addis Ababa' },
+              { rankNum: 4, name: 'Almaz Fikre', role: 'Senior Volunteer', hours: 74.5, acts: 9, rating: 4.7, area: 'Addis Ababa' },
+              { rankNum: 5, name: 'Dawit Bekele', role: 'Volunteer', hours: 36.5, acts: 5, rating: 4.8, area: 'Addis Ababa' },
             ].map((v) => (
-              <div key={v.rankNum} className="p-3 flex items-center justify-between gap-3 text-xs">
+              <div key={v.rankNum} className="p-3 flex items-center justify-between gap-3 text-[13px]">
                 <div className="flex items-center gap-3">
-                  <span className="font-display text-xl font-black text-role-manager w-5 text-center">
+                  <span className="font-display text-lg font-bold text-role-manager w-5 text-center">
                     #{v.rankNum}
                   </span>
                   <div>
-                    <span className="font-bold text-ink-primary text-sm block">
+                    <span className="font-semibold text-ink-primary text-sm block">
                       {v.name}
                     </span>
-                    <span className="text-[11px] text-ink-tertiary font-mono">
+                    <span className="text-[13px] text-ink-tertiary font-mono">
                       {v.role} • {v.area}
                     </span>
                   </div>
                 </div>
 
                 <div className="text-right font-mono">
-                  <span className="text-sm font-bold text-ink-primary block leading-none">
+                  <span className="text-sm font-semibold text-ink-primary block leading-none">
                     {v.hours} hrs
                   </span>
-                  <span className="text-[10px] text-[#784E0B] flex items-center justify-end gap-0.5 pt-0.5">
+                  <span className="text-[13px] text-role-applicant flex items-center justify-end gap-0.5 pt-0.5">
                     <Star className="w-3 h-3 fill-amber-500 text-amber-500" weight="fill" />
                     <span>{v.rating} ({v.acts} shifts)</span>
                   </span>

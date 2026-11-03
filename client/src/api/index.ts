@@ -15,5 +15,12 @@ export * from './notifications';
 export * from './reports';
 export * from './settings';
 export * from './activityHistory';
+export * from './organisation';
+export * from './rolePermissions';
+export * from './sms';
 export * from './demoEmails';
-
+export * from '../utils/phone';
+export * from './projects';
+export * from './assignments';
+export * from './documents';
+export * from './allowances';

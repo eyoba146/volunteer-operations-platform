@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
@@ -8,11 +8,11 @@ import { useToast } from '../../components/ui/ToastContext';
 import { ArrowLeft, Plus, Warning } from '@phosphor-icons/react';
 
 const ACTIVITY_TYPES: { value: ActivityType; label: string }[] = [
-  { value: 'field_task', label: 'Field Task (Community Service)' },
-  { value: 'event', label: 'Event Marshalling / Coordination' },
-  { value: 'project', label: 'Community Special Project' },
-  { value: 'shift', label: 'Logistics / Clinic Shift' },
-  { value: 'training', label: 'Qualification Training' },
+  { value: 'field_task', label: 'Field task (community service)' },
+  { value: 'event', label: 'Event marshalling / coordination' },
+  { value: 'project', label: 'Community special project' },
+  { value: 'shift', label: 'Logistics shift' },
+  { value: 'training', label: 'Orientation & training' },
 ];
 
 const AREA_OPTIONS = [
@@ -34,11 +34,21 @@ export const TeamLeadCreateActivityPage: React.FC = () => {
   const [place, setPlace] = useState('');
   const [capacity, setCapacity] = useState('20');
   const [minRank, setMinRank] = useState<string>('none');
-  const [skills, setSkills] = useState('Logistics, Field Safety');
+  const [skills, setSkills] = useState('Logistics, Field safety');
+  const [projectId, setProjectId] = useState<string>('');
+  const [branchProjects, setBranchProjects] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user?.branchId) {
+      api.getProjects({ branchId: user.branchId }).then(setBranchProjects).catch(console.error);
+    } else {
+      api.getProjects().then(setBranchProjects).catch(console.error);
+    }
+  }, [user?.branchId]);
   const toast = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -65,6 +75,8 @@ export const TeamLeadCreateActivityPage: React.FC = () => {
           capacity: parseInt(capacity) || 15,
           minRank: minRank === 'none' ? undefined : (minRank as Rank),
           skills: skills.split(',').map((s) => s.trim()).filter(Boolean),
+          projectId: projectId || undefined,
+          projectName: branchProjects.find((p) => p.id === projectId)?.name || undefined,
         },
         user.id,
         profile?.fullName || user.username
@@ -83,42 +95,56 @@ export const TeamLeadCreateActivityPage: React.FC = () => {
     <div className="max-w-3xl mx-auto space-y-6">
       <button
         onClick={() => navigate('/team-lead/activities')}
-        className="inline-flex items-center gap-1.5 font-sans text-xs font-bold uppercase text-ink-secondary hover:text-ink-primary transition-colors cursor-pointer"
+        className="inline-flex items-center gap-1.5 font-sans text-[13px] font-medium text-ink-secondary hover:text-ink-primary transition-colors cursor-pointer"
       >
         <ArrowLeft className="w-4 h-4" weight="bold" />
         <span>Back to my activities</span>
       </button>
 
       {/* Header */}
-      <div className="border-b-2 border-border pb-5">
-        <span className="font-sans text-xs font-bold text-role-teamlead uppercase tracking-tight block">
-          Assignment Publisher
-        </span>
-        <h1 className="font-display text-4xl sm:text-5xl font-black uppercase tracking-tight text-ink-primary leading-none mt-1">
-          Create Volunteer Activity
+      <div className="pb-4">
+        <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
+          Create volunteer activity
         </h1>
-        <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
+        <p className="font-sans text-[13px] sm:text-sm text-ink-secondary mt-1">
           Publish a new field assignment, set volunteer capacity, and generate an on-site check-in pin.
         </p>
       </div>
 
       <form
         onSubmit={handleSubmit}
-        className="border-2 border-ink-primary bg-white p-6 sm:p-8 space-y-6 shadow-ticket"
-        style={{
-          clipPath: 'polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)',
-        }}
+        className="rounded-[10px] bg-white p-6 sm:p-8 space-y-6 shadow-sm"
       >
         {errorMessage && (
-          <div className="p-3 border-2 border-role-teamlead bg-role-teamleadLight text-role-teamlead text-xs font-sans font-bold flex items-center gap-2">
+          <div className="p-3 rounded-[8px] bg-role-teamleadLight/20 text-role-teamlead text-[13px] font-sans font-medium flex items-center gap-2">
             <Warning className="w-4 h-4 shrink-0" weight="bold" />
             <span>{errorMessage}</span>
           </div>
         )}
 
         <div className="space-y-4">
+          {branchProjects.length > 0 && (
+            <div className="space-y-1.5">
+              <label className="block text-xs font-sans font-semibold text-ink-secondary">
+                Branch Project Charter (optional)
+              </label>
+              <select
+                value={projectId}
+                onChange={(e) => setProjectId(e.target.value)}
+                className="w-full px-3.5 py-2.5 bg-[#F1F3F6] rounded-[12px] text-sm font-sans text-ink-primary focus:outline-none focus:ring-2 focus:ring-[#D63927]/30"
+              >
+                <option value="">None (Independent branch activity)</option>
+                {branchProjects.map((p) => (
+                  <option key={p.id} value={p.id}>
+                    {p.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
           <Input
-            label="Activity Title"
+            label="Activity title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="e.g. Kazanchis Neighborhood Tree Planting"
@@ -127,14 +153,14 @@ export const TeamLeadCreateActivityPage: React.FC = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Select
-              label="Activity Type"
+              label="Activity type"
               value={type}
               onChange={(e) => setType(e.target.value as any)}
               options={ACTIVITY_TYPES}
               required
             />
             <Select
-              label="City / Regional Hub"
+              label="City / community area"
               value={area}
               onChange={(e) => setArea(e.target.value)}
               options={AREA_OPTIONS}
@@ -143,7 +169,7 @@ export const TeamLeadCreateActivityPage: React.FC = () => {
           </div>
 
           <Input
-            label="Specific Location / Venue"
+            label="Specific location / venue"
             value={place}
             onChange={(e) => setPlace(e.target.value)}
             placeholder="e.g. Kazanchis Youth Center Main Plaza"
@@ -152,14 +178,14 @@ export const TeamLeadCreateActivityPage: React.FC = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input
-              label="Start Date & Time"
+              label="Start date & time"
               type="datetime-local"
               value={startsAt}
               onChange={(e) => setStartsAt(e.target.value)}
               required
             />
             <Input
-              label="End Date & Time"
+              label="End date & time"
               type="datetime-local"
               value={endsAt}
               onChange={(e) => setEndsAt(e.target.value)}
@@ -169,7 +195,7 @@ export const TeamLeadCreateActivityPage: React.FC = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input
-              label="Volunteer Capacity (Spots)"
+              label="Volunteer capacity (spots)"
               type="number"
               min="1"
               max="150"
@@ -178,40 +204,40 @@ export const TeamLeadCreateActivityPage: React.FC = () => {
               required
             />
             <Select
-              label="Minimum Rank Required"
+              label="Minimum rank required"
               value={minRank}
               onChange={(e) => setMinRank(e.target.value)}
               options={[
-                { value: 'none', label: 'Open to All Volunteers' },
-                { value: 'member', label: 'Member' },
-                { value: 'senior_member', label: 'Senior Member' },
+                { value: 'none', label: 'Open to all volunteers' },
+                { value: 'volunteer', label: 'Volunteer' },
+                { value: 'senior_volunteer', label: 'Senior volunteer' },
               ]}
             />
           </div>
 
           <div className="space-y-1.5 text-left">
-            <label className="block text-xs font-bold uppercase text-ink-primary">
-              Activity Description & Objective
+            <label className="block text-[13px] font-medium text-ink-primary">
+              Activity description & objective
             </label>
             <textarea
               rows={4}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Outline the mission goals, what volunteers will do, and what to bring..."
-              className="w-full bg-canvas text-ink-primary font-sans text-xs border-2 border-ink-primary p-2.5 focus:outline-none focus:ring-2 focus:ring-role-teamlead"
+              className="w-full bg-white text-ink-primary font-sans text-[13px] rounded-[8px] p-2.5 focus:outline-none focus:ring-2 focus:ring-role-teamlead"
               required
             />
           </div>
 
           <Input
-            label="Key Skills Required (comma separated)"
+            label="Key skills required (comma separated)"
             value={skills}
             onChange={(e) => setSkills(e.target.value)}
-            placeholder="e.g. Field Safety, Logistics, First Aid"
+            placeholder="e.g. Field safety, logistics, first aid"
           />
         </div>
 
-        <div className="pt-4 border-t-2 border-border flex justify-end">
+        <div className="pt-4 flex justify-end">
           <Button
             type="submit"
             variant="primary"
@@ -219,7 +245,7 @@ export const TeamLeadCreateActivityPage: React.FC = () => {
             isLoading={isLoading}
             leftIcon={<Plus className="w-4 h-4" weight="bold" />}
           >
-            Publish Activity Roster
+            Publish activity roster
           </Button>
         </div>
       </form>

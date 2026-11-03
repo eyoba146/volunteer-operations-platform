@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import * as api from '../../api';
 import { Payment } from '../../types';
-import { Button, StatusMark, Skeleton } from '../../components/ui';
+import { Button, StatusMark, Skeleton, TopoBackdrop } from '../../components/ui';
 import { 
   Money, 
   ArrowsClockwise, 
@@ -10,10 +10,8 @@ import {
   CheckCircle, 
   Warning, 
   ArrowRight, 
-  DownloadSimple,
-  ShieldCheck,
-  Receipt,
-  Clock
+  ShieldCheck, 
+  Clock 
 } from '@phosphor-icons/react';
 
 export const FinanceOverviewPage: React.FC = () => {
@@ -27,6 +25,7 @@ export const FinanceOverviewPage: React.FC = () => {
   } | null>(null);
 
   const [recentPayments, setRecentPayments] = useState<Payment[]>([]);
+  const [allowanceMetrics, setAllowanceMetrics] = useState({ disbursedTotal: 0, reservedTotal: 0, waitingCount: 0 });
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -39,6 +38,15 @@ export const FinanceOverviewPage: React.FC = () => {
           api.getAllPayments(),
         ]);
         setStats(s);
+      try {
+        const allws = await api.getAllowances();
+        const disbursed = allws.filter(a => a.status === 'paid').reduce((sum, a) => sum + (a.totalAmount || 0), 0);
+        const reserved = allws.filter(a => a.status === 'approved').reduce((sum, a) => sum + (a.totalAmount || 0), 0);
+        const waiting = allws.filter(a => a.status === 'approved').length;
+        setAllowanceMetrics({ disbursedTotal: disbursed, reservedTotal: reserved, waitingCount: waiting });
+      } catch (err) {
+        console.error(err);
+      }
         setRecentPayments(list.slice(0, 5));
       } finally {
         setIsLoading(false);
@@ -62,216 +70,132 @@ export const FinanceOverviewPage: React.FC = () => {
 
   return (
     <div className="space-y-8 text-left">
-      {/* Header */}
-      <div
-        className="border-4 border-ink-primary bg-white p-6 sm:p-8 space-y-4 shadow-ticket"
-        style={{
-          clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)',
-        }}
-      >
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b-2 border-ink-primary pb-5">
+      {/* Editorial Header */}
+      <div className="relative overflow-hidden rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 sm:p-8 space-y-6">
+        <TopoBackdrop color="#059669" opacity={0.06} />
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-start justify-between gap-4 pb-6">
           <div className="space-y-1">
-            <span className="font-sans text-xs font-bold text-ink-primary uppercase tracking-tight block">
-              Ethio Telecom Settlement Desk
-            </span>
-            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-ink-primary leading-none">
-              Finance & Settlement Desk
+            <h1 className="font-display font-bold text-3xl sm:text-4xl tracking-tight text-ink-primary">
+              Telebirr settlements and payment ledger
             </h1>
-            <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
-              Live Telebirr settlement rails, exception resolution queue, registration fee accounting, and refunds ledger.
+            <p className="text-sm text-ink-secondary mt-1 max-w-xl leading-relaxed">
+              Live settlement reconciliation, payment exception queue, fee ledger, and refund accounting.
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="shrink-0">
             <Button
               variant="primary"
-              size="sm"
+              size="md"
               leftIcon={<ArrowsClockwise className="w-4 h-4" weight="bold" />}
               onClick={() => navigate('/finance/needs-review')}
             >
-              Review Queue ({stats?.needsReviewCount || 0})
-            </Button>
-            <Button
-              variant="secondary"
-              size="sm"
-              leftIcon={<Money className="w-4 h-4" weight="bold" />}
-              onClick={() => navigate('/finance/payments')}
-            >
-              All Payments Ledger
-            </Button>
-            <Button
-              variant="secondary"
-              size="sm"
-              leftIcon={<Scroll className="w-4 h-4" weight="bold" />}
-              onClick={() => navigate('/finance/receipts-refunds')}
-            >
-              Receipts & Refunds
+              Review queue ({stats?.needsReviewCount || 0})
             </Button>
           </div>
         </div>
 
-        {/* Financial Totals Strip */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 font-sans text-xs">
-          <div className="border-2 border-border bg-canvas-subdued p-4 space-y-1">
-            <span className="text-ink-tertiary font-bold text-[10px] uppercase block">Total Revenue MTD</span>
-            <div className="font-display text-3xl sm:text-4xl font-black text-civic-green leading-none">
-              ETB {stats?.totalCollectedETB.toLocaleString()}<span className="text-xs font-mono font-normal text-ink-tertiary">.00</span>
-            </div>
-            <span className="text-[11px] text-ink-secondary block font-mono">
-              {stats?.confirmedCount} confirmed settlements
+        {/* Lead Numeral + Simple Inline List on White (Rule 4: NO 4-box rows) */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pt-1">
+          <div className="flex items-baseline gap-3">
+            <span className="font-display font-black text-4xl sm:text-5xl text-role-volunteer leading-none">
+              ETB {stats?.totalCollectedETB.toLocaleString() || '0'}.00
             </span>
+            <div>
+              <span className="text-base font-bold text-ink-primary block leading-tight">
+                Total revenue collected
+              </span>
+              <span className="text-[13px] text-ink-secondary">
+                {stats?.confirmedCount || 0} confirmed volunteer activations
+              </span>
+            </div>
           </div>
 
-          <div className="border-2 border-border bg-canvas-subdued p-4 space-y-1">
-            <span className="text-ink-tertiary font-bold text-[10px] uppercase block">Today's Settlements</span>
-            <div className="font-display text-3xl sm:text-4xl font-black text-ink-primary leading-none">
-              ETB {stats?.todayETB.toLocaleString()}<span className="text-xs font-mono font-normal text-ink-tertiary">.00</span>
-            </div>
-            <span className="text-[11px] text-ink-secondary block font-mono">
-              {stats?.todayCount} fees processed today
+          
+        {/* Requirement 5: Inline Allowance Figures */}
+        <div className="pt-4 flex flex-wrap items-center gap-6 text-sm font-sans">
+          <div className="space-y-0.5">
+            <span className="text-xs text-ink-secondary block">Volunteer stipends disbursed</span>
+            <span className="font-display font-bold text-xl text-ink-primary">
+              ETB {allowanceMetrics.disbursedTotal.toLocaleString()}
             </span>
           </div>
-
-          <div className="border-2 border-border bg-canvas-subdued p-4 space-y-1">
-            <span className="text-ink-tertiary font-bold text-[10px] uppercase block">Review Queue</span>
-            <div className={`font-display text-3xl sm:text-4xl font-black leading-none ${
-              (stats?.needsReviewCount || 0) > 0 ? 'text-[#784E0B]' : 'text-civic-green'
-            }`}>
-              {stats?.needsReviewCount || 0} <span className="text-xs font-mono font-normal text-ink-tertiary">cases</span>
-            </div>
-            <span className="text-[11px] text-ink-secondary block font-sans">
-              {(stats?.needsReviewCount || 0) > 0 ? 'Exceptions require matching' : 'Queue clear'}
+          <div className="space-y-0.5">
+            <span className="text-xs text-ink-secondary block">Reserved for approved payouts</span>
+            <span className="font-display font-bold text-xl text-amber-700">
+              ETB {allowanceMetrics.reservedTotal.toLocaleString()}
             </span>
           </div>
-
-          <div className="border-2 border-border bg-canvas-subdued p-4 space-y-1">
-            <span className="text-ink-tertiary font-bold text-[10px] uppercase block">Reimbursements</span>
-            <div className="font-display text-3xl sm:text-4xl font-black text-ink-primary leading-none">
-              {stats?.refundedCount || 0} <span className="text-xs font-mono font-normal text-ink-tertiary">reversals</span>
-            </div>
-            <span className="text-[11px] text-ink-secondary block font-sans">
-              Total audited refunds
+          <div className="space-y-0.5">
+            <span className="text-xs text-ink-secondary block">Payouts ready for Telebirr</span>
+            <span className="font-display font-bold text-xl text-[#1E824C]">
+              {allowanceMetrics.waitingCount}
             </span>
+          </div>
+        </div>
+        {/* Simple Inline List with dividers */}
+          <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm pt-2 md:pt-0">
+            <div className="space-y-0.5">
+              <span className="text-[13px] text-ink-secondary block">Today's settlements</span>
+              <span className="text-xl font-bold text-ink-primary">
+                ETB {stats?.todayETB.toLocaleString() || '0'}.00
+              </span>
+            </div>
+            <div className="space-y-0.5">
+              <span className="text-[13px] text-ink-secondary block">Review cases</span>
+              <span className={`text-xl font-bold ${
+                (stats?.needsReviewCount || 0) > 0 ? 'text-role-applicant' : 'text-role-volunteer'
+              } `}>
+                {stats?.needsReviewCount || 0}
+              </span>
+            </div>
+            <div className="space-y-0.5">
+              <span className="text-[13px] text-ink-secondary block">Refund reversals</span>
+              <span className="text-xl font-bold text-ink-primary">
+                {stats?.refundedCount || 0}
+              </span>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Two Columns */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Telebirr Gateway Status & Controls */}
-        <div
-          className="border-2 border-ink-primary bg-white p-6 space-y-5 flex flex-col justify-between shadow-ticket"
-          style={{
-            clipPath: 'polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)',
-          }}
-        >
+      {/* Two Column Layout: Recent Transactions & Gateway Status */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* Recent Transactions Feed */}
+        <div className="lg:col-span-7 rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 space-y-4 flex flex-col justify-between">
           <div className="space-y-4">
-            <div className="flex items-center justify-between border-b-2 border-border pb-3">
-              <div className="flex items-center gap-2">
-                <ShieldCheck className="w-5 h-5 text-civic-green" weight="fill" />
-                <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
-                  Ethio Telecom Merchant Status
-                </h3>
-              </div>
-              <span className="font-mono text-xs font-bold text-civic-green px-2 py-0.5 bg-emerald-50 border border-emerald-300">
-                LIVE SETTLEMENT RAIL
-              </span>
-            </div>
-
-            <div className="space-y-3 font-sans text-xs">
-              <div className="p-3.5 bg-canvas-subdued border border-border flex justify-between items-center">
-                <div>
-                  <span className="font-bold text-ink-primary block">Merchant Account Name</span>
-                  <span className="text-ink-secondary text-[11px]">Ethio Telecom Enterprise Gateway</span>
-                </div>
-                <span className="font-mono text-xs font-bold text-ink-primary">VTS Program - Ethio Telecom</span>
-              </div>
-
-              <div className="p-3.5 bg-canvas-subdued border border-border flex justify-between items-center">
-                <div>
-                  <span className="font-bold text-ink-primary block">Telebirr Shortcode</span>
-                  <span className="text-ink-secondary text-[11px]">Direct USSD & In-App Pay Code</span>
-                </div>
-                <span className="font-mono text-xs font-bold bg-white px-2 py-0.5 border border-border text-ink-primary">
-                  884120
-                </span>
-              </div>
-
-              <div className="p-3.5 bg-canvas-subdued border border-border flex justify-between items-center">
-                <div>
-                  <span className="font-bold text-ink-primary block">Automatic Matching Rate</span>
-                  <span className="text-ink-secondary text-[11px]">Transactions resolved without manual intervention</span>
-                </div>
-                <span className="font-mono text-xs font-black text-civic-green">
-                  96.8%
-                </span>
-              </div>
-
-              <div className="p-3.5 bg-canvas-subdued border border-border flex justify-between items-center">
-                <div>
-                  <span className="font-bold text-ink-primary block">Average Exception Resolution</span>
-                  <span className="text-ink-secondary text-[11px]">Speed from customer query to resolution</span>
-                </div>
-                <span className="font-mono text-xs font-bold text-ink-primary">
-                  14 minutes
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div className="pt-4 border-t-2 border-border flex gap-3">
-            <Button
-              variant="primary"
-              size="sm"
-              className="w-full"
-              onClick={() => navigate('/finance/needs-review')}
-              rightIcon={<ArrowRight className="w-3.5 h-3.5" />}
-            >
-              Resolve Exception Queue ({stats?.needsReviewCount || 0})
-            </Button>
-          </div>
-        </div>
-
-        {/* Recent Transactions Ticker */}
-        <div
-          className="border-2 border-ink-primary bg-white p-6 space-y-5 flex flex-col justify-between shadow-ticket"
-          style={{
-            clipPath: 'polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)',
-          }}
-        >
-          <div className="space-y-4">
-            <div className="flex items-center justify-between border-b-2 border-border pb-3">
+            <div className="flex items-center justify-between pb-3">
               <div className="flex items-center gap-2">
                 <Clock className="w-5 h-5 text-ink-primary" weight="bold" />
-                <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
-                  Recent Telebirr Transactions
+                <h3 className="font-display text-xl font-bold text-ink-primary">
+                  Recent Telebirr transactions
                 </h3>
               </div>
-              <span className="font-mono text-xs text-ink-tertiary">
-                Real-Time Stream
+              <span className="text-[13px] text-ink-secondary font-medium">
+                Live stream
               </span>
             </div>
 
-            <div className="divide-y divide-border border-2 border-border bg-white">
+            <div className="space-y-2">
               {recentPayments.map((p) => (
-                <div key={p.id} className="p-3 flex items-center justify-between gap-3 text-xs">
+                <div key={p.id} className="py-3 flex items-center justify-between gap-3 text-sm">
                   <div className="space-y-0.5">
                     <div className="flex items-center gap-2">
-                      <span className="font-mono font-bold text-xs text-ink-primary">
+                      <span className="font-semibold text-ink-primary">
                         {p.telebirrReference}
                       </span>
                       <StatusMark status={p.status} size="sm" />
                     </div>
-                    <span className="text-ink-secondary block font-sans">
+                    <span className="text-ink-secondary text-[13px] block">
                       {p.payerName || 'Applicant'} • {p.payerPhone || 'No phone'}
                     </span>
                   </div>
 
-                  <div className="text-right font-mono">
-                    <span className="font-bold text-xs text-ink-primary block">
+                  <div className="text-right">
+                    <span className="font-bold text-sm text-ink-primary block">
                       ETB {p.amount}.00
                     </span>
-                    <span className="text-[10px] text-ink-tertiary block">
+                    <span className="text-[13px] text-ink-tertiary block">
                       {new Date(p.createdAt).toLocaleDateString()}
                     </span>
                   </div>
@@ -280,16 +204,81 @@ export const FinanceOverviewPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="pt-4 border-t-2 border-border">
-            <Button
-              variant="secondary"
-              size="sm"
-              className="w-full"
-              onClick={() => navigate('/finance/payments')}
-              rightIcon={<ArrowRight className="w-3.5 h-3.5" />}
+          <div className="pt-3">
+            <Link
+              to="/finance/payments"
+              className="text-sm font-bold text-ink-primary hover:underline flex items-center gap-1.5"
             >
-              Open Full Transactions Ledger
-            </Button>
+              <span>Open full transactions ledger</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+
+        {/* Merchant Settlement Gateway Status */}
+        <div className="lg:col-span-5 rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 space-y-4 flex flex-col justify-between">
+          <div className="space-y-4">
+            <div className="flex items-center justify-between pb-3">
+              <div className="flex items-center gap-2">
+                <ShieldCheck className="w-5 h-5 text-role-volunteer" weight="fill" />
+                <h3 className="font-display text-xl font-bold text-ink-primary">
+                  Telebirr gateway status
+                </h3>
+              </div>
+              <span className="text-[13px] font-semibold text-role-volunteer px-2 py-0.5 bg-emerald-50 rounded-[4px]">
+                Connected
+              </span>
+            </div>
+
+            <div className="space-y-3 text-sm">
+              <div className="p-3 bg-canvas-subdued/40 rounded-[8px] flex justify-between items-center">
+                <div>
+                  <span className="font-semibold text-ink-primary block text-[13px]">Merchant account</span>
+                  <span className="text-ink-secondary text-[13px]">Telecom payment integration</span>
+                </div>
+                <span className="font-semibold text-ink-primary text-[13px]">VTS Ethiopia</span>
+              </div>
+
+              <div className="p-3 bg-canvas-subdued/40 rounded-[8px] flex justify-between items-center">
+                <div>
+                  <span className="font-semibold text-ink-primary block text-[13px]">Telebirr shortcode</span>
+                  <span className="text-ink-secondary text-[13px]">Direct pay code</span>
+                </div>
+                <span className="font-semibold bg-white px-2 py-0.5 rounded-[4px] text-ink-primary text-[13px]">
+                  884120
+                </span>
+              </div>
+
+              <div className="p-3 bg-canvas-subdued/40 rounded-[8px] flex justify-between items-center">
+                <div>
+                  <span className="font-semibold text-ink-primary block text-[13px]">Automatic matching</span>
+                  <span className="text-ink-secondary text-[13px]">Matched without manual review</span>
+                </div>
+                <span className="font-semibold text-role-volunteer text-[13px]">
+                  96.8%
+                </span>
+              </div>
+
+              <div className="p-3 bg-canvas-subdued/40 rounded-[8px] flex justify-between items-center">
+                <div>
+                  <span className="font-semibold text-ink-primary block text-[13px]">Pending exceptions</span>
+                  <span className="text-ink-secondary text-[13px]">Payments needing confirmation</span>
+                </div>
+                <span className="font-semibold text-ink-primary text-[13px]">
+                  {stats?.needsReviewCount || 0} cases
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="pt-3">
+            <Link
+              to="/finance/needs-review"
+              className="text-sm font-bold text-ink-primary hover:underline flex items-center gap-1.5"
+            >
+              <span>Resolve exception queue</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
         </div>
       </div>

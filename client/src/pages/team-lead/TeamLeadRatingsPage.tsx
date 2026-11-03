@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
 import { Activity, Enrollment, VolunteerProfile } from '../../types';
-import { Select, Button, Skeleton, StatusMark, EmptyState } from '../../components/ui';
+import { Select, Button, Skeleton, EmptyState } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
 import { Star, CheckCircle, UserCircle, FloppyDisk } from '@phosphor-icons/react';
 
@@ -90,7 +90,7 @@ export const TeamLeadRatingsPage: React.FC = () => {
     return (
       <div className="space-y-6 max-w-4xl mx-auto">
         <Skeleton variant="text" className="h-8 w-1/3" />
-        <Skeleton variant="rect" className="h-64" />
+        <Skeleton variant="rect" className="h-64 rounded-[10px]" />
       </div>
     );
   }
@@ -105,14 +105,11 @@ export const TeamLeadRatingsPage: React.FC = () => {
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
       {/* Top Header */}
-      <div className="border-b-2 border-border pb-5">
-        <span className="font-sans text-xs font-bold text-role-teamlead uppercase tracking-tight block">
-          Volunteer Evaluations
-        </span>
-        <h1 className="font-display text-4xl sm:text-5xl font-black uppercase tracking-tight text-ink-primary leading-none mt-1">
-          Rate Volunteer Performance
+      <div className="pb-4">
+        <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
+          Rate volunteer performance
         </h1>
-        <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
+        <p className="font-sans text-[13px] sm:text-sm text-ink-secondary mt-1">
           Evaluate participant attendance, discipline, and initiative (1 to 5 stars). High ratings build rank advancement eligibility.
         </p>
       </div>
@@ -120,7 +117,7 @@ export const TeamLeadRatingsPage: React.FC = () => {
       {/* Select Activity */}
       <div className="max-w-md">
         <Select
-          label="Select Activity Assignment"
+          label="Select activity assignment"
           value={selectedActivityId}
           onChange={(e) => setSelectedActivityId(e.target.value)}
           options={activities.map((a) => ({
@@ -138,7 +135,7 @@ export const TeamLeadRatingsPage: React.FC = () => {
           description="Volunteers who enroll or check in to this activity will appear here for evaluation."
         />
       ) : (
-        <div className="border-2 border-ink-primary bg-white shadow-ticket divide-y-2 divide-border">
+        <div className="rounded-[10px] bg-white shadow-sm overflow-hidden space-y-2">
           {displayedVolunteers.map((vol) => {
             const currentRating = ratingsMap[vol.userId] || { score: 5, note: '', saved: false };
             return (
@@ -147,17 +144,17 @@ export const TeamLeadRatingsPage: React.FC = () => {
                   <div className="flex items-center gap-3">
                     <UserCircle className="w-10 h-10 text-ink-secondary" />
                     <div>
-                      <h4 className="font-display text-2xl font-black uppercase text-ink-primary leading-tight">
+                      <h4 className="font-display text-xl sm:text-2xl font-bold text-ink-primary leading-tight">
                         {vol.fullName}
                       </h4>
-                      <span className="font-mono text-xs text-ink-secondary">
-                        ID: {vol.volunteerNumber} • Rank: {vol.rank?.replace('_', ' ').toUpperCase()}
+                      <span className="font-mono text-[13px] text-ink-secondary">
+                        ID: {vol.volunteerNumber} • Rank: {vol.rank?.replace('_', ' ')}
                       </span>
                     </div>
                   </div>
 
                   {/* 1-5 Star Picker */}
-                  <div className="flex items-center gap-1.5 bg-canvas px-3 py-1.5 border-2 border-ink-primary self-start sm:self-auto">
+                  <div className="flex items-center gap-1.5 bg-canvas-subdued/40 px-3 py-1.5 rounded-[8px] self-start sm:self-auto">
                     {[1, 2, 3, 4, 5].map((star) => (
                       <button
                         key={star}
@@ -171,12 +168,12 @@ export const TeamLeadRatingsPage: React.FC = () => {
                             star <= currentRating.score
                               ? 'text-role-applicant fill-role-applicant'
                               : 'text-border'
-                          }`}
+                          } `}
                           weight={star <= currentRating.score ? 'fill' : 'regular'}
                         />
                       </button>
                     ))}
-                    <span className="font-mono text-xs font-bold text-ink-primary pl-2">
+                    <span className="font-mono text-[13px] font-bold text-ink-primary pl-2">
                       {currentRating.score}.0
                     </span>
                   </div>
@@ -185,15 +182,15 @@ export const TeamLeadRatingsPage: React.FC = () => {
                 {/* Optional Note & Submit Row */}
                 <div className="flex flex-col sm:flex-row items-end gap-3 pt-2">
                   <div className="w-full sm:flex-1 space-y-1">
-                    <label className="block text-[11px] font-bold uppercase text-ink-tertiary">
-                      Performance Feedback (Optional)
+                    <label className="block text-[13px] font-medium text-ink-tertiary">
+                      Performance feedback (optional)
                     </label>
                     <input
                       type="text"
                       value={currentRating.note}
                       onChange={(e) => handleNoteChange(vol.userId, e.target.value)}
-                      placeholder="e.g. Exhibited strong field initiative; assisted arriving community members promptly."
-                      className="w-full bg-canvas text-ink-primary font-sans text-xs border border-border p-2 focus:border-ink-primary focus:outline-none"
+                      placeholder="e.g. Exhibited strong field initiative; assisted the local community promptly."
+                      className="w-full bg-white text-ink-primary font-sans text-[13px] rounded-[8px] p-2 focus:outline-none focus:ring-2 focus:ring-ink-primary/20"
                     />
                   </div>
 
@@ -205,7 +202,7 @@ export const TeamLeadRatingsPage: React.FC = () => {
                     onClick={() => handleSaveRating(vol.userId)}
                     isLoading={isSubmitting}
                   >
-                    {currentRating.saved ? 'Score Saved' : 'Save Rating'}
+                    {currentRating.saved ? 'Score saved' : 'Save rating'}
                   </Button>
                 </div>
               </div>

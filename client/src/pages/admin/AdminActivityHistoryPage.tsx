@@ -2,22 +2,56 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as api from '../../api';
 import { ActivityLogEntry } from '../../types';
-import { LedgerTable, LedgerColumn, Input, Select, Button, Skeleton } from '../../components/ui';
-import { MagnifyingGlass, Scroll, ArrowLeft, Clock, User, ShieldCheck } from '@phosphor-icons/react';
+import { LedgerTable, LedgerColumn, Input, Select, Skeleton, JourneyLog, JourneyItem } from '../../components/ui';
+import { MagnifyingGlass, ArrowLeft } from '@phosphor-icons/react';
 
 export const AdminActivityHistoryPage: React.FC = () => {
   const [logs, setLogs] = useState<ActivityLogEntry[]>([]);
   const [search, setSearch] = useState('');
   const [roleFilter, setRoleFilter] = useState('all');
+  const [categoryFilter, setCategoryFilter] = useState<'all' | 'admin' | 'signins' | 'security_alerts'>('all');
   const [isLoading, setIsLoading] = useState(true);
+  const [viewMode, setViewMode] = useState<'log' | 'table'>('log');
   const navigate = useNavigate();
 
   useEffect(() => {
     const load = async () => {
       setIsLoading(true);
       try {
-        const list = await api.getActivityLog(search || undefined);
-        setLogs(list);
+        const [actLogs, signIns] = await Promise.all([
+          api.getActivityLog(search || undefined),
+          api.getSignInLogs(),
+        ]);
+
+        const signInEntries: ActivityLogEntry[] = signIns.map((s) => ({
+          id: s.id,
+          actorId: s.userId || 'anonymous',
+          actorName: s.username,
+          actorRole: s.result === 'locked' ? 'Security Lockout' : s.result === 'failed' ? 'Failed Sign-in' : 'Sign-in',
+          action: s.result === 'locked'
+            ? `Account locked: ${s.reason || 'Multiple failed attempts'} (${s.deviceSummary})`
+            : s.result === 'failed'
+            ? `Failed sign-in attempt: ${s.reason || 'Invalid credentials'} (${s.deviceSummary})`
+            : `Successful sign-in from ${s.deviceSummary} (${s.ipAddress || '196.188.24.1'})`,
+          subject: `IP: ${s.ipAddress || '196.188.24.1'}`,
+          createdAt: s.timestamp,
+        }));
+
+        let combined = [...actLogs, ...signInEntries];
+        combined.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+        if (search) {
+          const q = search.toLowerCase();
+          combined = combined.filter(
+            (l) =>
+              l.action.toLowerCase().includes(q) ||
+              l.actorName.toLowerCase().includes(q) ||
+              l.subject.toLowerCase().includes(q) ||
+              l.actorRole.toLowerCase().includes(q)
+          );
+        }
+
+        setLogs(combined);
       } finally {
         setIsLoading(false);
       }
@@ -26,6 +60,14 @@ export const AdminActivityHistoryPage: React.FC = () => {
   }, [search]);
 
   const filteredLogs = logs.filter((entry) => {
+    if (categoryFilter === 'admin') {
+      if (['Sign-in', 'Failed Sign-in', 'Security Lockout'].includes(entry.actorRole)) return false;
+    } else if (categoryFilter === 'signins') {
+      if (!['Sign-in', 'Failed Sign-in', 'Security Lockout'].includes(entry.actorRole)) return false;
+    } else if (categoryFilter === 'security_alerts') {
+      if (!['Failed Sign-in', 'Security Lockout'].includes(entry.actorRole)) return false;
+    }
+
     if (roleFilter !== 'all' && !entry.actorRole.toLowerCase().includes(roleFilter.toLowerCase())) {
       return false;
     }
@@ -36,28 +78,28 @@ export const AdminActivityHistoryPage: React.FC = () => {
     {
       header: 'Timestamp',
       cell: (entry) => (
-        <span className="font-mono text-xs text-ink-tertiary">
+        <span className="font-mono text-[13px] text-ink-tertiary">
           {new Date(entry.createdAt).toLocaleString()}
         </span>
       ),
     },
     {
-      header: 'Actor & Role',
+      header: 'Actor and role',
       cell: (entry) => (
         <div className="space-y-0.5">
-          <span className="font-sans font-bold text-ink-primary block text-xs">
+          <span className="font-sans font-semibold text-ink-primary block text-[13px]">
             {entry.actorName}
           </span>
-          <span className="font-mono text-[10px] font-bold px-1.5 py-0.5 bg-canvas-subdued border border-border text-ink-tertiary uppercase inline-block">
+          <span className="font-mono text-[13px] font-medium px-1.5 py-0.5 bg-canvas-subdued rounded-[4px] text-ink-secondary inline-block">
             {entry.actorRole}
           </span>
         </div>
       ),
     },
     {
-      header: 'Action Taken',
+      header: 'Action taken',
       cell: (entry) => (
-        <span className="font-sans text-xs text-ink-primary font-medium">
+        <span className="font-sans text-[13px] text-ink-primary font-medium">
           {entry.action}
         </span>
       ),
@@ -65,7 +107,7 @@ export const AdminActivityHistoryPage: React.FC = () => {
     {
       header: 'Subject / Entity',
       cell: (entry) => (
-        <span className="font-mono text-xs text-ink-secondary bg-canvas-subdued px-2 py-0.5 border border-border inline-block">
+        <span className="font-mono text-[13px] text-ink-secondary bg-canvas-subdued/40 px-2 py-0.5 rounded-[4px] inline-block">
           {entry.subject}
         </span>
       ),
@@ -76,41 +118,33 @@ export const AdminActivityHistoryPage: React.FC = () => {
     <div className="space-y-6 text-left">
       <button
         onClick={() => navigate('/admin/overview')}
-        className="inline-flex items-center gap-1.5 text-xs font-mono font-medium text-ink-tertiary hover:text-ink-primary transition-colors cursor-pointer"
+        className="inline-flex items-center gap-1.5 text-[13px] font-mono font-medium text-ink-tertiary hover:text-ink-primary transition-colors cursor-pointer"
       >
         <ArrowLeft className="w-4 h-4" />
         <span>Return to administration overview</span>
       </button>
 
-      {/* Header */}
-      <div
-        className="border-4 border-ink-primary bg-white p-6 sm:p-8 space-y-4 shadow-ticket"
-        style={{
-          clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)',
-        }}
-      >
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b-2 border-ink-primary pb-5">
+      {/* Header Card */}
+      <div className="rounded-[16px] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] p-6 sm:p-8 space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4">
           <div className="space-y-1">
-            <span className="font-sans text-xs font-bold text-amber-600 uppercase tracking-tight block">
-              Permanent Audit Trail
-            </span>
-            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-ink-primary leading-none">
-              System Activity History
+            <h1 className="font-display font-black text-2xl sm:text-3xl tracking-tight text-ink-primary leading-tight">
+              System activity history
             </h1>
-            <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
+            <p className="font-sans text-sm text-ink-secondary mt-1">
               Searchable chronological record of administrative actions, promotion decisions, fee changes, and Telebirr reconciliations.
             </p>
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="font-mono text-xs font-bold text-white bg-ink-primary px-3 py-1.5 shadow-sm uppercase">
-              Total Entries: {filteredLogs.length}
+            <span className="font-mono text-[13px] font-medium text-ink-primary bg-canvas-subdued px-3 py-1.5 rounded-[8px]">
+              Total entries: {filteredLogs.length}
             </span>
           </div>
         </div>
 
         {/* Search & Filter Strip */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 pt-1">
           <div className="sm:col-span-2">
             <Input
               placeholder="Search by action, actor name, or subject..."
@@ -121,26 +155,86 @@ export const AdminActivityHistoryPage: React.FC = () => {
           </div>
 
           <Select
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value as any)}
+            options={[
+              { value: 'all', label: 'All event types' },
+              { value: 'admin', label: 'Platform & admin actions' },
+              { value: 'signins', label: 'Sign-in events' },
+              { value: 'security_alerts', label: 'Failed attempts & lockouts' },
+            ]}
+          />
+
+          <Select
             value={roleFilter}
             onChange={(e) => setRoleFilter(e.target.value)}
             options={[
-              { value: 'all', label: 'All Roles' },
+              { value: 'all', label: 'All roles' },
               { value: 'Admin', label: 'Super Admin' },
               { value: 'Manager', label: 'Program Manager' },
               { value: 'Team Lead', label: 'Team Lead' },
               { value: 'Finance', label: 'Finance Officer' },
+              { value: 'Sign-in', label: 'Sign-in events' },
+              { value: 'Security', label: 'Security alerts' },
               { value: 'System', label: 'System Automated' },
             ]}
           />
         </div>
+        <div className="flex items-center gap-2 pt-2">
+          <span className="text-[13px] font-sans text-ink-secondary mr-2">Layout:</span>
+          <button
+            type="button"
+            onClick={() => setViewMode('log')}
+            className={`px-3 py-1.5 text-[13px] font-semibold rounded-[6px] transition-colors cursor-pointer ${
+              viewMode === 'log'
+                ? 'bg-role-admin text-white'
+                : 'bg-[#F7F8FA] text-ink-secondary hover:text-ink-primary'
+            } `}
+          >
+            Journey timeline
+          </button>
+          <button
+            type="button"
+            onClick={() => setViewMode('table')}
+            className={`px-3 py-1.5 text-[13px] font-semibold rounded-[6px] transition-colors cursor-pointer ${
+              viewMode === 'table'
+                ? 'bg-role-admin text-white'
+                : 'bg-[#F7F8FA] text-ink-secondary hover:text-ink-primary'
+            } `}
+          >
+            Ledger table
+          </button>
+        </div>
       </div>
 
-      <LedgerTable
+      {viewMode === 'log' ? (
+        <JourneyLog
+          items={filteredLogs.map((l) => ({
+            id: l.id,
+            date: l.createdAt,
+            title: l.action,
+            subtitle: `Subject: ${l.subject}`,
+            leadValue: l.actorName,
+            status: 'approved',
+            statusLabel: l.actorRole,
+            details: {
+              fields: [
+                { label: 'Actor role', value: l.actorRole },
+                { label: 'Entity affected', value: l.subject },
+                { label: 'Exact timestamp', value: new Date(l.createdAt).toLocaleString() },
+              ],
+            },
+          }))}
+          leadSummary={`${filteredLogs.length} operations recorded along the administrative trail`}
+        />
+      ) : (
+        <LedgerTable
         data={filteredLogs}
         columns={columns}
         keyExtractor={(entry) => entry.id}
         isLoading={isLoading}
-      />
+        />
+      )}
     </div>
   );
 };

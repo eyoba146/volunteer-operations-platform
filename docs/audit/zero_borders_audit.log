@@ -1,0 +1,62 @@
+================================================================================
+VTS ZERO BORDERS AUDIT SCANNER LOG
+Timestamp: 2026-11-01T12:19:40.209Z
+Rule: Zero borders (not dark, not light, no hairlines, no dividers)
+Viewports: 1440px (Desktop) & 360px (Mobile)
+Total routes scanned: 48
+Total viewports evaluated: 96
+================================================================================
+
+[PASS] PUBLIC     /
+[PASS] PUBLIC     /sign-in
+[PASS] PUBLIC     /register
+[PASS] PUBLIC     /verify-email
+[PASS] PUBLIC     /forgot-password
+[PASS] PUBLIC     /reset-password
+[PASS] PUBLIC     /check-certificate
+[PASS] PUBLIC     /unauthorized
+[PASS] PUBLIC     /404
+[PASS] APPLICANT  /applicant/status
+[PASS] APPLICANT  /applicant/apply
+[PASS] APPLICANT  /applicant/payment
+[PASS] APPLICANT  /applicant/notifications
+[PASS] VOLUNTEER  /volunteer/home
+[PASS] VOLUNTEER  /volunteer/activities
+[PASS] VOLUNTEER  /volunteer/activities/act-01
+[PASS] VOLUNTEER  /volunteer/my-activities
+[PASS] VOLUNTEER  /volunteer/check-in
+[PASS] VOLUNTEER  /volunteer/hours
+[PASS] VOLUNTEER  /volunteer/rank-progress
+[PASS] VOLUNTEER  /volunteer/certificates
+[PASS] VOLUNTEER  /volunteer/id-card
+[PASS] VOLUNTEER  /volunteer/profile
+[PASS] TEAM_LEAD  /team-lead/home
+[PASS] TEAM_LEAD  /team-lead/approve-hours
+[PASS] TEAM_LEAD  /team-lead/activities
+[PASS] TEAM_LEAD  /team-lead/create-activity
+[PASS] TEAM_LEAD  /team-lead/ratings
+[PASS] TEAM_LEAD  /team-lead/recommend-promotion
+[PASS] TEAM_LEAD  /team-lead/announcements
+[PASS] MANAGER    /manager/dashboard
+[PASS] MANAGER    /manager/applications
+[PASS] MANAGER    /manager/volunteers
+[PASS] MANAGER    /manager/activities
+[PASS] MANAGER    /manager/promotions
+[PASS] MANAGER    /manager/announcements
+[PASS] MANAGER    /manager/feedback
+[PASS] MANAGER    /manager/reports
+[PASS] FINANCE    /finance/overview
+[PASS] FINANCE    /finance/payments
+[PASS] FINANCE    /finance/needs-review
+[PASS] FINANCE    /finance/receipts-refunds
+[PASS] FINANCE    /finance/reports
+[PASS] ADMIN      /admin/overview
+[PASS] ADMIN      /admin/settings
+[PASS] ADMIN      /admin/rank-rules
+[PASS] ADMIN      /admin/accounts
+[PASS] ADMIN      /admin/activity-history
+
+================================================================================
+AUDIT CONCLUSION: 100% CLEAN - ZERO BORDERS & ZERO DIVIDERS
+Passing routes: 48/48
+================================================================================

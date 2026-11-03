@@ -3,13 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
 import { Activity, HoursEntry } from '../../types';
-import { Button, Select, Skeleton } from '../../components/ui';
+import { Button, Select, Skeleton, PageShell, Raised, Panel } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
-import { 
-  QrCode, 
-  CheckCircle, 
-  Clock, 
-  Warning, 
+import {
+  QrCode,
+  CheckCircle,
+  Clock,
+  Warning,
   ArrowRight,
   Key,
   Camera,
@@ -117,55 +117,58 @@ export const VolunteerCheckInPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="space-y-6 max-w-lg mx-auto">
-        <Skeleton variant="text" className="h-8 w-1/3" />
-        <Skeleton variant="rect" className="h-64" />
-      </div>
+      <PageShell page="volunteer/check-in" signature="none:check-in-station">
+        <div className="space-y-6 max-w-lg mx-auto">
+          <Skeleton variant="text" className="h-8 w-1/3" />
+          <Skeleton variant="rect" className="h-64 rounded-[16px]" />
+        </div>
+      </PageShell>
     );
   }
 
   // CHECKOUT COMPLETE CONFIRMATION TICKET
   if (checkoutComplete) {
     return (
-      <div className="max-w-md mx-auto border-2 border-ink-primary bg-white p-6 sm:p-8 text-center space-y-6 shadow-ticket">
-        <div className="w-16 h-16 mx-auto bg-role-volunteer text-white flex items-center justify-center border-2 border-ink-primary">
+      <PageShell page="volunteer/check-in" signature="none:check-in-station">
+      <Raised className="max-w-md mx-auto p-6 sm:p-8 text-center space-y-6">
+        <div className="w-16 h-16 mx-auto bg-role-volunteer text-white flex items-center justify-center rounded-[8px]">
           <CheckCircle className="w-10 h-10" weight="fill" />
         </div>
 
         <div className="space-y-1">
-          <span className="font-sans text-xs font-bold text-role-volunteer uppercase tracking-tight block">
-            Attendance Logged
+          <span className="font-sans text-[13px] font-semibold text-role-volunteer block">
+            Attendance logged
           </span>
-          <h2 className="font-display text-3xl font-black uppercase tracking-tight text-ink-primary">
-            Session Completed
+          <h2 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-ink-primary">
+            Session completed
           </h2>
-          <p className="font-sans text-xs text-ink-secondary">
+          <p className="font-sans text-[13px] text-ink-secondary">
             Your attendance for <strong>{checkoutComplete.activityTitle}</strong> has been logged and sent to your Team Lead for approval.
           </p>
         </div>
 
-        <div className="border-2 border-ink-primary bg-canvas p-4 font-mono text-xs text-left space-y-2">
+        <div className="rounded-[8px] bg-canvas-subdued/30 p-4 font-mono text-[13px] text-left space-y-2">
           <div className="flex justify-between">
-            <span className="text-ink-secondary">Logged Duration:</span>
-            <span className="font-bold text-ink-primary">
+            <span className="text-ink-secondary">Logged duration:</span>
+            <span className="font-semibold text-ink-primary">
               {checkoutComplete.minutes} minutes ({Math.round((checkoutComplete.minutes / 60) * 10) / 10} hrs)
             </span>
           </div>
           <div className="flex justify-between">
-            <span className="text-ink-secondary">Check-In Time:</span>
+            <span className="text-ink-secondary">Check-in time:</span>
             <span className="text-ink-primary">
               {new Date(checkoutComplete.checkIn).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </span>
           </div>
           <div className="flex justify-between">
-            <span className="text-ink-secondary">Check-Out Time:</span>
+            <span className="text-ink-secondary">Check-out time:</span>
             <span className="text-ink-primary">
               {new Date(checkoutComplete.checkOut).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </span>
           </div>
-          <div className="flex justify-between border-t border-border pt-2">
-            <span className="text-ink-secondary">Review Status:</span>
-            <span className="font-bold text-role-applicant uppercase">Logged • Awaiting Lead Decision</span>
+          <div className="flex justify-between pt-2">
+            <span className="text-ink-secondary">Review status:</span>
+            <span className="font-semibold text-role-applicant">Logged • Awaiting lead decision</span>
           </div>
         </div>
 
@@ -175,7 +178,7 @@ export const VolunteerCheckInPage: React.FC = () => {
             onClick={() => navigate('/volunteer/hours')}
             rightIcon={<ArrowRight className="w-4 h-4" weight="bold" />}
           >
-            Inspect My Hours Ledger
+            Inspect hours ledger
           </Button>
           <Button
             variant="secondary"
@@ -186,57 +189,51 @@ export const VolunteerCheckInPage: React.FC = () => {
             Check in to another activity
           </Button>
         </div>
-      </div>
+      </Raised>
+    </PageShell>
     );
   }
 
   // ACTIVE CHECK-IN SESSION (VOLUNTEER IS CURRENTLY ON-SITE)
   if (activeSession) {
     return (
+      <PageShell page="volunteer/check-in" signature="none:check-in-station">
       <div className="max-w-lg mx-auto space-y-6">
-        <div className="border-b-2 border-border pb-4 text-center">
-          <span className="font-sans text-xs font-bold text-role-volunteer uppercase tracking-tight block">
-            On-Site Active Session
-          </span>
-          <h1 className="font-display text-4xl font-black uppercase tracking-tight text-ink-primary leading-none mt-1">
-            Checked In
+        <div className="pb-4 text-center">
+          <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
+            Checked in
           </h1>
         </div>
 
-        <div
-          className="border-2 border-ink-primary bg-white p-6 sm:p-8 shadow-ticket space-y-5"
-          style={{
-            clipPath: 'polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)',
-          }}
-        >
-          <div className="flex items-center justify-between border-b-2 border-border pb-3">
+        <Raised className="p-6 sm:p-8 space-y-5">
+          <div className="flex items-center justify-between pb-3">
             <div className="flex items-center gap-2">
               <span className="w-3 h-3 bg-role-volunteer rounded-full animate-ping" />
-              <span className="font-sans text-xs font-bold text-role-volunteer uppercase tracking-tight">
-                Active On Duty
+              <span className="font-sans text-[13px] font-semibold text-role-volunteer">
+                Active on duty
               </span>
             </div>
-            <span className="font-mono text-xs text-ink-secondary">
+            <span className="font-mono text-[13px] text-ink-secondary">
               Since {new Date(activeSession.checkIn).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </span>
           </div>
 
           <div className="space-y-2">
-            <h3 className="font-display text-2xl font-black uppercase text-ink-primary leading-tight">
+            <h3 className="font-display text-xl sm:text-2xl font-bold text-ink-primary leading-tight">
               {activeSession.activityTitle}
             </h3>
-            <p className="font-sans text-xs text-ink-secondary">
+            <p className="font-sans text-[13px] text-ink-secondary">
               Your attendance is recorded. When your duty shift concludes, tap below to check out and finalize your hours.
             </p>
           </div>
 
-          <div className="border-2 border-ink-primary bg-canvas p-4 font-mono text-xs space-y-1.5">
+          <div className="rounded-[8px] bg-canvas-subdued/30 p-4 font-mono text-[13px] space-y-1.5">
             <div className="flex justify-between">
               <span className="text-ink-secondary">Volunteer:</span>
-              <span className="font-bold text-ink-primary">{activeSession.userName}</span>
+              <span className="font-semibold text-ink-primary">{activeSession.userName}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-ink-secondary">Scheduled Hours:</span>
+              <span className="text-ink-secondary">Scheduled hours:</span>
               <span className="text-ink-primary">~{Math.round((activeSession.minutes / 60) * 10) / 10} hours</span>
             </div>
           </div>
@@ -250,71 +247,63 @@ export const VolunteerCheckInPage: React.FC = () => {
               onClick={handleCheckOut}
               isLoading={isSubmitting}
             >
-              Check Out Now & Record Hours
+              Check out now & record hours
             </Button>
           </div>
-        </div>
+        </Raised>
       </div>
+    </PageShell>
     );
   }
 
   // CHECK-IN FORM (ENTER SHORT CODE OR SCAN QR)
   return (
+    <PageShell page="volunteer/check-in" signature="none:check-in-station">
     <div className="max-w-xl mx-auto space-y-6">
       {/* Header */}
-      <div className="border-b-2 border-border pb-5 text-center">
-        <span className="font-sans text-xs font-bold text-role-volunteer uppercase tracking-tight block">
-          On-Site Attendance
-        </span>
-        <h1 className="font-display text-4xl sm:text-5xl font-black uppercase tracking-tight text-ink-primary leading-none mt-1">
-          Activity Check-In
+      <div className="pb-4 text-center">
+        <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-ink-primary leading-tight mt-1">
+          Activity check-in
         </h1>
-        <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1 max-w-md mx-auto">
+        <p className="font-sans text-[13px] sm:text-sm text-ink-secondary mt-1 max-w-md mx-auto">
           Scan the QR pass displayed by your Team Lead or enter the 4-digit session code.
         </p>
       </div>
 
       {/* Mode Switcher */}
-      <div className="flex border-2 border-ink-primary bg-white p-1 shadow-ticket">
+      <div className="flex rounded-[10px] bg-[#F1F3F6] p-1">
         <button
           onClick={() => {
             setMethod('code');
             setErrorMessage('');
           }}
-          className={`flex-1 py-2 font-sans text-xs font-bold uppercase flex items-center justify-center gap-1.5 cursor-pointer transition-colors ${
-            method === 'code'
-              ? 'bg-ink-primary text-white'
+          className={`flex-1 py-2 rounded-[6px] font-sans text-[13px] font-semibold flex items-center justify-center gap-1.5 cursor-pointer transition-colors ${method === 'code'
+              ? 'bg-white text-ink-primary shadow-[0_1px_2px_rgba(16,24,40,0.06)] border-none'
               : 'text-ink-secondary hover:text-ink-primary'
-          }`}
+            } `}
         >
           <Key className="w-4 h-4" weight="bold" />
-          <span>4-Digit Short Code</span>
+          <span>4-Digit short code</span>
         </button>
         <button
           onClick={() => {
             setMethod('qr');
             setErrorMessage('');
           }}
-          className={`flex-1 py-2 font-sans text-xs font-bold uppercase flex items-center justify-center gap-1.5 cursor-pointer transition-colors ${
-            method === 'qr'
-              ? 'bg-ink-primary text-white'
+          className={`flex-1 py-2 rounded-[6px] font-sans text-[13px] font-semibold flex items-center justify-center gap-1.5 cursor-pointer transition-colors ${method === 'qr'
+              ? 'bg-white text-ink-primary shadow-[0_1px_2px_rgba(16,24,40,0.06)] border-none'
               : 'text-ink-secondary hover:text-ink-primary'
-          }`}
+            } `}
         >
           <QrCode className="w-4 h-4" weight="bold" />
-          <span>Scan QR Pass</span>
+          <span>Scan QR pass</span>
         </button>
       </div>
 
       {/* Main Check-In Box */}
-      <div
-        className="border-2 border-ink-primary bg-white p-6 sm:p-8 shadow-ticket space-y-6"
-        style={{
-          clipPath: 'polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)',
-        }}
-      >
+      <Raised className="p-6 sm:p-8 space-y-6">
         {errorMessage && (
-          <div className="p-3 border-2 border-role-teamlead bg-role-teamleadLight text-role-teamlead text-xs font-sans font-bold flex items-center gap-2">
+          <div className="p-3 rounded-[8px] bg-role-teamleadLight/20 text-role-teamlead text-[13px] font-sans font-medium flex items-center gap-2">
             <Warning className="w-4 h-4 shrink-0" weight="bold" />
             <span>{errorMessage}</span>
           </div>
@@ -323,7 +312,7 @@ export const VolunteerCheckInPage: React.FC = () => {
         {/* Activity Selection */}
         <div className="space-y-1">
           <Select
-            label="Select Active Activity"
+            label="Select active activity"
             value={selectedActivityId}
             onChange={(e) => setSelectedActivityId(e.target.value)}
             options={activities.map((a) => ({
@@ -333,7 +322,7 @@ export const VolunteerCheckInPage: React.FC = () => {
             required
           />
           {selectedActivity && (
-            <div className="text-xs font-mono text-ink-secondary pt-1 flex items-center gap-1.5">
+            <div className="text-[13px] font-mono text-ink-secondary pt-1 flex items-center gap-1.5">
               <MapPin className="w-3.5 h-3.5 text-ink-tertiary" />
               <span>{selectedActivity.place}, {selectedActivity.area}</span>
             </div>
@@ -350,8 +339,8 @@ export const VolunteerCheckInPage: React.FC = () => {
             className="space-y-5"
           >
             <div className="space-y-1.5">
-              <label className="block text-xs font-bold uppercase text-ink-primary">
-                4-Digit Session Code
+              <label className="block text-[13px] font-medium text-ink-primary">
+                4-Digit session code
               </label>
               <input
                 type="text"
@@ -359,10 +348,10 @@ export const VolunteerCheckInPage: React.FC = () => {
                 value={inputCode}
                 onChange={(e) => setInputCode(e.target.value.replace(/\D/g, ''))}
                 placeholder="e.g. 5291"
-                className="w-full text-center font-mono text-3xl font-black tracking-[0.5em] p-3 border-2 border-ink-primary bg-canvas text-ink-primary focus:outline-none focus:ring-2 focus:ring-role-volunteer"
+                className="w-full text-center font-mono text-3xl font-bold tracking-[0.5em] p-3 rounded-[8px] bg-white text-ink-primary focus:outline-none focus:ring-2 focus:ring-role-volunteer"
                 required
               />
-              <span className="font-sans text-[11px] text-ink-secondary block text-center">
+              <span className="font-sans text-[13px] text-ink-secondary block text-center">
                 Ask your Team Lead for the active 4-digit code.
               </span>
             </div>
@@ -375,7 +364,7 @@ export const VolunteerCheckInPage: React.FC = () => {
               isLoading={isSubmitting}
               disabled={!inputCode || inputCode.length < 4}
             >
-              Confirm Check-In
+              Confirm check-in
             </Button>
           </form>
         )}
@@ -384,23 +373,25 @@ export const VolunteerCheckInPage: React.FC = () => {
         {method === 'qr' && (
           <div className="space-y-5 text-center">
             {/* Viewfinder Reticle */}
-            <div className="relative w-64 h-64 mx-auto border-2 border-dashed border-ink-primary bg-canvas flex flex-col items-center justify-center p-4 overflow-hidden">
-              <div className="absolute top-2 left-2 w-6 h-6 border-t-4 border-l-4 border-role-volunteer" />
-              <div className="absolute top-2 right-2 w-6 h-6 border-t-4 border-r-4 border-role-volunteer" />
-              <div className="absolute bottom-2 left-2 w-6 h-6 border-b-4 border-l-4 border-role-volunteer" />
-              <div className="absolute bottom-2 right-2 w-6 h-6 border-b-4 border-r-4 border-role-volunteer" />
+            <div className="relative w-64 h-64 mx-auto rounded-[16px] bg-canvas-subdued/20 flex flex-col items-center justify-center p-4 overflow-hidden">
+              <svg className="absolute inset-0 w-full h-full pointer-events-none p-3" viewBox="0 0 100 100" fill="none" stroke="currentColor">
+                <path d="M 5 20 V 5 H 20" strokeWidth="2.5" className="text-role-volunteer" strokeLinecap="round" />
+                <path d="M 80 5 H 95 V 20" strokeWidth="2.5" className="text-role-volunteer" strokeLinecap="round" />
+                <path d="M 5 80 V 95 H 20" strokeWidth="2.5" className="text-role-volunteer" strokeLinecap="round" />
+                <path d="M 80 95 H 95 V 80" strokeWidth="2.5" className="text-role-volunteer" strokeLinecap="round" />
+              </svg>
 
               {isScanning ? (
                 <div className="space-y-2">
                   <Camera className="w-10 h-10 text-role-volunteer mx-auto animate-bounce" weight="bold" />
-                  <span className="font-mono text-xs font-bold text-role-volunteer block">
+                  <span className="font-mono text-[13px] font-semibold text-role-volunteer block">
                     Scanning session QR...
                   </span>
                 </div>
               ) : (
                 <div className="space-y-2">
                   <QrCode className="w-16 h-16 text-ink-tertiary mx-auto" />
-                  <span className="font-sans text-xs text-ink-secondary block">
+                  <span className="font-sans text-[13px] text-ink-secondary block">
                     Aim camera at the activity badge
                   </span>
                 </div>
@@ -415,11 +406,12 @@ export const VolunteerCheckInPage: React.FC = () => {
               isLoading={isScanning || isSubmitting}
               leftIcon={<Camera className="w-5 h-5" weight="bold" />}
             >
-              {isScanning ? 'Verifying QR Code...' : 'Simulate Scan Activity QR'}
+              {isScanning ? 'Verifying QR code...' : 'Simulate scan activity QR'}
             </Button>
           </div>
         )}
-      </div>
+      </Raised>
     </div>
+    </PageShell>
   );
 };

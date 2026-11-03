@@ -6,17 +6,13 @@ import { Setting, EmailTemplate } from '../../types';
 import { Input, Button, Tabs, Skeleton } from '../../components/ui';
 import { useToast } from '../../components/ui/ToastContext';
 import { 
-  Gear, 
   FloppyDisk, 
   ArrowLeft, 
   MapPin, 
   Plus, 
   X, 
-  Certificate as CertIcon, 
-  Envelope, 
   ArrowClockwise,
   Eye,
-  CheckCircle,
   Warning
 } from '@phosphor-icons/react';
 
@@ -47,6 +43,10 @@ export const AdminSettingsPage: React.FC = () => {
 
   // Email Templates
   const [templates, setTemplates] = useState<EmailTemplate[]>([]);
+  const [requiredDocs, setRequiredDocs] = useState<any[]>([]);
+  const [newDocName, setNewDocName] = useState('');
+  const [newDocDesc, setNewDocDesc] = useState('');
+  const [newDocRequired, setNewDocRequired] = useState(true);
   const [selectedTemplateId, setSelectedTemplateId] = useState('');
   const [editedSubject, setEditedSubject] = useState('');
   const [editedBody, setEditedBody] = useState('');
@@ -79,6 +79,8 @@ export const AdminSettingsPage: React.FC = () => {
       });
 
       setTemplates(tpls);
+      const docs = await api.getRequiredDocuments();
+      setRequiredDocs(docs);
       if (tpls.length > 0 && !selectedTemplateId) {
         setSelectedTemplateId(tpls[0].id);
         setEditedSubject(tpls[0].subject);
@@ -92,6 +94,43 @@ export const AdminSettingsPage: React.FC = () => {
   useEffect(() => {
     loadSettings();
   }, []);
+
+
+  const handleToggleDocRequired = async (docId: string, currentVal: boolean) => {
+    try {
+      await api.updateRequiredDocument(docId, { required: !currentVal });
+      const docs = await api.getRequiredDocuments();
+      setRequiredDocs(docs);
+      toast.success('Document requirement updated.');
+    } catch (err: any) {
+      toast.error(err.message || 'Could not update document.');
+    }
+  };
+
+  const handleAddDocumentConfig = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newDocName.trim()) return;
+
+    try {
+      const state = api.store.getState();
+      const newConfig = {
+        id: `doc-config-${Date.now()}`,
+        name: newDocName.trim(),
+        description: newDocDesc.trim() || 'Required verification file',
+        required: newDocRequired,
+      };
+      api.store.setState((prev: any) => ({
+        ...prev,
+        requiredDocuments: [...(prev.requiredDocuments || []), newConfig],
+      }));
+      setRequiredDocs([...requiredDocs, newConfig]);
+      setNewDocName('');
+      setNewDocDesc('');
+      toast.success('New required document type configured.');
+    } catch (err: any) {
+      toast.error(err.message || 'Could not add document.');
+    }
+  };
 
   const handleSelectTemplate = (id: string) => {
     setSelectedTemplateId(id);
@@ -132,7 +171,7 @@ export const AdminSettingsPage: React.FC = () => {
       ]);
       toast.success('Operational areas and skills catalog updated.');
     } catch (err: any) {
-      toast.error(err.message || 'Could not save areas/skills.');
+      toast.error(err.message || 'Could not save areas and skills.');
     } finally {
       setIsSaving(false);
     }
@@ -169,7 +208,7 @@ export const AdminSettingsPage: React.FC = () => {
         api.updateSetting('certificate_signatory', signatory, user.id, profile?.fullName || user.username),
         api.updateSetting('certificate_template_text', certTemplateText, user.id, profile?.fullName || user.username),
       ]);
-      toast.success('Official certificate text template updated.');
+      toast.success('Certificate text template updated.');
     } catch (err: any) {
       toast.error(err.message || 'Could not save certificate text.');
     } finally {
@@ -210,7 +249,7 @@ export const AdminSettingsPage: React.FC = () => {
   const renderPreviewSubject = () => {
     let s = editedSubject;
     s = s.replace(/{{volunteer_name}}/g, 'Dawit Bekele');
-    s = s.replace(/{{new_rank}}/g, 'TEAM LEAD');
+    s = s.replace(/{{new_rank}}/g, 'Team Lead');
     s = s.replace(/{{amount}}/g, fee);
     s = s.replace(/{{activity_title}}/g, 'Entoto Forest Ridge Trail Cleanup');
     return s;
@@ -251,28 +290,20 @@ export const AdminSettingsPage: React.FC = () => {
     <div className="max-w-4xl mx-auto space-y-6 text-left">
       <button
         onClick={() => navigate('/admin/overview')}
-        className="inline-flex items-center gap-1.5 text-xs font-mono font-medium text-ink-tertiary hover:text-ink-primary transition-colors cursor-pointer"
+        className="inline-flex items-center gap-1.5 text-[13px] font-mono font-medium text-ink-tertiary hover:text-ink-primary transition-colors cursor-pointer"
       >
         <ArrowLeft className="w-4 h-4" />
         <span>Return to administration overview</span>
       </button>
 
-      {/* Header */}
-      <div
-        className="border-4 border-ink-primary bg-white p-6 sm:p-8 space-y-4 shadow-ticket"
-        style={{
-          clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)',
-        }}
-      >
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b-2 border-ink-primary pb-5">
+      {/* Header Card */}
+      <div className="rounded-[10px] bg-white p-6 sm:p-8 space-y-4 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4">
           <div className="space-y-1">
-            <span className="font-sans text-xs font-bold text-amber-600 uppercase tracking-tight block">
-              Directorate Configuration Desk
-            </span>
-            <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-ink-primary leading-none">
-              Program Settings & Templates
+            <h1 className="font-display font-black text-2xl sm:text-3xl tracking-tight text-ink-primary leading-tight">
+              Program settings and templates
             </h1>
-            <p className="font-sans text-xs sm:text-sm text-ink-secondary mt-1">
+            <p className="font-sans text-sm text-ink-secondary mt-1">
               Configure registration fee rules, operational areas, volunteer skills catalog, and transactional email templates with live preview.
             </p>
           </div>
@@ -281,11 +312,12 @@ export const AdminSettingsPage: React.FC = () => {
 
       <Tabs
         tabs={[
-          { id: 'fees', label: 'Fees & Platform' },
-          { id: 'areas', label: 'Areas & Skills' },
-          { id: 'certificates', label: 'Certificate Template' },
-          { id: 'templates', label: 'Email Templates & Preview' },
-          { id: 'demo', label: 'Demo Tools' },
+          { id: 'fees', label: 'Fees and platform' },
+          { id: 'areas', label: 'Areas and skills' },
+          { id: 'certificates', label: 'Certificate template' },
+          { id: 'documents', label: 'Required documents' },
+          { id: 'templates', label: 'Email templates and preview' },
+          { id: 'demo', label: 'Demo tools' },
         ]}
         activeTab={activeTab}
         onChange={setActiveTab}
@@ -293,28 +325,28 @@ export const AdminSettingsPage: React.FC = () => {
 
       {/* TAB 1: Fees & Platform Settings */}
       {activeTab === 'fees' && (
-        <form onSubmit={handleSaveGeneral} className="border-2 border-ink-primary bg-white p-6 sm:p-8 space-y-6 shadow-ticket">
-          <div className="border-b-2 border-border pb-2">
-            <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
-              Registration Fee & Merchant Account
+        <form onSubmit={handleSaveGeneral} className="rounded-[10px] bg-white p-6 sm:p-8 space-y-6 shadow-sm">
+          <div className="pb-3">
+            <h3 className="font-display text-xl font-bold text-ink-primary">
+              Registration fee and merchant account
             </h3>
-            <p className="text-xs text-ink-secondary">
+            <p className="text-[13px] text-ink-secondary mt-0.5">
               Parameters governing Telebirr fee collections and intake deadlines.
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input
-              label="Registration Fee Amount (ETB)"
+              label="Registration fee amount (ETB)"
               type="number"
               value={fee}
               onChange={(e) => setFee(e.target.value)}
-              hint="One-time applicant fee required to activate Member rank."
+              hint="One-time applicant fee required to activate Volunteer rank."
               required
             />
 
             <Input
-              label="Payment Deadline Window (Days)"
+              label="Payment deadline window (Days)"
               type="number"
               value={deadline}
               onChange={(e) => setDeadline(e.target.value)}
@@ -323,36 +355,36 @@ export const AdminSettingsPage: React.FC = () => {
             />
 
             <Input
-              label="Telebirr Merchant Name"
+              label="Telebirr merchant name"
               value={merchantName}
               onChange={(e) => setMerchantName(e.target.value)}
               required
             />
 
             <Input
-              label="Telebirr Shortcode"
+              label="Telebirr shortcode"
               value={shortcode}
               onChange={(e) => setShortcode(e.target.value)}
-              hint="Displayed in USSD and direct payment instructions."
+              hint="Displayed in phone prompt instructions."
               required
             />
           </div>
 
           <Input
-            label="Program Public Display Name"
+            label="Program public display name"
             value={programName}
             onChange={(e) => setProgramName(e.target.value)}
             required
           />
 
-          <div className="pt-3 border-t-2 border-border flex justify-end">
+          <div className="pt-3 flex justify-end">
             <Button
               type="submit"
               variant="primary"
               isLoading={isSaving}
               leftIcon={<FloppyDisk className="w-4 h-4" weight="bold" />}
             >
-              Save Configuration
+              Save configuration
             </Button>
           </div>
         </form>
@@ -362,13 +394,13 @@ export const AdminSettingsPage: React.FC = () => {
       {activeTab === 'areas' && (
         <div className="space-y-6">
           {/* Areas Editor */}
-          <div className="border-2 border-ink-primary bg-white p-6 sm:p-8 space-y-4 shadow-ticket">
-            <div className="border-b-2 border-border pb-2">
-              <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
-                Operational Regional Areas
+          <div className="rounded-[10px] bg-white p-6 sm:p-8 space-y-4 shadow-sm">
+            <div className="pb-3">
+              <h3 className="font-display text-xl font-bold text-ink-primary">
+                Operational areas
               </h3>
-              <p className="text-xs text-ink-secondary">
-                Corridors where volunteer activities and regional hubs are deployed.
+              <p className="text-[13px] text-ink-secondary mt-0.5">
+                Corridors where volunteer activities and community teams are deployed.
               </p>
             </div>
 
@@ -376,7 +408,7 @@ export const AdminSettingsPage: React.FC = () => {
               {areas.map((a) => (
                 <span
                   key={a}
-                  className="font-mono text-xs font-bold px-3 py-1.5 bg-canvas-subdued border-2 border-border text-ink-primary flex items-center gap-2"
+                  className="font-mono text-[13px] font-medium px-3 py-1.5 bg-canvas-subdued rounded-[6px] text-ink-primary flex items-center gap-2"
                 >
                   <MapPin className="w-3.5 h-3.5 text-role-manager" weight="bold" />
                   <span>{a}</span>
@@ -393,7 +425,7 @@ export const AdminSettingsPage: React.FC = () => {
 
             <div className="flex gap-2 pt-2">
               <Input
-                placeholder="e.g. Dire Dawa Hub"
+                placeholder="e.g. Dire Dawa"
                 value={newAreaInput}
                 onChange={(e) => setNewAreaInput(e.target.value)}
               />
@@ -403,18 +435,18 @@ export const AdminSettingsPage: React.FC = () => {
                 onClick={handleAddArea}
                 leftIcon={<Plus className="w-4 h-4" weight="bold" />}
               >
-                Add Area
+                Add area
               </Button>
             </div>
           </div>
 
           {/* Skills Catalog */}
-          <div className="border-2 border-ink-primary bg-white p-6 sm:p-8 space-y-4 shadow-ticket">
-            <div className="border-b-2 border-border pb-2">
-              <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
-                Volunteer Skills Catalog
+          <div className="rounded-[10px] bg-white p-6 sm:p-8 space-y-4 shadow-sm">
+            <div className="pb-3">
+              <h3 className="font-display text-xl font-bold text-ink-primary">
+                Volunteer skills catalog
               </h3>
-              <p className="text-xs text-ink-secondary">
+              <p className="text-[13px] text-ink-secondary mt-0.5">
                 Recognized proficiencies available during volunteer onboarding and roster matching.
               </p>
             </div>
@@ -423,7 +455,7 @@ export const AdminSettingsPage: React.FC = () => {
               {skills.map((s) => (
                 <span
                   key={s}
-                  className="font-mono text-xs font-bold px-3 py-1.5 bg-canvas-subdued border-2 border-border text-ink-primary flex items-center gap-2"
+                  className="font-mono text-[13px] font-medium px-3 py-1.5 bg-canvas-subdued rounded-[6px] text-ink-primary flex items-center gap-2"
                 >
                   <span>{s}</span>
                   <button
@@ -449,7 +481,7 @@ export const AdminSettingsPage: React.FC = () => {
                 onClick={handleAddSkill}
                 leftIcon={<Plus className="w-4 h-4" weight="bold" />}
               >
-                Add Skill
+                Add skill
               </Button>
             </div>
           </div>
@@ -462,7 +494,7 @@ export const AdminSettingsPage: React.FC = () => {
               isLoading={isSaving}
               leftIcon={<FloppyDisk className="w-4 h-4" weight="bold" />}
             >
-              Save Areas & Skills Changes
+              Save areas and skills
             </Button>
           </div>
         </div>
@@ -470,45 +502,45 @@ export const AdminSettingsPage: React.FC = () => {
 
       {/* TAB 3: Certificate Text Template */}
       {activeTab === 'certificates' && (
-        <form onSubmit={handleSaveCertTemplate} className="border-2 border-ink-primary bg-white p-6 sm:p-8 space-y-6 shadow-ticket">
-          <div className="border-b-2 border-border pb-2">
-            <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
-              Official Certificate Template & Signatory
+        <form onSubmit={handleSaveCertTemplate} className="rounded-[10px] bg-white p-6 sm:p-8 space-y-6 shadow-sm">
+          <div className="pb-3">
+            <h3 className="font-display text-xl font-bold text-ink-primary">
+              Certificate template and signatory
             </h3>
-            <p className="text-xs text-ink-secondary">
+            <p className="text-[13px] text-ink-secondary mt-0.5">
               Customize the formal endorsement text and authorized signatory printed on volunteer certificates.
             </p>
           </div>
 
           <Input
-            label="Authorized Signatory Name & Official Title"
+            label="Authorized signatory name and title"
             value={signatory}
             onChange={(e) => setSignatory(e.target.value)}
-            hint="Printed on all verified certificates of membership and rank elevation."
+            hint="Printed on all verified certificates of volunteer status and rank advancement."
             required
           />
 
           <div className="space-y-1.5">
-            <label className="block text-xs font-bold uppercase tracking-tight text-ink-primary">
-              Official Endorsement Statement
+            <label className="block text-[13px] font-semibold text-ink-primary">
+              Endorsement statement
             </label>
             <textarea
               rows={4}
               value={certTemplateText}
               onChange={(e) => setCertTemplateText(e.target.value)}
-              className="w-full bg-white text-ink-primary font-sans text-xs border-2 border-ink-primary p-3 outline-none"
+              className="w-full bg-white text-ink-primary font-sans text-sm rounded-[8px] p-3 focus:ring-1 focus:ring-ink-primary"
               required
             />
           </div>
 
-          <div className="pt-3 border-t-2 border-border flex justify-end">
+          <div className="pt-3 flex justify-end">
             <Button
               type="submit"
               variant="primary"
               isLoading={isSaving}
               leftIcon={<FloppyDisk className="w-4 h-4" weight="bold" />}
             >
-              Save Certificate Text
+              Save certificate text
             </Button>
           </div>
         </form>
@@ -518,25 +550,25 @@ export const AdminSettingsPage: React.FC = () => {
       {activeTab === 'templates' && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Editor Form */}
-          <form onSubmit={handleSaveTemplate} className="border-2 border-ink-primary bg-white p-6 space-y-4 shadow-ticket">
-            <div className="border-b-2 border-border pb-2">
-              <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
-                Email Template Editor
+          <form onSubmit={handleSaveTemplate} className="rounded-[10px] bg-white p-6 space-y-4 shadow-sm">
+            <div className="pb-3">
+              <h3 className="font-display text-xl font-bold text-ink-primary">
+                Email template editor
               </h3>
-              <p className="text-xs text-ink-secondary">
+              <p className="text-[13px] text-ink-secondary mt-0.5">
                 Select an automated notification template to edit its subject and copy.
               </p>
             </div>
 
             {/* Template Selector */}
             <div className="space-y-1">
-              <label className="block text-xs font-bold uppercase tracking-tight text-ink-primary">
-                Select Template
+              <label className="block text-[13px] font-semibold text-ink-primary">
+                Select template
               </label>
               <select
                 value={selectedTemplateId}
                 onChange={(e) => handleSelectTemplate(e.target.value)}
-                className="w-full bg-white text-ink-primary font-sans text-xs border-2 border-ink-primary p-2.5 outline-none font-bold"
+                className="w-full bg-white text-ink-primary font-sans text-sm rounded-[8px] p-2.5 font-medium focus:ring-1 focus:ring-ink-primary"
               >
                 {templates.map((t) => (
                   <option key={t.id} value={t.id}>
@@ -547,33 +579,33 @@ export const AdminSettingsPage: React.FC = () => {
             </div>
 
             <Input
-              label="Subject Line"
+              label="Subject line"
               value={editedSubject}
               onChange={(e) => setEditedSubject(e.target.value)}
               required
             />
 
             <div className="space-y-1">
-              <label className="block text-xs font-bold uppercase tracking-tight text-ink-primary">
-                Email Body Text
+              <label className="block text-[13px] font-semibold text-ink-primary">
+                Email body text
               </label>
               <textarea
                 rows={10}
                 value={editedBody}
                 onChange={(e) => setEditedBody(e.target.value)}
-                className="w-full bg-white text-ink-primary font-mono text-xs border-2 border-ink-primary p-3 outline-none leading-relaxed"
+                className="w-full bg-white text-ink-primary font-mono text-[13px] rounded-[8px] p-3 leading-relaxed focus:ring-1 focus:ring-ink-primary"
                 required
               />
             </div>
 
             {activeTemplate?.variables && (
-              <div className="p-3 bg-canvas-subdued border border-border space-y-1 text-xs">
-                <span className="font-mono text-[10px] uppercase font-bold text-ink-tertiary block">
-                  Available Dynamic Variables:
+              <div className="p-3 bg-canvas-subdued/40 rounded-[8px] space-y-1 text-[13px]">
+                <span className="font-mono text-[13px] font-semibold text-ink-tertiary block">
+                  Available template variables:
                 </span>
-                <div className="flex flex-wrap gap-1 font-mono text-[10px]">
+                <div className="flex flex-wrap gap-1 font-mono text-[13px]">
                   {activeTemplate.variables.map((v) => (
-                    <span key={v} className="bg-white px-1.5 py-0.5 border border-border text-ink-primary">
+                    <span key={v} className="bg-white px-1.5 py-0.5 rounded-[4px] text-ink-primary">
                       {`{{${v}}}`}
                     </span>
                   ))}
@@ -581,51 +613,51 @@ export const AdminSettingsPage: React.FC = () => {
               </div>
             )}
 
-            <div className="pt-2 border-t border-border flex justify-end">
+            <div className="pt-2 flex justify-end">
               <Button
                 type="submit"
                 variant="primary"
                 isLoading={isSaving}
                 leftIcon={<FloppyDisk className="w-4 h-4" weight="bold" />}
               >
-                Save Template
+                Save template
               </Button>
             </div>
           </form>
 
           {/* Live Interactive Preview Card */}
           <div className="space-y-3">
-            <div className="border-b-2 border-ink-primary pb-2 flex items-center justify-between">
-              <h3 className="font-display text-2xl font-black uppercase text-ink-primary flex items-center gap-2">
+            <div className="pb-2 flex items-center justify-between">
+              <h3 className="font-display text-xl font-bold text-ink-primary flex items-center gap-2">
                 <Eye className="w-5 h-5 text-role-teamlead" weight="bold" />
-                Live Inbox Preview
+                Live inbox preview
               </h3>
-              <span className="font-mono text-[10px] font-bold text-white bg-role-teamlead px-2 py-0.5 uppercase">
-                Interactive Sample
+              <span className="font-mono text-[13px] font-medium text-role-teamlead bg-amber-50 px-2 py-0.5 rounded-[4px]">
+                Interactive sample
               </span>
             </div>
 
-            <div className="border-4 border-ink-primary bg-white shadow-ticket overflow-hidden">
+            <div className="rounded-[10px] bg-white shadow-sm overflow-hidden">
               {/* Mail client mock top rail */}
-              <div className="bg-canvas-subdued border-b-2 border-ink-primary p-3 space-y-1 font-mono text-xs">
-                <div className="flex justify-between text-[11px] text-ink-tertiary">
+              <div className="bg-canvas-subdued/40 p-3 space-y-1 font-mono text-[13px]">
+                <div className="flex justify-between text-[13px] text-ink-tertiary">
                   <span>From: VTS System Notifications &lt;no-reply@vts.et&gt;</span>
                   <span>Just now</span>
                 </div>
-                <div className="text-[11px] text-ink-tertiary">
+                <div className="text-[13px] text-ink-tertiary">
                   To: Dawit Bekele &lt;dawit.bekele@example.et&gt;
                 </div>
-                <div className="font-sans font-bold text-ink-primary text-sm pt-1 border-t border-border mt-1">
+                <div className="font-sans font-bold text-ink-primary text-sm pt-1 mt-1">
                   Subject: {renderPreviewSubject()}
                 </div>
               </div>
 
               {/* Rendered Email Body */}
-              <div className="p-6 font-sans text-xs text-ink-primary space-y-4 whitespace-pre-wrap leading-relaxed bg-white min-h-[300px]">
+              <div className="p-6 font-sans text-sm text-ink-primary space-y-4 whitespace-pre-wrap leading-relaxed bg-white min-h-[300px]">
                 {renderPreviewBody()}
               </div>
 
-              <div className="p-3 bg-canvas-subdued border-t border-border text-[10px] text-ink-tertiary font-mono text-center">
+              <div className="p-3 bg-canvas-subdued/40 text-[13px] text-ink-tertiary font-mono text-center">
                 This preview updates in real-time as you type in the editor.
               </div>
             </div>
@@ -635,22 +667,22 @@ export const AdminSettingsPage: React.FC = () => {
 
       {/* TAB 5: Demo Tools */}
       {activeTab === 'demo' && (
-        <div className="border-4 border-ink-primary bg-white p-6 sm:p-8 space-y-6 shadow-ticket">
-          <div className="border-b-2 border-border pb-2">
-            <h3 className="font-display text-2xl font-black uppercase text-ink-primary">
-              Demo Environment & Reset Tools
+        <div className="rounded-[10px] bg-white p-6 sm:p-8 space-y-6 shadow-sm">
+          <div className="pb-3">
+            <h3 className="font-display text-xl font-bold text-ink-primary">
+              Demo environment and reset tools
             </h3>
-            <p className="text-xs text-ink-secondary">
+            <p className="text-[13px] text-ink-secondary mt-0.5">
               Tools to reset persistent mock storage back to initial seed data for demo presentations.
             </p>
           </div>
 
-          <div className="p-4 bg-amber-50 border-2 border-amber-300 space-y-2 text-xs">
+          <div className="p-4 bg-amber-50/60 rounded-[8px] space-y-2 text-sm">
             <div className="flex items-center gap-2 text-amber-900 font-bold text-sm">
-              <Warning className="w-5 h-5 text-amber-600" weight="fill" />
-              <span>Full Demo State Reset</span>
+              <Warning className="w-5 h-5 text-amber-800" weight="fill" />
+              <span>Full demo state reset</span>
             </div>
-            <p className="text-amber-800 leading-relaxed">
+            <p className="text-amber-800 leading-relaxed text-[13px]">
               Clicking reset will clear any newly created test accounts, approved hours, or promotion decisions and restore the canonical 7 demo accounts, seed payments (including the review exceptions and duplicate transfers), and baseline activities.
             </p>
           </div>
@@ -663,7 +695,7 @@ export const AdminSettingsPage: React.FC = () => {
               onClick={handleResetDemoData}
               leftIcon={<ArrowClockwise className="w-5 h-5" weight="bold" />}
             >
-              Reset All Demo Data to Baseline
+              Reset all demo data to baseline
             </Button>
           </div>
         </div>

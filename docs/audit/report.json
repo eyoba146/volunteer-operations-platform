@@ -1,0 +1,338 @@
+[
+  {
+    "role": "public",
+    "name": "home",
+    "path": "/",
+    "pageTag": "public/home",
+    "failures": []
+  },
+  {
+    "role": "public",
+    "name": "sign_in",
+    "path": "/sign-in",
+    "pageTag": "public/sign-in",
+    "failures": []
+  },
+  {
+    "role": "public",
+    "name": "register",
+    "path": "/register",
+    "pageTag": "public/register",
+    "failures": []
+  },
+  {
+    "role": "public",
+    "name": "verify_email",
+    "path": "/verify-email",
+    "pageTag": "public/verify-email",
+    "failures": []
+  },
+  {
+    "role": "public",
+    "name": "forgot_password",
+    "path": "/forgot-password",
+    "pageTag": "public/forgot-password",
+    "failures": []
+  },
+  {
+    "role": "public",
+    "name": "reset_password",
+    "path": "/reset-password",
+    "pageTag": "public/reset-password",
+    "failures": []
+  },
+  {
+    "role": "public",
+    "name": "check_certificate",
+    "path": "/check-certificate",
+    "pageTag": "public/check-certificate",
+    "failures": []
+  },
+  {
+    "role": "public",
+    "name": "unauthorized",
+    "path": "/unauthorized",
+    "pageTag": "public/unauthorized",
+    "failures": []
+  },
+  {
+    "role": "public",
+    "name": "not_found",
+    "path": "/404",
+    "pageTag": "public/404",
+    "failures": []
+  },
+  {
+    "role": "applicant",
+    "name": "status",
+    "path": "/applicant/status",
+    "pageTag": "applicant/status",
+    "failures": []
+  },
+  {
+    "role": "applicant",
+    "name": "apply",
+    "path": "/applicant/apply",
+    "pageTag": "applicant/apply",
+    "failures": []
+  },
+  {
+    "role": "applicant",
+    "name": "payment",
+    "path": "/applicant/payment",
+    "pageTag": "applicant/payment",
+    "failures": []
+  },
+  {
+    "role": "applicant",
+    "name": "notifications",
+    "path": "/applicant/notifications",
+    "pageTag": "applicant/notifications",
+    "failures": []
+  },
+  {
+    "role": "volunteer",
+    "name": "home",
+    "path": "/volunteer/home",
+    "pageTag": "volunteer/home",
+    "failures": []
+  },
+  {
+    "role": "volunteer",
+    "name": "activities",
+    "path": "/volunteer/activities",
+    "pageTag": "volunteer/activities",
+    "failures": []
+  },
+  {
+    "role": "volunteer",
+    "name": "activity_detail",
+    "path": "/volunteer/activities/act-01",
+    "pageTag": "volunteer/activity-detail",
+    "failures": []
+  },
+  {
+    "role": "volunteer",
+    "name": "my_activities",
+    "path": "/volunteer/my-activities",
+    "pageTag": "volunteer/my-activities",
+    "failures": []
+  },
+  {
+    "role": "volunteer",
+    "name": "check_in",
+    "path": "/volunteer/check-in",
+    "pageTag": "volunteer/check-in",
+    "failures": []
+  },
+  {
+    "role": "volunteer",
+    "name": "hours",
+    "path": "/volunteer/hours",
+    "pageTag": "volunteer/hours",
+    "failures": []
+  },
+  {
+    "role": "volunteer",
+    "name": "rank_progress",
+    "path": "/volunteer/rank-progress",
+    "pageTag": "volunteer/rank-progress",
+    "failures": []
+  },
+  {
+    "role": "volunteer",
+    "name": "certificates",
+    "path": "/volunteer/certificates",
+    "pageTag": "volunteer/certificates",
+    "failures": []
+  },
+  {
+    "role": "volunteer",
+    "name": "id_card",
+    "path": "/volunteer/id-card",
+    "pageTag": "volunteer/id-card",
+    "failures": []
+  },
+  {
+    "role": "volunteer",
+    "name": "profile",
+    "path": "/volunteer/profile",
+    "pageTag": "volunteer/profile",
+    "failures": []
+  },
+  {
+    "role": "team_lead",
+    "name": "home",
+    "path": "/team-lead/home",
+    "pageTag": "team-lead/home",
+    "failures": []
+  },
+  {
+    "role": "team_lead",
+    "name": "approve_hours",
+    "path": "/team-lead/approve-hours",
+    "pageTag": "team-lead/approve-hours",
+    "failures": []
+  },
+  {
+    "role": "team_lead",
+    "name": "activities",
+    "path": "/team-lead/activities",
+    "pageTag": "team-lead/activities",
+    "failures": []
+  },
+  {
+    "role": "team_lead",
+    "name": "create_activity",
+    "path": "/team-lead/create-activity",
+    "pageTag": "team-lead/create-activity",
+    "failures": []
+  },
+  {
+    "role": "team_lead",
+    "name": "ratings",
+    "path": "/team-lead/ratings",
+    "pageTag": "team-lead/ratings",
+    "failures": []
+  },
+  {
+    "role": "team_lead",
+    "name": "recommend_promotion",
+    "path": "/team-lead/recommend-promotion",
+    "pageTag": "team-lead/recommend-promotion",
+    "failures": []
+  },
+  {
+    "role": "team_lead",
+    "name": "announcements",
+    "path": "/team-lead/announcements",
+    "pageTag": "team-lead/announcements",
+    "failures": []
+  },
+  {
+    "role": "manager",
+    "name": "dashboard",
+    "path": "/manager/dashboard",
+    "pageTag": "manager/dashboard",
+    "failures": []
+  },
+  {
+    "role": "manager",
+    "name": "applications",
+    "path": "/manager/applications",
+    "pageTag": "manager/applications",
+    "failures": []
+  },
+  {
+    "role": "manager",
+    "name": "volunteers",
+    "path": "/manager/volunteers",
+    "pageTag": "manager/volunteers",
+    "failures": []
+  },
+  {
+    "role": "manager",
+    "name": "activities",
+    "path": "/manager/activities",
+    "pageTag": "manager/activities",
+    "failures": []
+  },
+  {
+    "role": "manager",
+    "name": "promotions",
+    "path": "/manager/promotions",
+    "pageTag": "manager/promotions",
+    "failures": []
+  },
+  {
+    "role": "manager",
+    "name": "announcements",
+    "path": "/manager/announcements",
+    "pageTag": "manager/announcements",
+    "failures": []
+  },
+  {
+    "role": "manager",
+    "name": "feedback",
+    "path": "/manager/feedback",
+    "pageTag": "manager/feedback",
+    "failures": []
+  },
+  {
+    "role": "manager",
+    "name": "reports",
+    "path": "/manager/reports",
+    "pageTag": "manager/reports",
+    "failures": []
+  },
+  {
+    "role": "finance",
+    "name": "overview",
+    "path": "/finance/overview",
+    "pageTag": "finance/overview",
+    "failures": []
+  },
+  {
+    "role": "finance",
+    "name": "payments",
+    "path": "/finance/payments",
+    "pageTag": "finance/payments",
+    "failures": []
+  },
+  {
+    "role": "finance",
+    "name": "needs_review",
+    "path": "/finance/needs-review",
+    "pageTag": "finance/needs-review",
+    "failures": []
+  },
+  {
+    "role": "finance",
+    "name": "receipts_refunds",
+    "path": "/finance/receipts-refunds",
+    "pageTag": "finance/receipts-refunds",
+    "failures": []
+  },
+  {
+    "role": "finance",
+    "name": "reports",
+    "path": "/finance/reports",
+    "pageTag": "finance/reports",
+    "failures": []
+  },
+  {
+    "role": "admin",
+    "name": "overview",
+    "path": "/admin/overview",
+    "pageTag": "admin/overview",
+    "failures": []
+  },
+  {
+    "role": "admin",
+    "name": "settings",
+    "path": "/admin/settings",
+    "pageTag": "admin/settings",
+    "failures": []
+  },
+  {
+    "role": "admin",
+    "name": "rank_rules",
+    "path": "/admin/rank-rules",
+    "pageTag": "admin/rank-rules",
+    "failures": []
+  },
+  {
+    "role": "admin",
+    "name": "accounts",
+    "path": "/admin/accounts",
+    "pageTag": "admin/accounts",
+    "failures": []
+  },
+  {
+    "role": "admin",
+    "name": "activity_history",
+    "path": "/admin/activity-history",
+    "pageTag": "admin/activity-history",
+    "failures": []
+  }
+]

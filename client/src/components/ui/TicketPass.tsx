@@ -28,71 +28,69 @@ export const TicketPass: React.FC<TicketPassProps> = ({
   const headerAccent = {
     applicant: 'bg-role-applicant text-ink-primary',
     volunteer: 'bg-role-volunteer text-white',
-    teamlead:  'bg-role-teamlead text-white',
-    manager:   'bg-role-manager text-white',
-    finance:   'bg-role-finance text-role-financeAccent',
-    neutral:   'bg-canvas-subdued text-ink-primary',
+    teamlead: 'bg-role-teamlead text-white',
+    manager: 'bg-role-manager text-white',
+    finance: 'bg-role-finance text-role-financeAccent',
+    neutral: 'bg-[#F1F3F6] text-ink-primary',
   }[variant];
 
   return (
     <div
       onClick={onClick}
-      className={`relative bg-white border-2 border-ink-primary shadow-ticket transition-all duration-200 select-none ${
-        onClick ? 'cursor-pointer hover:-rotate-1 hover:-translate-y-1' : ''
-      } ${className}`}
-      style={{
-        clipPath: 'polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)',
-      }}
+      className={`relative bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05),0_8px_24px_-12px_rgba(16,24,40,0.10)] rounded-[16px] transition-all duration-150 select-none overflow-hidden ${onClick ? 'cursor-pointer hover:shadow-[0_1px_3px_rgba(16,24,40,0.08),0_12px_32px_-4px_rgba(16,24,40,0.12)] hover:-translate-y-0.5' : ''
+        } ${className}`}
     >
       {/* Top Banner with Badge */}
-      <div className={`px-4 py-2.5 flex items-center justify-between border-b-2 border-ink-primary ${headerAccent}`}>
+      <div className={`px-5 py-3 flex items-center justify-between ${headerAccent}`}>
         <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 bg-current shrink-0" />
-          <span className="font-display text-base font-black tracking-tight uppercase">
-            {subtitle || 'VTS PASS'}
+          <span className="w-2.5 h-2.5 bg-current shrink-0 rounded-full" />
+          <span className="font-display text-base font-bold tracking-tight">
+            {subtitle || 'VTS pass'}
           </span>
         </div>
         {badge && (
-          <span className="font-mono text-xs px-2 py-0.5 bg-ink-primary text-white font-bold">
+          <span className="font-sans text-[13px] px-2.5 py-0.5 bg-ink-primary text-white font-bold rounded-full">
             {badge}
           </span>
         )}
       </div>
 
       {/* Main Ticket Body */}
-      <div className="p-5 space-y-3">
+      <div className="p-6 sm:p-7 space-y-3">
         <div>
-          {meta && <span className="font-mono text-xs text-ink-tertiary block mb-1">{meta}</span>}
-          <h3 className="font-display text-2xl sm:text-3xl font-black text-ink-primary tracking-tight leading-none uppercase">
+          {meta && <span className="font-sans text-[13px] font-medium text-ink-secondary block mb-1">{meta}</span>}
+          <h3 className="font-display text-2xl sm:text-3xl font-black text-ink-primary tracking-tight leading-tight">
             {title}
           </h3>
         </div>
 
-        {children && <div className="font-sans text-sm text-ink-secondary">{children}</div>}
+        {children && <div className="font-sans text-base text-ink-secondary leading-relaxed">{children}</div>}
       </div>
 
       {/* Perforated Stub Divider */}
-      <div className="relative border-t-2 border-dashed border-border flex items-center justify-between px-4 py-3 bg-canvas-subdued/40">
+      <div className="relative flex items-center justify-between px-5 py-3.5 bg-[#F7F8FA]">
+        <svg className="absolute top-0 left-6 right-6 h-[1px] w-[calc(100%-48px)] overflow-visible" preserveAspectRatio="none">
+          <line x1="0" y1="0" x2="100%" y2="0" stroke="#CBD2DA" strokeDasharray="4 4" strokeWidth="1" />
+        </svg>
         {/* Left and Right Notches */}
-        <div className="absolute -left-2.5 -top-2.5 w-5 h-5 rounded-full bg-canvas border border-ink-primary" />
-        <div className="absolute -right-2.5 -top-2.5 w-5 h-5 rounded-full bg-canvas border border-ink-primary" />
+        <div className="absolute -left-3 -top-3 w-6 h-6 rounded-full bg-white shadow-inner" />
+        <div className="absolute -right-3 -top-3 w-6 h-6 rounded-full bg-white shadow-inner" />
 
-        <div className="font-mono text-xs font-bold text-ink-secondary">
-          {stubCode ? `PASS # ${stubCode}` : 'VTS TRAIL PASS'}
+        <div className="font-sans text-[13px] font-semibold text-ink-primary">
+          {stubCode ? `Pass # ${stubCode}` : 'VTS trail pass'}
         </div>
 
         {footer ? (
           <div>{footer}</div>
         ) : (
-          <div className="flex gap-1">
-            <span className="w-1.5 h-4 bg-ink-primary" />
-            <span className="w-0.5 h-4 bg-ink-primary" />
-            <span className="w-2 h-4 bg-ink-primary" />
-            <span className="w-1 h-4 bg-ink-primary" />
+          <div className="flex gap-1 items-center opacity-40">
+            <span className="w-1.5 h-3.5 bg-ink-primary rounded-xs" />
+            <span className="w-0.5 h-3.5 bg-ink-primary rounded-xs" />
+            <span className="w-2 h-3.5 bg-ink-primary rounded-xs" />
+            <span className="w-1 h-3.5 bg-ink-primary rounded-xs" />
           </div>
         )}
       </div>
     </div>
   );
 };
-

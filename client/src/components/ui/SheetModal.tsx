@@ -49,32 +49,32 @@ export const SheetModal: React.FC<SheetModalProps> = ({
       <div className="fixed inset-0 z-50 flex justify-end">
         {/* Solid neutral backdrop */}
         <div
-          className="fixed inset-0 bg-ink-primary/40 transition-opacity"
+          className="fixed inset-0 bg-ink-primary/50 transition-opacity"
           onClick={onClose}
           aria-hidden="true"
         />
 
         {/* Drawer pane */}
-        <div className="relative w-full max-w-xl h-full bg-canvas-raised border-l border-border-strong shadow-modal flex flex-col z-10 animate-in slide-in-from-right duration-200">
-          <div className="flex items-start justify-between p-5 border-b border-border bg-canvas-subdued">
+        <div className="relative w-full max-w-xl h-full bg-white shadow-[0_1px_3px_rgba(16,24,40,0.08),0_16px_36px_-4px_rgba(16,24,40,0.14)] flex flex-col z-10 animate-in slide-in-from-right duration-200">
+          <div className="flex items-start justify-between p-5 bg-[#F7F8FA]">
             <div>
               {title && (
-                <h3 className="font-serif text-xl font-semibold text-ink-primary">
+                <h3 className="font-display text-2xl font-bold text-ink-primary tracking-tight leading-tight">
                   {title}
                 </h3>
               )}
               {subtitle && (
-                <p className="font-sans text-xs text-ink-secondary mt-0.5">
+                <p className="font-sans text-sm text-ink-secondary mt-0.5 leading-relaxed">
                   {subtitle}
                 </p>
               )}
             </div>
             <button
               onClick={onClose}
-              className="p-1.5 text-ink-secondary hover:text-ink-primary hover:bg-canvas-inset border border-transparent hover:border-border transition-colors cursor-pointer"
+              className="p-1.5 text-ink-primary hover:bg-[#E8EBEF] rounded-[8px] transition-colors cursor-pointer"
               aria-label="Close pane"
             >
-              <X className="w-5 h-5" />
+              <X className="w-5 h-5" weight="bold" />
             </button>
           </div>
 
@@ -96,35 +96,34 @@ export const SheetModal: React.FC<SheetModalProps> = ({
 
       {/* Modal Dialog */}
       <div
-        className={`relative w-full ${maxWidthClass} bg-canvas-raised border border-border-strong shadow-modal z-10 animate-in fade-in zoom-in-95 duration-150`}
+        className={`relative w-full ${maxWidthClass} bg-white rounded-[16px] shadow-[0_1px_3px_rgba(16,24,40,0.08),0_16px_36px_-4px_rgba(16,24,40,0.14)] z-10 animate-in fade-in zoom-in-95 duration-150 overflow-hidden`}
         role="dialog"
         aria-modal="true"
       >
-        <div className="flex items-start justify-between p-5 border-b border-border bg-canvas-subdued">
+        <div className="flex items-start justify-between p-5 bg-[#F7F8FA]">
           <div>
             {title && (
-              <h3 className="font-serif text-xl font-semibold text-ink-primary">
+              <h3 className="font-display text-2xl font-bold text-ink-primary tracking-tight leading-tight">
                 {title}
               </h3>
             )}
             {subtitle && (
-              <p className="font-sans text-xs text-ink-secondary mt-0.5">
+              <p className="font-sans text-sm text-ink-secondary mt-0.5 leading-relaxed">
                 {subtitle}
               </p>
             )}
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-ink-secondary hover:text-ink-primary hover:bg-canvas-inset border border-transparent hover:border-border transition-colors cursor-pointer"
+            className="p-1.5 text-ink-primary hover:bg-[#E8EBEF] rounded-[8px] transition-colors cursor-pointer"
             aria-label="Close dialog"
           >
-            <X className="w-5 h-5" />
+            <X className="w-5 h-5" weight="bold" />
           </button>
         </div>
 
-        <div className="p-5">{children}</div>
+        <div className="p-5 max-h-[80vh] overflow-y-auto">{children}</div>
       </div>
     </div>
   );
 };
-

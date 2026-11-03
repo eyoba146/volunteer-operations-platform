@@ -134,14 +134,15 @@ export async function processTelebirrOutcome(
         store.setCurrentUser(activeUser);
       }
 
-      // Ensure Profile exists and has Member rank
+      // Ensure Profile exists and has Volunteer rank
       const profile = state.profiles.find((p) => p.userId === user.id);
       const volNum = profile?.volunteerNumber || `VTS-AA-2026-${Math.floor(100 + Math.random() * 900)}`;
       
       const activeProfile: VolunteerProfile = profile
         ? {
             ...profile,
-            rank: 'member',
+            rank: 'volunteer',
+            volunteerSince: now.slice(0, 10),
             memberSince: now.slice(0, 10),
             volunteerNumber: volNum,
           }
@@ -151,12 +152,13 @@ export async function processTelebirrOutcome(
             phone: payment.payerPhone || '+251 91 100 0000',
             dateOfBirth: '2001-01-01',
             area: 'Addis Ababa',
-            bio: 'Active civic volunteer.',
+            bio: 'Active community volunteer.',
             skills: ['Community Outreach'],
             availability: ['Weekends'],
             languages: ['Amharic', 'English'],
             emergencyContact: { name: 'Family Contact', relationship: 'Family', phone: '+251 91 200 0000' },
-            rank: 'member',
+            rank: 'volunteer',
+            volunteerSince: now.slice(0, 10),
             memberSince: now.slice(0, 10),
             volunteerNumber: volNum,
           };
@@ -165,7 +167,7 @@ export async function processTelebirrOutcome(
         ? updatedProfiles.map((p) => (p.userId === user.id ? activeProfile : p))
         : [...updatedProfiles, activeProfile];
 
-      // Issue Certificate of Membership
+      // Issue Certificate of Volunteer Service
       const certId = `cert-${Date.now()}`;
       const certCode = `VTS-CERT-${Math.floor(1000 + Math.random() * 9000)}-ET`;
       const newCert: Certificate = {
@@ -173,14 +175,14 @@ export async function processTelebirrOutcome(
         userId: user.id,
         userName: activeProfile.fullName,
         volunteerNumber: volNum,
-        kind: 'membership',
-        title: 'Certificate of Civic Membership',
+        kind: 'volunteer',
+        title: 'Volunteer Certificate',
         issuedAt: now,
         verificationCode: certCode,
         issuerName: 'Ruth Mengistu',
         issuerRole: 'Program Director',
         metadata: {
-          rank: 'member',
+          rank: 'volunteer',
         },
       };
       updatedCertificates = [newCert, ...updatedCertificates];
@@ -195,7 +197,7 @@ export async function processTelebirrOutcome(
           category: 'payment',
           sentAt: now,
           read: false,
-          body: `Dear ${activeProfile.fullName},\n\nWe have received your registration fee of ETB 200 via Telebirr (Reference: ${payment.telebirrReference}).\n\nYour receipt number is ${receiptNum}. Your official Volunteer ID is ${volNum}.\n\nYour account is now fully active with Member rank. You can view your volunteer ID card, register for upcoming activities, and start logging service hours.\n\nWarm regards,\nVTS Operations`,
+          body: `Dear ${activeProfile.fullName},\n\nWe have received your registration fee of ETB 200 via Telebirr (Reference: ${payment.telebirrReference}).\n\nYour receipt number is ${receiptNum}. Your Volunteer ID pass number is ${volNum}.\n\nYour account is now fully active with Volunteer rank. You can view your volunteer ID card, register for upcoming activities, and start logging service hours.\n\nWarm regards,\nVTS Operations`,
           actionLabel: 'View Volunteer ID',
           actionUrl: '/volunteer/id-card',
         },
@@ -216,7 +218,7 @@ export async function processTelebirrOutcome(
           actorId: payment.userId,
           actorName: payment.payerName || 'Applicant',
           actorRole: 'Applicant',
-          action: 'Telebirr payment confirmed and account activated as Member',
+          action: 'Telebirr payment confirmed and account activated as Volunteer',
           subject: `Payment #${payment.id} / Ref: ${payment.telebirrReference}`,
           createdAt: now,
         },
@@ -304,7 +306,7 @@ export async function resolveNeedsReviewPayment(
       if (profile) {
         updatedProfiles = updatedProfiles.map((p) =>
           p.userId === user.id
-            ? { ...p, rank: 'member', memberSince: now.slice(0, 10) }
+            ? { ...p, rank: 'volunteer', volunteerSince: now.slice(0, 10), memberSince: now.slice(0, 10) }
             : p
         );
       }
@@ -417,5 +419,203 @@ export async function simulateDuplicatePayment(
 
   return dupPayment;
 }
+
+export async function recordPayment(params: {
+  applicationId: string;
+  amount: number;
+  referenceNumber: string;
+  note?: string;
+  recordedBy: string;
+  recordedByName: string;
+}): Promise<Payment> {
+  await delay(400, 750);
+  const state = store.getState();
+  const now = new Date().toISOString();
+
+  // Find application by id or userId
+  const application = state.applications.find(
+    (a) => a.id === params.applicationId || a.userId === params.applicationId
+  );
+  if (!application) {
+    throw new Error('Application not found.');
+  }
+
+  const user = state.users.find((u) => u.id === application.userId);
+  if (!user) {
+    throw new Error('User account for this applicant not found.');
+  }
+
+  const receiptNum = `REC-2026-${Math.floor(10000 + Math.random() * 90000)}`;
+  const existingPayment = state.payments.find((p) => p.applicationId === application.id);
+
+  const payment: Payment = {
+    id: existingPayment ? existingPayment.id : `pay-${Date.now()}`,
+    userId: user.id,
+    applicationId: application.id,
+    amount: params.amount,
+    currency: 'ETB',
+    telebirrReference: params.referenceNumber,
+    status: 'confirmed',
+    createdAt: existingPayment ? existingPayment.createdAt : now,
+    confirmedAt: now,
+    verifiedBy: params.recordedBy,
+    receiptNumber: receiptNum,
+    payerName: (application.formData?.fullName || 'Applicant'),
+    payerPhone: (application.formData?.phone || '+251 91 100 0000'),
+    refundReason: params.note,
+  };
+
+  // 1. Update application status
+  const updatedApplications = state.applications.map((a) =>
+    a.id === application.id ? { ...a, status: 'accepted' as const, updatedAt: now } : a
+  );
+
+  // 2. Activate user as volunteer
+  const activeUser: User = {
+    ...user,
+    role: 'volunteer',
+    branchId: application.branchId || user.branchId,
+    branchName: application.branchName || user.branchName,
+    areaId: application.areaId || user.areaId,
+    areaName: application.areaName || user.areaName,
+    scope: {
+      level: 'own',
+      unitId: application.branchId || user.branchId || 'branch-kirkos',
+      unitName: application.branchName || user.branchName || 'Kirkos Branch',
+    },
+  };
+  const updatedUsers = state.users.map((u) => (u.id === user.id ? activeUser : u));
+
+  // 3. Update or create volunteer profile
+  const existingProfile = state.profiles.find((p) => p.userId === user.id);
+  const volNum =
+    existingProfile?.volunteerNumber ||
+    `VTS-${((application.formData?.area || 'Addis Ababa') || 'AA').slice(0, 2).toUpperCase()}-2026-${Math.floor(100 + Math.random() * 900)}`;
+
+  const activeProfile: VolunteerProfile = existingProfile
+    ? {
+        ...existingProfile,
+        fullName: (application.formData?.fullName || 'Applicant') || existingProfile.fullName,
+        phone: (application.formData?.phone || '+251 91 100 0000') || existingProfile.phone,
+        area: (application.formData?.area || 'Addis Ababa') || existingProfile.area,
+        areaId: application.areaId || existingProfile.areaId,
+        areaName: application.areaName || existingProfile.areaName,
+        branchId: application.branchId || existingProfile.branchId,
+        branchName: application.branchName || existingProfile.branchName,
+        rank: 'volunteer',
+        volunteerSince: now.slice(0, 10),
+        memberSince: now.slice(0, 10),
+        volunteerNumber: volNum,
+      }
+    : {
+        userId: user.id,
+        fullName: (application.formData?.fullName || 'Applicant'),
+        phone: (application.formData?.phone || '+251 91 100 0000'),
+        dateOfBirth: application.formData?.dateOfBirth || '2001-01-01',
+        area: (application.formData?.area || 'Addis Ababa') || 'Addis Ababa',
+        areaId: application.areaId,
+        areaName: application.areaName,
+        branchId: application.branchId,
+        branchName: application.branchName,
+        bio: application.formData?.motivation || 'Dedicated community volunteer.',
+        skills: application.formData?.skills?.length ? application.formData?.skills : ['Community Outreach'],
+        availability: application.formData?.availability?.length ? application.formData?.availability : ['Weekends'],
+        languages: application.formData?.languages?.length ? application.formData?.languages : ['Amharic'],
+        emergencyContact: application.formData?.emergencyContact || {
+          name: 'Emergency Contact',
+          relationship: 'Family',
+          phone: (application.formData?.phone || '+251 91 100 0000'),
+        },
+        rank: 'volunteer',
+        volunteerSince: now.slice(0, 10),
+        memberSince: now.slice(0, 10),
+        volunteerNumber: volNum,
+      };
+
+  const updatedProfiles = existingProfile
+    ? state.profiles.map((p) => (p.userId === user.id ? activeProfile : p))
+    : [...state.profiles, activeProfile];
+
+  // 4. Issue Certificate
+  const certId = `cert-${Date.now()}`;
+  const certCode = `VTS-CERT-${Math.floor(1000 + Math.random() * 9000)}-ET`;
+  const newCert: Certificate = {
+    id: certId,
+    userId: user.id,
+    userName: activeProfile.fullName,
+    volunteerNumber: volNum,
+    kind: 'volunteer',
+    title: 'Volunteer Certificate',
+    issuedAt: now,
+    verificationCode: certCode,
+    issuerName: params.recordedByName,
+    issuerRole: 'Finance Officer',
+    metadata: {
+      rank: 'volunteer',
+    },
+  };
+  const updatedCertificates = [newCert, ...state.certificates];
+
+  // 5. Send Email
+  const receiptEmail = {
+    id: `em-rec-${Date.now()}`,
+    to: user.email,
+    toName: activeProfile.fullName,
+    subject: 'Registration Payment Confirmed — Welcome to VTS!',
+    category: 'payment' as const,
+    sentAt: now,
+    read: false,
+    body: `Dear ${activeProfile.fullName},\n\nYour registration fee of ETB ${params.amount}.00 has been recorded by Finance (Reference: ${params.referenceNumber}).\n\nYour official receipt number is ${receiptNum}. Your Volunteer ID is ${volNum}.\n\nYour account has been activated with Volunteer rank. You can now access activities, record hours, and view your ID card.\n\nRecorded by: ${params.recordedByName}\nNotes: ${params.note || 'None'}\n\nWarm regards,\nVTS Operations`,
+    actionLabel: 'View Volunteer ID',
+    actionUrl: '/volunteer/id-card',
+  };
+  const updatedEmails = [receiptEmail, ...state.emails];
+
+  // 6. Send SMS
+  const receiptSms = {
+    id: `sms-${Date.now()}`,
+    toPhone: activeProfile.phone,
+    toName: activeProfile.fullName,
+    body: `VTS Corps: Fee of ETB ${params.amount} recorded (Ref: ${params.referenceNumber}). Receipt: ${receiptNum}. Welcome to VTS! Your Volunteer ID is ${volNum}.`,
+    category: 'payment' as const,
+    sentAt: now,
+    read: false,
+  };
+  const updatedSms = [receiptSms, ...(state.smsMessages || [])];
+
+  // 7. Update payments list
+  const updatedPayments = existingPayment
+    ? state.payments.map((p) => (p.id === existingPayment.id ? payment : p))
+    : [payment, ...state.payments];
+
+  // 8. Log activity
+  const updatedActivityLog = [
+    {
+      id: `log-${Date.now()}`,
+      actorId: params.recordedBy,
+      actorName: params.recordedByName,
+      actorRole: 'Finance Officer',
+      action: `Recorded registration payment of ETB ${params.amount} (Ref: ${params.referenceNumber}) for ${activeProfile.fullName} and activated Volunteer account`,
+      subject: `Payment #${payment.id}`,
+      createdAt: now,
+    },
+    ...state.activityLog,
+  ];
+
+  store.setState((prev) => ({
+    ...prev,
+    applications: updatedApplications,
+    users: updatedUsers,
+    profiles: updatedProfiles,
+    certificates: updatedCertificates,
+    emails: updatedEmails,
+    smsMessages: updatedSms,
+    payments: updatedPayments,
+    activityLog: updatedActivityLog,
+  }));
+
+  return payment;
+}
+
 
 
