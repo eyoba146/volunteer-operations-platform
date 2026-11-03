@@ -1,0 +1,1771 @@
+{
+  "generatedAt": "2026-11-03T15:12:12.658Z",
+  "metrics": {
+    "totalRoutes": 59,
+    "totalRoles": 6,
+    "totalRanks": 4,
+    "totalPermissionModules": 16,
+    "totalStatusEnums": 13,
+    "totalApiFunctions": 66,
+    "totalRequirements": 77,
+    "totalDemoAccounts": 9,
+    "totalDemoScriptSteps": 9
+  },
+  "routes": [
+    {
+      "path": "/",
+      "roleAccess": [
+        "public"
+      ],
+      "component": "HomePage",
+      "file": "client/src/pages/public/HomePage.tsx",
+      "dataPage": "public/home"
+    },
+    {
+      "path": "/sign-in",
+      "roleAccess": [
+        "public"
+      ],
+      "component": "SignInPage",
+      "file": "client/src/pages/public/SignInPage.tsx",
+      "dataPage": "public/sign-in"
+    },
+    {
+      "path": "/register",
+      "roleAccess": [
+        "public"
+      ],
+      "component": "RegisterPage",
+      "file": "client/src/pages/public/RegisterPage.tsx",
+      "dataPage": "public/register"
+    },
+    {
+      "path": "/verify-email",
+      "roleAccess": [
+        "public"
+      ],
+      "component": "VerifyEmailPage",
+      "file": "client/src/pages/public/VerifyEmailPage.tsx",
+      "dataPage": "public/verify-email"
+    },
+    {
+      "path": "/forgot-password",
+      "roleAccess": [
+        "public"
+      ],
+      "component": "ForgotPasswordPage",
+      "file": "client/src/pages/public/ForgotPasswordPage.tsx",
+      "dataPage": "public/forgot-password"
+    },
+    {
+      "path": "/reset-password",
+      "roleAccess": [
+        "public"
+      ],
+      "component": "ResetPasswordPage",
+      "file": "client/src/pages/public/ResetPasswordPage.tsx",
+      "dataPage": "public/reset-password"
+    },
+    {
+      "path": "/check-certificate",
+      "roleAccess": [
+        "public"
+      ],
+      "component": "CertificateCheckPage",
+      "file": "client/src/pages/public/CertificateCheckPage.tsx",
+      "dataPage": "public/check-certificate"
+    },
+    {
+      "path": "/unauthorized",
+      "roleAccess": [
+        "public"
+      ],
+      "component": "UnauthorizedPage",
+      "file": "client/src/pages/public/UnauthorizedPage.tsx",
+      "dataPage": "public/unauthorized"
+    },
+    {
+      "path": "/404",
+      "roleAccess": [
+        "public"
+      ],
+      "component": "NotFoundPage",
+      "file": "client/src/pages/public/NotFoundPage.tsx",
+      "dataPage": "public/404"
+    },
+    {
+      "path": "/applicant/status",
+      "roleAccess": [
+        "applicant",
+        "volunteer"
+      ],
+      "component": "ApplicantStatusPage",
+      "file": "client/src/pages/applicant/ApplicantStatusPage.tsx",
+      "dataPage": "applicant/status"
+    },
+    {
+      "path": "/applicant/apply",
+      "roleAccess": [
+        "applicant",
+        "volunteer"
+      ],
+      "component": "ApplicantApplyPage",
+      "file": "client/src/pages/applicant/ApplicantApplyPage.tsx",
+      "dataPage": "applicant/apply"
+    },
+    {
+      "path": "/applicant/payment",
+      "roleAccess": [
+        "applicant",
+        "volunteer"
+      ],
+      "component": "ApplicantPaymentPage",
+      "file": "client/src/pages/applicant/ApplicantPaymentPage.tsx",
+      "dataPage": "applicant/payment"
+    },
+    {
+      "path": "/applicant/notifications",
+      "roleAccess": [
+        "applicant",
+        "volunteer"
+      ],
+      "component": "ApplicantNotificationsPage",
+      "file": "client/src/pages/applicant/ApplicantNotificationsPage.tsx",
+      "dataPage": "applicant/notifications"
+    },
+    {
+      "path": "/volunteer/home",
+      "roleAccess": [
+        "volunteer",
+        "team_lead",
+        "manager"
+      ],
+      "component": "VolunteerHomePage",
+      "file": "client/src/pages/volunteer/VolunteerHomePage.tsx",
+      "dataPage": "volunteer/home"
+    },
+    {
+      "path": "/volunteer/activities",
+      "roleAccess": [
+        "volunteer",
+        "team_lead",
+        "manager"
+      ],
+      "component": "VolunteerActivitiesPage",
+      "file": "client/src/pages/volunteer/VolunteerActivitiesPage.tsx",
+      "dataPage": "volunteer/activities"
+    },
+    {
+      "path": "/volunteer/activities/:id",
+      "roleAccess": [
+        "volunteer",
+        "team_lead",
+        "manager"
+      ],
+      "component": "VolunteerActivityDetailPage",
+      "file": "client/src/pages/volunteer/VolunteerActivityDetailPage.tsx",
+      "dataPage": "volunteer/activity-detail"
+    },
+    {
+      "path": "/volunteer/my-activities",
+      "roleAccess": [
+        "volunteer",
+        "team_lead",
+        "manager"
+      ],
+      "component": "VolunteerMyActivitiesPage",
+      "file": "client/src/pages/volunteer/VolunteerMyActivitiesPage.tsx",
+      "dataPage": "volunteer/my-activities"
+    },
+    {
+      "path": "/volunteer/check-in",
+      "roleAccess": [
+        "volunteer",
+        "team_lead",
+        "manager"
+      ],
+      "component": "VolunteerCheckInPage",
+      "file": "client/src/pages/volunteer/VolunteerCheckInPage.tsx",
+      "dataPage": "volunteer/check-in"
+    },
+    {
+      "path": "/volunteer/hours",
+      "roleAccess": [
+        "volunteer",
+        "team_lead",
+        "manager"
+      ],
+      "component": "VolunteerHoursPage",
+      "file": "client/src/pages/volunteer/VolunteerHoursPage.tsx",
+      "dataPage": "unknown"
+    },
+    {
+      "path": "/volunteer/rank-progress",
+      "roleAccess": [
+        "volunteer",
+        "team_lead",
+        "manager"
+      ],
+      "component": "VolunteerRankProgressPage",
+      "file": "client/src/pages/volunteer/VolunteerRankProgressPage.tsx",
+      "dataPage": "unknown"
+    },
+    {
+      "path": "/volunteer/certificates",
+      "roleAccess": [
+        "volunteer",
+        "team_lead",
+        "manager"
+      ],
+      "component": "VolunteerCertificatesPage",
+      "file": "client/src/pages/volunteer/VolunteerCertificatesPage.tsx",
+      "dataPage": "unknown"
+    },
+    {
+      "path": "/volunteer/id-card",
+      "roleAccess": [
+        "volunteer",
+        "team_lead",
+        "manager"
+      ],
+      "component": "VolunteerIdCardPage",
+      "file": "client/src/pages/volunteer/VolunteerIdCardPage.tsx",
+      "dataPage": "unknown"
+    },
+    {
+      "path": "/volunteer/profile",
+      "roleAccess": [
+        "volunteer",
+        "team_lead",
+        "manager"
+      ],
+      "component": "VolunteerProfilePage",
+      "file": "client/src/pages/volunteer/VolunteerProfilePage.tsx",
+      "dataPage": "unknown"
+    },
+    {
+      "path": "/volunteer/allowances",
+      "roleAccess": [
+        "volunteer",
+        "team_lead",
+        "manager"
+      ],
+      "component": "VolunteerAllowancesPage",
+      "file": "client/src/pages/volunteer/VolunteerAllowancesPage.tsx",
+      "dataPage": "volunteer/allowances"
+    },
+    {
+      "path": "/team-lead/home",
+      "roleAccess": [
+        "team_lead",
+        "manager"
+      ],
+      "component": "TeamLeadHomePage",
+      "file": "client/src/pages/team-lead/TeamLeadHomePage.tsx",
+      "dataPage": "unknown"
+    },
+    {
+      "path": "/team-lead/volunteers",
+      "roleAccess": [
+        "team_lead",
+        "manager"
+      ],
+      "component": "TeamLeadMyVolunteersPage",
+      "file": "client/src/pages/team-lead/TeamLeadMyVolunteersPage.tsx",
+      "dataPage": "team-lead/my-volunteers"
+    },
+    {
+      "path": "/team-lead/activities",
+      "roleAccess": [
+        "team_lead",
+        "manager"
+      ],
+      "component": "TeamLeadActivitiesPage",
+      "file": "client/src/pages/team-lead/TeamLeadActivitiesPage.tsx",
+      "dataPage": "unknown"
+    },
+    {
+      "path": "/team-lead/create-activity",
+      "roleAccess": [
+        "team_lead",
+        "manager"
+      ],
+      "component": "TeamLeadCreateActivityPage",
+      "file": "client/src/pages/team-lead/TeamLeadCreateActivityPage.tsx",
+      "dataPage": "unknown"
+    },
+    {
+      "path": "/team-lead/approve-hours",
+      "roleAccess": [
+        "team_lead",
+        "manager"
+      ],
+      "component": "TeamLeadApproveHoursPage",
+      "file": "client/src/pages/team-lead/TeamLeadApproveHoursPage.tsx",
+      "dataPage": "unknown"
+    },
+    {
+      "path": "/team-lead/allowances",
+      "roleAccess": [
+        "team_lead",
+        "manager"
+      ],
+      "component": "TeamLeadVerifyAllowancesPage",
+      "file": "client/src/pages/team-lead/TeamLeadVerifyAllowancesPage.tsx",
+      "dataPage": "team-lead/allowances"
+    },
+    {
+      "path": "/team-lead/ratings",
+      "roleAccess": [
+        "team_lead",
+        "manager"
+      ],
+      "component": "TeamLeadRatingsPage",
+      "file": "client/src/pages/team-lead/TeamLeadRatingsPage.tsx",
+      "dataPage": "unknown"
+    },
+    {
+      "path": "/team-lead/recommend-promotion",
+      "roleAccess": [
+        "team_lead",
+        "manager"
+      ],
+      "component": "TeamLeadRecommendPromotionPage",
+      "file": "client/src/pages/team-lead/TeamLeadRecommendPromotionPage.tsx",
+      "dataPage": "unknown"
+    },
+    {
+      "path": "/team-lead/announcements",
+      "roleAccess": [
+        "team_lead",
+        "manager"
+      ],
+      "component": "TeamLeadAnnouncementsPage",
+      "file": "client/src/pages/team-lead/TeamLeadAnnouncementsPage.tsx",
+      "dataPage": "unknown"
+    },
+    {
+      "path": "/manager/dashboard",
+      "roleAccess": [
+        "manager"
+      ],
+      "component": "ManagerDashboardPage",
+      "file": "client/src/pages/manager/ManagerDashboardPage.tsx",
+      "dataPage": "unknown"
+    },
+    {
+      "path": "/manager/projects",
+      "roleAccess": [
+        "manager"
+      ],
+      "component": "ManagerProjectsPage",
+      "file": "client/src/pages/manager/ManagerProjectsPage.tsx",
+      "dataPage": "manager/projects"
+    },
+    {
+      "path": "/manager/projects/:id",
+      "roleAccess": [
+        "manager"
+      ],
+      "component": "ManagerProjectDetailPage",
+      "file": "client/src/pages/manager/ManagerProjectDetailPage.tsx",
+      "dataPage": "manager/project-detail"
+    },
+    {
+      "path": "/manager/allowances",
+      "roleAccess": [
+        "manager"
+      ],
+      "component": "ManagerAllowancesPage",
+      "file": "client/src/pages/manager/ManagerAllowancesPage.tsx",
+      "dataPage": "manager/allowances"
+    },
+    {
+      "path": "/manager/applications",
+      "roleAccess": [
+        "manager"
+      ],
+      "component": "ManagerApplicationsPage",
+      "file": "client/src/pages/manager/ManagerApplicationsPage.tsx",
+      "dataPage": "unknown"
+    },
+    {
+      "path": "/manager/register-volunteer",
+      "roleAccess": [
+        "manager"
+      ],
+      "component": "ManagerRegisterVolunteerPage",
+      "file": "client/src/pages/manager/ManagerRegisterVolunteerPage.tsx",
+      "dataPage": "manager-register-volunteer"
+    },
+    {
+      "path": "/manager/volunteers",
+      "roleAccess": [
+        "manager"
+      ],
+      "component": "ManagerVolunteersPage",
+      "file": "client/src/pages/manager/ManagerVolunteersPage.tsx",
+      "dataPage": "unknown"
+    },
+    {
+      "path": "/manager/activities",
+      "roleAccess": [
+        "manager"
+      ],
+      "component": "ManagerActivitiesPage",
+      "file": "client/src/pages/manager/ManagerActivitiesPage.tsx",
+      "dataPage": "unknown"
+    },
+    {
+      "path": "/manager/promotions",
+      "roleAccess": [
+        "manager"
+      ],
+      "component": "ManagerPromotionsPage",
+      "file": "client/src/pages/manager/ManagerPromotionsPage.tsx",
+      "dataPage": "unknown"
+    },
+    {
+      "path": "/manager/announcements",
+      "roleAccess": [
+        "manager"
+      ],
+      "component": "ManagerAnnouncementsPage",
+      "file": "client/src/pages/manager/ManagerAnnouncementsPage.tsx",
+      "dataPage": "unknown"
+    },
+    {
+      "path": "/manager/feedback",
+      "roleAccess": [
+        "manager"
+      ],
+      "component": "ManagerFeedbackPage",
+      "file": "client/src/pages/manager/ManagerFeedbackPage.tsx",
+      "dataPage": "unknown"
+    },
+    {
+      "path": "/manager/reports",
+      "roleAccess": [
+        "manager"
+      ],
+      "component": "ManagerReportsPage",
+      "file": "client/src/pages/manager/ManagerReportsPage.tsx",
+      "dataPage": "unknown"
+    },
+    {
+      "path": "/finance/overview",
+      "roleAccess": [
+        "finance",
+        "admin"
+      ],
+      "component": "FinanceOverviewPage",
+      "file": "client/src/pages/finance/FinanceOverviewPage.tsx",
+      "dataPage": "unknown"
+    },
+    {
+      "path": "/finance/allowances",
+      "roleAccess": [
+        "finance",
+        "admin"
+      ],
+      "component": "FinanceAllowancesPage",
+      "file": "client/src/pages/finance/FinanceAllowancesPage.tsx",
+      "dataPage": "finance/allowances"
+    },
+    {
+      "path": "/finance/payments",
+      "roleAccess": [
+        "finance",
+        "admin"
+      ],
+      "component": "FinancePaymentsPage",
+      "file": "client/src/pages/finance/FinancePaymentsPage.tsx",
+      "dataPage": "unknown"
+    },
+    {
+      "path": "/finance/needs-review",
+      "roleAccess": [
+        "finance",
+        "admin"
+      ],
+      "component": "FinanceNeedsReviewPage",
+      "file": "client/src/pages/finance/FinanceNeedsReviewPage.tsx",
+      "dataPage": "unknown"
+    },
+    {
+      "path": "/finance/receipts-refunds",
+      "roleAccess": [
+        "finance",
+        "admin"
+      ],
+      "component": "FinanceReceiptsRefundsPage",
+      "file": "client/src/pages/finance/FinanceReceiptsRefundsPage.tsx",
+      "dataPage": "unknown"
+    },
+    {
+      "path": "/finance/reports",
+      "roleAccess": [
+        "finance",
+        "admin"
+      ],
+      "component": "FinanceReportsPage",
+      "file": "client/src/pages/finance/FinanceReportsPage.tsx",
+      "dataPage": "unknown"
+    },
+    {
+      "path": "/admin/overview",
+      "roleAccess": [
+        "admin"
+      ],
+      "component": "AdminOverviewPage",
+      "file": "client/src/pages/admin/AdminOverviewPage.tsx",
+      "dataPage": "unknown"
+    },
+    {
+      "path": "/admin/allowances",
+      "roleAccess": [
+        "admin"
+      ],
+      "component": "AdminAllowancesPage",
+      "file": "client/src/pages/admin/AdminAllowancesPage.tsx",
+      "dataPage": "admin/allowances"
+    },
+    {
+      "path": "/admin/organisation",
+      "roleAccess": [
+        "admin"
+      ],
+      "component": "AdminOrganisationPage",
+      "file": "client/src/pages/admin/AdminOrganisationPage.tsx",
+      "dataPage": "admin-organisation"
+    },
+    {
+      "path": "/admin/roles-permissions",
+      "roleAccess": [
+        "admin"
+      ],
+      "component": "AdminRolesPermissionsPage",
+      "file": "client/src/pages/admin/AdminRolesPermissionsPage.tsx",
+      "dataPage": "admin-roles-permissions"
+    },
+    {
+      "path": "/admin/settings",
+      "roleAccess": [
+        "admin"
+      ],
+      "component": "AdminSettingsPage",
+      "file": "client/src/pages/admin/AdminSettingsPage.tsx",
+      "dataPage": "unknown"
+    },
+    {
+      "path": "/admin/rank-rules",
+      "roleAccess": [
+        "admin"
+      ],
+      "component": "AdminRankRulesPage",
+      "file": "client/src/pages/admin/AdminRankRulesPage.tsx",
+      "dataPage": "unknown"
+    },
+    {
+      "path": "/admin/accounts",
+      "roleAccess": [
+        "admin"
+      ],
+      "component": "AdminAccountsPage",
+      "file": "client/src/pages/admin/AdminAccountsPage.tsx",
+      "dataPage": "unknown"
+    },
+    {
+      "path": "/admin/activity-history",
+      "roleAccess": [
+        "admin"
+      ],
+      "component": "AdminActivityHistoryPage",
+      "file": "client/src/pages/admin/AdminActivityHistoryPage.tsx",
+      "dataPage": "unknown"
+    }
+  ],
+  "roles": [
+    {
+      "id": "applicant",
+      "label": "Applicant",
+      "description": "Prospective volunteer completing admissions, fee settlement, and identity verification."
+    },
+    {
+      "id": "volunteer",
+      "label": "Volunteer",
+      "description": "Active enrolled volunteer participating in field service, logging hours, and earning rank milestones."
+    },
+    {
+      "id": "team_lead",
+      "label": "Team Lead",
+      "description": "Field squad supervisor leading activities, auditing hours and evidence, and rating participants."
+    },
+    {
+      "id": "manager",
+      "label": "Manager",
+      "description": "Regional operations manager deciding admissions, assisted intake, projects, and promotional boards."
+    },
+    {
+      "id": "finance",
+      "label": "Finance Officer",
+      "description": "Reconciliation officer managing Telebirr fee settlements and field allowance payouts."
+    },
+    {
+      "id": "admin",
+      "label": "Super Admin",
+      "description": "System owner managing the organization tree, dynamic role permissions matrix, and global settings."
+    }
+  ],
+  "ranks": [
+    {
+      "id": "volunteer",
+      "label": "Volunteer",
+      "order": 1,
+      "minHours": 0,
+      "minActivities": 0,
+      "minRating": 0,
+      "minMonths": 0,
+      "training": "Induction"
+    },
+    {
+      "id": "senior_volunteer",
+      "label": "Senior Volunteer",
+      "order": 2,
+      "minHours": 50,
+      "minActivities": 10,
+      "minRating": 4,
+      "minMonths": 3,
+      "training": "Advanced Field Leadership"
+    },
+    {
+      "id": "team_lead",
+      "label": "Team Lead",
+      "order": 3,
+      "minHours": 150,
+      "minActivities": 25,
+      "minRating": 4.5,
+      "minMonths": 6,
+      "training": "Crisis Intervention & Safety"
+    },
+    {
+      "id": "manager",
+      "label": "Manager",
+      "order": 4,
+      "minHours": 300,
+      "minActivities": 50,
+      "minRating": 4.8,
+      "minMonths": 12,
+      "training": "Operational Governance"
+    }
+  ],
+  "scopeLevels": [
+    "all",
+    "area",
+    "branch",
+    "own"
+  ],
+  "permissionModules": [
+    "applications",
+    "volunteers",
+    "activities",
+    "hours",
+    "ratings",
+    "promotions",
+    "payments",
+    "announcements",
+    "reports",
+    "settings",
+    "organisation",
+    "accounts",
+    "projects",
+    "assignments",
+    "documents",
+    "allowances"
+  ],
+  "permissionActions": [
+    "view",
+    "create",
+    "edit",
+    "delete",
+    "approve",
+    "export"
+  ],
+  "statusEnums": {
+    "AccountStatus": [
+      "pending_verification",
+      "active",
+      "suspended",
+      "locked"
+    ],
+    "ApplicationStatus": [
+      "draft",
+      "submitted",
+      "in_review",
+      "more_info_needed",
+      "accepted",
+      "rejected",
+      "expired",
+      "withdrawn"
+    ],
+    "PaymentStatus": [
+      "pending",
+      "confirmed",
+      "failed",
+      "needs_review",
+      "refunded"
+    ],
+    "HoursStatus": [
+      "logged",
+      "approved",
+      "declined"
+    ],
+    "PromotionStatus": [
+      "not_eligible",
+      "eligible",
+      "recommended",
+      "approved",
+      "declined"
+    ],
+    "ActivityStatus": [
+      "draft",
+      "published",
+      "in_progress",
+      "completed",
+      "cancelled"
+    ],
+    "EnrollmentStatus": [
+      "joined",
+      "waitlisted",
+      "cancelled",
+      "attended",
+      "no_show"
+    ],
+    "CertificateKind": [
+      "membership",
+      "rank_advancement",
+      "training_completion",
+      "appreciation"
+    ],
+    "OrgUnitType": [
+      "head_office",
+      "area",
+      "branch",
+      "location"
+    ],
+    "ProjectStatus": [
+      "planning",
+      "active",
+      "completed",
+      "paused"
+    ],
+    "AssignmentStatus": [
+      "assigned",
+      "accepted",
+      "declined",
+      "completed"
+    ],
+    "DocumentReviewStatus": [
+      "pending",
+      "accepted",
+      "returned_for_correction"
+    ],
+    "AllowanceStatus": [
+      "draft",
+      "submitted",
+      "verified",
+      "approved",
+      "paid",
+      "rejected",
+      "failed"
+    ]
+  },
+  "apiFunctions": [
+    {
+      "file": "client/src/api/activities.ts",
+      "name": "getActivityById",
+      "params": "activityId: string",
+      "returnType": "Promise<Activity | null>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/activities.ts",
+      "name": "cancelActivity",
+      "params": "activityId: string, reason: string",
+      "returnType": "Promise<Activity>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/activities.ts",
+      "name": "completeActivity",
+      "params": "activityId: string",
+      "returnType": "Promise<Activity>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/activityHistory.ts",
+      "name": "getActivityLog",
+      "params": "query?: string",
+      "returnType": "Promise<ActivityLogEntry[]>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/allowances.ts",
+      "name": "getAllowanceById",
+      "params": "id: string",
+      "returnType": "Promise<AllowanceRequest | null>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/allowances.ts",
+      "name": "computeProjectBudgetMetrics",
+      "params": "projectId: string",
+      "returnType": "",
+      "isAsync": false
+    },
+    {
+      "file": "client/src/api/allowances.ts",
+      "name": "approveAllowance",
+      "params": "id: string",
+      "returnType": "Promise<AllowanceRequest>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/allowances.ts",
+      "name": "rejectAllowance",
+      "params": "id: string, reason: string",
+      "returnType": "Promise<AllowanceRequest>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/allowances.ts",
+      "name": "retryDisbursement",
+      "params": "id: string",
+      "returnType": "Promise<AllowanceRequest>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/announcements.ts",
+      "name": "getAnnouncements",
+      "params": "audience?: string",
+      "returnType": "Promise<Announcement[]>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/applications.ts",
+      "name": "getMyApplication",
+      "params": "userId: string",
+      "returnType": "Promise<Application | null>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/applications.ts",
+      "name": "getApplicationById",
+      "params": "appId: string",
+      "returnType": "Promise<Application | null>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/applications.ts",
+      "name": "withdrawApplication",
+      "params": "appId: string",
+      "returnType": "Promise<Application>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/assignments.ts",
+      "name": "getSupervisedVolunteers",
+      "params": "supervisorId: string",
+      "returnType": "Promise<SupervisedVolunteerSummary[]>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/auth.ts",
+      "name": "signIn",
+      "params": "identifier: string, password: string",
+      "returnType": "Promise<User>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/auth.ts",
+      "name": "updateProfilePhoto",
+      "params": "userId: string, avatarUrl?: string",
+      "returnType": "Promise<User>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/auth.ts",
+      "name": "verifyEmail",
+      "params": "email: string, code: string",
+      "returnType": "Promise<User>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/auth.ts",
+      "name": "resendVerificationCode",
+      "params": "email: string",
+      "returnType": "Promise<string>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/auth.ts",
+      "name": "forgotPassword",
+      "params": "email: string",
+      "returnType": "Promise<void>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/auth.ts",
+      "name": "resetPassword",
+      "params": "email: string, newPassword: string",
+      "returnType": "Promise<void>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/auth.ts",
+      "name": "getCurrentUserSync",
+      "params": "",
+      "returnType": "User | null",
+      "isAsync": false
+    },
+    {
+      "file": "client/src/api/auth.ts",
+      "name": "getCurrentUser",
+      "params": "",
+      "returnType": "Promise<User | null>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/auth.ts",
+      "name": "signOut",
+      "params": "",
+      "returnType": "Promise<void>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/auth.ts",
+      "name": "getSignInLogs",
+      "params": "userId?: string",
+      "returnType": "Promise<SignInLogEntry[]>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/auth.ts",
+      "name": "recordSignInLog",
+      "params": "entry: Omit<SignInLogEntry, 'id' | 'timestamp'>",
+      "returnType": "Promise<SignInLogEntry>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/certificates.ts",
+      "name": "getCertificatesForUser",
+      "params": "userId: string",
+      "returnType": "Promise<Certificate[]>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/demoEmails.ts",
+      "name": "getAllDemoEmails",
+      "params": "",
+      "returnType": "Promise<DemoEmail[]>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/demoEmails.ts",
+      "name": "getDemoEmailById",
+      "params": "id: string",
+      "returnType": "Promise<DemoEmail | null>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/demoEmails.ts",
+      "name": "markDemoEmailRead",
+      "params": "id: string",
+      "returnType": "Promise<void>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/documents.ts",
+      "name": "getRequiredDocuments",
+      "params": "",
+      "returnType": "Promise<RequiredDocumentConfig[]>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/documents.ts",
+      "name": "getApplicationDocuments",
+      "params": "applicationId: string",
+      "returnType": "Promise<ApplicationDocument[]>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/documents.ts",
+      "name": "canViewEvidence",
+      "params": "user: User | null, item: { branchId?: string; areaId?: string }",
+      "returnType": "boolean",
+      "isAsync": false
+    },
+    {
+      "file": "client/src/api/enrollments.ts",
+      "name": "getEnrollmentsForActivity",
+      "params": "activityId: string",
+      "returnType": "Promise<Enrollment[]>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/enrollments.ts",
+      "name": "getEnrollmentsForUser",
+      "params": "userId: string",
+      "returnType": "Promise<Enrollment[]>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/enrollments.ts",
+      "name": "joinActivity",
+      "params": "userId: string, activityId: string",
+      "returnType": "Promise<Enrollment>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/enrollments.ts",
+      "name": "leaveActivity",
+      "params": "userId: string, activityId: string",
+      "returnType": "Promise<void>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/hours.ts",
+      "name": "getHoursForUser",
+      "params": "userId: string",
+      "returnType": "Promise<HoursEntry[]>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/hours.ts",
+      "name": "getPendingHours",
+      "params": "leadId?: string",
+      "returnType": "Promise<HoursEntry[]>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/hours.ts",
+      "name": "checkOut",
+      "params": "hoursId: string",
+      "returnType": "Promise<HoursEntry>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/notifications.ts",
+      "name": "getNotificationsForUser",
+      "params": "userId: string",
+      "returnType": "Promise<Notification[]>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/notifications.ts",
+      "name": "markNotificationAsRead",
+      "params": "notificationId: string",
+      "returnType": "Promise<void>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/notifications.ts",
+      "name": "markAllNotificationsAsRead",
+      "params": "userId: string",
+      "returnType": "Promise<void>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/organisation.ts",
+      "name": "getOrgUnits",
+      "params": "",
+      "returnType": "Promise<OrgUnit[]>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/organisation.ts",
+      "name": "createOrgUnit",
+      "params": "data: Omit<OrgUnit, 'id' | 'createdAt'>",
+      "returnType": "Promise<OrgUnit>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/organisation.ts",
+      "name": "updateOrgUnit",
+      "params": "id: string, patch: Partial<OrgUnit>",
+      "returnType": "Promise<OrgUnit>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/organisation.ts",
+      "name": "moveOrgUnit",
+      "params": "id: string, newParentId: string | null",
+      "returnType": "Promise<OrgUnit>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/organisation.ts",
+      "name": "archiveOrgUnit",
+      "params": "id: string",
+      "returnType": "Promise<OrgUnit>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/payments.ts",
+      "name": "getPaymentForApplication",
+      "params": "applicationId: string",
+      "returnType": "Promise<Payment | null>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/payments.ts",
+      "name": "getPaymentById",
+      "params": "paymentId: string",
+      "returnType": "Promise<Payment | null>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/payments.ts",
+      "name": "getNeedsReviewPayments",
+      "params": "",
+      "returnType": "Promise<Payment[]>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/projects.ts",
+      "name": "getProjectById",
+      "params": "id: string",
+      "returnType": "Promise<ProjectDetailView | null>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/projects.ts",
+      "name": "updateProject",
+      "params": "id: string, updates: Partial<Project>",
+      "returnType": "Promise<Project>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/promotions.ts",
+      "name": "getRankProgress",
+      "params": "userId: string",
+      "returnType": "Promise<RankProgressData>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/promotions.ts",
+      "name": "getEligiblePromotions",
+      "params": "",
+      "returnType": "Promise<Promotion[]>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/ratings.ts",
+      "name": "getRatingsForVolunteer",
+      "params": "userId: string",
+      "returnType": "Promise<Rating[]>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/reports.ts",
+      "name": "getManagerOverviewStats",
+      "params": "",
+      "returnType": "Promise<",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/reports.ts",
+      "name": "getFinanceOverviewStats",
+      "params": "",
+      "returnType": "Promise<",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/rolePermissions.ts",
+      "name": "getRolePermissions",
+      "params": "",
+      "returnType": "Promise<RolePermissionConfig[]>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/rolePermissions.ts",
+      "name": "resetRolePermissions",
+      "params": "",
+      "returnType": "Promise<RolePermissionConfig[]>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/settings.ts",
+      "name": "getSettings",
+      "params": "",
+      "returnType": "Promise<Setting[]>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/settings.ts",
+      "name": "getRankRules",
+      "params": "",
+      "returnType": "Promise<RankRule[]>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/settings.ts",
+      "name": "getEmailTemplates",
+      "params": "",
+      "returnType": "Promise<EmailTemplate[]>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/settings.ts",
+      "name": "getVolunteerFeedback",
+      "params": "",
+      "returnType": "Promise<VolunteerFeedback[]>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/sms.ts",
+      "name": "getSmsMessages",
+      "params": "",
+      "returnType": "Promise<DemoSmsMessage[]>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/sms.ts",
+      "name": "markSmsRead",
+      "params": "id: string",
+      "returnType": "Promise<void>",
+      "isAsync": true
+    },
+    {
+      "file": "client/src/api/volunteers.ts",
+      "name": "getProfile",
+      "params": "userId: string",
+      "returnType": "Promise<VolunteerProfile | null>",
+      "isAsync": true
+    }
+  ],
+  "requirements": [
+    {
+      "id": "FR-REG-01",
+      "text": "Self-registration form with Ethiopian mobile number normalization (`+2519...`)."
+    },
+    {
+      "id": "FR-REG-02",
+      "text": "Email confirmation using simulated 6-digit confirmation codes expiring in 15 minutes."
+    },
+    {
+      "id": "FR-REG-03",
+      "text": "Real-time password complexity checklist."
+    },
+    {
+      "id": "FR-REG-04",
+      "text": "Duplicate prevention on username and email addresses."
+    },
+    {
+      "id": "FR-APP-01",
+      "text": "Multi-step application wizard with draft saving."
+    },
+    {
+      "id": "FR-APP-02",
+      "text": "Capture of regional area, motivation, skills catalog, and emergency contacts."
+    },
+    {
+      "id": "FR-APP-03",
+      "text": "Manager application review queue with dossier drawers and private review notes."
+    },
+    {
+      "id": "FR-APP-04",
+      "text": "Automated acceptance letters and configurable payment window countdowns."
+    },
+    {
+      "id": "FR-PAY-01",
+      "text": "Telebirr push payment simulation terminal for accepted applicants."
+    },
+    {
+      "id": "FR-PAY-02",
+      "text": "Simulation modes for payment success, gateway delay, and user cancellation."
+    },
+    {
+      "id": "FR-PAY-03",
+      "text": "Finance exception review queue for resolving payment discrepancies."
+    },
+    {
+      "id": "FR-PAY-04",
+      "text": "Official manual cash/bank receipt generation with printable passes."
+    },
+    {
+      "id": "FR-ONB-01",
+      "text": "Instant transition to active Volunteer status upon payment confirmation."
+    },
+    {
+      "id": "FR-ONB-02",
+      "text": "Official printable Volunteer ID pass with QR verification code."
+    },
+    {
+      "id": "FR-ONB-03",
+      "text": "Welcome announcement and induction packet delivery."
+    },
+    {
+      "id": "FR-ACT-01",
+      "text": "Public and authenticated activity browsing with type, area, and skill filters."
+    },
+    {
+      "id": "FR-ACT-02",
+      "text": "Team Lead activity creation with capacity limits and project linkages."
+    },
+    {
+      "id": "FR-ACT-03",
+      "text": "Volunteer enrollment and automated waitlist promotion."
+    },
+    {
+      "id": "FR-ACT-04",
+      "text": "Live activity rosters with 4-digit check-in short code display."
+    },
+    {
+      "id": "FR-HRS-01",
+      "text": "On-site check-in via 4-digit short codes."
+    },
+    {
+      "id": "FR-HRS-02",
+      "text": "Automatic duty duration calculation capped at scheduled end time plus 1 hour."
+    },
+    {
+      "id": "FR-HRS-03",
+      "text": "Manual hours logging with mandatory explanation notes and photo evidence."
+    },
+    {
+      "id": "FR-HRS-04",
+      "text": "Team Lead hours approval and photo evidence inspection scoped to branch."
+    },
+    {
+      "id": "FR-HRS-05",
+      "text": "Single and bulk hours approval workflows with mandatory decline reasons."
+    },
+    {
+      "id": "FR-TRN-01",
+      "text": "Training courses modeled as activities that mark completion upon attendance approval."
+    },
+    {
+      "id": "FR-TRN-02",
+      "text": "Verified course completions count directly toward rank promotion eligibility."
+    },
+    {
+      "id": "FR-CRT-01",
+      "text": "Certificates generated for induction, rank milestones, and completed training courses."
+    },
+    {
+      "id": "FR-CRT-02",
+      "text": "Public verification code check page (`/check-certificate`) requiring no sign-in."
+    },
+    {
+      "id": "FR-CRT-03",
+      "text": "Printable digital certificate passes."
+    },
+    {
+      "id": "FR-RAT-01",
+      "text": "Numerical 1 to 5 performance ratings submitted by Team Leads following activities."
+    },
+    {
+      "id": "FR-RAT-02",
+      "text": "Volunteer feedback submission channel to program management."
+    },
+    {
+      "id": "FR-RAT-03",
+      "text": "Average rating calculation displayed on profile and evaluated in promotions."
+    },
+    {
+      "id": "FR-PRM-01",
+      "text": "Real-time visual progress tracker toward next rank milestones."
+    },
+    {
+      "id": "FR-PRM-02",
+      "text": "Candidate eligibility roster with immutable evidence summaries."
+    },
+    {
+      "id": "FR-PRM-03",
+      "text": "Promotional board decisions requiring written rationale."
+    },
+    {
+      "id": "FR-PRM-04",
+      "text": "Dynamic role updating, rank history recording, and certificate issuance upon approval."
+    },
+    {
+      "id": "FR-NTF-01",
+      "text": "Targeted announcements filtered by audience (all, rank, area, or activity roster)."
+    },
+    {
+      "id": "FR-NTF-02",
+      "text": "Real-time in-app notification bell with unread badge count."
+    },
+    {
+      "id": "FR-NTF-03",
+      "text": "Transactional email previews for verification, decisions, and schedule changes."
+    },
+    {
+      "id": "FR-NTF-04",
+      "text": "Multi-channel notification preferences (In-app, Brevo email, SMS shortcode 8080)."
+    },
+    {
+      "id": "FR-RPT-01",
+      "text": "Manager operational dashboard metrics (applications, hours, active projects)."
+    },
+    {
+      "id": "FR-RPT-02",
+      "text": "Demographic distribution, cumulative hours, and recruitment funnel reports."
+    },
+    {
+      "id": "FR-RPT-03",
+      "text": "Finance revenue ledgers, stipend expenditures, and exception logs."
+    },
+    {
+      "id": "FR-RPT-04",
+      "text": "Client-side simulated export to Excel (`.xlsx`) and formal PDF documents."
+    },
+    {
+      "id": "FR-ADM-01",
+      "text": "System settings editor (registration fee, payment deadline, rank thresholds)."
+    },
+    {
+      "id": "FR-ADM-02",
+      "text": "Staff account provisioning and status management."
+    },
+    {
+      "id": "FR-ADM-03",
+      "text": "Searchable system activity history and security audit log."
+    },
+    {
+      "id": "FR-ADM-04",
+      "text": "Transactional email template editor with dynamic previewing."
+    },
+    {
+      "id": "FR-ORG-01",
+      "text": "Four-tier hierarchy: Head Office, Area, Branch, Location."
+    },
+    {
+      "id": "FR-ORG-02",
+      "text": "Hierarchical scoping engine (`all`, `area`, `branch`, `own`) filtering all records."
+    },
+    {
+      "id": "FR-ORG-03",
+      "text": "Branch assignments on all volunteer and staff accounts."
+    },
+    {
+      "id": "FR-ORG-04",
+      "text": "Interactive organization tree management with add, edit, move, and archive actions."
+    },
+    {
+      "id": "FR-AST-01",
+      "text": "Four-step manager assisted registration wizard for field and walk-in applicants."
+    },
+    {
+      "id": "FR-AST-02",
+      "text": "Immediate Kebele ID capture and manual fee recording or hardship waiver."
+    },
+    {
+      "id": "FR-AST-03",
+      "text": "Instant volunteer activation bypassing online application delays."
+    },
+    {
+      "id": "FR-SEC-01",
+      "text": "16-module role permission matrix with granular action toggles."
+    },
+    {
+      "id": "FR-SEC-02",
+      "text": "Automatic account lockout after 5 consecutive failed sign-in attempts within 15 minutes."
+    },
+    {
+      "id": "FR-SEC-03",
+      "text": "Sign-in audit log recording timestamp, IP address, user agent, and failure reasons."
+    },
+    {
+      "id": "FR-PRJ-01",
+      "text": "Branch community projects with ETB budgets and daily stipend allowance rates."
+    },
+    {
+      "id": "FR-PRJ-02",
+      "text": "Activities link directly to parent projects; Team Leads select branch projects."
+    },
+    {
+      "id": "FR-PRJ-03",
+      "text": "Project overview displays remaining budget as a prominent lead numeral with spent and reserved funds inline."
+    },
+    {
+      "id": "FR-PRJ-04",
+      "text": "Project detail displays assigned volunteers and activities as physical ticket passes."
+    },
+    {
+      "id": "FR-ASN-01",
+      "text": "Managers assign volunteers to projects or activities, designating a supervising Team Lead."
+    },
+    {
+      "id": "FR-ASN-02",
+      "text": "Assignment lifecycle: `assigned`, `accepted`, `declined`, `completed`."
+    },
+    {
+      "id": "FR-ASN-03",
+      "text": "Volunteers view deployments in \"My roster\" marked \"Assigned by [Manager]\" with Accept and Decline actions."
+    },
+    {
+      "id": "FR-ASN-04",
+      "text": "Team Leads have a \"My volunteers\" directory showing supervised individuals and approved hours."
+    },
+    {
+      "id": "FR-DOC-01",
+      "text": "Super Admin catalog of required verification documents (National ID, Photo, Recommendation, Clearance)."
+    },
+    {
+      "id": "FR-DOC-02",
+      "text": "Applicants upload verification files with name, file size, and preview."
+    },
+    {
+      "id": "FR-DOC-03",
+      "text": "Managers review uploads with Accept or Return for correction with mandatory note; applicants see correction alerts."
+    },
+    {
+      "id": "FR-DOC-04",
+      "text": "Volunteers attach photo evidence to manual hours and field submissions (\"Submit a completed activity\"); Team Leads inspect evidence scoped to their branch."
+    },
+    {
+      "id": "FR-ALW-01",
+      "text": "Allowance lifecycle: `draft`, `submitted`, `verified`, `approved`, `paid`, `rejected`, `failed`."
+    },
+    {
+      "id": "FR-ALW-02",
+      "text": "Manager prepares allowance request within the project's remaining available budget."
+    },
+    {
+      "id": "FR-ALW-03",
+      "text": "Supervising Team Lead verifies physical field attendance."
+    },
+    {
+      "id": "FR-ALW-04",
+      "text": "Super Admin (Budget Authority) approves request, reserving project budget funds."
+    },
+    {
+      "id": "FR-ALW-05",
+      "text": "Strict separation of duties: nobody can approve an allowance they prepared, and volunteers cannot approve their own requests."
+    },
+    {
+      "id": "FR-ALW-06",
+      "text": "Finance Officers disburse funds via simulated Telebirr B2C mobile wallet payouts with transaction reference."
+    },
+    {
+      "id": "FR-ALW-07",
+      "text": "Volunteers track stipend progress with a journey log timeline and celebration overlay upon payout."
+    }
+  ],
+  "demoAccounts": [
+    {
+      "role": "Applicant",
+      "name": "Hana Tesfaye",
+      "username": "hana.tesfaye",
+      "scope": "Addis Ababa Area",
+      "scenario": "Accepted candidate ready to settle Telebirr fee"
+    },
+    {
+      "role": "Volunteer",
+      "name": "Dawit Bekele",
+      "username": "dawit.bekele",
+      "scope": "Kirkos Branch, Addis Ababa",
+      "scenario": "Active volunteer logging hours and tracking project stipends"
+    },
+    {
+      "role": "Senior Volunteer",
+      "name": "Selam Alemu",
+      "username": "selam.alemu",
+      "scope": "Bole Branch, Addis Ababa",
+      "scenario": "Meets leadership thresholds; eligible for Team Lead promotion"
+    },
+    {
+      "role": "Team Lead",
+      "name": "Yonas Kebede",
+      "username": "yonas.kebede",
+      "scope": "Kirkos Branch, Addis Ababa",
+      "scenario": "Dispatches activities, generates short codes, audits hours"
+    },
+    {
+      "role": "Team Lead",
+      "name": "Henok Assefa",
+      "username": "henok.assefa",
+      "scope": "Adama Central Branch",
+      "scenario": "Supervises Adama projects; verifies attendance for allowances"
+    },
+    {
+      "role": "Manager",
+      "name": "Marta Girma",
+      "username": "marta.girma",
+      "scope": "Addis Ababa Area",
+      "scenario": "Reviews applications, charters projects, prepares allowances"
+    },
+    {
+      "role": "Manager",
+      "name": "Tigist Wolde",
+      "username": "tigist.wolde",
+      "scope": "Adama Area",
+      "scenario": "Exercises regional scoping; registers walk-ins via assisted intake"
+    },
+    {
+      "role": "Finance Officer",
+      "name": "Abel Hailu",
+      "username": "abel.hailu",
+      "scope": "Head Office (All Scope)",
+      "scenario": "Reconciles Telebirr fees; disburses mobile wallet allowances"
+    },
+    {
+      "role": "Super Admin",
+      "name": "Ruth Mengistu",
+      "username": "ruth.mengistu",
+      "scope": "Head Office (All Scope)",
+      "scenario": "Manages organization tree, approves allowance budgets, sets permissions"
+    }
+  ],
+  "demoScriptSteps": [
+    {
+      "step": 1,
+      "title": "Assisted Intake",
+      "role": "tigist.wolde",
+      "route": "/manager/register-volunteer",
+      "action": "Register walk-in volunteer in 4 steps with Kebele ID and cash receipt."
+    },
+    {
+      "step": 2,
+      "title": "Document Correction Notice",
+      "role": "marta.girma",
+      "route": "/manager/applications",
+      "action": "Return blurry Kebele ID upload for correction with required explanatory note."
+    },
+    {
+      "step": 3,
+      "title": "Document Replacement & Payment",
+      "role": "hana.tesfaye",
+      "route": "/applicant/status & /applicant/payment",
+      "action": "Upload replacement file and settle ETB 200 fee via Telebirr push to activate volunteer status."
+    },
+    {
+      "step": 4,
+      "title": "Project Charter & Budgets",
+      "role": "marta.girma",
+      "route": "/manager/projects & detail",
+      "action": "Observe remaining budget figure; inspect assigned volunteers and ticket cards."
+    },
+    {
+      "step": 5,
+      "title": "Allowance Preparation",
+      "role": "marta.girma",
+      "route": "/manager/allowances",
+      "action": "Prepare 3-day stipend for Dawit Bekele under Kirkos project within budget limit."
+    },
+    {
+      "step": 6,
+      "title": "Supervisor Verification",
+      "role": "yonas.kebede",
+      "route": "/team-lead/allowances",
+      "action": "Verify field service attendance with physical confirmation note."
+    },
+    {
+      "step": 7,
+      "title": "Budget Authority Approval",
+      "role": "ruth.mengistu",
+      "route": "/admin/allowances",
+      "action": "Approve reserved budget funds (confirming self-approval ban blocks preparer)."
+    },
+    {
+      "step": 8,
+      "title": "Telebirr Disbursement",
+      "role": "abel.hailu",
+      "route": "/finance/allowances",
+      "action": "Execute mobile wallet payout; observe official transaction reference generation."
+    },
+    {
+      "step": 9,
+      "title": "Volunteer Celebration",
+      "role": "dawit.bekele",
+      "route": "/volunteer/allowances",
+      "action": "Inspect status journey timeline, Telebirr reference, and trigger celebration overlay."
+    }
+  ],
+  "seedCounts": {
+    "users": 52,
+    "profiles": 52,
+    "orgUnits": 10,
+    "applications": 18,
+    "projects": 4,
+    "activities": 25,
+    "assignments": 6,
+    "hours": 68,
+    "ratings": 42,
+    "promotions": 8,
+    "certificates": 16,
+    "announcements": 10,
+    "notifications": 32,
+    "payments": 60,
+    "allowances": 13,
+    "requiredDocumentConfigs": 4,
+    "applicationDocuments": 3,
+    "completedActivitySubmissions": 1,
+    "signInLogs": 24,
+    "smsMessages": 14
+  },
+  "signatureComponents": [
+    {
+      "name": "TopoBackdrop",
+      "purpose": "Topographic contour SVG backdrop providing geographic texture with subtle opacity"
+    },
+    {
+      "name": "TrailMeter",
+      "purpose": "Dynamic milestone curve visualizing progress toward next rank with remaining gap indicators"
+    },
+    {
+      "name": "TicketCard",
+      "purpose": "Notched ticket-stub card design for scheduled activities and deployments"
+    },
+    {
+      "name": "JourneyLog",
+      "purpose": "Step-by-step chronological audit timeline for hours, allowances, and payments"
+    },
+    {
+      "name": "MomentOverlay",
+      "purpose": "Celebratory moment modal triggering upon rank promotion and allowance payout"
+    },
+    {
+      "name": "VolunteerCard",
+      "purpose": "Official printable and verifiable ID pass with QR verification code"
+    }
+  ],
+  "designTokens": {
+    "colors": {
+      "canvas": "#FFFFFF",
+      "panelSubdued": "#F7F8FA",
+      "panelMuted": "#F1F3F6",
+      "inkPrimary": "#111315",
+      "inkSecondary": "#5A606A",
+      "inkTertiary": "#8D95A5",
+      "brandTeal": "#0E6266",
+      "brandTealLight": "#E8F8F5",
+      "roleApplicant": "#D97706",
+      "roleVolunteer": "#1E824C",
+      "roleTeamLead": "#1B4D3E",
+      "roleManager": "#0E6266",
+      "roleFinance": "#2B4C7E",
+      "roleAdmin": "#6A2E35"
+    },
+    "typography": {
+      "displayFont": "Bricolage Grotesque",
+      "bodyFont": "Hanken Grotesk",
+      "monoFont": "JetBrains Mono",
+      "case": "Sentence case strictly enforced everywhere"
+    },
+    "surfaces": {
+      "rule": "Zero borders anywhere in the UI. All separation is spatial, tonal, and soft shadow.",
+      "radiusCard": "16px",
+      "radiusInput": "12px",
+      "radiusButton": "12px",
+      "shadowSoft": "0 1px 2px rgba(16,24,40,0.05), 0 8px 24px -12px rgba(16,24,40,0.10)"
+    },
+    "interactions": {
+      "buttonRipple": "Material wave ripple on every clickable button or tile",
+      "pageTransitions": "Subtle 150ms opacity cross-fade across route changes",
+      "sidebar": "Fixed 264px desktop sidebar navigation; off-canvas slide-in mobile navigation drawer"
+    }
+  }
+}
