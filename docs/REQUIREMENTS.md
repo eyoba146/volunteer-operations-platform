@@ -1,399 +1,327 @@
 # VTS (Volunteer Tracking System): Requirements Specification
 
-Version 1.0 | Prototype phase | Status: draft for team leader review
+Version 2.0 | Prototype phase | Status: verified against production codebase
 
 ## 1. Purpose and scope
 
-VTS is a responsive web platform (desktop and mobile) that lets a company run its volunteer program from start to finish: recruit people, collect a registration fee through Telebirr, organise volunteer work, prove and approve hours, and grow volunteers through ranks based on the work they have verifiably done.
+VTS is a responsive web platform (desktop and mobile) that lets an organization run its volunteer operations from start to finish: recruit candidates online or in-person, collect registration fees through Telebirr, manage a four-tier organization hierarchy, charter community projects, deploy volunteers with designated supervisors, verify attendance with on-site short codes and photo evidence, decide merit promotions, and disburse daily field allowances under strict budget ceilings and separation of duties.
 
 ### 1.1 Goals
 
-- Replace scattered spreadsheets, chat groups and paper with one trusted record of every volunteer.
-- Make recruitment, payment and activation a clear, trackable journey.
-- Make promotion fair and visible: a volunteer can always see what they have done and what is left to reach the next rank.
-- Give managers and finance staff reports they can trust and export.
+- Replace scattered spreadsheets, chat groups, and paper sign-in sheets with a single trusted system of record.
+- Support dual onboarding paths: self-registered online applicants and staff-assisted in-person walk-in intakes.
+- Provide transparent rank progression: volunteers see exactly what thresholds remain to reach the next seniority rank.
+- Enforce strict financial controls: automated Telebirr fee collection, manual cash receipts, and four-eye allowance approvals preventing budget overdrafts.
+- Provide managers, finance officers, and governance administrators with trustworthy, filterable reports and one-click exports.
 
 ### 1.2 Out of scope for version 1
 
-Native mobile apps, in-app chat between users, multi-language support (English only for now), online card payments (Telebirr only), and integration with external HR systems.
+Native mobile apps, peer-to-peer volunteer messaging, multi-language interface localizations (English only for prototype), credit card processing (Telebirr only), and integration with external enterprise HR suites.
 
-### 1.3 Assumptions (to confirm with the team leader)
+### 1.3 Assumptions
 
 | ID | Assumption |
-| --- | --- |
-| A1 | The client is a company running a community volunteering program; the exact industry is not yet known, so the prototype uses neutral company-community content. |
-| A2 | Payment happens after acceptance: apply, get reviewed and accepted, pay the registration fee, become a Volunteer. Rejected applicants never pay. (Confirmed by the team leader.) |
-| A3 | The registration fee is one time and a single fixed amount, set by the Super Admin. The prototype uses ETB 200. |
-| A4 | Telebirr confirms payments automatically. A manual Finance review exists only as a fallback. |
-| A5 | Rank thresholds are configurable by the Super Admin; the values in section 5 are the starting defaults. |
-| A6 | Dates use the standard calendar and money uses ETB. Ethiopian calendar support is a later option. |
-| A7 | Volunteers must be 18 or older at registration. |
+| :--- | :--- |
+| A1 | The client is an Ethiopian community service organization operating across major urban centers (Addis Ababa, Adama, Hawassa, Bishoftu, Bahir Dar). |
+| A2 | Payment happens after acceptance: apply, get reviewed and accepted, pay the registration fee, become an active Volunteer. Rejected applicants never pay. |
+| A3 | The registration fee is a single fixed amount set by the Super Admin (prototype default: ETB 200). Hardship waivers are available via assisted intake. |
+| A4 | Telebirr confirms payments automatically via webhooks. A manual Finance review queue exists as an exception fallback. |
+| A5 | Rank thresholds are configurable by the Super Admin; default requirements are specified in Section 5. |
+| A6 | The system standardizes on Gregorian calendar dates and ETB currency. |
+| A7 | Self-registering volunteers must be 18 or older; younger participants join only through assisted intake with documented guardian consent. |
+
+---
 
 ## 2. Roles and permissions
 
-There are six roles. Each person signs in with their own account; there is no role switcher. A person has exactly one role at a time; the role changes when they are promoted.
+There are six distinct operational roles. Each person signs in with their own account; there is no role switching. A person holds exactly one role at a time, which elevates permanently upon promotion or administrative appointment.
 
-| Role | Who they are | Main responsibilities |
-| --- | --- | --- |
-| Applicant | A registered person who is not yet an active volunteer | Complete the application, track its status, pay the fee once accepted |
-| Volunteer | An active Volunteer or Senior Volunteer | Join activities, check in, log hours, track rank progress, get certificates and ID card |
-| Team Lead | A volunteer holding Team Lead rank | Create and run activities, approve hours, rate volunteers, recommend promotions |
-| Manager | Program manager (appointed company staff or regional director) | Review applications, register assisted volunteers, approve promotions, publish announcements, run reports |
-| Finance Officer | Company finance staff | Watch Telebirr payments, record manual receipts, handle review queue, refunds, payment reports |
-| Super Admin | System owner | Settings, fee amount, rank rules, organisation units, roles & permissions matrix, accounts, activity history |
+| Role | Operational Scope | Core Responsibilities |
+| :--- | :--- | :--- |
+| **Applicant** | Own profile | Complete application, upload identity documents, replace returned files, pay registration fee. |
+| **Volunteer** | Own records | Join activities, check in with short codes, log manual hours with evidence, track rank, request allowances. |
+| **Team Lead** | Branch | Create activities, display check-in codes, verify attendance and evidence, rate volunteers, recommend promotions. |
+| **Manager** | Area | Review applications, register assisted walk-ins, charter projects, assign volunteers, prepare allowances, decide promotions. |
+| **Finance Officer** | Head Office | Monitor Telebirr settlements, record manual branch cash receipts, resolve payment exceptions, disburse allowances. |
+| **Super Admin** | Nationwide (All) | Maintain organization tree, edit dynamic permissions matrix, approve allowance budgets, manage rank rules and staff. |
 
-### 2.1 Permission summary
+### 2.1 Permission Summary Matrix
 
 | Capability | Applicant | Volunteer | Team Lead | Manager | Finance | Super Admin |
-| --- | :-: | :-: | :-: | :-: | :-: | :-: |
-| Edit own profile | Yes | Yes | Yes | Yes | Yes | Yes |
-| Submit and track application | Yes |  |  |  |  |  |
-| Pay registration fee | Yes (after acceptance) |  |  |  |  |  |
-| Browse and join activities |  | Yes | Yes | Yes |  |  |
-| Create and run activities |  |  | Yes | Yes |  |  |
-| Approve hours |  |  | Yes (own activities) | Yes (all) |  |  |
-| Rate volunteers |  |  | Yes | Yes |  |  |
-| Review applications |  |  |  | Yes |  |  |
-| Approve promotions |  |  | Recommend, and approve Member to Senior | Yes (up to Team Lead) |  | Yes (Manager rank) |
-| View payments | Own |  |  | Summary only | Yes | Yes |
-| Resolve payments needing review, refunds |  |  |  |  | Yes |  |
-| Publish announcements |  |  | Own team | Yes |  | Yes |
-| Reports and exports |  | Own records | Own activities | Yes | Payments | Yes |
-| Settings, rank rules, accounts |  |  |  |  |  | Yes |
-
-## 3. The volunteer journey
-
-1. **Register.** Email, username and password. A 6-digit code is sent by email (Brevo) to verify the address.
-2. **Apply.** The Applicant completes a profile (name, phone, age, area, skills, availability, motivation, optional ID photo) and submits.
-3. **Review.** A Manager reviews. Outcomes: accepted, more information needed, or rejected with a reason. The Applicant is notified by email and in the app.
-4. **Pay.** After acceptance the Applicant has 7 days (configurable) to pay the registration fee through Telebirr. The payment is confirmed automatically.
-5. **Activate.** On confirmed payment the account becomes a Member: a welcome moment, receipt by email, volunteer ID card, and access to activities.
-6. **Work.** The Member joins activities, checks in, logs hours. The Team Lead approves hours and rates the work.
-7. **Grow.** Verified work earns progress toward the next rank. When thresholds are met, the volunteer becomes eligible. A person approves the promotion; the volunteer is notified, gets a new badge and certificate, and unlocks the new responsibilities.
-
-### 3.1 Status values
-
-- **Account:** email not verified, active, suspended.
-- **Application:** draft, submitted, in review, more information needed, accepted (waiting for payment), rejected, expired (not paid in time), withdrawn.
-- **Payment:** not started, waiting for Telebirr, confirmed, failed, needs review, refunded.
-- **Hours:** logged, approved, declined (with a reason).
-- **Promotion:** not yet eligible, eligible, recommended, approved, declined.
-- **Activity:** draft, open for sign-up, full, in progress, completed, cancelled.
-
-## 4. Payment through Telebirr
-
-### 4.1 Flow
-
-1. Accepted Applicant opens the payment page and sees the fee, what it covers, and a Pay with Telebirr button.
-2. The system creates a payment request for the exact amount and sends the person to Telebirr to approve it on their phone.
-3. Telebirr tells the system the result automatically. The system marks the payment confirmed and activates the account in the same moment.
-4. A receipt (reference number, amount, date) is shown in the app and emailed.
-
-### 4.2 Edge cases the product must handle
-
-- **No confirmation yet:** show "We are checking your payment. This usually takes less than a minute." Keep checking; after 10 minutes move to needs review and tell the person it is being looked at.
-- **Payment failed or cancelled:** explain in plain words and offer Try again.
-- **Paid twice:** the second payment is flagged for Finance to refund.
-- **Acceptance expired:** the Manager can reopen it with one action.
-- **Paid but account not activated:** impossible by design; Finance can force-match a payment to an applicant by Telebirr reference.
-- **Refunds:** Finance only, with a reason, recorded in the activity history.
-
-### 4.3 Finance screens
-
-All payments with filters, payments needing review, a payment detail view with timeline, receipts, refunds, daily and monthly totals, and export.
-
-## 5. Ranks and promotion
-
-### 5.1 Rank ladder
-
-| Rank | Role unlocked | What it unlocks |
-| --- | --- | --- |
-| Member | Volunteer | Join activities, certificate of membership, ID card |
-| Senior Member | Volunteer | Priority sign-up, mentor new members, Senior badge and certificate |
-| Team Lead | Team Lead | Create and run activities, approve hours, rate volunteers, recommend promotions |
-| Manager | Manager | Review applications, manage volunteers, approve promotions, reports |
-
-### 5.2 Default thresholds (editable by Super Admin)
-
-| To reach | Approved hours | Completed activities | Average rating | Time as volunteer | Training |
-| --- | --- | --- | --- | --- | --- |
-| Senior Member | 60 | 8 | 4.0 | 3 months | 1 course |
-| Team Lead | 150 | 20 | 4.2 | 6 months | Leadership course |
-| Manager | 300 | 30, with 5 led | 4.4 | 12 months | Leadership course |
-
-### 5.3 Rules
-
-- Only approved hours and completed activities count.
-- When every threshold is met the system marks the volunteer eligible and notifies the approver. Nobody is promoted automatically.
-- Approvers: Team Lead for Member to Senior Member; Manager for Senior Member to Team Lead; Super Admin for Manager.
-- Team Leads can recommend someone early with a written reason; the approver decides.
-- Every volunteer sees a progress view: each threshold as a clear bar, what is done, what is left, and an estimate of what to do next.
-- Declined promotions must show a reason the volunteer can read.
-- Rank history is kept permanently on the profile.
-
-## 6. Functional requirements
-
-### 6.1 Accounts and access
-
-- FR-AUTH-01 Register with first name, last name, username, email, phone number and password (rules shown while typing, live validation as user types, Ethiopian phone normalized to +251, duplicate checks).
-- FR-AUTH-02 Verify email with a 6-digit code; resend after 60 seconds; code expires in 15 minutes.
-- FR-AUTH-03 Sign in with email or username plus password.
-- FR-AUTH-04 Forgot password by email link; reset page; confirmation email afterwards.
-- FR-AUTH-05 Signed-in users only see pages for their role; others show a friendly not-allowed page.
-- FR-AUTH-06 Sign out, and automatic sign-out after inactivity with a plain message.
-- FR-AUTH-07 Change password and email from account settings.
-- FR-AUTH-08 Lock sign-in for 15 minutes after 5 failed attempts, with a plain explanation.
-
-### 6.2 Application and recruitment
-
-- FR-APP-01 Multi-step application with saved progress.
-- FR-APP-02 Upload optional profile photo and ID photo.
-- FR-APP-03 Applicant sees a status timeline with what happens next.
-- FR-APP-04 Manager sees an application queue with search, filters (status, area, skills, date) and sorting.
-- FR-APP-05 Manager opens an application, reads it, adds private notes, and chooses accept, ask for more information, or reject (reason required).
-- FR-APP-06 Bulk accept and bulk reject with a confirmation step.
-- FR-APP-07 Accepted Applicants receive the payment invitation and a countdown.
-- FR-APP-08 Applicants can withdraw before payment.
-
-### 6.3 Volunteer profile
-
-- FR-PRO-01 Profile with photo, bio, area, skills, availability, languages, and emergency contact.
-- FR-PRO-02 Rank badge, member since, totals (hours, activities, rating).
-- FR-PRO-03 Rank history and certificates.
-- FR-PRO-04 Volunteer ID card with name, photo, rank, ID number and a QR code; downloadable and printable.
-- FR-PRO-05 Change, crop, preview (zoom control) and remove profile picture from account settings.
-
-### 6.4 Activities
-
-- FR-ACT-01 Activity types: event, project, shift, field task, training session.
-- FR-ACT-02 Fields: title, type, description, date and time, duration, location (area and place), spots, minimum rank, skills needed, team lead, cover image.
-- FR-ACT-03 Volunteers browse a list and a calendar, filter by type, area, date, skills and rank.
-- FR-ACT-04 Join and leave an activity (leaving close to the start is flagged to the lead).
-- FR-ACT-05 Waiting list when full; automatic offer when a spot opens.
-- FR-ACT-06 Team Lead manages the roster, sends a message to participants, and marks the activity complete.
-- FR-ACT-07 Cancel or reschedule with automatic notification.
-
-### 6.5 Check-in and hours
-
-- FR-HRS-01 Check-in by scanning the activity QR or entering the short code shown by the Team Lead.
-- FR-HRS-02 Check-out records hours automatically.
-- FR-HRS-03 Volunteers can add missed hours manually with a note; these always need approval.
-- FR-HRS-04 Team Lead approves or declines hours individually or in bulk; declines need a reason.
-- FR-HRS-05 Volunteers see an hours history with the status of each entry.
-- FR-HRS-06 Hours cannot overlap and cannot be added for future dates.
-
-### 6.6 Ratings and feedback
-
-- FR-RAT-01 After completion the Team Lead rates each participant from 1 to 5 with an optional note.
-- FR-RAT-02 Volunteers can send feedback about an activity to the Manager.
-- FR-RAT-03 Average rating appears on the profile and in rank progress.
-
-### 6.7 Training
-
-- FR-TRN-01 Training sessions are a type of activity; attending and being approved marks the course complete.
-- FR-TRN-02 Completed courses appear on the profile and count toward rank thresholds.
-
-### 6.8 Promotions
-
-- FR-PRM-01 Progress view for every volunteer (section 5.3).
-- FR-PRM-02 Eligible list for approvers with the evidence summarised.
-- FR-PRM-03 Approve or decline with a note; the volunteer is notified.
-- FR-PRM-04 On approval, the role changes at next sign-in, a new certificate is created, and the rank history is updated.
-
-### 6.9 Certificates and ID cards
-
-- FR-CRT-01 Certificates for: membership, each rank reached, and completed training.
-- FR-CRT-02 Each certificate has a verification code and a public check page.
-- FR-CRT-03 Download as PDF.
-
-### 6.10 Announcements and notifications
-
-- FR-NTF-01 Announcements to everyone, a rank, an area, or an activity roster.
-- FR-NTF-02 In-app notification list with unread count.
-- FR-NTF-03 Email through Brevo for: verification code, password reset, application result, payment invitation, payment receipt, welcome, activity reminders, hours decision, promotion result.
-- FR-NTF-04 Volunteers choose which emails they receive (except account security emails).
-
-### 6.11 Reports and exports
-
-- FR-RPT-01 Manager dashboard: applications waiting, new volunteers, hours this month, upcoming activities, promotions waiting.
-- FR-RPT-02 Reports: volunteers by rank and area, hours by period, activity attendance, application funnel, top volunteers.
-- FR-RPT-03 Finance reports: payments by day and month, outstanding acceptances, refunds.
-- FR-RPT-04 Export to Excel and PDF with the filters applied.
-
-### 6.12 Administration
-
-- FR-ADM-01 Manage settings: program name, registration fee, payment deadline, rank thresholds, areas, skills list, certificate text.
-- FR-ADM-02 Create, suspend and reinstate accounts; assign roles to company staff.
-- FR-ADM-03 Activity history: who did what and when, searchable, for accountability.
-- FR-ADM-04 Email template preview and editing.
-
-### 6.13 Projects
-
-- FR-PRJ-01 Projects belong to a branch and define budget in ETB, daily allowance stipend in ETB, start/end dates, status, and project manager.
-- FR-PRJ-02 Activities can belong to a project; Team Leads can select branch projects when scheduling activities.
-- FR-PRJ-03 Manager project overview displays budget as one large numeral for remaining funds, with spent and reserved funds shown as an inline sentence.
-- FR-PRJ-04 Manager project detail displays assigned volunteers and linked activities formatted as ticket passes.
-
-### 6.14 Assignments and Supervisors
-
-- FR-ASN-01 Managers can assign volunteers to a project or activity, designating a supervising Team Lead and service dates.
-- FR-ASN-02 Assignment statuses: assigned, accepted, declined, completed.
-- FR-ASN-03 Volunteers see staff assignments in "My roster" marked "Assigned by [Manager]" with Accept and Decline (with required explanation) actions.
-- FR-ASN-04 Team Leads have a "My volunteers" directory showing supervised individuals, active deployments, and approved hours.
-
-### 6.15 Documents and Evidence
-
-- FR-DOC-01 Super Admin configures required applicant verification documents (National ID, Photo, Recommendation, Clearance).
-- FR-DOC-02 Applicants upload required files with name, size, and preview.
-- FR-DOC-03 Managers review uploaded documents with Accept or Return for correction (with mandatory explanation note); applicants see correction alerts.
-- FR-DOC-04 Volunteers attach photo evidence to manual hours and field submissions ("Submit a completed activity"); Team Leads inspect evidence scoped to their branch.
-
-### 6.16 Allowances (Money Out)
-
-- FR-ALW-01 Lifecycle statuses: draft, submitted, verified, approved, paid, rejected, failed.
-- FR-ALW-02 Manager prepares allowance request (days * allowancePerDay linked to approved service) within remaining project budget.
-- FR-ALW-03 Supervising Team Lead verifies attendance.
-- FR-ALW-04 Super Admin (Budget Authority) approves the allowance budget; approved amounts are reserved and paid amounts spent.
-- FR-ALW-05 Strict separation of duties: nobody can approve an allowance they prepared, and volunteers cannot approve their own allowance.
-- FR-ALW-06 Finance checks budget and disburses stipends via simulated Telebirr disbursement with transaction reference; failed payments can be retried.
-- FR-ALW-07 Volunteers track allowance progress in "My allowances" with status journey log and Telebirr transaction reference.
-
-## 7. Screens by role
-
-**Public:** home page explaining the program and how to join, sign in, register, verify email, forgot password, reset password, certificate check.
-
-**Applicant:** application form (steps), application status, payment, receipt, account settings, notifications.
-
-**Volunteer:** home (next activity, rank progress, announcements), browse activities, calendar, activity detail, my activities, check-in, hours history and add hours, rank progress, certificates, ID card, profile, notification settings.
-
-**Team Lead:** home (today, hours waiting, rosters), create and edit activity, my activities, roster and check-in code, hours approval, rate participants, recommend promotion, announcements to my team, plus all Volunteer screens.
-
-**Manager:** dashboard, application queue and detail, volunteer directory and detail, all activities, promotions, announcements, reports, feedback inbox.
-
-**Finance Officer:** payments overview, payment list and detail, needs-review list, refunds, receipts, reports.
-
-**Super Admin:** system overview, settings, rank rules, accounts and roles, email templates, activity history.
-
-## 8. Data model (shaped like the future database)
-
-| Entity | Key fields |
-| --- | --- |
-| User | id, username, email, firstName, lastName, phone, avatarUrl, passwordHash, role, accountStatus, emailVerifiedAt, createdAt, lastSignInAt |
-| VolunteerProfile | userId, firstName, lastName, fullName, phone, avatarUrl, dateOfBirth, area, bio, skills[], availability[], languages[], emergencyContact, photoUrl, idPhotoUrl, rank, memberSince, volunteerNumber, rankHistory[] |
-| Application | id, userId, status, submittedAt, reviewedBy, reviewedAt, decisionReason, paymentDeadline, notes\[\] |
-| Payment | id, userId, applicationId, amount, currency, telebirrReference, status, createdAt, confirmedAt, receiptNumber, refundedAt, refundReason |
-| Activity | id, title, type, description, startsAt, endsAt, area, place, capacity, minRank, skills\[\], leadId, status, checkInCode, coverUrl |
-| Enrollment | id, activityId, userId, status (joined, waiting, left, attended, no-show) |
-| HoursEntry | id, userId, activityId, checkIn, checkOut, minutes, source (checkin, manual), status, decidedBy, decisionReason |
-| Rating | id, activityId, userId, ratedBy, score, note |
-| RankRule | rank, minHours, minActivities, minRating, minMonths, requiredTraining |
-| Promotion | id, userId, fromRank, toRank, status, recommendedBy, decidedBy, decidedAt, note |
-| Certificate | id, userId, kind, title, issuedAt, verificationCode, fileUrl |
-| Announcement | id, authorId, audience, title, body, createdAt |
-| Notification | id, userId, title, body, readAt, createdAt, link |
-| ActivityLogEntry | id, actorId, action, subject, createdAt |
-| Setting | key, value |
-| Project | id, name, description, branchId, branchName, areaId, areaName, start, end, budget, allowancePerDay, spent, reserved, managerId, status, createdAt |
-| Assignment | id, projectId, projectName, activityId, activityTitle, branchId, volunteerId, supervisorId, status, assignedBy, startDate, endDate, declineReason |
-| RequiredDocumentConfig | id, name, description, required |
-| ApplicationDocument | id, applicationId, configId, name, fileName, fileSize, fileUrl, uploadedAt, status, reviewNote, reviewedBy, reviewedAt |
-| AllowanceRequest | id, allowanceNumber, projectId, projectName, branchId, activityId, volunteerId, volunteerName, volunteerPhone, days, allowancePerDay, totalAmount, status, preparedBy, supervisorId, verifiedBy, approvedBy, paidAt, paymentReference, rejectionReason, failureReason |
-| DisbursementDetails | provider, phone, fee, transactionId, timestamp, networkRef |
-
-## 9. System integration plan
-
-| Service | Use |
-| --- | --- |
-| Express and Node.js | REST API, validation, role checks, payment result handling |
-| PostgreSQL on Supabase | All entities above; indexes on email, username, status and dates |
-| Cloudinary | Profile photos, ID photos, activity covers, generated certificate PDFs |
-| Brevo | Verification codes, password resets and all emails in 6.10 |
-| Telebirr API | Payment request and automatic result notification |
-
-The prototype keeps every call behind one data layer (a folder of functions that return the same shapes the real API will). Connecting the backend means replacing that layer only; no screen changes.
-
-Main API groups: auth, applications, payments, volunteers, activities, enrollments, hours, ratings, promotions, certificates, announcements, notifications, reports, settings, activity history.
-
-## 10. Non-functional requirements
-
-- **Plain language:** no technical words anywhere in the interface (section 11).
-- **Responsive:** designed for phones and desktops with equal care; usable at 360 px width.
-- **Speed:** pages feel instant; show skeleton placeholders instead of blank screens; slow connections must not break forms.
-- **Navigation:** moving between pages never reloads the whole app; transitions are smooth and consistent.
-- **Accessibility:** readable contrast, visible focus, keyboard use, text that scales, labels on every control.
-- **Security:** hashed passwords, role checks on every request, locked-down file uploads, no card or secret data in the browser, payment results verified server-side.
-- **Privacy:** ID photos visible only to Managers and Super Admin; people can request account deletion.
-- **Reliability:** nothing is lost if a person closes the page halfway through a form or payment.
-- **Accountability:** sensitive actions are recorded in the activity history.
-- **Every screen has:** a loading state, an empty state that tells the person what to do next, and a helpful error state.
-
-## 11. Wording rules for the interface
-
-| Never show | Show instead |
-| --- | --- |
-| Payment webhook received | Payment received |
-| Pending verification | We are checking your payment |
-| 401 Unauthorized / session expired | You were signed out for safety. Please sign in again. |
-| 500 Internal error | Something went wrong on our side. Please try again. |
-| OTP | 6-digit code |
-| Audit log | Activity history |
-| Role / permission denied | You do not have access to this page. |
-| Null / undefined / N/A | A friendly dash or a short explanation |
-| Database, API, encrypted, secured, migration, token | Do not mention at all |
-
-Tone: warm, direct, human. Short sentences. Buttons say what they do (Send my application, Pay with Telebirr, Approve hours).
-
-## 12. Prototype scope and mock data
-
-The prototype must demonstrate every module above with realistic data and working interactions (state changes persist while the demo runs).
-
-### 12.1 Demo accounts (password for all: Demo@1234)
-
-| Role | Name | Username | Situation |
-| --- | --- | --- | --- |
-| Applicant | Hana Tesfaye | hana.tesfaye | Accepted, payment waiting; completes the full upgrade moment |
-| Volunteer | Dawit Bekele | dawit.bekele | Active, Kirkos branch (Addis), partway to Senior Volunteer |
-| Senior Volunteer | Selam Alemu | selam.alemu | Meets every Team Lead threshold, promotion waiting |
-| Team Lead (Addis) | Yonas Kebede | yonas.kebede | Kirkos branch scope, leads activities, hours waiting for approval |
-| Team Lead (Adama) | Henok Assefa | henok.assefa | Adama Central branch scope, manages Adama activities and rosters |
-| Manager (Addis) | Marta Girma | marta.girma | Addis Ababa area scope, applications queue, promotions waiting |
-| Manager (Adama) | Tigist Wolde | tigist.wolde | Adama area scope, Adama volunteers and assisted registration |
-| Finance Officer | Abel Hailu | abel.hailu | Head Office scope, review queue, record manual payment receipts |
-| Super Admin | Ruth Mengistu | ruth.mengistu | Head Office scope, organisation units, roles & permissions matrix, audit history |
-
-Also seed about 50 volunteers (including 12 in Adama area), 18 applications in different statuses (including 3 staff-assisted applications), 25 activities across Addis Ababa, Adama, Bishoftu, Hawassa and Bahir Dar, 60 payments, hours, ratings, certificates, SMS messages, and announcements. Use real-sounding Ethiopian names, areas, and ETB amounts.
-
-### 12.2 Simulated Telebirr & Finance Manual Payment
-
-A believable Telebirr step: the person sees the amount and a phone confirmation screen, with options in the demo to succeed, fail, or delay so Finance's needs-review flow can be shown. In addition, Finance Officers can record manual bank or branch cash payments, immediately issuing official receipt numbers and activating accounts.
-
-### 12.3 Simulated Email & SMS Text Messages
-
-Emails and SMS messages appear in a visible in-app preview dialog for the demo (verification code, receipts, decisions, reminders), with realistic simulated delivery.
-
-## 13. Demo script (what the evaluator should be able to do)
-
-1. Register as a new person, verify the email code, and submit an application.
-2. Sign in as Marta Girma (Manager, Addis Ababa), verify that only Addis Ababa area applications and volunteers appear. Accept an application or register an in-person candidate via assisted intake.
-3. Sign in as Tigist Wolde (Manager, Adama), verify that only Adama area volunteers, branches (Adama Central, Wonji Road), and activities appear.
-4. Sign in as Hana Tesfaye, pay with Telebirr, and see the welcome moment and Volunteer ID pass.
-5. Sign in as Dawit Bekele, join an activity, check in, log hours, view multi-channel alert settings and sign-in history.
-6. Sign in as Yonas Kebede, approve hours (notice that self-approval is forbidden by separation of duties), rate volunteers, recommend a promotion.
-7. Sign in as Marta Girma, approve Selam Alemu's promotion to Team Lead.
-8. Sign in as Abel Hailu (Finance), inspect payment queue, record a manual payment, and export a report.
-9. Sign in as Ruth Mengistu (Super Admin), inspect the 4-tier organisation tree (/admin/organisation), adjust role permission toggles with instant live effect (/admin/roles-permissions), look up individual person authorities, and view security & lockout logs.
-10. Sign in as Marta Girma (Manager), view active projects and remaining budgets (/manager/projects), open Kirkos project detail, and prepare a 3-day field allowance for Dawit Bekele linked to verified service.
-11. Sign in as Henok Assefa (Team Lead supervisor), inspect `/team-lead/allowances`, verify Dawit's field attendance with a verification note.
-12. Sign in as Ruth Mengistu (Super Admin / Budget Authority), open `/admin/allowances`, approve the reserved budget for the verified request (confirming that self-approval rules prevent Marta from approving what she prepared).
-13. Sign in as Abel Hailu (Finance), open `/finance/allowances`, select the approved request, disburse payment via Telebirr simulation, and observe generated transaction reference.
-14. Sign in as Dawit Bekele (Volunteer), open `/volunteer/allowances`, inspect the journey log, see the payment reference, and trigger the payout celebration moment.
-
-## 14. Open questions for the client
-
-1. What does the company do, and what kind of volunteer work will it run?
-2. Final registration fee amount and whether it differs by type of volunteer.
-3. Real rank thresholds and what each rank should unlock.
-4. Is there a minimum age other than 18, and are ID checks required?
-5. Should the Ethiopian calendar and Amharic or Afaan Oromo be offered later?
-6. Who owns the Telebirr merchant account and test access?
-7. Is a yearly renewal fee planned?
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| Edit own profile & security | Yes | Yes | Yes | Yes | Yes | Yes |
+| Submit & track application | Yes | - | - | - | - | - |
+| Pay registration fee | Yes | - | - | - | - | - |
+| Browse & join activities | - | Yes | Yes | Yes | - | - |
+| Create & schedule activities | - | - | Yes | Yes | - | - |
+| Approve duty hours | - | - | Yes (Branch) | Yes (Area) | - | - |
+| Rate volunteer performance | - | - | Yes | Yes | - | - |
+| Review applications & files | - | - | - | Yes | - | View |
+| Assisted in-person intake | - | - | - | Yes | - | - |
+| Charter community projects | - | - | - | Yes | - | Yes |
+| Assign volunteers & supervisors | - | - | - | Yes | - | Yes |
+| Prepare field allowances | - | - | - | Yes | - | - |
+| Verify allowance attendance | - | - | Yes (Branch) | - | - | - |
+| Approve allowance budget | - | - | - | - | - | Yes |
+| Disburse Telebirr payouts | - | - | - | - | Yes | - |
+| Approve promotions | - | - | Recommend | Up to Team Lead | - | Manager rank |
+| View payments & issue receipts| Own | - | - | Branch | Yes | Yes |
+| Resolve payment exceptions | - | - | - | - | Yes | - |
+| Manage organization tree | - | - | - | - | - | Yes |
+| Configure dynamic permissions | - | - | - | - | - | Yes |
+
+---
+
+## 3. The Volunteer Journey
+
+1. **Registration**: The individual creates an account online with email, Ethiopian phone, and password, confirming email address with a 6-digit confirmation code. Alternatively, a manager registers them in-person via assisted intake.
+2. **Application & Files**: The applicant completes interest and skills surveys and uploads required documents (Kebele ID, portrait photo, recommendation letter).
+3. **Manager Review**: Program managers evaluate the dossier. If an upload is unclear, the manager returns it for correction with an explanatory note; the applicant replaces it.
+4. **Acceptance & Window**: The admissions board accepts qualified applicants, initiating a 7-day payment window countdown.
+5. **Fee Settlement**: The applicant pays the registration fee via Telebirr mobile push (or manager records manual cash/waiver).
+6. **Activation & ID Pass**: Confirmed payment immediately transitions the account to active **Volunteer** rank, issuing a verifiable ID pass with QR code and welcome materials.
+7. **Deployment & Check-In**: The volunteer joins open activities or accepts project assignments from managers. On-site check-in uses a 4-digit code generated by the Team Lead.
+8. **Hours Audit & Evidence**: Team Leads audit attendance minutes and inspect photo evidence for manual duty logs, approving or declining hours with reasons.
+9. **Rank Elevation**: As verified hours, completed activities, tenure, and ratings satisfy threshold rules, candidates become eligible for board review and elevation to Senior Volunteer, Team Lead, or Manager.
+
+---
+
+## 4. Financial Operations
+
+### 4.1 Money In (Registration Fees)
+- Accepted applicants initiate Telebirr C2B push payments from the payment terminal.
+- Successful transactions activate the volunteer account instantly and generate an official receipt.
+- Network delays or transaction ID discrepancies route to the Finance Needs Review queue for reconciliation.
+- Walk-in applicants can pay via cash or bank deposit at branch offices, with Finance Officers issuing manual receipts.
+- Refunds can be issued by Finance Officers with mandatory justification notes.
+
+### 4.2 Money Out (Allowances & Stipends)
+- Managers prepare field allowance requests (`days * allowancePerDay`) linked to approved service within remaining project budgets.
+- Supervising Team Leads verify physical field service attendance.
+- Super Admin acts as Budget Authority, approving expenditure and reserving project funds.
+- Four-Eye Principle: No manager can approve an allowance they prepared, and volunteers cannot approve their own requests.
+- Finance Officers execute disbursements via simulated Telebirr B2C mobile wallet payouts (`TB-OUT-2026-XXXXXX`). Failed transfers support retries.
+
+---
+
+## 5. Ranks and Promotion
+
+### 5.1 Rank Ladder
+
+| Rank Title | Role Unlocked | Operational Privileges |
+| :--- | :--- | :--- |
+| **Volunteer** | Volunteer | Join open field activities, obtain digital volunteer ID pass, earn verified duty hours. |
+| **Senior Volunteer** | Volunteer | Priority shift enrollment, mentor newer volunteers, Senior Volunteer badge and certificate. |
+| **Team Lead** | Team Lead | Dispatch field activities, display check-in codes, verify hours and evidence, rate volunteers, recommend promotions. |
+| **Manager** | Manager | Review applicant dossiers, register walk-ins, charter projects, assign volunteers, prepare allowances, decide promotions. |
+
+### 5.2 Starting Default Thresholds (Configurable by Super Admin)
+
+| Target Rank | Approved Hours | Completed Activities | Minimum Rating | Active Tenure | Mandatory Course | Approving Authority |
+| :--- | :---: | :---: | :---: | :---: | :--- | :--- |
+| **Senior Volunteer** | 50 hrs | 10 | 4.0 / 5.0 | 3 months | Advanced Field Leadership | Regional Manager Board |
+| **Team Lead** | 150 hrs | 25 | 4.5 / 5.0 | 6 months | Crisis Intervention & Safety | Regional Manager Board |
+| **Manager** | 300 hrs | 50 (5 led) | 4.8 / 5.0 | 12 months | Operational Governance | Executive Board / Super Admin |
+
+---
+
+## 6. Functional Requirements Inventory
+
+### 6.1 Registration and Authentication
+- `FR-REG-01`: Self-registration form with Ethiopian mobile number normalization (`+2519...`).
+- `FR-REG-02`: Email confirmation using simulated 6-digit confirmation codes expiring in 15 minutes.
+- `FR-REG-03`: Real-time password complexity checklist.
+- `FR-REG-04`: Duplicate prevention on username and email addresses.
+
+### 6.2 Application and Intake
+- `FR-APP-01`: Multi-step application wizard with draft saving.
+- `FR-APP-02`: Capture of regional area, motivation, skills catalog, and emergency contacts.
+- `FR-APP-03`: Manager application review queue with dossier drawers and private review notes.
+- `FR-APP-04`: Automated acceptance letters and configurable payment window countdowns.
+
+### 6.3 Payments and Registration Fees
+- `FR-PAY-01`: Telebirr push payment simulation terminal for accepted applicants.
+- `FR-PAY-02`: Simulation modes for payment success, gateway delay, and user cancellation.
+- `FR-PAY-03`: Finance exception review queue for resolving payment discrepancies.
+- `FR-PAY-04`: Official manual cash/bank receipt generation with printable passes.
+
+### 6.4 Activation and Onboarding
+- `FR-ONB-01`: Instant transition to active Volunteer status upon payment confirmation.
+- `FR-ONB-02`: Official printable Volunteer ID pass with QR verification code.
+- `FR-ONB-03`: Welcome announcement and induction packet delivery.
+
+### 6.5 Activities and Field Operations
+- `FR-ACT-01`: Public and authenticated activity browsing with type, area, and skill filters.
+- `FR-ACT-02`: Team Lead activity creation with capacity limits and project linkages.
+- `FR-ACT-03`: Volunteer enrollment and automated waitlist promotion.
+- `FR-ACT-04`: Live activity rosters with 4-digit check-in short code display.
+
+### 6.6 Duty Hours and Attendance
+- `FR-HRS-01`: On-site check-in via 4-digit short codes.
+- `FR-HRS-02`: Automatic duty duration calculation capped at scheduled end time plus 1 hour.
+- `FR-HRS-03`: Manual hours logging with mandatory explanation notes and photo evidence.
+- `FR-HRS-04`: Team Lead hours approval and photo evidence inspection scoped to branch.
+- `FR-HRS-05`: Single and bulk hours approval workflows with mandatory decline reasons.
+
+### 6.7 Training and Certifications
+- `FR-TRN-01`: Training courses modeled as activities that mark completion upon attendance approval.
+- `FR-TRN-02`: Verified course completions count directly toward rank promotion eligibility.
+- `FR-CRT-01`: Certificates generated for induction, rank milestones, and completed training courses.
+- `FR-CRT-02`: Public verification code check page (`/check-certificate`) requiring no sign-in.
+- `FR-CRT-03`: Printable digital certificate passes.
+
+### 6.8 Ratings and Performance
+- `FR-RAT-01`: Numerical 1 to 5 performance ratings submitted by Team Leads following activities.
+- `FR-RAT-02`: Volunteer feedback submission channel to program management.
+- `FR-RAT-03`: Average rating calculation displayed on profile and evaluated in promotions.
+
+### 6.9 Promotions and Governance
+- `FR-PRM-01`: Real-time visual progress tracker toward next rank milestones.
+- `FR-PRM-02`: Candidate eligibility roster with immutable evidence summaries.
+- `FR-PRM-03`: Promotional board decisions requiring written rationale.
+- `FR-PRM-04`: Dynamic role updating, rank history recording, and certificate issuance upon approval.
+
+### 6.10 Announcements and Notifications
+- `FR-NTF-01`: Targeted announcements filtered by audience (all, rank, area, or activity roster).
+- `FR-NTF-02`: Real-time in-app notification bell with unread badge count.
+- `FR-NTF-03`: Transactional email previews for verification, decisions, and schedule changes.
+- `FR-NTF-04`: Multi-channel notification preferences (In-app, Brevo email, SMS shortcode 8080).
+
+### 6.11 Reports and Analytics
+- `FR-RPT-01`: Manager operational dashboard metrics (applications, hours, active projects).
+- `FR-RPT-02`: Demographic distribution, cumulative hours, and recruitment funnel reports.
+- `FR-RPT-03`: Finance revenue ledgers, stipend expenditures, and exception logs.
+- `FR-RPT-04`: Client-side simulated export to Excel (`.xlsx`) and formal PDF documents.
+
+### 6.12 System Administration
+- `FR-ADM-01`: System settings editor (registration fee, payment deadline, rank thresholds).
+- `FR-ADM-02`: Staff account provisioning and status management.
+- `FR-ADM-03`: Searchable system activity history and security audit log.
+- `FR-ADM-04`: Transactional email template editor with dynamic previewing.
+
+### 6.13 Organisation Structure and Scoping
+- `FR-ORG-01`: Four-tier hierarchy: Head Office, Area, Branch, Location.
+- `FR-ORG-02`: Hierarchical scoping engine (`all`, `area`, `branch`, `own`) filtering all records.
+- `FR-ORG-03`: Branch assignments on all volunteer and staff accounts.
+- `FR-ORG-04`: Interactive organization tree management with add, edit, move, and archive actions.
+
+### 6.14 Assisted Walk-In Registration
+- `FR-AST-01`: Four-step manager assisted registration wizard for field and walk-in applicants.
+- `FR-AST-02`: Immediate Kebele ID capture and manual fee recording or hardship waiver.
+- `FR-AST-03`: Instant volunteer activation bypassing online application delays.
+
+### 6.15 Dynamic Security and Permissions
+- `FR-SEC-01`: 16-module role permission matrix with granular action toggles.
+- `FR-SEC-02`: Automatic account lockout after 5 consecutive failed sign-in attempts within 15 minutes.
+- `FR-SEC-03`: Sign-in audit log recording timestamp, IP address, user agent, and failure reasons.
+
+### 6.16 Community Projects
+- `FR-PRJ-01`: Branch community projects with ETB budgets and daily stipend allowance rates.
+- `FR-PRJ-02`: Activities link directly to parent projects; Team Leads select branch projects.
+- `FR-PRJ-03`: Project overview displays remaining budget as a prominent lead numeral with spent and reserved funds inline.
+- `FR-PRJ-04`: Project detail displays assigned volunteers and activities as physical ticket passes.
+
+### 6.17 Assignments and Supervisors
+- `FR-ASN-01`: Managers assign volunteers to projects or activities, designating a supervising Team Lead.
+- `FR-ASN-02`: Assignment lifecycle: `assigned`, `accepted`, `declined`, `completed`.
+- `FR-ASN-03`: Volunteers view deployments in "My roster" marked "Assigned by [Manager]" with Accept and Decline actions.
+- `FR-ASN-04`: Team Leads have a "My volunteers" directory showing supervised individuals and approved hours.
+
+### 6.18 Verification Documents and Evidence
+- `FR-DOC-01`: Super Admin catalog of required verification documents (National ID, Photo, Recommendation, Clearance).
+- `FR-DOC-02`: Applicants upload verification files with name, file size, and preview.
+- `FR-DOC-03`: Managers review uploads with Accept or Return for correction with mandatory note; applicants see correction alerts.
+- `FR-DOC-04`: Volunteers attach photo evidence to manual hours and field submissions ("Submit a completed activity"); Team Leads inspect evidence scoped to their branch.
+
+### 6.19 Field Allowances (Money Out)
+- `FR-ALW-01`: Allowance lifecycle: `draft`, `submitted`, `verified`, `approved`, `paid`, `rejected`, `failed`.
+- `FR-ALW-02`: Manager prepares allowance request within the project's remaining available budget.
+- `FR-ALW-03`: Supervising Team Lead verifies physical field attendance.
+- `FR-ALW-04`: Super Admin (Budget Authority) approves request, reserving project budget funds.
+- `FR-ALW-05`: Strict separation of duties: nobody can approve an allowance they prepared, and volunteers cannot approve their own requests.
+- `FR-ALW-06`: Finance Officers disburse funds via simulated Telebirr B2C mobile wallet payouts with transaction reference.
+- `FR-ALW-07`: Volunteers track stipend progress with a journey log timeline and celebration overlay upon payout.
+
+---
+
+## 7. Screens by Role
+
+- **Public**: Home (`/`), Sign In (`/sign-in`), Register (`/register`), Verify Email (`/verify-email`), Forgot Password (`/forgot-password`), Reset Password (`/reset-password`), Public Certificate Check (`/check-certificate`), Access Denied (`/unauthorized`).
+- **Applicant**: Status & Documents (`/applicant/status`), Apply Form (`/applicant/apply`), Payment (`/applicant/payment`), Notifications (`/applicant/notifications`).
+- **Volunteer**: Home (`/volunteer/home`), Activities (`/volunteer/activities`), Activity Detail (`/volunteer/activities/:id`), My Deployments (`/volunteer/my-activities`), Check-in Terminal (`/volunteer/check-in`), Hours & Evidence (`/volunteer/hours`), Field Allowances (`/volunteer/allowances`), Rank Progress (`/volunteer/rank-progress`), Certificates (`/volunteer/certificates`), ID Pass (`/volunteer/id-card`), Profile & Security (`/volunteer/profile`).
+- **Team Lead**: Dispatch Home (`/team-lead/home`), Create Activity (`/team-lead/create-activity`), Activities Roster (`/team-lead/activities`), Approve Hours & Evidence (`/team-lead/approve-hours`), My Volunteers (`/team-lead/volunteers`), Verify Allowances (`/team-lead/allowances`), Rate Volunteers (`/team-lead/ratings`), Recommend Promotion (`/team-lead/recommend-promotion`), Team Announcements (`/team-lead/announcements`).
+- **Manager**: Operations Dashboard (`/manager/dashboard`), Applications Review (`/manager/applications`), Assisted Registration (`/manager/register-volunteer`), Volunteer Directory (`/manager/volunteers`), Community Projects (`/manager/projects`), Project Detail & Budgets (`/manager/projects/:id`), Prepare Allowances (`/manager/allowances`), Regional Activities (`/manager/activities`), Promotion Board (`/manager/promotions`), Announcements (`/manager/announcements`), Feedback Inbox (`/manager/feedback`), Reports & Exports (`/manager/reports`).
+- **Finance Officer**: Overview (`/finance/overview`), Payments Ledger (`/finance/payments`), Review Queue (`/finance/needs-review`), Receipts & Refunds (`/finance/receipts-refunds`), Pay Allowances (`/finance/allowances`), Reports (`/finance/reports`).
+- **Super Admin**: System Overview (`/admin/overview`), Organisation Tree (`/admin/organisation`), Role Permissions Matrix (`/admin/roles-permissions`), Budget Approvals (`/admin/allowances`), Settings & Documents (`/admin/settings`), Rank Rules (`/admin/rank-rules`), User Accounts (`/admin/accounts`), Activity History & Lockout Logs (`/admin/activity-history`).
+
+---
+
+## 8. Data Model Specification
+
+| Entity Name | Primary Key | Key Fields | Key Relationships |
+| :--- | :--- | :--- | :--- |
+| `User` | `id` | `username`, `email`, `firstName`, `lastName`, `phone`, `role`, `accountStatus`, `branchId` | Belongs to `OrgUnit` |
+| `SignInLogEntry` | `id` | `timestamp`, `ipAddress`, `userAgent`, `result`, `failureReason` | Belongs to `User` |
+| `OrgUnit` | `id` | `name`, `type`, `code`, `status`, `parentId` | Self-referencing tree |
+| `RolePermissionConfig` | `role` | `permissions` (module -> action[]), `scope` | Per role |
+| `VolunteerProfile` | `userId` | `fullName`, `dateOfBirth`, `area`, `skills`[], `rank`, `volunteerNumber` | 1-to-1 with `User` |
+| `Application` | `id` | `userId`, `status`, `source`, `formData`, `submittedAt`, `paymentDeadline` | Belongs to `User` |
+| `ApplicationDocument` | `id` | `applicationId`, `configId`, `name`, `fileName`, `fileUrl`, `status`, `reviewNote` | Belongs to `Application` |
+| `RequiredDocumentConfig` | `id` | `name`, `description`, `required` | Configuration |
+| `Payment` | `id` | `userId`, `applicationId`, `amount`, `telebirrReference`, `receiptNumber`, `status` | Belongs to `User`, `Application` |
+| `Project` | `id` | `name`, `description`, `branchId`, `budget`, `allowancePerDay`, `status`, `managerId` | Belongs to `OrgUnit`, `User` |
+| `Activity` | `id` | `title`, `type`, `startsAt`, `endsAt`, `capacity`, `checkInCode`, `status`, `projectId` | Belongs to `Project`, `OrgUnit` |
+| `Enrollment` | `id` | `activityId`, `userId`, `status` | Links `User` to `Activity` |
+| `Assignment` | `id` | `projectId`, `activityId`, `volunteerId`, `supervisorId`, `status`, `startDate` | Links `User`, `Project`, `User` |
+| `HoursEntry` | `id` | `userId`, `activityId`, `checkIn`, `checkOut`, `minutes`, `status`, `evidenceUrl` | Links `User` to `Activity` |
+| `Rating` | `id` | `activityId`, `userId`, `ratedBy`, `score`, `note` | Links `User`, `Activity`, `User` |
+| `Promotion` | `id` | `userId`, `fromRank`, `toRank`, `status`, `recommendedBy`, `decidedBy`, `note` | Belongs to `User` |
+| `Certificate` | `id` | `userId`, `kind`, `title`, `issuedAt`, `verificationCode`, `fileUrl` | Belongs to `User` |
+| `Announcement` | `id` | `authorId`, `audience`, `title`, `body`, `createdAt` | Belongs to `User` |
+| `Notification` | `id` | `userId`, `title`, `body`, `readAt`, `link` | Belongs to `User` |
+| `ActivityLogEntry` | `id` | `actorId`, `actorName`, `action`, `subject`, `createdAt` | Belongs to `User` |
+| `Setting` | `key` | `value` | Global settings |
+| `EmailTemplate` | `id` | `name`, `subject`, `body`, `variables`[] | Email configuration |
+| `AllowanceRequest` | `id` | `allowanceNumber`, `projectId`, `volunteerId`, `days`, `totalAmount`, `status`, `preparedBy`, `supervisorId`, `approvedBy` | Links `Project`, `User`, `User`, `User` |
+| `DisbursementDetails` | `transactionId` | `provider`, `phone`, `fee`, `timestamp`, `networkRef` | Embedded in `AllowanceRequest` |
+
+---
+
+## 9. Non-Functional Standards
+
+- **Zero Borders Rule**: No structural borders anywhere in the interface. All spatial separation is achieved using `#FFFFFF` canvas, `#F7F8FA` tonal fills, generous whitespace, and the single approved soft shadow.
+- **Editorial Typography**: Bricolage Grotesque for bold display numerals and headlines; Hanken Grotesk for clean, highly readable body copy. Sentence case strictly enforced.
+- **Plain Language Policy**: Technical jargon (such as API, token, database, directorate, civic, institutional) is strictly forbidden in user-facing text.
+- **Iconography**: Phosphor icons in bold weight only. No emojis, no Lucide.
+- **Responsive Layouts**: Fully responsive at 360 px mobile viewports and 1440 px desktop monitors.
+- **State Coverage**: Every screen includes dedicated loading, empty, and error states.
+
+---
+
+## 10. Evaluation Demo Accounts and Script
+
+All demo accounts use the standard password: **`Demo@1234`**
+
+| Role | Name | Username | Branch Scope | Scenario |
+| :--- | :--- | :--- | :--- | :--- |
+| **Applicant** | Hana Tesfaye | `hana.tesfaye` | Addis Ababa Area | Accepted; ready to pay registration fee via Telebirr. |
+| **Volunteer** | Dawit Bekele | `dawit.bekele` | Kirkos Branch, Addis Ababa | Active volunteer; logs field hours and tracks stipends. |
+| **Senior Volunteer** | Selam Alemu | `selam.alemu` | Bole Branch, Addis Ababa | Eligible for promotion to Team Lead. |
+| **Team Lead** | Yonas Kebede | `yonas.kebede` | Kirkos Branch, Addis Ababa | Dispatches rosters, displays check-in codes, verifies hours. |
+| **Team Lead** | Henok Assefa | `henok.assefa` | Adama Central Branch | Supervises Adama projects; verifies attendance for allowances. |
+| **Manager** | Marta Girma | `marta.girma` | Addis Ababa Area | Reviews applications, charters projects, prepares allowances. |
+| **Manager** | Tigist Wolde | `tigist.wolde` | Adama Area | Exercises regional scoping; registers walk-ins via assisted intake. |
+| **Finance Officer** | Abel Hailu | `abel.hailu` | Head Office (All Scope) | Reconciles Telebirr fees; disburses mobile wallet allowances. |
+| **Super Admin** | Ruth Mengistu | `ruth.mengistu` | Head Office (All Scope) | Manages organization tree, approves allowance budgets, sets permissions. |
+
+### Evaluation Demo Script
+
+1. **Assisted Intake**: Sign in as `tigist.wolde` (Manager, Adama). Open `/manager/register-volunteer`. Register a new volunteer in-person via the 4-step wizard with Kebele ID and manual cash receipt.
+2. **Document Correction Notice**: Sign in as `marta.girma` (Manager, Addis Ababa). Open `/manager/applications`. Open an application dossier, click **Return for correction**, and submit a note explaining that the uploaded Kebele ID is blurry.
+3. **Document Replacement & Payout**: Sign in as `hana.tesfaye` (Applicant). Open `/applicant/status`. See the correction alert, upload a replacement file, and proceed to `/applicant/payment`. Pay the ETB 200 fee with simulated Telebirr success to unlock active volunteer status.
+4. **Project Charter & Budget Tracking**: Sign in as `marta.girma`. Open `/manager/projects`. Observe the remaining budget lead figure for the Kirkos Clean & Green Initiative. Open `/manager/projects/proj-kirkos-green` to inspect linked ticket activities and assigned volunteers.
+5. **Allowance Preparation**: Still signed in as `marta.girma`, open `/manager/allowances`. Prepare a 3-day field allowance for `dawit.bekele` under the Kirkos project, choosing `yonas.kebede` as supervising Team Lead. Verify that preparing an amount exceeding remaining project funds is blocked.
+6. **Supervisor Attendance Verification**: Sign in as `yonas.kebede` (Team Lead). Open `/team-lead/allowances`. Inspect the attendance record and click **Verify attendance** with a confirmation note.
+7. **Budget Authority Sign-Off**: Sign in as `ruth.mengistu` (Super Admin). Open `/admin/allowances`. Observe that Marta Girma is barred from approving what she prepared. Click **Approve budget** as Budget Authority, reserving the funds from the project budget.
+8. **Telebirr Disbursement**: Sign in as `abel.hailu` (Finance). Open `/finance/allowances`. Select the approved allowance, open the disbursement sheet, choose Telebirr mobile wallet, and click **Disburse funds**. Notice the generation of a transaction reference (`TB-OUT-2026-XXXXXX`).
+9. **Volunteer Stipend Celebration**: Sign in as `dawit.bekele` (Volunteer). Open `/volunteer/allowances`. Inspect the verified journey log, view the Telebirr payment reference, and trigger the celebratory payout moment.
