@@ -27,6 +27,8 @@ import {
   Buildings,
   ShieldCheck,
   UserPlus,
+  FolderSimple,
+  Wallet,
 } from '@phosphor-icons/react';
 import { Avatar } from '../ui/Avatar';
 import { TrailMeter } from '../signature';
@@ -135,6 +137,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
               { to: '/volunteer/hours', label: 'Logged hours', icon: <Clock className="w-5 h-5" weight="bold" /> },
               { to: '/volunteer/rank-progress', label: 'Rank trail', icon: <ChartLineUp className="w-5 h-5" weight="bold" /> },
               { to: '/volunteer/certificates', label: 'Certificates', icon: <Certificate className="w-5 h-5" weight="bold" /> },
+              { to: '/volunteer/allowances', label: 'My allowances', icon: <Money className="w-5 h-5" weight="bold" /> },
             ],
           },
           {
@@ -153,6 +156,8 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
             items: [
               { to: '/team-lead/home', label: 'Dispatch desk', icon: <House className="w-5 h-5" weight="bold" /> },
               { to: '/team-lead/activities', label: 'My activities', icon: <Calendar className="w-5 h-5" weight="bold" /> },
+              { to: '/team-lead/volunteers', label: 'My volunteers', icon: <UsersThree className="w-5 h-5" weight="bold" /> },
+              { to: '/team-lead/allowances', label: 'Verify allowances', icon: <Money className="w-5 h-5" weight="bold" /> },
               {
                 to: '/team-lead/approve-hours',
                 label: 'Approve hours',
@@ -179,6 +184,8 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
             title: 'Operations',
             items: [
               { to: '/manager/dashboard', label: 'Operations desk', icon: <House className="w-5 h-5" weight="bold" /> },
+              { to: '/manager/projects', label: 'Projects', icon: <FolderSimple className="w-5 h-5" weight="bold" />, module: 'projects', action: 'view' },
+              { to: '/manager/allowances', label: 'Allowances', icon: <Money className="w-5 h-5" weight="bold" />, module: 'allowances', action: 'view' },
               {
                 to: '/manager/applications',
                 label: 'Application queue',
@@ -225,6 +232,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
             items: [
               { to: '/finance/overview', label: 'Finance desk', icon: <House className="w-5 h-5" weight="bold" /> },
               { to: '/finance/payments', label: 'All payments', icon: <Money className="w-5 h-5" weight="bold" />, module: 'payments', action: 'view' },
+              { to: '/finance/allowances', label: 'Pay allowances', icon: <Wallet className="w-5 h-5" weight="bold" />, module: 'allowances', action: 'view' },
               {
                 to: '/finance/needs-review',
                 label: 'Review queue',
@@ -246,6 +254,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
             title: 'Platform desk',
             items: [
               { to: '/admin/overview', label: 'Admin home', icon: <House className="w-5 h-5" weight="bold" /> },
+              { to: '/admin/allowances', label: 'Budget approvals', icon: <Money className="w-5 h-5" weight="bold" />, module: 'allowances', action: 'approve' },
               { to: '/admin/organisation', label: 'Organisation units', icon: <Buildings className="w-5 h-5" weight="bold" />, module: 'organisation', action: 'view' },
               { to: '/admin/roles-permissions', label: 'Roles and permissions', icon: <ShieldCheck className="w-5 h-5" weight="bold" />, module: 'settings', action: 'view' },
               { to: '/admin/settings', label: 'Settings and emails', icon: <Gear className="w-5 h-5" weight="bold" />, module: 'settings', action: 'edit' },

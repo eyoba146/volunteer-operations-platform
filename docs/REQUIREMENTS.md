@@ -227,6 +227,37 @@ All payments with filters, payments needing review, a payment detail view with t
 - FR-ADM-03 Activity history: who did what and when, searchable, for accountability.
 - FR-ADM-04 Email template preview and editing.
 
+### 6.13 Projects
+
+- FR-PRJ-01 Projects belong to a branch and define budget in ETB, daily allowance stipend in ETB, start/end dates, status, and project manager.
+- FR-PRJ-02 Activities can belong to a project; Team Leads can select branch projects when scheduling activities.
+- FR-PRJ-03 Manager project overview displays budget as one large numeral for remaining funds, with spent and reserved funds shown as an inline sentence.
+- FR-PRJ-04 Manager project detail displays assigned volunteers and linked activities formatted as ticket passes.
+
+### 6.14 Assignments and Supervisors
+
+- FR-ASN-01 Managers can assign volunteers to a project or activity, designating a supervising Team Lead and service dates.
+- FR-ASN-02 Assignment statuses: assigned, accepted, declined, completed.
+- FR-ASN-03 Volunteers see staff assignments in "My roster" marked "Assigned by [Manager]" with Accept and Decline (with required explanation) actions.
+- FR-ASN-04 Team Leads have a "My volunteers" directory showing supervised individuals, active deployments, and approved hours.
+
+### 6.15 Documents and Evidence
+
+- FR-DOC-01 Super Admin configures required applicant verification documents (National ID, Photo, Recommendation, Clearance).
+- FR-DOC-02 Applicants upload required files with name, size, and preview.
+- FR-DOC-03 Managers review uploaded documents with Accept or Return for correction (with mandatory explanation note); applicants see correction alerts.
+- FR-DOC-04 Volunteers attach photo evidence to manual hours and field submissions ("Submit a completed activity"); Team Leads inspect evidence scoped to their branch.
+
+### 6.16 Allowances (Money Out)
+
+- FR-ALW-01 Lifecycle statuses: draft, submitted, verified, approved, paid, rejected, failed.
+- FR-ALW-02 Manager prepares allowance request (days * allowancePerDay linked to approved service) within remaining project budget.
+- FR-ALW-03 Supervising Team Lead verifies attendance.
+- FR-ALW-04 Super Admin (Budget Authority) approves the allowance budget; approved amounts are reserved and paid amounts spent.
+- FR-ALW-05 Strict separation of duties: nobody can approve an allowance they prepared, and volunteers cannot approve their own allowance.
+- FR-ALW-06 Finance checks budget and disburses stipends via simulated Telebirr disbursement with transaction reference; failed payments can be retried.
+- FR-ALW-07 Volunteers track allowance progress in "My allowances" with status journey log and Telebirr transaction reference.
+
 ## 7. Screens by role
 
 **Public:** home page explaining the program and how to join, sign in, register, verify email, forgot password, reset password, certificate check.
@@ -262,6 +293,12 @@ All payments with filters, payments needing review, a payment detail view with t
 | Notification | id, userId, title, body, readAt, createdAt, link |
 | ActivityLogEntry | id, actorId, action, subject, createdAt |
 | Setting | key, value |
+| Project | id, name, description, branchId, branchName, areaId, areaName, start, end, budget, allowancePerDay, spent, reserved, managerId, status, createdAt |
+| Assignment | id, projectId, projectName, activityId, activityTitle, branchId, volunteerId, supervisorId, status, assignedBy, startDate, endDate, declineReason |
+| RequiredDocumentConfig | id, name, description, required |
+| ApplicationDocument | id, applicationId, configId, name, fileName, fileSize, fileUrl, uploadedAt, status, reviewNote, reviewedBy, reviewedAt |
+| AllowanceRequest | id, allowanceNumber, projectId, projectName, branchId, activityId, volunteerId, volunteerName, volunteerPhone, days, allowancePerDay, totalAmount, status, preparedBy, supervisorId, verifiedBy, approvedBy, paidAt, paymentReference, rejectionReason, failureReason |
+| DisbursementDetails | provider, phone, fee, transactionId, timestamp, networkRef |
 
 ## 9. System integration plan
 
@@ -345,6 +382,11 @@ Emails and SMS messages appear in a visible in-app preview dialog for the demo (
 7. Sign in as Marta Girma, approve Selam Alemu's promotion to Team Lead.
 8. Sign in as Abel Hailu (Finance), inspect payment queue, record a manual payment, and export a report.
 9. Sign in as Ruth Mengistu (Super Admin), inspect the 4-tier organisation tree (/admin/organisation), adjust role permission toggles with instant live effect (/admin/roles-permissions), look up individual person authorities, and view security & lockout logs.
+10. Sign in as Marta Girma (Manager), view active projects and remaining budgets (/manager/projects), open Kirkos project detail, and prepare a 3-day field allowance for Dawit Bekele linked to verified service.
+11. Sign in as Henok Assefa (Team Lead supervisor), inspect `/team-lead/allowances`, verify Dawit's field attendance with a verification note.
+12. Sign in as Ruth Mengistu (Super Admin / Budget Authority), open `/admin/allowances`, approve the reserved budget for the verified request (confirming that self-approval rules prevent Marta from approving what she prepared).
+13. Sign in as Abel Hailu (Finance), open `/finance/allowances`, select the approved request, disburse payment via Telebirr simulation, and observe generated transaction reference.
+14. Sign in as Dawit Bekele (Volunteer), open `/volunteer/allowances`, inspect the journey log, see the payment reference, and trigger the payout celebration moment.
 
 ## 14. Open questions for the client
 

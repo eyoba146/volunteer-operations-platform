@@ -24,6 +24,10 @@ export const ApplicantStatusPage: React.FC = () => {
   const [isWithdrawing, setIsWithdrawing] = useState(false);
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
   const [timeLeft, setTimeLeft] = useState<{ days: number; hours: number; minutes: number } | null>(null);
+  const [appDocuments, setAppDocuments] = useState<any[]>([]);
+  const [requiredConfigs, setRequiredConfigs] = useState<any[]>([]);
+  const [replacingDoc, setReplacingDoc] = useState<any | null>(null);
+  const [replaceFileName, setReplaceFileName] = useState('');
 
   const navigate = useNavigate();
   const toast = useToast();
@@ -35,8 +39,14 @@ export const ApplicantStatusPage: React.FC = () => {
       const app = await api.getMyApplication(user.id);
       setApplication(app);
       if (app) {
-        const pay = await api.getPaymentForApplication(app.id);
+        const [pay, docs, configs] = await Promise.all([
+          api.getPaymentForApplication(app.id),
+          api.getApplicationDocuments(app.id),
+          api.getRequiredDocuments(),
+        ]);
         setPayment(pay);
+        setAppDocuments(docs);
+        setRequiredConfigs(configs);
       }
     } finally {
       setIsLoading(false);
@@ -71,6 +81,25 @@ export const ApplicantStatusPage: React.FC = () => {
     return () => clearInterval(timer);
   }, [application]);
 
+
+  const handleReplaceDocument = async (configId: string, docName: string) => {
+    if (!application) return;
+    try {
+      await api.uploadApplicationDocument(application.id, configId, {
+        fileName: replaceFileName || 'corrected_document.pdf',
+        fileSize: 1420000,
+        fileUrl: '/demo/docs/corrected_doc.pdf',
+        name: docName,
+      });
+      toast.success('Replacement document uploaded and submitted for manager re-verification.');
+      setReplacingDoc(null);
+      setReplaceFileName('');
+      await loadData();
+    } catch (err: any) {
+      toast.error(err.message || 'Could not replace document.');
+    }
+  };
+
   const handleWithdraw = async () => {
     if (!application) return;
     setIsWithdrawing(true);
@@ -94,7 +123,63 @@ export const ApplicantStatusPage: React.FC = () => {
           <Skeleton variant="rect" className="h-48" />
           <Skeleton variant="rect" className="h-64" />
         </div>
-      </PageShell>
+  
+      {/* Replace Document Modal */}
+      {replacingDoc && (
+        <SheetModal
+          isOpen={!!replacingDoc}
+          onClose={() => setReplacingDoc(null)}
+          title="Upload replacement document"
+          subtitle={`Submitting updated file for "${replacingDoc.name}"`}
+        >
+          <div className="space-y-4">
+            <p className="text-xs font-sans text-ink-secondary">
+              Select a clear, legible replacement document from your device. Scans in PDF, PNG, or JPG formats under 5MB are accepted.
+            </p>
+
+            <div className="space-y-1.5">
+              <label className="block text-xs font-sans font-semibold text-ink-secondary">
+                Simulated File Name
+              </label>
+              <input
+                type="text"
+                value={replaceFileName}
+                onChange={(e) => setReplaceFileName(e.target.value)}
+                placeholder="e.g. clear_kebele_id_card.pdf"
+                className="w-full px-3.5 py-2.5 bg-[#F1F3F6] rounded-[12px] text-sm font-sans text-ink-primary focus:outline-none focus:ring-2 focus:ring-[#E58B05]/30"
+              />
+            </div>
+
+            <div className="p-4 rounded-[12px] bg-[#F1F3F6] flex items-center gap-3">
+              <div className="w-12 h-12 rounded-[8px] bg-white flex items-center justify-center font-bold text-xs text-ink-secondary">
+                PDF
+              </div>
+              <div className="text-xs font-sans">
+                <span className="font-semibold text-ink-primary block">{replaceFileName || 'document.pdf'}</span>
+                <span className="text-ink-secondary">1.4 MB • Ready to transmit</span>
+              </div>
+            </div>
+
+            <div className="pt-2 flex items-center justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setReplacingDoc(null)}
+                className="px-4 py-2 text-sm font-sans font-medium text-ink-secondary hover:bg-[#F1F3F6] rounded-[8px]"
+              >
+                Cancel
+              </button>
+              <Button
+                variant="primary"
+                onClick={() => handleReplaceDocument(replacingDoc.configId || replacingDoc.id, replacingDoc.name)}
+              >
+                Confirm and upload
+              </Button>
+            </div>
+          </div>
+        </SheetModal>
+      )}
+
+    </PageShell>
     );
   }
 
@@ -385,6 +470,118 @@ export const ApplicantStatusPage: React.FC = () => {
             Recruitment milestones
           </h2>
           <Timeline items={timelineItems} />
+
+          {/* Supporting Documents & Verification Section */}
+          <div className="pt-6 space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-display text-xl font-bold text-ink-primary">
+                  Required documents & identity files
+                </h3>
+                <p className="font-sans text-xs text-ink-secondary mt-0.5">
+                  Official identification, reference letters, and photos submitted for admission.
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              {requiredConfigs.map((cfg) => {
+                const doc = appDocuments.find((d) => d.configId === cfg.id);
+                const isReturned = doc?.status === 'returned_for_correction';
+
+                return (
+                  <div
+                    key={cfg.id}
+                    className={`p-4 rounded-[12px] ${
+                      isReturned ? 'bg-amber-50/80' : 'bg-[#F7F8FA]'
+                    } space-y-2`}
+                  >
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                      <div className="space-y-0.5">
+                        <div className="flex items-center gap-2">
+                          <span className="font-display font-bold text-sm text-ink-primary">
+                            {cfg.name}
+                          </span>
+                          {cfg.required && (
+                            <span className="text-[10px] font-sans font-semibold px-1.5 py-0.5 rounded bg-black/5 text-ink-secondary">
+                              Required
+                            </span>
+                          )}
+                          {doc ? (
+                            <StatusMark
+                              status={
+                                doc.status === 'accepted'
+                                  ? 'approved'
+                                  : doc.status === 'returned_for_correction'
+                                  ? 'declined'
+                                  : 'waiting'
+                              }
+                              label={
+                                doc.status === 'returned_for_correction'
+                                  ? 'Correction needed'
+                                  : doc.status === 'accepted'
+                                  ? 'Accepted'
+                                  : 'In review'
+                              }
+                            />
+                          ) : (
+                            <span className="text-xs font-sans text-ink-secondary">Not uploaded</span>
+                          )}
+                        </div>
+                        <p className="font-sans text-xs text-ink-secondary">
+                          {cfg.description}
+                        </p>
+                      </div>
+
+                      {doc ? (
+                        <div className="text-right self-start sm:self-auto text-xs font-sans text-ink-secondary">
+                          <span className="font-medium text-ink-primary block">{doc.fileName}</span>
+                          <span>{Math.round(doc.fileSize / 1024)} KB</span>
+                        </div>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setReplacingDoc({ configId: cfg.id, name: cfg.name });
+                            setReplaceFileName(`${cfg.id}_upload.pdf`);
+                          }}
+                          className="px-3 py-1.5 rounded-[8px] bg-ink-primary text-white text-xs font-sans font-semibold hover:bg-ink-secondary transition-colors self-start sm:self-auto"
+                        >
+                          Upload file
+                        </button>
+                      )}
+                    </div>
+
+                    {/* Correction needed alert banner */}
+                    {isReturned && (
+                      <div className="p-3 rounded-[8px] bg-amber-100/90 text-amber-900 text-xs font-sans space-y-2">
+                        <div className="font-bold flex items-center gap-1.5">
+                          <Warning className="w-4 h-4 text-amber-700" weight="bold" />
+                          <span>Correction requested by manager ({doc.reviewedByName || 'Marta Girma'}):</span>
+                        </div>
+                        <p className="italic bg-white/70 p-2 rounded-[6px]">
+                          "{doc.reviewNote || 'Please provide a clear replacement scan.'}"
+                        </p>
+                        <div className="flex justify-end pt-1">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setReplacingDoc(doc);
+                              setReplaceFileName(`clear_${doc.fileName || 'document.jpg'}`);
+                            }}
+                            className="px-3.5 py-1.5 rounded-[6px] bg-amber-800 text-white font-semibold text-xs hover:bg-amber-900 transition-colors cursor-pointer"
+                          >
+                            Replace document now
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
         </Raised>
 
         {/* Application Summary Card */}

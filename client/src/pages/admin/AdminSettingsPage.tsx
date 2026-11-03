@@ -43,6 +43,10 @@ export const AdminSettingsPage: React.FC = () => {
 
   // Email Templates
   const [templates, setTemplates] = useState<EmailTemplate[]>([]);
+  const [requiredDocs, setRequiredDocs] = useState<any[]>([]);
+  const [newDocName, setNewDocName] = useState('');
+  const [newDocDesc, setNewDocDesc] = useState('');
+  const [newDocRequired, setNewDocRequired] = useState(true);
   const [selectedTemplateId, setSelectedTemplateId] = useState('');
   const [editedSubject, setEditedSubject] = useState('');
   const [editedBody, setEditedBody] = useState('');
@@ -75,6 +79,8 @@ export const AdminSettingsPage: React.FC = () => {
       });
 
       setTemplates(tpls);
+      const docs = await api.getRequiredDocuments();
+      setRequiredDocs(docs);
       if (tpls.length > 0 && !selectedTemplateId) {
         setSelectedTemplateId(tpls[0].id);
         setEditedSubject(tpls[0].subject);
@@ -88,6 +94,43 @@ export const AdminSettingsPage: React.FC = () => {
   useEffect(() => {
     loadSettings();
   }, []);
+
+
+  const handleToggleDocRequired = async (docId: string, currentVal: boolean) => {
+    try {
+      await api.updateRequiredDocument(docId, { required: !currentVal });
+      const docs = await api.getRequiredDocuments();
+      setRequiredDocs(docs);
+      toast.success('Document requirement updated.');
+    } catch (err: any) {
+      toast.error(err.message || 'Could not update document.');
+    }
+  };
+
+  const handleAddDocumentConfig = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newDocName.trim()) return;
+
+    try {
+      const state = api.store.getState();
+      const newConfig = {
+        id: `doc-config-${Date.now()}`,
+        name: newDocName.trim(),
+        description: newDocDesc.trim() || 'Required verification file',
+        required: newDocRequired,
+      };
+      api.store.setState((prev: any) => ({
+        ...prev,
+        requiredDocuments: [...(prev.requiredDocuments || []), newConfig],
+      }));
+      setRequiredDocs([...requiredDocs, newConfig]);
+      setNewDocName('');
+      setNewDocDesc('');
+      toast.success('New required document type configured.');
+    } catch (err: any) {
+      toast.error(err.message || 'Could not add document.');
+    }
+  };
 
   const handleSelectTemplate = (id: string) => {
     setSelectedTemplateId(id);
@@ -272,6 +315,7 @@ export const AdminSettingsPage: React.FC = () => {
           { id: 'fees', label: 'Fees and platform' },
           { id: 'areas', label: 'Areas and skills' },
           { id: 'certificates', label: 'Certificate template' },
+          { id: 'documents', label: 'Required documents' },
           { id: 'templates', label: 'Email templates and preview' },
           { id: 'demo', label: 'Demo tools' },
         ]}

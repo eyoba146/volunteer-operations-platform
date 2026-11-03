@@ -7,7 +7,8 @@ import { store } from '../api/store';
  * 1. Active Role Permission Matrix from the store (configured by Super Admin).
  * 2. Separation of Duties:
  *    - Nobody can approve or verify an item they created, submitted, or prepared.
- *    - Admin access alone never grants approval of money (payments) or promotions.
+ *    - Admin access alone never grants approval of money (incoming payments) or promotions.
+ *    - For allowances, Super Admin has budget approval authority; Finance has disbursement authority.
  */
 export function can(
   user: User | null,
@@ -17,7 +18,7 @@ export function can(
 ): boolean {
   if (!user) return false;
 
-  // Separation of duties rule 1: Admin access alone NEVER grants approval of money or promotions
+  // Separation of duties rule 1: Admin access alone NEVER grants approval of registration fee payments or promotions
   if (user.role === 'admin') {
     if (module === 'payments' && (action === 'approve' || action === 'verify')) {
       return false;
@@ -27,12 +28,18 @@ export function can(
     }
   }
 
-  // Separation of duties rule 2: Nobody can approve or verify an item they created or submitted
+  // Separation of duties rule 2: Nobody can approve or verify an item they created, submitted, or prepared
   if (resource && (action === 'approve' || action === 'verify')) {
     if (resource.userId && resource.userId === user.id) {
       return false;
     }
+    if (resource.volunteerId && resource.volunteerId === user.id) {
+      return false;
+    }
     if (resource.createdBy && resource.createdBy === user.id) {
+      return false;
+    }
+    if (resource.preparedBy && resource.preparedBy === user.id) {
       return false;
     }
     if (resource.leadId && resource.leadId === user.id && resource.isSelf) {

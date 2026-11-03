@@ -25,6 +25,7 @@ export const FinanceOverviewPage: React.FC = () => {
   } | null>(null);
 
   const [recentPayments, setRecentPayments] = useState<Payment[]>([]);
+  const [allowanceMetrics, setAllowanceMetrics] = useState({ disbursedTotal: 0, reservedTotal: 0, waitingCount: 0 });
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -37,6 +38,15 @@ export const FinanceOverviewPage: React.FC = () => {
           api.getAllPayments(),
         ]);
         setStats(s);
+      try {
+        const allws = await api.getAllowances();
+        const disbursed = allws.filter(a => a.status === 'paid').reduce((sum, a) => sum + (a.totalAmount || 0), 0);
+        const reserved = allws.filter(a => a.status === 'approved').reduce((sum, a) => sum + (a.totalAmount || 0), 0);
+        const waiting = allws.filter(a => a.status === 'approved').length;
+        setAllowanceMetrics({ disbursedTotal: disbursed, reservedTotal: reserved, waitingCount: waiting });
+      } catch (err) {
+        console.error(err);
+      }
         setRecentPayments(list.slice(0, 5));
       } finally {
         setIsLoading(false);
@@ -101,7 +111,29 @@ export const FinanceOverviewPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Simple Inline List with dividers */}
+          
+        {/* Requirement 5: Inline Allowance Figures */}
+        <div className="pt-4 flex flex-wrap items-center gap-6 text-sm font-sans">
+          <div className="space-y-0.5">
+            <span className="text-xs text-ink-secondary block">Volunteer stipends disbursed</span>
+            <span className="font-display font-bold text-xl text-ink-primary">
+              ETB {allowanceMetrics.disbursedTotal.toLocaleString()}
+            </span>
+          </div>
+          <div className="space-y-0.5">
+            <span className="text-xs text-ink-secondary block">Reserved for approved payouts</span>
+            <span className="font-display font-bold text-xl text-amber-700">
+              ETB {allowanceMetrics.reservedTotal.toLocaleString()}
+            </span>
+          </div>
+          <div className="space-y-0.5">
+            <span className="text-xs text-ink-secondary block">Payouts ready for Telebirr</span>
+            <span className="font-display font-bold text-xl text-[#1E824C]">
+              {allowanceMetrics.waitingCount}
+            </span>
+          </div>
+        </div>
+        {/* Simple Inline List with dividers */}
           <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm pt-2 md:pt-0">
             <div className="space-y-0.5">
               <span className="text-[13px] text-ink-secondary block">Today's settlements</span>

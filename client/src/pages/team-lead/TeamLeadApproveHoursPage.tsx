@@ -18,6 +18,7 @@ export const TeamLeadApproveHoursPage: React.FC = () => {
   const [declineReason, setDeclineReason] = useState('');
   const [declineError, setDeclineError] = useState('');
   const [showMoment, setShowMoment] = useState(false);
+  const [inspectingEvidence, setInspectingEvidence] = useState<HoursEntry | null>(null);
   const [momentText, setMomentText] = useState('');
 
   const toast = useToast();
@@ -157,6 +158,29 @@ export const TeamLeadApproveHoursPage: React.FC = () => {
             <p className="text-[13px] text-ink-secondary italic max-w-md bg-canvas-subdued/30 p-2 rounded-[6px]">
               "{entry.manualNote}"
             </p>
+          )}
+          {entry.evidenceUrl && (
+            <div className="pt-1">
+              <button
+                type="button"
+                onClick={() => setInspectingEvidence(entry)}
+                className="inline-flex items-center gap-2 p-1.5 rounded-[8px] bg-[#F1F3F6] hover:bg-[#E8EBEF] transition-colors cursor-pointer text-left"
+              >
+                <img
+                  src={entry.evidenceThumbnail || entry.evidenceUrl}
+                  alt="Field Evidence"
+                  className="w-10 h-10 object-cover rounded-[6px]"
+                />
+                <div>
+                  <span className="text-xs font-sans font-semibold text-ink-primary block">
+                    Field photo evidence attached
+                  </span>
+                  <span className="text-[11px] font-sans text-ink-secondary block">
+                    Click to inspect full image
+                  </span>
+                </div>
+              </button>
+            </div>
           )}
         </div>
       ),

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
@@ -35,10 +35,20 @@ export const TeamLeadCreateActivityPage: React.FC = () => {
   const [capacity, setCapacity] = useState('20');
   const [minRank, setMinRank] = useState<string>('none');
   const [skills, setSkills] = useState('Logistics, Field safety');
+  const [projectId, setProjectId] = useState<string>('');
+  const [branchProjects, setBranchProjects] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user?.branchId) {
+      api.getProjects({ branchId: user.branchId }).then(setBranchProjects).catch(console.error);
+    } else {
+      api.getProjects().then(setBranchProjects).catch(console.error);
+    }
+  }, [user?.branchId]);
   const toast = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -65,6 +75,8 @@ export const TeamLeadCreateActivityPage: React.FC = () => {
           capacity: parseInt(capacity) || 15,
           minRank: minRank === 'none' ? undefined : (minRank as Rank),
           skills: skills.split(',').map((s) => s.trim()).filter(Boolean),
+          projectId: projectId || undefined,
+          projectName: branchProjects.find((p) => p.id === projectId)?.name || undefined,
         },
         user.id,
         profile?.fullName || user.username
@@ -111,6 +123,26 @@ export const TeamLeadCreateActivityPage: React.FC = () => {
         )}
 
         <div className="space-y-4">
+          {branchProjects.length > 0 && (
+            <div className="space-y-1.5">
+              <label className="block text-xs font-sans font-semibold text-ink-secondary">
+                Branch Project Charter (optional)
+              </label>
+              <select
+                value={projectId}
+                onChange={(e) => setProjectId(e.target.value)}
+                className="w-full px-3.5 py-2.5 bg-[#F1F3F6] rounded-[12px] text-sm font-sans text-ink-primary focus:outline-none focus:ring-2 focus:ring-[#D63927]/30"
+              >
+                <option value="">None (Independent branch activity)</option>
+                {branchProjects.map((p) => (
+                  <option key={p.id} value={p.id}>
+                    {p.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
           <Input
             label="Activity title"
             value={title}

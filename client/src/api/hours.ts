@@ -129,6 +129,8 @@ export async function submitManualHours(
     hours: number;
     minutes: number;
     note: string;
+    evidenceUrl?: string;
+    evidenceThumbnail?: string;
   }
 ): Promise<HoursEntry> {
   await delay(400, 750);
@@ -150,12 +152,17 @@ export async function submitManualHours(
     userName: profile?.fullName || user?.username || 'Volunteer',
     activityId: data.activityId,
     activityTitle: activity?.title || 'Community Service Activity',
+    projectId: activity?.projectId,
+    projectName: activity?.projectName,
+    branchId: activity?.branchId || user?.branchId || profile?.branchId,
     checkIn: checkInDate,
     checkOut: checkOutDate,
     minutes: totalMinutes,
     source: 'manual',
     status: 'logged',
     manualNote: data.note,
+    evidenceUrl: data.evidenceUrl,
+    evidenceThumbnail: data.evidenceThumbnail,
     createdAt: now,
   };
 

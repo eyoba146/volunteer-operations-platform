@@ -27,6 +27,12 @@ export const ManagerDashboardPage: React.FC = () => {
 
   const [pendingApplications, setPendingApplications] = useState<Application[]>([]);
   const [pendingPromotions, setPendingPromotions] = useState<Promotion[]>([]);
+  const [projectMetrics, setProjectMetrics] = useState({
+    activeCount: 0,
+    remainingBudget: 0,
+    disbursedTotal: 0,
+    waitingAllowances: 0,
+  });
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -34,14 +40,25 @@ export const ManagerDashboardPage: React.FC = () => {
     const load = async () => {
       setIsLoading(true);
       try {
-        const [st, apps, promos] = await Promise.all([
+        const [st, apps, promos, prjs, allws] = await Promise.all([
           api.getManagerOverviewStats(),
           api.getAllApplications({ status: 'submitted' }),
           api.getEligiblePromotions(),
+          api.getProjects(),
+          api.getAllowances(),
         ]);
         setStats(st);
         setPendingApplications(apps.slice(0, 4));
         setPendingPromotions(promos.slice(0, 3));
+        const rem = prjs.reduce((s, p) => s + (p.budget - (p.spent || 0) - (p.reserved || 0)), 0);
+        const disb = allws.filter(a => a.status === 'paid').reduce((s, a) => s + (a.totalAmount || 0), 0);
+        const wait = allws.filter(a => a.status === 'submitted' || a.status === 'verified').length;
+        setProjectMetrics({
+          activeCount: prjs.filter(p => p.status === 'active').length,
+          remainingBudget: rem,
+          disbursedTotal: disb,
+          waitingAllowances: wait,
+        });
       } finally {
         setIsLoading(false);
       }
@@ -105,7 +122,35 @@ export const ManagerDashboardPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Simple Inline List with subtle dividers */}
+          
+        {/* Requirement 5: Inline Projects & Allowance Figures */}
+        <div className="pt-4 flex flex-wrap items-center gap-6 text-sm font-sans">
+          <div className="space-y-0.5">
+            <span className="text-xs text-ink-secondary block">Active projects in scope</span>
+            <span className="font-display font-bold text-xl text-ink-primary">
+              {projectMetrics.activeCount}
+            </span>
+          </div>
+          <div className="space-y-0.5">
+            <span className="text-xs text-ink-secondary block">Remaining project budget</span>
+            <span className="font-display font-bold text-xl text-[#0E6266]">
+              ETB {projectMetrics.remainingBudget.toLocaleString()}
+            </span>
+          </div>
+          <div className="space-y-0.5">
+            <span className="text-xs text-ink-secondary block">Volunteer stipends disbursed</span>
+            <span className="font-display font-bold text-xl text-ink-primary">
+              ETB {projectMetrics.disbursedTotal.toLocaleString()}
+            </span>
+          </div>
+          <div className="space-y-0.5">
+            <span className="text-xs text-ink-secondary block">Allowances waiting review</span>
+            <span className="font-display font-bold text-xl text-amber-700">
+              {projectMetrics.waitingAllowances}
+            </span>
+          </div>
+        </div>
+        {/* Simple Inline List with subtle dividers */}
           <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm pt-2 md:pt-0">
             <div className="space-y-0.5">
               <span className="text-[13px] text-ink-secondary block">Promotions waiting</span>

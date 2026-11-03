@@ -317,7 +317,7 @@ export const DemoEmailInbox: React.FC<DemoEmailInboxProps> = ({ isOpen, onClose 
                     </div>
 
                     {/* Chat Header */}
-                    <div className="bg-white px-4 py-3 flex items-center justify-between border-b border-[#F1F3F6]">
+                    <div className="bg-white px-4 py-3 flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <div className="w-7 h-7 rounded-full bg-role-volunteer/15 text-role-volunteer flex items-center justify-center text-xs font-bold">
                           VTS
@@ -360,7 +360,7 @@ export const DemoEmailInbox: React.FC<DemoEmailInboxProps> = ({ isOpen, onClose 
                     </div>
 
                     {/* Phone Footer */}
-                    <div className="bg-white px-3 py-2 text-center text-[10px] text-ink-tertiary border-t border-[#F1F3F6]">
+                    <div className="bg-white px-3 py-2 text-center text-[10px] text-ink-tertiary">
                       Delivered via Ethio Telecom Shortcode 8080
                     </div>
                   </div>

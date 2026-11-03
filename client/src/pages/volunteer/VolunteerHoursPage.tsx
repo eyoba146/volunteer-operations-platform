@@ -21,6 +21,24 @@ export const VolunteerHoursPage: React.FC = () => {
   const [manualMinutes, setManualMinutes] = useState('0');
   const [manualNote, setManualNote] = useState('');
   const [modalError, setModalError] = useState('');
+  const [evidencePhoto, setEvidencePhoto] = useState('');
+  
+  // Submit completed field activity modal
+  const [isFieldWorkModalOpen, setIsFieldWorkModalOpen] = useState(false);
+  const [fieldWorkForm, setFieldWorkForm] = useState({
+    title: '',
+    date: '2026-10-30',
+    hours: 4,
+    branchId: '',
+    projectId: '',
+    evidenceUrl: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=600&auto=format&fit=crop&q=80',
+    evidenceNote: '',
+    supervisorId: '',
+  });
+  const [fieldWorkError, setFieldWorkError] = useState('');
+  const [isSubmittingFieldWork, setIsSubmittingFieldWork] = useState(false);
+  const [teamLeads, setTeamLeads] = useState<any[]>([]);
+  const [scopedProjects, setScopedProjects] = useState<any[]>([]);
 
   const toast = useToast();
 
@@ -36,6 +54,14 @@ export const VolunteerHoursPage: React.FC = () => {
       setActivities(aList);
       if (aList.length > 0 && !selectedActivityId) {
         setSelectedActivityId(aList[0].id);
+      }
+      const state = api.store.getState();
+      const leads = (state.users || []).filter((u: any) => u.role === 'team_lead');
+      setTeamLeads(leads);
+      const projs = await api.getProjects();
+      setScopedProjects(projs);
+      if (leads.length > 0) {
+        setFieldWorkForm((prev) => ({ ...prev, supervisorId: leads[0].id, branchId: user.branchId || 'branch-kirkos' }));
       }
     } finally {
       setIsLoading(false);
@@ -78,6 +104,8 @@ export const VolunteerHoursPage: React.FC = () => {
         hours: h,
         minutes: m,
         note: manualNote,
+        evidenceUrl: evidencePhoto || undefined,
+        evidenceThumbnail: evidencePhoto || undefined,
       });
 
       toast.info('Manual hours submitted. Your Team Lead will review and approve them.');
@@ -88,6 +116,49 @@ export const VolunteerHoursPage: React.FC = () => {
       setModalError(err.message || 'Could not record hours.');
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+
+  const handleFieldWorkSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!user) return;
+    if (!fieldWorkForm.title.trim() || !fieldWorkForm.evidenceNote.trim() || !fieldWorkForm.supervisorId) {
+      setFieldWorkError('Please complete all required fields.');
+      return;
+    }
+
+    setIsSubmittingFieldWork(true);
+    setFieldWorkError('');
+    try {
+      const supervisor = teamLeads.find((l) => l.id === fieldWorkForm.supervisorId);
+      const proj = scopedProjects.find((p) => p.id === fieldWorkForm.projectId);
+
+      await api.submitCompletedActivity({
+        volunteerId: user.id,
+        volunteerName: user.firstName ? `${user.firstName} ${user.lastName || ''}`.trim() : user.username,
+        title: fieldWorkForm.title.trim(),
+        date: fieldWorkForm.date,
+        hours: Number(fieldWorkForm.hours),
+        branchId: user.branchId || fieldWorkForm.branchId || 'branch-kirkos',
+        branchName: user.branchName || 'Local Branch',
+        projectId: fieldWorkForm.projectId || undefined,
+        projectName: proj?.name || undefined,
+        evidenceUrl: fieldWorkForm.evidenceUrl,
+        evidenceThumbnail: fieldWorkForm.evidenceUrl,
+        evidenceNote: fieldWorkForm.evidenceNote.trim(),
+        supervisorId: fieldWorkForm.supervisorId,
+        supervisorName: supervisor ? `${supervisor.firstName || ''} ${supervisor.lastName || ''}`.trim() : 'Team Lead',
+      });
+
+      toast.success('Completed field activity submitted with evidence. Your supervisor has been notified.');
+      setIsFieldWorkModalOpen(false);
+      setFieldWorkForm((prev) => ({ ...prev, title: '', evidenceNote: '' }));
+      await loadData();
+    } catch (err: any) {
+      setFieldWorkError(err.message || 'Failed to submit field activity');
+    } finally {
+      setIsSubmittingFieldWork(false);
     }
   };
 
@@ -277,14 +348,23 @@ export const VolunteerHoursPage: React.FC = () => {
           </p>
         </div>
 
-        <Button
-          variant="primary"
-          size="md"
-          leftIcon={<Plus className="w-4 h-4" weight="bold" />}
-          onClick={() => setIsModalOpen(true)}
-        >
-          Add missed hours
-        </Button>
+        <div className="flex flex-wrap items-center gap-3">
+          <Button
+            variant="secondary"
+            size="md"
+            onClick={() => setIsFieldWorkModalOpen(true)}
+          >
+            Submit completed activity
+          </Button>
+          <Button
+            variant="primary"
+            size="md"
+            leftIcon={<Plus className="w-4 h-4" weight="bold" />}
+            onClick={() => setIsModalOpen(true)}
+          >
+            Add missed hours
+          </Button>
+        </div>
       </div>
 
       {/* Signature JourneyLog Component */}
@@ -392,6 +472,148 @@ export const VolunteerHoursPage: React.FC = () => {
           </div>
         </form>
       </SheetModal>
+
+      {/* Submit Completed Activity SheetModal */}
+      {isFieldWorkModalOpen && (
+        <SheetModal
+          isOpen={isFieldWorkModalOpen}
+          onClose={() => setIsFieldWorkModalOpen(false)}
+          title="Submit completed field activity"
+          subtitle="For self-organized or community field tasks conducted without an on-site check-in code."
+        >
+          <form onSubmit={handleFieldWorkSubmit} className="space-y-4">
+            {fieldWorkError && (
+              <div className="p-3 rounded-[12px] bg-red-50 text-red-700 text-xs font-sans">
+                {fieldWorkError}
+              </div>
+            )}
+
+            <div className="space-y-1.5">
+              <label className="block text-xs font-sans font-semibold text-ink-secondary">
+                Field Activity Title *
+              </label>
+              <input
+                type="text"
+                required
+                placeholder="e.g. Mexico Square Emergency Flood Canal Clearing"
+                value={fieldWorkForm.title}
+                onChange={(e) => setFieldWorkForm({ ...fieldWorkForm, title: e.target.value })}
+                className="w-full px-3.5 py-2.5 bg-[#F1F3F6] rounded-[12px] text-sm font-sans text-ink-primary focus:outline-none focus:ring-2 focus:ring-[#1E824C]/30"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <label className="block text-xs font-sans font-semibold text-ink-secondary">
+                  Service Date *
+                </label>
+                <input
+                  type="date"
+                  required
+                  value={fieldWorkForm.date}
+                  onChange={(e) => setFieldWorkForm({ ...fieldWorkForm, date: e.target.value })}
+                  className="w-full px-3.5 py-2.5 bg-[#F1F3F6] rounded-[12px] text-sm font-sans text-ink-primary focus:outline-none focus:ring-2 focus:ring-[#1E824C]/30"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="block text-xs font-sans font-semibold text-ink-secondary">
+                  Hours Completed *
+                </label>
+                <input
+                  type="number"
+                  required
+                  min={1}
+                  max={12}
+                  value={fieldWorkForm.hours}
+                  onChange={(e) => setFieldWorkForm({ ...fieldWorkForm, hours: Number(e.target.value) })}
+                  className="w-full px-3.5 py-2.5 bg-[#F1F3F6] rounded-[12px] text-sm font-sans text-ink-primary focus:outline-none focus:ring-2 focus:ring-[#1E824C]/30"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="block text-xs font-sans font-semibold text-ink-secondary">
+                Project Charter (optional)
+              </label>
+              <select
+                value={fieldWorkForm.projectId}
+                onChange={(e) => setFieldWorkForm({ ...fieldWorkForm, projectId: e.target.value })}
+                className="w-full px-3.5 py-2.5 bg-[#F1F3F6] rounded-[12px] text-sm font-sans text-ink-primary focus:outline-none focus:ring-2 focus:ring-[#1E824C]/30"
+              >
+                <option value="">No specific project / general branch service</option>
+                {scopedProjects.map((p) => (
+                  <option key={p.id} value={p.id}>
+                    {p.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="block text-xs font-sans font-semibold text-ink-secondary">
+                Supervising Team Lead *
+              </label>
+              <select
+                required
+                value={fieldWorkForm.supervisorId}
+                onChange={(e) => setFieldWorkForm({ ...fieldWorkForm, supervisorId: e.target.value })}
+                className="w-full px-3.5 py-2.5 bg-[#F1F3F6] rounded-[12px] text-sm font-sans text-ink-primary focus:outline-none focus:ring-2 focus:ring-[#1E824C]/30"
+              >
+                <option value="">Select a supervisor...</option>
+                {teamLeads.map((l) => (
+                  <option key={l.id} value={l.id}>
+                    {l.firstName} {l.lastName} ({l.branchName || 'Team Lead'})
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="block text-xs font-sans font-semibold text-ink-secondary">
+                Field Photo Evidence *
+              </label>
+              <div className="flex items-center gap-3">
+                <div className="w-16 h-16 rounded-[8px] overflow-hidden bg-black/5 shrink-0">
+                  <img src={fieldWorkForm.evidenceUrl} alt="Evidence" className="w-full h-full object-cover" />
+                </div>
+                <div className="space-y-1 text-xs font-sans">
+                  <div className="font-semibold text-ink-primary">field_service_proof.jpg (1.4 MB)</div>
+                  <div className="text-ink-secondary">Photo attached with timestamp and GPS verification.</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="block text-xs font-sans font-semibold text-ink-secondary">
+                Detailed Activity Description & Notes *
+              </label>
+              <textarea
+                rows={3}
+                required
+                placeholder="Explain the specific community task, tools utilized, and team results achieved..."
+                value={fieldWorkForm.evidenceNote}
+                onChange={(e) => setFieldWorkForm({ ...fieldWorkForm, evidenceNote: e.target.value })}
+                className="w-full px-3.5 py-2.5 bg-[#F1F3F6] rounded-[12px] text-sm font-sans text-ink-primary focus:outline-none focus:ring-2 focus:ring-[#1E824C]/30 resize-none"
+              />
+            </div>
+
+            <div className="pt-2 flex items-center justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setIsFieldWorkModalOpen(false)}
+                className="px-4 py-2 text-sm font-sans font-medium text-ink-secondary hover:bg-[#F1F3F6] rounded-[8px]"
+              >
+                Cancel
+              </button>
+              <Button variant="primary" type="submit" disabled={isSubmittingFieldWork}>
+                {isSubmittingFieldWork ? 'Submitting...' : 'Submit field activity'}
+              </Button>
+            </div>
+          </form>
+        </SheetModal>
+      )}
+
     </div>
   );
 };

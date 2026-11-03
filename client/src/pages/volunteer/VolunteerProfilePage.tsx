@@ -321,7 +321,7 @@ export const VolunteerProfilePage: React.FC = () => {
                   <th className="py-3 px-3 text-center font-semibold text-ink-primary">SMS Text</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#E8EBEF]">
+              <tbody>
                 <tr className="hover:bg-white/60 transition-colors">
                   <td className="py-3.5 px-4 font-medium text-ink-primary">
                     <span className="font-semibold block text-sm">Activity reminders & schedule changes</span>
@@ -486,7 +486,7 @@ export const VolunteerProfilePage: React.FC = () => {
                     <th className="py-3 px-4 font-semibold text-ink-primary text-right">Result</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#E8EBEF]">
+                <tbody>
                   {signInLogs.map((log) => {
                     const isSuccess = log.result === 'success';
                     const isLocked = log.result === 'locked';

@@ -118,7 +118,11 @@ export type PermissionModule =
   | 'reports'
   | 'settings'
   | 'organisation'
-  | 'accounts';
+  | 'accounts'
+  | 'projects'
+  | 'assignments'
+  | 'documents'
+  | 'allowances';
 
 export type PermissionAction =
   | 'view'
@@ -329,6 +333,8 @@ export interface Activity {
   status: ActivityStatus;
   checkInCode: string; // 4-digit code e.g. "7294"
   coverUrl?: string;
+  projectId?: string;
+  projectName?: string;
 }
 
 export interface Enrollment {
@@ -355,6 +361,12 @@ export interface HoursEntry {
   decisionReason?: string;
   createdAt: string;
   manualNote?: string;
+  evidenceUrl?: string;
+  evidenceThumbnail?: string;
+  evidenceNote?: string;
+  projectId?: string;
+  projectName?: string;
+  branchId?: string;
 }
 
 export interface Rating {
@@ -509,5 +521,171 @@ export interface EmailTemplate {
   category: string;
   variables: string[];
 }
+
+// ==========================================
+// UPGRADE 2 DOMAIN MODELS: PROJECTS, ASSIGNMENTS, EVIDENCE & ALLOWANCES
+// ==========================================
+
+export type ProjectStatus = 'planning' | 'active' | 'completed' | 'paused';
+
+export interface Project {
+  id: string;
+  name: string;
+  description: string;
+  branchId: string;
+  branchName?: string;
+  areaId?: string;
+  areaName?: string;
+  start: string; // ISO date YYYY-MM-DD
+  end: string;   // ISO date YYYY-MM-DD
+  budget: number; // in ETB
+  allowancePerDay: number; // in ETB
+  spent?: number;
+  reserved?: number;
+  managerId: string;
+  managerName?: string;
+  status: ProjectStatus;
+  createdAt: string;
+}
+
+export type AssignmentStatus = 'assigned' | 'accepted' | 'declined' | 'completed';
+
+export interface Assignment {
+  id: string;
+  projectId?: string;
+  projectName?: string;
+  activityId?: string;
+  activityTitle?: string;
+  branchId?: string;
+  branchName?: string;
+  areaId?: string;
+  areaName?: string;
+  volunteerId: string;
+  volunteerName?: string;
+  volunteerRank?: Rank;
+  supervisorId: string; // Team Lead ID
+  supervisorName?: string;
+  status: AssignmentStatus;
+  assignedBy: string; // Manager ID
+  assignedByName?: string;
+  assignedAt: string; // ISO
+  startDate: string; // ISO date
+  endDate?: string;
+  decidedAt?: string;
+  declineReason?: string;
+  notes?: string;
+}
+
+export interface RequiredDocumentConfig {
+  id: string;
+  name: string;
+  description: string;
+  required: boolean;
+  appliesToRole?: string;
+}
+
+export type DocumentReviewStatus = 'pending' | 'accepted' | 'returned_for_correction';
+
+export interface ApplicationDocument {
+  id: string;
+  applicationId: string;
+  configId: string;
+  name: string;
+  fileName: string;
+  fileSize: number; // in bytes
+  fileUrl: string;
+  uploadedAt: string;
+  status: DocumentReviewStatus;
+  reviewNote?: string;
+  reviewedBy?: string;
+  reviewedByName?: string;
+  reviewedAt?: string;
+}
+
+export interface CompletedActivitySubmission {
+  id: string;
+  volunteerId: string;
+  volunteerName?: string;
+  title: string;
+  date: string; // ISO date YYYY-MM-DD
+  hours: number;
+  branchId: string;
+  branchName?: string;
+  areaId?: string;
+  areaName?: string;
+  projectId?: string;
+  projectName?: string;
+  evidenceUrl: string;
+  evidenceThumbnail?: string;
+  evidenceNote: string;
+  supervisorId: string; // Team lead ID
+  supervisorName?: string;
+  status: 'submitted' | 'verified' | 'approved' | 'declined';
+  submittedAt: string;
+  decidedBy?: string;
+  decidedByName?: string;
+  decisionReason?: string;
+  decidedAt?: string;
+}
+
+export type AllowanceStatus =
+  | 'draft'
+  | 'submitted'
+  | 'verified'
+  | 'approved'
+  | 'paid'
+  | 'rejected'
+  | 'failed';
+
+export interface DisbursementDetails {
+  provider: 'telebirr';
+  phone: string;
+  fee: number;
+  transactionId: string;
+  disbursedAt: string;
+}
+
+export interface AllowanceRequest {
+  id: string;
+  allowanceNumber: string; // e.g. "ALW-2026-0001"
+  projectId: string;
+  projectName?: string;
+  branchId: string;
+  branchName?: string;
+  areaId?: string;
+  areaName?: string;
+  activityId?: string;
+  activityTitle?: string;
+  volunteerId: string;
+  volunteerName: string;
+  volunteerPhone?: string;
+  days: number;
+  allowancePerDay: number;
+  totalAmount: number; // days * allowancePerDay
+  linkedHoursId?: string;
+  linkedSubmissionId?: string;
+  status: AllowanceStatus;
+  preparedBy: string; // Manager ID
+  preparedByName: string;
+  preparedAt: string;
+  supervisorId?: string; // Team Lead ID
+  supervisorName?: string;
+  verifiedBy?: string;
+  verifiedByName?: string;
+  verifiedAt?: string;
+  supervisorNotes?: string;
+  approvedBy?: string;
+  approvedByName?: string;
+  approvedAt?: string;
+  rejectionReason?: string;
+  paymentReference?: string;
+  paidAt?: string;
+  paidBy?: string;
+  paidByName?: string;
+  failureReason?: string;
+  disbursementDetails?: DisbursementDetails;
+  createdAt: string;
+}
+
 
 

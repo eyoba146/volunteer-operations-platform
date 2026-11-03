@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import * as api from '../../api';
-import { Application, ApplicationStatus, ApplicationSource } from '../../types';
+import { Application, ApplicationStatus, ApplicationSource, ApplicationDocument } from '../../types';
 import { 
   LedgerTable, 
   LedgerColumn, 
@@ -22,6 +22,7 @@ import {
   ArrowsClockwise,
   UserPlus,
   Buildings,
+  FileText,
 } from '@phosphor-icons/react';
 
 const SOURCE_FILTERS: { value: ApplicationSource | 'all'; label: string }[] = [
@@ -93,8 +94,33 @@ export const ManagerApplicationsPage: React.FC = () => {
   const [privateNote, setPrivateNote] = useState('');
   const [showBulkRejectModal, setShowBulkRejectModal] = useState(false);
   const [bulkRejectReason, setBulkRejectReason] = useState('');
+  const [appDocuments, setAppDocuments] = useState<ApplicationDocument[]>([]);
+  const [correctingDocId, setCorrectingDocId] = useState<string | null>(null);
+  const [correctionNote, setCorrectionNote] = useState('');
 
   const toast = useToast();
+
+  const handleReviewDoc = async (docId: string, status: 'accepted' | 'returned_for_correction', note?: string) => {
+    if (status === 'returned_for_correction' && !note?.trim()) {
+      toast.error('A note explaining what needs correction is required');
+      return;
+    }
+    setIsProcessing(true);
+    try {
+      await api.reviewApplicationDocument(docId, status, note);
+      if (inspectingApp) {
+        const docs = await api.getApplicationDocuments(inspectingApp.id);
+        setAppDocuments(docs);
+      }
+      setCorrectingDocId(null);
+      setCorrectionNote('');
+      toast.success(status === 'accepted' ? 'Document verified' : 'Returned for correction with instructions');
+    } catch (err: any) {
+      toast.error(err.message || 'Failed to update document status');
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
   const loadData = async () => {
     setIsLoading(true);
@@ -338,6 +364,9 @@ export const ManagerApplicationsPage: React.FC = () => {
             size="sm"
             onClick={() => {
               setInspectingApp(app);
+    if (app) {
+      api.getApplicationDocuments(app.id).then(setAppDocuments).catch(console.error);
+    }
               setDecisionReason(app.decisionReason || '');
             }}
             leftIcon={<Eye className="w-3.5 h-3.5" />}
@@ -528,6 +557,82 @@ export const ManagerApplicationsPage: React.FC = () => {
                 </div>
               </div>
             )}
+
+            {/* Required Verification Documents */}
+            <div className="p-4 rounded-[8px] bg-white space-y-3">
+              <div className="flex items-center justify-between pb-1">
+                <h4 className="font-display text-sm font-bold text-ink-primary">
+                  Required applicant documents
+                </h4>
+                <span className="text-[13px] text-ink-secondary">
+                  {appDocuments.length} uploaded
+                </span>
+              </div>
+
+              {appDocuments.length === 0 ? (
+                <p className="text-[13px] text-ink-tertiary">No uploaded documents on record.</p>
+              ) : (
+                <div className="space-y-3">
+                  {appDocuments.map((doc) => (
+                    <div key={doc.id} className="p-3 bg-canvas-subdued/30 rounded-[8px] space-y-2">
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <FileText className="w-5 h-5 text-ink-secondary shrink-0" />
+                          <div className="min-w-0">
+                            <span className="font-semibold text-ink-primary text-sm block truncate">{doc.name}</span>
+                            <span className="text-xs text-ink-tertiary font-mono block">
+                              {doc.fileName} • {(doc.fileSize / 1024).toFixed(0)} KB
+                            </span>
+                          </div>
+                        </div>
+                        <StatusMark 
+                          status={doc.status === 'accepted' ? 'approved' : doc.status === 'returned_for_correction' ? 'declined' : 'waiting'} 
+                          label={doc.status === 'accepted' ? 'Accepted' : doc.status === 'returned_for_correction' ? 'Needs correction' : 'Pending review'} 
+                        />
+                      </div>
+
+                      {doc.reviewNote && (
+                        <div className="text-xs bg-amber-50 text-amber-900 p-2 rounded-[6px]">
+                          <span className="font-semibold">Review note: </span>{doc.reviewNote}
+                        </div>
+                      )}
+
+                      {correctingDocId === doc.id ? (
+                        <div className="pt-2 space-y-2">
+                          <textarea
+                            placeholder="Explain clearly what needs to be fixed..."
+                            value={correctionNote}
+                            onChange={(e) => setCorrectionNote(e.target.value)}
+                            className="w-full text-xs p-2 rounded-[6px] bg-white focus:outline-none focus:ring-1 focus:ring-ink-primary"
+                            rows={2}
+                          />
+                          <div className="flex gap-2 justify-end">
+                            <Button size="sm" variant="secondary" onClick={() => setCorrectingDocId(null)}>Cancel</Button>
+                            <Button size="sm" variant="danger" onClick={() => handleReviewDoc(doc.id, 'returned_for_correction', correctionNote)}>
+                              Send correction notice
+                            </Button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex gap-2 pt-1">
+                          <Button size="sm" variant="secondary" onClick={() => window.open(doc.fileUrl, '_blank')}>View file</Button>
+                          {doc.status !== 'accepted' && (
+                            <Button size="sm" variant="secondary" onClick={() => handleReviewDoc(doc.id, 'accepted')}>
+                              Accept
+                            </Button>
+                          )}
+                          {doc.status !== 'returned_for_correction' && (
+                            <Button size="sm" variant="secondary" onClick={() => { setCorrectingDocId(doc.id); setCorrectionNote(''); }}>
+                              Return for correction
+                            </Button>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
 
             {/* Applicant details */}
             <div className="p-4 rounded-[8px] bg-white space-y-3">

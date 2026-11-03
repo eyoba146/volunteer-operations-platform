@@ -28,9 +28,13 @@ const ALL_MODULES: { id: PermissionModule; label: string; description: string }[
   { id: 'applications', label: 'Applications', description: 'Prospective volunteer applications and vetting queue' },
   { id: 'volunteers', label: 'Volunteers', description: 'Volunteer profiles, rosters, and directory' },
   { id: 'activities', label: 'Activities', description: 'Community service events, schedules, and check-ins' },
+  { id: 'projects', label: 'Projects', description: 'Branch project charters, budgets, and operational timelines' },
+  { id: 'assignments', label: 'Assignments', description: 'Volunteer squad deployments and team lead supervisors' },
+  { id: 'documents', label: 'Documents & Evidence', description: 'Required applicant files and field activity evidence' },
   { id: 'hours', label: 'Hours', description: 'Volunteer hours logging, review, and verification' },
   { id: 'ratings', label: 'Ratings', description: 'Participant ratings and performance feedback' },
   { id: 'promotions', label: 'Promotions', description: 'Rank promotions, recommendations, and criteria' },
+  { id: 'allowances', label: 'Allowances', description: 'Field stipend preparation, verification, approval, and disbursement' },
   { id: 'payments', label: 'Payments', description: 'Registration fees, Telebirr receipts, and refunds' },
   { id: 'announcements', label: 'Announcements', description: 'Broadcast notices to volunteers, teams, and areas' },
   { id: 'reports', label: 'Reports', description: 'Operational reports, metrics, and document export' },
@@ -311,7 +315,7 @@ export const AdminRolesPermissionsPage: React.FC = () => {
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#F1F3F6]">
+            <tbody>
               {ALL_MODULES.map((mod) => {
                 const activeActions = currentRoleConfig?.permissions[mod.id] || [];
 
